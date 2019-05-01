@@ -1,0 +1,19 @@
+{
+  "bubble": {
+    "chance": 10,
+    "max-radius": 30,
+    "min-radius": 6,
+    "max-speed": 4.8,
+    "screen-gap": 100
+  },
+  "game": {
+    "level-score": 10000,
+    "time-limit": 90,
+    "pause": false,
+    "resolution": "1920x1080",
+    "ship-radius": 15,
+    "ship-speed": 10,
+    "fullscreen": true,
+    "language": "en"
+  }
+}

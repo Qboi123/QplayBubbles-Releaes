@@ -1,0 +1,16 @@
+[
+  {"coins": 5, "diamonds": 4, "name": "Level-up", "icon": "data/Key.png"},
+  {"coins": 0, "diamonds": 5, "name": "Teleport", "icon": ""},
+  {"coins": 0, "diamonds": 2, "name": "Protection", "icon": "data/Protect.png"},
+  {"coins": 20, "diamonds": 0, "name": "Diamond", "icon": "data/DiamondBuy.png"},
+  {"coins": 7, "diamonds": 0, "name": "Koop een Taart", "icon": ""},
+  {"coins": 5, "diamonds": 1, "name": "Pop 3 Bubbles", "icon": "data/Pop_3_bubs.png"},
+  {"coins": 2, "diamonds": 1, "name": "+2 Lifes", "icon": ""},
+  {"coins": 5, "diamonds": 0, "name": "Speed Boost", "icon": "data/Images/StoreItems/SpeedBoost.png"},
+  {"coins": 5, "diamonds": 12, "name": "Ultra Mode!", "icon": "data/Images/StoreItems/SpecialMode.png"},
+  {"coins": 5, "diamonds": 0, "name": "Double Score", "icon": ""},
+  {"coins": 1, "diamonds": 0, "name": "+10 Points", "icon": ""},
+  {"coins": 10, "diamonds": 0, "name": "+100 Points", "icon": ""},
+  {"coins": 19, "diamonds": 0, "name": "+200 Points", "icon": ""},
+  {"coins": 5, "diamonds": 2, "name": "+500 Points", "icon": ""}
+]
