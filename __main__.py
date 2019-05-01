@@ -1,20 +1,16 @@
+if __name__ == "__main__":
+    print("Error: Can't open this file. Please open the game with the launcher.")
+    input()
+    exit(1)
+
 from time import sleep
 
 from .ammo import *
-from .bubble import Collision, create_bubble, place_bubble, move_bubbles, clean_up_bubs
+from .bubble import Collision, create_bubble, place_bubble
 from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
-from threading import active_count
-import urllib.request
-
-# html_page = urllib.request.urlopen("https://quintenjungblut.wixsite.com/qplaysoftware")
-# soup = BeautifulSoup(html_page)
-# for link in soup.findAll('a', attrs={'id': "comp-jusd838ilink"}):
-#     print(link.get('href'))
-
-# exit(0)
 
 log = Logging("logs", True, True)
 
@@ -22,23 +18,13 @@ log.info("<Root>", "Imports loading success")
 log.info("<Root>", "Starting Game")
 
 
-#
-#
-# def handle_exception(exc_type, exc_value, exc_traceback):
-#     if issubclass(exc_type, KeyboardInterrupt):
-#         sys.__excepthook__(exc_type, exc_value, exc_traceback)
-#         return
-#
-#     log.error("?", str(exc_type.__name__) + ": " + str(exc_value))
-#
-#
-# sys.excepthook = handle_exception
-
-
-def control(root, canvas, icon, config, event, stats, temp, modes, ship, commands, ammo, tp,
+def control(root, canvas, icon, config, event, stats, temp, modes, ship, commands, tp,
             texts, foregrounds, backgrounds, bubble, panels, return_main, bub, lang):
     """
     Ship-motion event
+    :param return_main:
+    :param bub:
+    :param lang:
     :param panels:
     :param commands:
     :param bubble:
@@ -47,7 +33,6 @@ def control(root, canvas, icon, config, event, stats, temp, modes, ship, command
     :param texts:
     :param temp:
     :param tp:
-    :param ammo:
     :param ship:
     :param modes:
     :param stats:
@@ -235,10 +220,6 @@ def control(root, canvas, icon, config, event, stats, temp, modes, ship, command
         a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
              "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
              "Coin", "NoTouch", "Paralis", "Diamond", "StoneBub", "Present", "SpecialKey", "LevelKey")
-        b = ("Normale bubbel", "Dubbele waarde", "-1 Leven", "3x waarde", "Versnellen", "Vertragen", "+1 Leven",
-             "Ultieme bubbel",
-             "Dubbel-bubbel", "Schild", "Slow motion", "Bubbels stil", "Verwarring", "Hyper-mode", "Teleporter", "Munt",
-             "Geest-modus", "Verstijving", "Diamant", "Steen-bubbel", "Cadeau", "Speciale-modus", "Sleutel")
 
         c = ("bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
              "bubble.up", "bubble.state.ultimate", "bubble.state.double", "bubble.state.protect",
@@ -397,14 +378,14 @@ def start(bubble, save_name, stats, config, bub, modes, canvas):
     for i in range(len(bubs["bub-id"])):
         bubble["active2"].append(False)
         # print(i)
-    for i in range(len(bubs["bub-id"])-1):
+    for i in range(len(bubs["bub-id"]) - 1):
         if bubs["bub-special"]:
             create_bubble(stats, config, bub, canvas, bubble, modes, i, bubs["bub-index"][i],
-                          bubs["bub-position"][i][0]+config["width"],
+                          bubs["bub-position"][i][0] + config["width"],
                           bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
         elif not bubs["bub-special"]:
             SpecialMode.create_bubble(canvas, config, bubble, stats, bub, modes, bubs["bub-index"][i],
-                                      bubs["bub-position"][i][0]+config["width"],
+                                      bubs["bub-position"][i][0] + config["width"],
                                       bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
 
 
@@ -418,7 +399,7 @@ def r_start(bubble, stats, config, bub, canvas, modes):
         # print(i)
         r = randint(int(config["bubble"]["min-radius"]),
                     int(config["bubble"]["max-radius"]))
-        x = randint(-r, config["width"]+r)
+        x = randint(-r, config["width"] + r)
         y = randint(72 + r, (config["height"] - r))
         # spd = stats["bubspeed"]
         # i = randint(0, 1600)
@@ -859,17 +840,17 @@ class Game(Canvas):
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
+                    Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.open)
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
+                    Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=600, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.rename)
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7))
+                    Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=525, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.remove)
 
@@ -1067,6 +1048,7 @@ class Game(Canvas):
                     if event.keysym == "space":
                         create_shot(self.canvas, self.ammo, self.config, self.ship, self.stats)
 
+    # noinspection PyTypeChecker
     def main(self):
         from threading import Thread
 
@@ -1252,7 +1234,7 @@ class Game(Canvas):
 
         # Binding key-events for control
         c.bind_all('<Key>', lambda event: control(self.root, self.canvas, self.icons, self.config, event, self.stats,
-                                                  self.temp, self.modes, self.ship, self.commands, self.ammo, self.tp,
+                                                  self.temp, self.modes, self.ship, self.commands, self.tp,
                                                   self.texts, self.fore, self.back, self.bubbles, self.panels,
                                                   lambda: self.return_main(), self.bub, self.lang))
 
@@ -1278,14 +1260,6 @@ class Game(Canvas):
         c.bind_all('Configure', lambda event: self.resize)
 
         log.info("Game.main", "Key-bindings binded to 'move_ship'")
-
-        # MAIN GAME LOOP
-
-        # print(BubPos)
-        # print
-        # print(BubPos0)
-
-        # old_start()
         if len(self.bubbles["bub-id"]) == 0:
             log.warning("Game.main", "Bubbel-ID lijst is gelijk aan lengte nul.")
 
@@ -1337,9 +1311,6 @@ class Game(Canvas):
         if stats["confusion"] and not stats["secure"]:
             shuffling(self.bubbles)
 
-        # self.fore["game-id"] = c.create_image(0, 0, anchor=NW, image=self.fore["game"])
-        # self.fore["gloss-id"] = c.create_image(0, 0, anchor=NW, image=self.fore["gloss"])
-
         self.bubbles["active2"] = []
         self.bubbles["active"] = 0
 
@@ -1352,25 +1323,21 @@ class Game(Canvas):
 
         self.stats = stats
 
-        # if len(self.bubbles["bub-id"]) <= 1:
-        #     r_start(self.bubbles, self.stats, self.config, self.bub, self.canvas, self.modes)
-
-        # Thread(None, lambda: Threads().move_bubbles()).start()
-
-        # if 1:
-
         try:
+            # MAIN GAME LOOP
             while True:
-                # Mainloop = True
                 self.stats = self.cfg.auto_restore(self.save_name)
                 t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
-                                             outline="#3f3f3f")
-                t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"]-30, text="Creating bubbles...",
-                                        font=("Helvetica", 50), fill="#afafaf")
-                t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"]+20, text="Thread 0 of 0 active",
-                                        font=("helvetica", 15), fill="#afafaf")
-                while self.bubbles["active"] <= len(self.bubbles["bub-index"])-1:
-                    self.canvas.itemconfig(t2, text="Created "+str(self.bubbles["active"])+" of "+str(len(self.bubbles["bub-index"])-1)+" active...")
+                                                  outline="#3f3f3f")
+                t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
+                                             text="Creating bubbles...",
+                                             font=("Helvetica", 50), fill="#afafaf")
+                t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
+                                             text="Thread 0 of 0 active",
+                                             font=("helvetica", 15), fill="#afafaf")
+                while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
+                    self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
+                        len(self.bubbles["bub-index"]) - 1) + " active...")
                     self.canvas.update()
                     self.root.update()
                     sleep(0.1)
@@ -1379,8 +1346,6 @@ class Game(Canvas):
                 self.canvas.delete(t1)
                 self.canvas.delete(t2)
 
-                print(active_count(), len(self.bubbles["bub-index"]))
-                # GameActive = True
                 while self.stats["lives"] > 0:
                     if not self.modes["pause"]:
                         if not self.stats["timebreak"]:
@@ -1394,11 +1359,6 @@ class Game(Canvas):
                                     Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
                                                                                      self.bubbles, self.stats,
                                                                                      self.bub, self.modes)).start()
-                            # move_bubbles(self.bubbles, self.stats, self.root, self.canvas)
-                            # clean_up_bubs(self.bubbles, self.canvas, self.config)
-
-                            # Thread(None, lambda: move_ammo(self.canvas, log, self.root, self.ammo)).start()
-                        # Thread(None, lambda: self.movent_change()).start()
                         if self.commands["present"] is True:
                             # noinspection PyTypeChecker
                             self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
@@ -1415,7 +1375,6 @@ class Game(Canvas):
                                                      self.back, self.texts, self.modes, self.panels)).start()
                     self.root.update()
                     self.root.update_idletasks()
-                    # sleep(0.001)
                 self.root.update()
                 g1 = c.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
                 g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["score"]), fill='white',
@@ -1461,6 +1420,4 @@ class Game(Canvas):
 
 
 if __name__ == "__main__":
-    Game(time())
-else:
-    print(__name__)
+    print("Error: Can't open this file. Please open this file with the launcher.")
