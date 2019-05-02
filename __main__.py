@@ -1049,6 +1049,11 @@ class Game(Canvas):
                     if event.keysym == "space":
                         create_shot(self.canvas, self.ammo, self.config, self.ship, self.stats)
 
+    def auto_save(self):
+        while not self.returnmain:
+            Maintance.auto_save(self.save_name, self.stats, self.bubbles)
+            sleep(2)
+
     # noinspection PyTypeChecker
     def main(self):
         from threading import Thread
@@ -1326,6 +1331,7 @@ class Game(Canvas):
 
         try:
             # MAIN GAME LOOP
+            Thread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
             while True:
                 self.stats = self.cfg.auto_restore(self.save_name)
                 t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
