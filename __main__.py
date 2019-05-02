@@ -965,6 +965,7 @@ class Game(Canvas):
 
     def return_main(self):
         # Returning to title menu.
+        Maintance().auto_save(self.save_name, self.stats, self.bubbles)
         self.returnmain = True
         self.canvas.destroy()
         self.__init__(time(), True)

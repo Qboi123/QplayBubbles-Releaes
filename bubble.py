@@ -275,9 +275,12 @@ def create_bubble(stats, config, bub, c, bubble, modes, index, i=None, x=None, y
     bubble["bub-radius"].append(r)
     bubble["bub-speed"].append(spd)
     index = bubble["bub-id"].index(ids, 0, len(bubble["bub-id"]))
-    if not bubble["active2"][index]:
-        bubble["active2"][index] = True
-        bubble["active"] += 1
+    try:
+        if not bubble["active2"][index]:
+            bubble["active2"][index] = True
+            bubble["active"] += 1
+    except IndexError:
+        pass
     # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, modes)).start()
 
 
