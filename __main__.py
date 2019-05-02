@@ -1361,11 +1361,13 @@ class Game(Canvas):
                                     Thread(None,
                                            lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
                                                                  self.bubbles, self.modes,
-                                                                 len(self.bubbles["bub-id"]))).start()
+                                                                 len(self.bubbles["bub-id"])),
+                                           name="CreateBubbleThread").start()
                                 else:
                                     Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
                                                                                      self.bubbles, self.stats,
-                                                                                     self.bub, self.modes)).start()
+                                                                                     self.bub, self.modes),
+                                           name="SpecialModeCreateBubbleThread").start()
                         if self.commands["present"] is True:
                             # noinspection PyTypeChecker
                             self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
@@ -1379,7 +1381,8 @@ class Game(Canvas):
                                                     self.ship, self.canvas, log, self.back,
                                                     self.texts, self.panels)
                         Thread(None, lambda: refresh(self.stats, self.config, self.bubbles, self.bub, self.canvas,
-                                                     self.back, self.texts, self.modes, self.panels)).start()
+                                                     self.back, self.texts, self.modes, self.panels),
+                               name="RefreshThread").start()
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()
