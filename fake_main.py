@@ -11,7 +11,6 @@ from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
-from typing import *
 
 log = Logging("logs", True, True)
 
@@ -19,9 +18,8 @@ log.info("<Root>", "Imports loading success")
 log.info("<Root>", "Starting Game")
 
 
-def control(root: Tk, canvas: Canvas, icon: Dict[str, PhotoImage], config: Dict[str, Any], event, stats: Dict[str, Any],
-            temp, modes: Dict[str, bool], ship, commands: Dict[str, object], tp,
-            texts: Dict[str, int], foregrounds: Dict[str, PhotoImage], backgrounds: Dict[str, PhotoImage], bubble: Dict[str, list], panels, return_main, bub, lang: Dict[str, str]):
+def control(root, canvas, icon, config, event, stats, temp, modes, ship, commands, tp,
+            texts, foregrounds, backgrounds, bubble, panels, return_main, bub, lang):
     """
     Ship-motion event
     :param return_main:
@@ -410,7 +408,7 @@ def r_start(bubble, stats, config, bub, canvas, modes):
 
 # noinspection PyUnusedLocal
 class Game(Canvas):
-    def __init__(self, launcher_cfg: dict, start_time=0.0, already_opened=False):
+    def __init__(self, start_time=0.0, already_opened=False):
         super().__init__()
 
         from . import config
