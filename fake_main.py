@@ -1,3 +1,5 @@
+from os import PathLike
+
 if __name__ == "__main__":
     print("Error: Can't open this file. Please open the game with the launcher.")
     input()
@@ -11,6 +13,7 @@ from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
+from typing import *
 
 log = Logging("logs", True, True)
 
@@ -18,8 +21,9 @@ log.info("<Root>", "Imports loading success")
 log.info("<Root>", "Starting Game")
 
 
-def control(root, canvas, icon, config, event, stats, temp, modes, ship, commands, tp,
-            texts, foregrounds, backgrounds, bubble, panels, return_main, bub, lang):
+def control(root: Tk, canvas: Canvas, icon: Dict[str, PhotoImage], config: Dict[str, Any], event, stats: Dict[str, Any],
+            temp, modes: Dict[str, bool], ship, commands: Dict[str, Any], tp,
+            texts: Dict[str, int], foregrounds: Dict[str, PhotoImage], backgrounds: Dict[str, PhotoImage], bubble: Dict[str, Any], panels, return_main, bub, lang: Dict[str, str]):
     """
     Ship-motion event
     :param return_main:
@@ -334,7 +338,7 @@ class Maintance:
         pass
 
     @staticmethod
-    def auto_save(save_name, game_stats, bubble):
+    def auto_save(save_name: str, game_stats: Dict[str, Any], bubble: Dict[str, Any]):
         """
         Saves the game. (For Auto-Save)
         """
@@ -344,7 +348,7 @@ class Maintance:
         cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
 
     @staticmethod
-    def auto_restore(save_name):
+    def auto_restore(save_name: str):
         """
         Restoring. (For Auto-Restore)
         """
@@ -355,7 +359,7 @@ class Maintance:
         return game_stats
 
     @staticmethod
-    def reset(save_name):
+    def reset(save_name: str):
         """
         Resets the game fully
         """
@@ -369,7 +373,7 @@ class Maintance:
         cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
 
 
-def start(bubble, save_name, stats, config, bub, modes, canvas):
+def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub, modes: Dict[str, bool], canvas: Canvas):
     bubs = Reader("../../slots/" + save_name + "/bubble.json").get_decoded()
     if len(bubs["bub-id"]) <= 1:
         r_start(bubble, stats, config, bub, canvas, modes)
@@ -389,7 +393,7 @@ def start(bubble, save_name, stats, config, bub, modes, canvas):
                                       bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
 
 
-def r_start(bubble, stats, config, bub, canvas, modes):
+def r_start(bubble: Dict[str, Any], stats: Dict[str, Any], config: Dict[str, Any], bub, canvas: Canvas, modes: Dict[str, bool]):
     for i in range(int((config["width"] - 72) / 10)):
         bubble["active2"].append(False)
         # print(i)
@@ -408,12 +412,19 @@ def r_start(bubble, stats, config, bub, canvas, modes):
 
 # noinspection PyUnusedLocal
 class Game(Canvas):
-    def __init__(self, start_time=0.0, already_opened=False):
+    def __init__(self, launcher_cfg: Dict[str, Any], start_time=0.0, already_opened=False):
         super().__init__()
 
         from . import config
         import os
         import yaml
+        from . import mod_support as mods
+
+        # Load Mods
+        self.mod_loader = mods.Loader(launcher_cfg)
+
+        # Laucher Config
+        self.laucher_cfg = launcher_cfg
 
         # Define Empty Attributes for use with slots-menu
         self.item_info = None
@@ -639,7 +650,7 @@ class Game(Canvas):
         self.add_save()
 
     @staticmethod
-    def copy(src, dist):
+    def copy(src: str, dist: str):
         """
         Copying a directory or file.
         :param src:
@@ -1058,6 +1069,9 @@ class Game(Canvas):
     def main(self):
         from threading import Thread
 
+        # Pre-Initialize
+        self.mod_loader.pre_initialize(self)
+
         # Updates canvas.
         self.canvas.update()
 
@@ -1328,6 +1342,9 @@ class Game(Canvas):
         Mainloop = False
 
         self.stats = stats
+
+        # Post Initalize mods
+        self.mod_loader.post_initalize(self)
 
         try:
             # MAIN GAME LOOP
