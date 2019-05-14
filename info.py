@@ -1,8 +1,9 @@
 from time import sleep, time
-from tkinter import TclError
+from tkinter import TclError, Canvas
+from typing import *
 
 
-def show_score(canvas, texts, score):
+def show_score(canvas: Canvas, texts: Dict[str, int], score: Union[int, str]):
     """
     Shows Score
     :param texts:
@@ -13,7 +14,7 @@ def show_score(canvas, texts, score):
     canvas.itemconfig(texts["score"], text=str(score))
 
 
-def show_level(canvas, texts, level):
+def show_level(canvas: Canvas, texts: Dict[str, int], level: Union[int, str]):
     """
     Shows Level
     :param canvas:
@@ -24,7 +25,7 @@ def show_level(canvas, texts, level):
     canvas.itemconfig(texts["level"], text=str(level))
 
 
-def show_speed(canvas, texts, speed):
+def show_speed(canvas: Canvas, texts: Dict[str, int], speed: int):
     """
     Shows Speed
     :param texts:
@@ -35,7 +36,7 @@ def show_speed(canvas, texts, speed):
     canvas.itemconfig(texts["speed"], text=str(speed))
 
 
-def show_lives(canvas, texts, lives):
+def show_lives(canvas: Canvas, texts: Dict[str, int], lives: int):
     """
     Shows Lives
     :param canvas:
@@ -46,7 +47,7 @@ def show_lives(canvas, texts, lives):
     canvas.itemconfig(texts["lives"], text=str(lives))
 
 
-def show_score_point(canvas, texts, data):
+def show_score_point(canvas: Canvas, texts: Dict[str, int], data):
     """
     Shows score status value
     :param texts:
@@ -57,7 +58,7 @@ def show_score_point(canvas, texts, data):
     canvas.itemconfig(texts["scorestate"], text=data)
 
 
-def show_protection(canvas, texts, on_off):
+def show_protection(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
     shows security-state
     :param canvas:
@@ -68,7 +69,7 @@ def show_protection(canvas, texts, on_off):
     canvas.itemconfig(texts["secure"], text=on_off)
 
 
-def show_slowmotion(canvas, texts, on_off):
+def show_slowmotion(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
     shows slow motion state
     :param texts:
@@ -79,7 +80,7 @@ def show_slowmotion(canvas, texts, on_off):
     canvas.itemconfig(texts["slowmotion"], text=on_off)
 
 
-def show_confusion(canvas, texts, on_off):
+def show_confusion(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
     shows confusion state
     :param canvas:
@@ -90,7 +91,7 @@ def show_confusion(canvas, texts, on_off):
     canvas.itemconfig(texts["confusion"], text=on_off)
 
 
-def show_timebreak(canvas, texts, on_off):
+def show_timebreak(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
     shows timebreak state
     :param texts:
@@ -101,7 +102,7 @@ def show_timebreak(canvas, texts, on_off):
     canvas.itemconfig(texts["timebreak"], text=on_off)
 
 
-def show_spdboost(canvas, texts, on_off):
+def show_spdboost(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
     shows speedboost state
     :param texts:
@@ -112,7 +113,7 @@ def show_spdboost(canvas, texts, on_off):
     canvas.itemconfig(texts["speedboost"], text=on_off)
 
 
-def show_paralis(canvas, texts, on_off):
+def show_paralis(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
     shows paralis state
     :param texts:
@@ -123,7 +124,7 @@ def show_paralis(canvas, texts, on_off):
     canvas.itemconfig(texts["paralis"], text=on_off)
 
 
-def show_shotspeed(canvas, texts, integer):
+def show_shotspeed(canvas: Canvas, texts: Dict[str, int], integer: Union[str, int]):
     """
     Shows Shot-speed state
     :param canvas:
@@ -134,7 +135,7 @@ def show_shotspeed(canvas, texts, integer):
     canvas.itemconfig(texts["shotspeed"], text=integer)
 
 
-def show_tps(canvas, texts, integer):
+def show_tps(canvas: Canvas, texts: Dict[str, int], integer: Union[str, int]):
     """
     Shows Teleports
     :param canvas:
@@ -145,7 +146,7 @@ def show_tps(canvas, texts, integer):
     canvas.itemconfig(texts["shiptp"], text=str(integer))
 
 
-def show_notouch(canvas, texts, integer):
+def show_notouch(canvas: Canvas, texts: Dict[str, int], integer: Union[str, int]):
     """
     Shows Teleports
     :param canvas:
@@ -156,7 +157,7 @@ def show_notouch(canvas, texts, integer):
     canvas.itemconfig(texts["notouch"], text=str(integer))
 
 
-def show_diamond(canvas, texts, integer):
+def show_diamond(canvas: Canvas, texts: Dict[str, int], integer: Union[str, int]):
     """
     Shows Diamonds
     :param canvas:
@@ -167,7 +168,7 @@ def show_diamond(canvas, texts, integer):
     canvas.itemconfig(texts["diamond"], text=str(integer))
 
 
-def show_coin(canvas, texts, integer):
+def show_coin(canvas: Canvas, texts: Dict[str, int], integer: Union[str, int]):
     """
     Shows Coins
     :param texts:
@@ -179,7 +180,7 @@ def show_coin(canvas, texts, integer):
     canvas.itemconfig(texts["coin"], text=str(integer))
 
 
-def view_level(canvas, root, texts, level):
+def view_level(canvas: Canvas, root, texts: Dict[str, int], level: Union[str, int]):
     """
     Viewes level
     """
@@ -190,7 +191,7 @@ def view_level(canvas, root, texts, level):
     root.update()
 
 
-def show_info(canvas, texts, stats):
+def show_info(canvas: Canvas, texts: Dict[str, int], stats):
     """
     Shows all information:
     Score, Level, status-time etc.

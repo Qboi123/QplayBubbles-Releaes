@@ -12,3 +12,5 @@ class Loader:
 
     def pre_initialize(self):
         pass
+
+    def post_initialize(self):
