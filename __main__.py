@@ -4,6 +4,7 @@ if __name__ == "__main__":
     exit(1)
 
 from time import sleep
+from typing import *
 
 from .ammo import *
 from .bubble import Collision, create_bubble, place_bubble
@@ -11,7 +12,6 @@ from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
-from typing import *
 
 log = Logging("logs", True, True)
 
@@ -20,7 +20,7 @@ log.info("<Root>", "Starting Game")
 
 
 def control(root: Tk, canvas: Canvas, icon: Dict[str, PhotoImage], config: Dict[str, Any], event, stats: Dict[str, Any],
-            temp, modes: Dict[str, bool], ship, commands: Dict[str, object], tp,
+            temp, modes: Dict[str, bool], ship, commands: Dict[str, Any], tp,
             texts: Dict[str, int], foregrounds: Dict[str, PhotoImage], backgrounds: Dict[str, PhotoImage], bubble: Dict[str, list], panels, return_main, bub, lang: Dict[str, str]):
     """
     Ship-motion event
