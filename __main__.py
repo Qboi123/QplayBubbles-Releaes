@@ -184,7 +184,7 @@ def control(parent: Game, event):
                                                           height=500, width=300)
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=p.return_main,
+                                                  command=lambda: p.return_main,
                                                   relief=FLAT, bg="#005f5f", fg="#7fffff")
 
             back = "#005f5f"
@@ -977,6 +977,7 @@ class Game(Canvas):
         # Returning to title menu.
         Maintance().auto_save(self.save_name, self.stats, self.bubbles)
         self.returnmain = True
+        self.t_auto_save.stop()
         sleep(2)
         self.canvas.destroy()
         self.__init__(self.launcher_cfg, time(), True)
@@ -987,16 +988,16 @@ class Game(Canvas):
                 if not self.stats["paralis"]:
                     x, y = get_coords(self.canvas, self.ship["id"])
                     if self.stats["speedboost"]:
-                        a = 10
+                        a = 6
                     else:
-                        a = 0
+                        a = 1
                     if self.pressed['Up']:
                         if y > 72 + self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"]/20 - a))
+                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"]/(self.move_fps/2) - a))
                             self.root.update()
                     elif self.pressed['Down']:
                         if y < self.config["height"] - self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"]/20 + a))
+                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"]/(self.move_fps/2) + a))
                             self.root.update()
                     elif self.pressed['Left']:
                         if x > 0 + self.config["game"]["ship-radius"]:
@@ -1010,14 +1011,17 @@ class Game(Canvas):
 
     def movent_change(self):
         time2 = time()
-        while True:
+        while not self.returnmain:
             time1 = time()
             try:
-                self.move_fps = 1 / (time2 - time1)
+                # print(time1 - time2)
+                # print(1/(time1 - time2))
+                self.move_fps = 1/(time1 - time2)
             except ZeroDivisionError:
                 self.move_fps = 1
-            Thread(None, lambda: self._movent()).start()
             time2 = time()
+            Thread(None, lambda: self._movent()).start()
+            sleep(0.01)
 
     def _press(self, e):
         if e.keysym == "Up":
@@ -1394,9 +1398,16 @@ class Game(Canvas):
         # Post Initalize mods
         self.mod_loader.post_initialize(self)
 
+        from .base import BaseBarier
+
+        bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
+        bariers[0].create(2*self.config["width"]/5, 10)
+        bariers[1].create(4*self.config["width"]/5, 10)
+        bariers[2].create(9*self.config["width"]/10, 10)
+
         try:
             # MAIN GAME LOOP
-            Thread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
+            self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
             while True:
                 self.stats = self.cfg.auto_restore(self.save_name)
                 t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",

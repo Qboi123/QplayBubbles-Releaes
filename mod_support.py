@@ -37,6 +37,11 @@ class Loader:
                     self.items[self.modsByModule[mod]] = self.items[self.modsByModule[mod]]+mod.items
                 else:
                     self.items[self.modsByModule[mod]] = mod.items
+            if "sprites" in mod.__dict__.keys():
+                if self.modsByModule[mod] in self.items:
+                    self.items[self.modsByModule[mod]] = self.items[self.modsByModule[mod]]+mod.items
+                else:
+                    self.items[self.modsByModule[mod]] = mod.items
 
     def post_initialize(self, parent):
         for mod in self.mods:

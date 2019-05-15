@@ -5,15 +5,18 @@ VERTICAL = "vertical"
 TYPE_DANGEROUS = "dangerous"
 TYPE_NEUTRAL = "neutral"
 FORM_CIRCLE = "circle"
+FORM_RECT = "rectangle"
 LEFT = "left"
 RIGHT = "right"
 UP = "up"
 DOWN = "down"
 TRUE = True
 FALSE = False
+COLOR_RED = "red"
+RED = COLOR_RED
 
 ANY_BUBBLE = "any.bubble"
-SHIP = 2
+SHIP = "ship"
 
 
 # noinspection PyMissingConstructor
@@ -120,18 +123,27 @@ class Sprite:
         self.y_move = 0
         self.y_speed = 0
 
-        self.collision_with = (self.parent.ship["id"], ANY_BUBBLE)
+        self.collision_with = (SHIP, ANY_BUBBLE)
 
         self.life_cost = 1
 
         self.id = int()
 
-    def create(self):
+        self.__active = False
+
+    def create(self, x, y):
         from threading import Thread
-        info = {"id": self.id,
+        if self.id <= 0:
+            raise ValueError("The ID of the Sprite is not created with Game.canvas")
+        self.__active = True
+        self.info = {"id": self.id,
                 "class": self}
-        self.parent.sprites["ByID"][info["id"]] = info
+        self.parent.sprites["byID"][self.info["id"]] = self.info
         Thread(None, lambda: self.move()).start()
+
+    def destroy(self):
+        self.__active = False
+        del self.parent.sprites["byID"][self.info["id"]]
 
     def _on_move(self):
         pass
@@ -141,14 +153,42 @@ class Sprite:
 
     def _on_collision(self):
         from . import extras
+        from . import bubble
+        
+        from time import sleep
         if self.form == FORM_CIRCLE:
             config = self.parent.config
-            distance = extras.distance(self.parent.canvas, self.parent.log, self.id, self.parent.ship["id"])
-            if distance < (config["game"]["ship-radius"] + self.radius):
-                pass
+            if SHIP in self.collision_with:    
+                distance = extras.distance(self.parent.canvas, self.parent.log, self.id, self.parent.ship["id"])
+                if distance < (config["game"]["ship-radius"] + self.radius):
+                    self._hurt_player()
+                    sleep(1)
+            if ANY_BUBBLE in self.collision_with:
+                for index in range(len(self.parent.bubbles["bub-id"])-1, -1, -1):
+                    distance = extras.distance(self.parent.canvas, self.parent.log, self.id, 
+                                               self.parent.bubbles["bub-id"][index])
+                    if distance < (self.parent.bubbles["bub-radius"][index] + self.radius):
+                        bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
+        elif self.form == FORM_RECT:
+            if SHIP in self.collision_with:
+                pos = self.parent.canvas.coords(self.id)
+                paddle_pos = self.parent.canvas.coords(self.parent.ship["id"])
+                print(pos, paddle_pos)
+                if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
+                    if pos[3] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
+                        self._hurt_player()
+                        sleep(1)
+            if ANY_BUBBLE in self.collision_with:
+                for index in range(len(self.parent.bubbles["bub-id"])-1, -1, -1):
+                    pos = self.parent.canvas.coords(self.id)
+                    paddle_pos = self.parent.canvas.coords(self.parent.bubbles["bub-id"][index])
+                    print(pos, paddle_pos)
+                    if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
+                        if pos[3] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
+                            bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
 
     def move(self):
-        while not self.parent.returnmain:
+        while self.__active:
             if self.has_movetag and self.has_skin:
                 if HORIZONTAL in self.axis:
                     if self.direction == LEFT:
@@ -160,6 +200,45 @@ class Sprite:
                         self.y_move = -self.y_speed
                     elif self.direction == DOWN:
                         self.y_move = self.y_speed
-                    self.parent.move(self.id, self.x_move, self.y_move)
+                if self.return_border:
+                    pos = self.parent.canvas.coords(self.id)
+                    print(len(pos))
+                    if len(pos) == 4:
+                        if VERTICAL in self.axis:
+                            if pos[3] >= self.parent.config["height"]:
+                                self.direction = UP
+                            if pos[1] <= 0:
+                                self.direction = DOWN
+                        if HORIZONTAL in self.axis:
+                            if pos[2] >= self.parent.config["width"]:
+                                self.direction = LEFT
+                            if pos[0] <= 0:
+                                self.direction = RIGHT
+                    if len(pos) == 2:
+                        if VERTICAL in self.axis:
+                            if pos[1] >= self.parent.config["height"]:
+                                self.direction = UP
+                            if pos[1] <= 0:
+                                self.direction = DOWN
+                        if HORIZONTAL in self.axis:
+                            if pos[0] >= self.parent.config["width"]:
+                                self.direction = LEFT
+                            if pos[0] <= 0:
+                                self.direction = RIGHT
+
+                self.parent.move(self.id, self.x_move, self.y_move)
             self._on_collision()
             self._on_move()
+
+
+# noinspection PyRedundantParentheses
+class BaseBarier(Sprite):
+    def __init__(self, parent: Game):
+        super().__init__(parent)
+        self.axis = (VERTICAL)
+        self.type = TYPE_DANGEROUS
+        self.form = FORM_RECT
+        
+    def create(self, x, y):
+        self.id = self.parent.create_rectangle(x, y, x+10, x+100, fill=RED, outline=RED)
+        super().create(x, 72+y)

@@ -6,6 +6,22 @@ from random import randint
 from .extras import play_sound
 from .state import State
 from .config import Reader
+import threading
+
+
+class StoppableThread(threading.Thread):
+    """Thread class with a stop() method. The thread itself has to check
+    regularly for the stopped() condition."""
+
+    def __init__(self, group, target, name, *args, **kwargs):
+        super(StoppableThread, self).__init__(group, target, name, args=args, kwargs=kwargs)
+        self._stop_event = threading.Event()
+
+    def stop(self):
+        self._stop_event.set()
+
+    def stopped(self):
+        return self._stop_event.is_set()
 
 
 class Present:
