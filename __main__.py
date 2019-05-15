@@ -1051,6 +1051,14 @@ class Game(Canvas):
             Maintance.auto_save(self.save_name, self.stats, self.bubbles)
             sleep(2)
 
+    def update(self):
+        for event in self.mod_loader.events:
+            event.on_update(self)
+
+    def t_update(self):
+        for event in self.mod_loader.events:
+            event.on_t_update(self)
+
     # noinspection PyTypeChecker
     def main(self):
         from threading import Thread
@@ -1239,10 +1247,7 @@ class Game(Canvas):
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
 
         # Binding key-events for control
-        c.bind_all('<Key>', lambda event: control(self.root, self.canvas, self.icons, self.config, event, self.stats,
-                                                  self.temp, self.modes, self.ship, self.commands, self.tp,
-                                                  self.texts, self.fore, self.back, self.bubbles, self.panels,
-                                                  lambda: self.return_main(), self.bub, self.lang))
+        c.bind_all('<Key>', lambda event: control(self, event))
 
         c.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))
         c.bind_all("<KeyPress-Down>", lambda event: self.down_press(event))
