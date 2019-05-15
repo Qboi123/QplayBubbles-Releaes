@@ -1,5 +1,3 @@
-from os import PathLike
-
 if __name__ == "__main__":
     print("Error: Can't open this file. Please open the game with the launcher.")
     input()
@@ -13,7 +11,6 @@ from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
-from typing import *
 
 log = Logging("logs", True, True)
 
@@ -21,205 +18,187 @@ log.info("<Root>", "Imports loading success")
 log.info("<Root>", "Starting Game")
 
 
-def control(root: Tk, canvas: Canvas, icon: Dict[str, PhotoImage], config: Dict[str, Any], event, stats: Dict[str, Any],
-            temp, modes: Dict[str, bool], ship, commands: Dict[str, Any], tp,
-            texts: Dict[str, int], foregrounds: Dict[str, PhotoImage], backgrounds: Dict[str, PhotoImage], bubble: Dict[str, Any], panels, return_main, bub, lang: Dict[str, str]):
+def control(parent, event):
     """
     Ship-motion event
-    :param return_main:
-    :param bub:
-    :param lang:
-    :param panels:
-    :param commands:
-    :param bubble:
-    :param backgrounds:
-    :param foregrounds:
-    :param texts:
-    :param temp:
-    :param tp:
-    :param ship:
-    :param modes:
-    :param stats:
-    :param config:
-    :param icon:
-    :param canvas:
-    :param root:
+    :param parent:
     :param event:
     """
-    if modes["store"] and commands["store"] is not None:
+    p = parent
+    if p.modes["store"] and p.commands["store"] is not None:
         if event.keysym == "Up":
-            commands["store"].set_selected(canvas, -1)
+            p.commands["store"].set_selected(p.canvas, -1)
         if event.keysym == "Down":
-            commands["store"].set_selected(canvas, 1)
+            p.commands["store"].set_selected(p.canvas, 1)
         if event.keysym == "Left":
-            commands["store"].set_selected(canvas, int(-((config["height"] - 215) / 140 + 1)))
+            p.commands["store"].set_selected(p.canvas, int(-((p.config["height"] - 215) / 140 + 1)))
         if event.keysym == "Right":
-            commands["store"].set_selected(canvas, int((config["height"] - 215) / 140 + 1))
+            p.commands["store"].set_selected(p.canvas, int((p.config["height"] - 215) / 140 + 1))
         if event.keysym == "space":
-            commands["store"].buy_selected(config, modes, log, root, canvas, stats, bubble, backgrounds,
-                                           texts,
-                                           commands, temp, panels)
+            p.commands["store"].buy_selected(p.config, p.modes, log, p.root, p.canvas, p.stats, p.bubbles, p.back,
+                                             p.texts,
+                                             p.commands, p.temp, p.panels)
         if event.keysym == "BackSpace":
-            commands["store"].exit(canvas, log, modes, stats, temp, commands)
-            commands["store"] = None
+            p.commands["store"].exit(p.canvas, log, p.modes, p.stats, p.temp, p.commands)
+            p.commands["store"] = None
         if event.keysym == "Escape":
             sleep(1)
-            commands["store"].exit(canvas, log, modes, stats, temp, commands)
-            commands["store"] = None
-    if modes["present"]:
+            p.commands["store"].exit(p.canvas, log, p.modes, p.stats, p.temp, p.commands)
+            p.commands["store"] = None
+    if p.modes["present"]:
         if event.keysym == "space":
-            if False != commands["present"] != True:
-                commands["present"].exit(canvas)
-                modes["pause"] = False
-                modes["present"] = False
-                stats["scorestate-time"] = temp["scorestate-save"] + time()
-                stats["secure-time"] = temp["secure-save"] + time()
-                stats["timebreak-time"] = temp["timebreak-save"] + time()
-                stats["confusion-time"] = temp["confusion-save"] + time()
-                stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-                stats["paralis-time"] = temp["paralis-save"] + time()
-                stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-                stats["notouch-time"] = temp["notouch-save"] + time()
-    if modes["teleport"]:
-        x, y = get_coords(canvas, tp["id1"])
+            if False != p.commands["present"] != True:
+                p.commands["present"].exit(p.canvas)
+                p.modes["pause"] = False
+                p.modes["present"] = False
+                p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
+                p.stats["secure-time"] = p.temp["secure-save"] + time()
+                p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
+                p.stats["confusion-time"] = p.temp["confusion-save"] + time()
+                p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
+                p.stats["paralis-time"] = p.temp["paralis-save"] + time()
+                p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
+                p.stats["notouch-time"] = p.temp["notouch-save"] + time()
+    if p.modes["teleport"]:
+        x, y = get_coords(p.canvas, p.tp["id1"])
         if event.keysym == 'Up':
             if y > 72 + 5:
-                canvas.move(tp["id1"], 0, -5)
-                canvas.move(tp["id2"], 0, -5)
-                canvas.move(tp["id3"], 0, -5)
-                canvas.move(tp["id4"], 0, -5)
+                p.canvas.move(p.tp["id1"], 0, -5)
+                p.canvas.move(p.tp["id2"], 0, -5)
+                p.canvas.move(p.tp["id3"], 0, -5)
+                p.canvas.move(p.tp["id4"], 0, -5)
         if event.keysym == "Down":
-            if y < config["height"] - 105 - 5:
-                canvas.move(tp["id1"], 0, 5)
-                canvas.move(tp["id2"], 0, 5)
-                canvas.move(tp["id3"], 0, 5)
-                canvas.move(tp["id4"], 0, 5)
+            if y < p.config["height"] - 105 - 5:
+                p.canvas.move(p.tp["id1"], 0, 5)
+                p.canvas.move(p.tp["id2"], 0, 5)
+                p.canvas.move(p.tp["id3"], 0, 5)
+                p.canvas.move(p.tp["id4"], 0, 5)
         if event.keysym == "Left":
             if x > 0 + 5:
-                canvas.move(tp["id1"], -5, 0)
-                canvas.move(tp["id2"], -5, 0)
-                canvas.move(tp["id3"], -5, 0)
-                canvas.move(tp["id4"], -5, 0)
+                p.canvas.move(p.tp["id1"], -5, 0)
+                p.canvas.move(p.tp["id2"], -5, 0)
+                p.canvas.move(p.tp["id3"], -5, 0)
+                p.canvas.move(p.tp["id4"], -5, 0)
         if event.keysym == "Right":
-            if x < config["width"] - 5:
-                canvas.move(tp["id1"], 5, 0)
-                canvas.move(tp["id2"], 5, 0)
-                canvas.move(tp["id3"], 5, 0)
-                canvas.move(tp["id4"], 5, 0)
+            if x < p.config["width"] - 5:
+                p.canvas.move(p.tp["id1"], 5, 0)
+                p.canvas.move(p.tp["id2"], 5, 0)
+                p.canvas.move(p.tp["id3"], 5, 0)
+                p.canvas.move(p.tp["id4"], 5, 0)
         if event.keysym == "BackSpace":
-            modes["pause"] = False
+            p.modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
+            p.stats["secure-time"] = p.temp["secure-save"] + time()
+            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
+            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
+            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
+            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
+            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
+            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
         if event.keysym == "Escape":
-            modes["pause"] = False
+            p.modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
+            p.stats["secure-time"] = p.temp["secure-save"] + time()
+            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
+            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
+            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
+            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
+            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
+            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
             sleep(1)
         if event.keysym == "Return":
-            modes["pause"] = False
+            p.modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
+            p.stats["secure-time"] = p.temp["secure-save"] + time()
+            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
+            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
+            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
+            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
+            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
+            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
 
-            stats["teleports"] -= 1
-            teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
+            p.stats["teleports"] -= 1
+            teleport(p.canvas, p.root, p.stats, p.modes, p.ship, p.tp, p.tp["id1"])
         if event.keysym.lower() == "space":
-            modes["pause"] = False
+            p.modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
+            p.stats["secure-time"] = p.temp["secure-save"] + time()
+            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
+            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
+            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
+            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
+            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
+            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
 
-            stats["teleports"] -= 1
-            teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
-    if event.keysym == "Escape" and (not modes["pause"]) and (not modes["store"]) and (not modes["teleport"]) and \
-            (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
-        modes["pause"] = True
+            p.stats["teleports"] -= 1
+            teleport(p.canvas, p.root, p.stats, p.modes, p.ship, p.tp, p.tp["id1"])
+    if event.keysym == "Escape" and (not p.modes["pause"]) and (not p.modes["store"]) and (not p.modes["teleport"]) and \
+            (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
+        p.modes["pause"] = True
 
-        canvas.delete(icon["pause"])
-        if stats["special-level"]:
-            temp['pause/bg'] = canvas.create_rectangle(0, 69,
-                                                       config["width"],
-                                                       config[
-                                                           "height"],
-                                                       fill="#3f3f3f",
-                                                       outline="#3f3f3f")
-            temp['pause/top.line'] = canvas.create_line(0, 69, config["width"], 69,
-                                                        fill="#afafaf")
-            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
-            #                                                config["height"] - 102,
+        p.canvas.delete(p.icons["pause"])
+        if p.stats["special-level"]:
+            p.temp['pause/bg'] = p.canvas.create_rectangle(0, 69,
+                                                           p.config["width"],
+                                                           p.config[
+                                                               "height"],
+                                                           fill="#3f3f3f",
+                                                           outline="#3f3f3f")
+            p.temp['pause/top.line'] = p.canvas.create_line(0, 69, p.config["width"], 69,
+                                                            fill="#afafaf")
+            # p.temp['pause/bottom.line'] = p.canvas.create_line(0, p.config["height"] - 102, p.config["width"],
+            #                                                p.config["height"] - 102,
             #                                                fill="#afafaf")
 
-            temp['pause/menu_frame'] = Frame(root, bg="#3f3f3f")
-            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
-                                                      window=temp['pause/menu_frame'], anchor='n',
-                                                      height=20, width=300)
+            p.temp['pause/menu_frame'] = Frame(p.root, bg="#3f3f3f")
+            p.temp['pause/menu'] = p.canvas.create_window(p.config["middle-x"], p.config["middle-y"] / 2 + 130,
+                                                          window=p.temp['pause/menu_frame'], anchor='n',
+                                                          height=20, width=300)
 
-            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
-                                                command=return_main,
-                                                relief=FLAT, bg="#1f1f1f", fg="#afafaf")
+            p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
+                                                  command=p.return_main,
+                                                  relief=FLAT, bg="#1f1f1f", fg="#afafaf")
             back = "#1f1f1f"
             fore = "yellow"
         else:
-            temp['pause/bg'] = canvas.create_rectangle(0, 69,
-                                                       config["width"],
-                                                       config[
-                                                           "height"],
-                                                       fill="darkcyan",
-                                                       outline="darkcyan")
-            temp['pause/top.line'] = canvas.create_line(0, 69, config["width"], 69,
-                                                        fill="#7fffff")
-            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
-            #                                                config["height"] - 102,
+            p.temp['pause/bg'] = p.canvas.create_rectangle(0, 69,
+                                                           p.config["width"],
+                                                           p.config[
+                                                               "height"],
+                                                           fill="darkcyan",
+                                                           outline="darkcyan")
+            p.temp['pause/top.line'] = p.canvas.create_line(0, 69, p.config["width"], 69,
+                                                            fill="#7fffff")
+            # p.temp['pause/bottom.line'] = p.canvas.create_line(0, p.config["height"] - 102, p.config["width"],
+            #                                                p.config["height"] - 102,
             #                                                fill="#7fffff")
 
-            temp['pause/menu_frame'] = Frame(root, bg="darkcyan")
-            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
-                                                      window=temp['pause/menu_frame'], anchor='n',
-                                                      height=500, width=300)
+            p.temp['pause/menu_frame'] = Frame(p.root, bg="darkcyan")
+            p.temp['pause/menu'] = p.canvas.create_window(p.config["middle-x"], p.config["middle-y"] / 2 + 130,
+                                                          window=p.temp['pause/menu_frame'], anchor='n',
+                                                          height=500, width=300)
 
-            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
-                                                command=return_main,
-                                                relief=FLAT, bg="#005f5f", fg="#7fffff")
+            p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
+                                                  command=p.return_main,
+                                                  relief=FLAT, bg="#005f5f", fg="#7fffff")
 
             back = "#005f5f"
             fore = "#7fffff"
 
-        temp["s_frame"] = Frame(root, bg=back)
-        temp["s_frame"].place(x=config["middle-x"], y=config["middle-y"] / 2 + 250, anchor='n', width=1000)
+        p.temp["s_frame"] = Frame(p.root, bg=back)
+        p.temp["s_frame"].place(x=p.config["middle-x"], y=p.config["middle-y"] / 2 + 250, anchor='n', width=1000)
 
-        temp["sw"] = ScrolledWindow(temp["s_frame"], 1020, 321, height=321, width=1000)
+        p.temp["sw"] = ScrolledWindow(p.temp["s_frame"], 1020, 321, height=321, width=1000)
 
-        temp["canv"] = temp["sw"].canv
-        temp["canv"].config(bg=back)
-        temp["sw"].scrollwindow.config(bg=back)
+        p.temp["canv"] = p.temp["sw"].canv
+        p.temp["canv"].config(bg=back)
+        p.temp["sw"].scrollwindow.config(bg=back)
 
-        temp["frame"] = temp["sw"].scrollwindow
+        p.temp["frame"] = p.temp["sw"].scrollwindow
 
         a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
              "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
@@ -232,14 +211,14 @@ def control(root: Tk, canvas: Canvas, icon: Dict[str, PhotoImage], config: Dict[
              "bubble.coin", "bubble.state.notouch", "bubble.state.paralis", "bubble.diamond", "bubble.stonebubble",
              "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
 
-        canvass = Canvas(temp["frame"], bg=back, highlightthickness=0)
+        canvass = Canvas(p.temp["frame"], bg=back, highlightthickness=0)
         x = 50
         y = 50
-        temp["pause/bubble.icons"] = []
+        p.temp["pause/bubble.p.iconss"] = []
         for i in range(len(a)):
             # print(a[i], b[i])
-            place_bubble(canvass, bub, x, y, 25, a[i])
-            canvass.create_text(x, y + 40, text=lang[c[i]], fill=fore)
+            place_bubble(canvass, p.bub, x, y, 25, a[i])
+            canvass.create_text(x, y + 40, text=p.lang[c[i]], fill=fore)
             if x > 900:
                 x = 50
                 y += 100
@@ -249,88 +228,89 @@ def control(root: Tk, canvas: Canvas, icon: Dict[str, PhotoImage], config: Dict[
         canvass.config(height=y + 70, width=1000)
         canvass.pack(fill=Y)
 
-        temp["pause/back-to-menu"].pack(fill=X)
+        p.temp["pause/back-to-menu"].pack(fill=X)
 
-        icon["pause"] = canvas.create_image(config["middle-x"], config["middle-y"] / 2, image=icon["pause-id"])
+        p.icons["pause"] = p.canvas.create_image(p.config["middle-x"], p.config["middle-y"] / 2,
+                                                 image=p.icons["pause-id"])
 
-        canvas.itemconfig(texts["pause"], text="")
-        root.update()
+        p.canvas.itemconfig(p.texts["pause"], text="")
+        p.root.update()
 
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
-    elif event.keysym == "Escape" and modes["pause"] and (not modes["store"]) and (not modes["teleport"]) and \
-            (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
-        modes["pause"] = False
+        p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
+        p.temp["secure-save"] = p.stats["secure-time"] - time()
+        p.temp["timebreak-save"] = p.stats["timebreak-time"] - time()
+        p.temp["confusion-save"] = p.stats["confusion-time"] - time()
+        p.temp["slowmotion-save"] = p.stats["slowmotion-time"] - time()
+        p.temp["paralis-save"] = p.stats["paralis-time"] - time()
+        p.temp["shotspeed-save"] = p.stats["shotspeed-time"] - time()
+        p.temp["notouch-save"] = p.stats["notouch-time"] - time()
+        p.temp["special-level-save"] = p.stats["special-level-time"] - time()
+    elif event.keysym == "Escape" and p.modes["pause"] and (not p.modes["store"]) and (not p.modes["teleport"]) and \
+            (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
+        p.modes["pause"] = False
 
-        canvas.itemconfig(icon["pause"], state=HIDDEN)
-        canvas.itemconfig(texts["pause"], text="")
+        p.canvas.itemconfig(p.icons["pause"], state=HIDDEN)
+        p.canvas.itemconfig(p.texts["pause"], text="")
 
-        temp["pause/back-to-menu"].destroy()
-        temp['pause/menu_frame'].destroy()
-        temp["s_frame"].destroy()
+        p.temp["pause/back-to-menu"].destroy()
+        p.temp['pause/menu_frame'].destroy()
+        p.temp["s_frame"].destroy()
 
-        canvas.delete(temp['pause/top.line'])
-        # canvas.delete(temp['pause/bottom.line'])
-        canvas.delete(temp['pause/menu'])
-        canvas.delete(temp['pause/bg'])
+        p.canvas.delete(p.temp['pause/top.line'])
+        # p.canvas.delete(p.temp['pause/bottom.line'])
+        p.canvas.delete(p.temp['pause/menu'])
+        p.canvas.delete(p.temp['pause/bg'])
 
-        root.update()
+        p.root.update()
 
-        stats["scorestate-time"] = temp["scorestate-save"] + time()
-        stats["secure-time"] = temp["secure-save"] + time()
-        stats["timebreak-time"] = temp["timebreak-save"] + time()
-        stats["confusion-time"] = temp["confusion-save"] + time()
-        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-        stats["paralis-time"] = temp["paralis-save"] + time()
-        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-        stats["notouch-time"] = temp["notouch-save"] + time()
-    if event.keysym == "t" and stats["teleports"] > 0 and (not modes["teleport"]):
-        modes["pause"] = True
+        p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
+        p.stats["secure-time"] = p.temp["secure-save"] + time()
+        p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
+        p.stats["confusion-time"] = p.temp["confusion-save"] + time()
+        p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
+        p.stats["paralis-time"] = p.temp["paralis-save"] + time()
+        p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
+        p.stats["notouch-time"] = p.temp["notouch-save"] + time()
+    if event.keysym == "t" and p.stats["teleports"] > 0 and (not p.modes["teleport"]):
+        p.modes["pause"] = True
 
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
+        p.temp["secure-save"] = p.stats["secure-time"] - time()
+        p.temp["timebreak-save"] = p.stats["timebreak-time"] - time()
+        p.temp["confusion-save"] = p.stats["confusion-time"] - time()
+        p.temp["slowmotion-save"] = p.stats["slowmotion-time"] - time()
+        p.temp["paralis-save"] = p.stats["paralis-time"] - time()
+        p.temp["shotspeed-save"] = p.stats["shotspeed-time"] - time()
+        p.temp["notouch-save"] = p.stats["notouch-time"] - time()
+        p.temp["special-level-save"] = p.stats["special-level-time"] - time()
 
-        modes["teleport"] = True
+        p.modes["teleport"] = True
 
-        tp_mode(canvas, config, stats, modes, tp)
-    if event.keysym.lower() == "e" and (not modes["store"]):
-        modes["pause"] = True
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
-        modes["store"] = True
+        tp_mode(p.canvas, p.config, p.stats, p.modes, p.tp)
+    if event.keysym.lower() == "e" and (not p.modes["store"]):
+        p.modes["pause"] = True
+        p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
+        p.temp["secure-save"] = p.stats["secure-time"] - time()
+        p.temp["timebreak-save"] = p.stats["timebreak-time"] - time()
+        p.temp["confusion-save"] = p.stats["confusion-time"] - time()
+        p.temp["slowmotion-save"] = p.stats["slowmotion-time"] - time()
+        p.temp["paralis-save"] = p.stats["paralis-time"] - time()
+        p.temp["shotspeed-save"] = p.stats["shotspeed-time"] - time()
+        p.temp["notouch-save"] = p.stats["notouch-time"] - time()
+        p.temp["special-level-save"] = p.stats["special-level-time"] - time()
+        p.modes["store"] = True
         log.debug("bub_move", "Creating Store() to variable \"store\"")
-        log.debug("bub_move", "storemode=" + str(modes["store"]))
-        commands["store"] = Store(canvas, log, config, modes, stats, icon, foregrounds)
+        log.debug("bub_move", "storemode=" + str(p.modes["store"]))
+        p.commands["store"] = Store(p.canvas, log, p.config, p.modes, p.stats, p.icons, p.fore)
     # if event.char == "/":
-    #     CheatEngine().event_handler(canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub)
-    # if modes["cheater"]:
-    #     CheatEngine().input_event_handler(canvas, log, stats, backgrounds, bubble, event, config, bub, temp,
-    #                                       modes)
+    #     CheatEngine().event_handler(p.canvas, p.modes, p.stats, p.config, p.temp, log, backgrounds, bubble, event, bub)
+    # if p.modes["cheater"]:
+    #     CheatEngine().input_event_handler(p.canvas, log, p.stats, backgrounds, bubble, event, p.config, bub, p.temp,
+    #                                       p.modes)
 
     if event.keysym == "Escape":
         pass
-    root.update()
+    p.root.update()
 
 
 class Maintance:
@@ -344,8 +324,17 @@ class Maintance:
         """
         from . import config as cfg
 
-        cfg.Writer("../../slots/" + save_name + "/game.json", game_stats.copy())
-        cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
+        import os
+
+        print(os.curdir)
+
+        try:
+            cfg.Writer("../../slots/" + save_name + "/game.json", game_stats.copy())
+            cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
+        except FileNotFoundError as e:
+            print(e.args)
+            print(e.filename)
+            print(e.filename2)
 
     @staticmethod
     def auto_restore(save_name: str):
@@ -373,7 +362,8 @@ class Maintance:
         cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
 
 
-def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub, modes: Dict[str, bool], canvas: Canvas):
+def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
+          modes: Dict[str, bool], canvas: Canvas):
     bubs = Reader("../../slots/" + save_name + "/bubble.json").get_decoded()
     if len(bubs["bub-id"]) <= 1:
         r_start(bubble, stats, config, bub, canvas, modes)
@@ -393,7 +383,8 @@ def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config:
                                       bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
 
 
-def r_start(bubble: Dict[str, Any], stats: Dict[str, Any], config: Dict[str, Any], bub, canvas: Canvas, modes: Dict[str, bool]):
+def r_start(bubble: Dict[str, Any], stats: Dict[str, Any], config: Dict[str, Any], bub, canvas: Canvas,
+            modes: Dict[str, bool]):
     for i in range(int((config["width"] - 72) / 10)):
         bubble["active2"].append(False)
         # print(i)
@@ -419,12 +410,16 @@ class Game(Canvas):
         import os
         import yaml
         from . import mod_support as mods
+        from .base import Sprite
 
         # Load Mods
         self.mod_loader = mods.Loader(launcher_cfg)
 
         # Laucher Config
         self.laucher_cfg = launcher_cfg
+
+        # Laucher Config
+        self.launcher_cfg = launcher_cfg
 
         # Define Empty Attributes for use with slots-menu
         self.item_info = None
@@ -448,6 +443,7 @@ class Game(Canvas):
         self.canvass = []
         self.buttons = []
 
+        # Start variables for the game
         self.log = log
         self.returnmain = False
 
@@ -455,10 +451,15 @@ class Game(Canvas):
         self.root = self.master
         self.time1 = start_time
         self.cfg = Maintance()
-        self.save_name = "Lyfo"
+        self.save_name = None
 
         # Stats
         self.stats = dict()
+
+        # Sprites
+        self.sprites = dict()
+        self.sprites["byClass"] = Dict(Sprite, dict)
+        self.sprites["byID"] = Dict(int, dict)
 
         # Standard Temporaray variables
         self.temp = dict()
@@ -834,7 +835,6 @@ class Game(Canvas):
 
         # Startloop
         for name in tuple(dirs):
-            self.item_info.append(i)
             self.frames.append(Frame(self.frame, height=200, width=700))
             self.canvass.append(Canvas(self.frames[-1], height=200, width=700, bg="#7f7f7f", highlightthickness=0))
             self.canvass[-1].pack()
@@ -851,17 +851,17 @@ class Game(Canvas):
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
             self.buttons.append(
-                    Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.open)
+            self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(name, event))
 
             self.buttons.append(
-                    Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=600, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.rename)
 
             self.buttons.append(
-                    Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=525, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.remove)
 
@@ -939,7 +939,7 @@ class Game(Canvas):
         self.delete_all()
         self.load()
 
-    def open(self, event):
+    def open(self, name, event):
         # Getting row-index
         y = event.widget.master.grid_info()["row"]
 
@@ -948,7 +948,7 @@ class Game(Canvas):
 
         # Remove slots menu and run the game.
         self.delete_all()
-        self.run(src)
+        self.run(name)
 
     def delete_all(self):
         # Delete all main frames
@@ -978,36 +978,47 @@ class Game(Canvas):
         # Returning to title menu.
         Maintance().auto_save(self.save_name, self.stats, self.bubbles)
         self.returnmain = True
+        sleep(2)
         self.canvas.destroy()
-        self.__init__(time(), True)
+        self.__init__(self.launcher_cfg, time(), True)
+
+    def _movent(self):
+        if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
+            if not self.modes["pause"]:
+                if not self.stats["paralis"]:
+                    x, y = get_coords(self.canvas, self.ship["id"])
+                    if self.stats["speedboost"]:
+                        a = 10
+                    else:
+                        a = 0
+                    if self.pressed['Up']:
+                        if y > 72 + self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / 20 - a))
+                            self.root.update()
+                    elif self.pressed['Down']:
+                        if y < self.config["height"] - self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / 20 + a))
+                            self.root.update()
+                    elif self.pressed['Left']:
+                        if x > 0 + self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] / 20 - a), 0)
+                            self.root.update()
+                    elif self.pressed['Right']:
+                        if x < self.config["width"] - self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], (self.stats["shipspeed"] / 20 + a), 0)
+                            self.root.update()
+                    self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
 
     def movent_change(self):
+        time2 = time()
         while True:
-            if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
-                if not self.modes["pause"]:
-                    if not self.stats["paralis"]:
-                        x, y = get_coords(self.canvas, self.ship["id"])
-                        if self.stats["speedboost"]:
-                            a = 10
-                        else:
-                            a = 0
-                        if self.pressed['Up']:
-                            if y > 72 + self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] - a))
-                                self.root.update()
-                        elif self.pressed['Down']:
-                            if y < self.config["height"] - self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] + a))
-                                self.root.update()
-                        elif self.pressed['Left']:
-                            if x > 0 + self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] - a), 0)
-                                self.root.update()
-                        elif self.pressed['Right']:
-                            if x < self.config["width"] - self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], (self.stats["shipspeed"] + a), 0)
-                                self.root.update()
-                        self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
+            time1 = time()
+            try:
+                self.move_fps = 1 / (time2 - time1)
+            except ZeroDivisionError:
+                self.move_fps = 1
+            Thread(None, lambda: self._movent()).start()
+            time2 = time()
 
     def _press(self, e):
         if e.keysym == "Up":
@@ -1063,9 +1074,49 @@ class Game(Canvas):
     def auto_save(self):
         while not self.returnmain:
             Maintance.auto_save(self.save_name, self.stats, self.bubbles)
+            print(self.returnmain)
             sleep(2)
 
-    # noinspection PyTypeChecker
+    def update(self):
+        if not self.stats["timebreak"]:
+            if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
+                if not self.stats["special-level"]:
+                    Thread(None,
+                           lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
+                                                 self.bubbles, self.modes,
+                                                 len(self.bubbles["bub-id"])),
+                           name="CreateBubbleThread").start()
+                else:
+                    Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
+                                                                     self.bubbles, self.stats,
+                                                                     self.bub, self.modes),
+                           name="SpecialModeCreateBubbleThread").start()
+        if self.commands["present"] is True:
+            # noinspection PyTypeChecker
+            self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
+                                               self.config, self.icons, self.fore, self.log)
+        if self.commands["special-mode"] is True:
+            State.set_state(self.canvas, log, self.stats, "SpecialLevel", self.back)
+            self.commands["special-mode"] = False
+        Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
+                                    self.stats,
+                                    self.ammo,
+                                    self.ship, self.canvas, log, self.back,
+                                    self.texts, self.panels)
+        Thread(None, lambda: refresh(self.stats, self.config, self.bubbles, self.bub, self.canvas,
+                                     self.back, self.texts, self.modes, self.panels),
+               name="RefreshThread").start()
+        for events in self.mod_loader.events.values():
+            for event in events:
+                event.on_update(self)
+
+    def t_update(self):
+        # print(self.mod_loader.events)
+        for events in self.mod_loader.events.values():
+            for event in events:
+                event.on_t_update(self)
+
+    # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
         from threading import Thread
 
@@ -1207,7 +1258,7 @@ class Game(Canvas):
 
         # Initializing the panels for the game.
         self.panels["game/top"] = self.canvas.create_rectangle(
-                -1, -1, self.config["width"], 69, fill="darkcyan"
+            -1, -1, self.config["width"], 69, fill="darkcyan"
         )
         # Create seperating lines.
         self.canvas.create_line(0, 70, self.config["width"], 70, fill="lightblue")
@@ -1253,10 +1304,7 @@ class Game(Canvas):
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
 
         # Binding key-events for control
-        c.bind_all('<Key>', lambda event: control(self.root, self.canvas, self.icons, self.config, event, self.stats,
-                                                  self.temp, self.modes, self.ship, self.commands, self.tp,
-                                                  self.texts, self.fore, self.back, self.bubbles, self.panels,
-                                                  lambda: self.return_main(), self.bub, self.lang))
+        c.bind_all('<Key>', lambda event: control(self, event))
 
         c.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))
         c.bind_all("<KeyPress-Down>", lambda event: self.down_press(event))
@@ -1344,7 +1392,7 @@ class Game(Canvas):
         self.stats = stats
 
         # Post Initalize mods
-        self.mod_loader.post_initalize(self)
+        self.mod_loader.post_initialize(self)
 
         try:
             # MAIN GAME LOOP
@@ -1372,34 +1420,8 @@ class Game(Canvas):
 
                 while self.stats["lives"] > 0:
                     if not self.modes["pause"]:
-                        if not self.stats["timebreak"]:
-                            if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
-                                if not self.stats["special-level"]:
-                                    Thread(None,
-                                           lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
-                                                                 self.bubbles, self.modes,
-                                                                 len(self.bubbles["bub-id"])),
-                                           name="CreateBubbleThread").start()
-                                else:
-                                    Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
-                                                                                     self.bubbles, self.stats,
-                                                                                     self.bub, self.modes),
-                                           name="SpecialModeCreateBubbleThread").start()
-                        if self.commands["present"] is True:
-                            # noinspection PyTypeChecker
-                            self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
-                                                               self.config, self.icons, self.fore, self.log)
-                        if self.commands["special-mode"] is True:
-                            State.set_state(self.canvas, log, self.stats, "SpecialLevel", self.back)
-                            self.commands["special-mode"] = False
-                        Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
-                                                    self.stats,
-                                                    self.ammo,
-                                                    self.ship, self.canvas, log, self.back,
-                                                    self.texts, self.panels)
-                        Thread(None, lambda: refresh(self.stats, self.config, self.bubbles, self.bub, self.canvas,
-                                                     self.back, self.texts, self.modes, self.panels),
-                               name="RefreshThread").start()
+                        self.update()
+                        Thread(None, lambda: self.t_update(), "UpdateThread")
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()

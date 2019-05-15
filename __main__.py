@@ -1,5 +1,3 @@
-from os import PathLike
-
 if __name__ == "__main__":
     print("Error: Can't open this file. Please open the game with the launcher.")
     input()
@@ -198,8 +196,8 @@ def control(parent: Game, event):
         p.temp["sw"] = ScrolledWindow(p.temp["s_frame"], 1020, 321, height=321, width=1000)
 
         p.temp["canv"] = p.temp["sw"].canv
-        p.temp["canv"].p.config(bg=back)
-        p.temp["sw"].scrollwindow.p.config(bg=back)
+        p.temp["canv"].config(bg=back)
+        p.temp["sw"].scrollwindow.config(bg=back)
 
         p.temp["frame"] = p.temp["sw"].scrollwindow
 
@@ -220,8 +218,8 @@ def control(parent: Game, event):
         p.temp["pause/bubble.p.iconss"] = []
         for i in range(len(a)):
             # print(a[i], b[i])
-            place_bubble(p.canvass, p.bub, x, y, 25, a[i])
-            p.canvass.create_text(x, y + 40, text=p.lang[c[i]], fill=fore)
+            place_bubble(canvass, p.bub, x, y, 25, a[i])
+            canvass.create_text(x, y + 40, text=p.lang[c[i]], fill=fore)
             if x > 900:
                 x = 50
                 y += 100
@@ -236,7 +234,7 @@ def control(parent: Game, event):
         p.icons["pause"] = p.canvas.create_image(p.config["middle-x"], p.config["middle-y"] / 2,
                                                  image=p.icons["pause-id"])
 
-        p.canvas.itemp.config(p.texts["pause"], text="")
+        p.canvas.itemconfig(p.texts["pause"], text="")
         p.root.update()
 
         p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
@@ -252,8 +250,8 @@ def control(parent: Game, event):
             (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
         p.modes["pause"] = False
 
-        p.canvas.itemp.config(p.icons["pause"], state=HIDDEN)
-        p.canvas.itemp.config(p.texts["pause"], text="")
+        p.canvas.itemconfig(p.icons["pause"], state=HIDDEN)
+        p.canvas.itemconfig(p.texts["pause"], text="")
 
         p.temp["pause/back-to-menu"].destroy()
         p.temp['pause/menu_frame'].destroy()
@@ -326,9 +324,18 @@ class Maintance:
         Saves the game. (For Auto-Save)
         """
         from . import config as cfg
+        
+        import os
 
-        cfg.Writer("../../slots/" + save_name + "/game.json", game_stats.copy())
-        cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
+        print(os.curdir)
+
+        try:
+            cfg.Writer("../../slots/" + save_name + "/game.json", game_stats.copy())
+            cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
+        except FileNotFoundError as e:
+            print(e.args)
+            print(e.filename)
+            print(e.filename2)
 
     @staticmethod
     def auto_restore(save_name: str):
@@ -402,6 +409,7 @@ class Game(Canvas):
         import os
         import yaml
         from . import mod_support as mods
+        from .base import Sprite
 
         # Load Mods
         self.mod_loader = mods.Loader(launcher_cfg)
@@ -434,6 +442,7 @@ class Game(Canvas):
         self.canvass = []
         self.buttons = []
 
+        # Start variables for the game
         self.log = log
         self.returnmain = False
 
@@ -441,10 +450,15 @@ class Game(Canvas):
         self.root = self.master
         self.time1 = start_time
         self.cfg = Maintance()
-        self.save_name = "Lyfo"
+        self.save_name = None
 
         # Stats
         self.stats = dict()
+
+        # Sprites
+        self.sprites = dict()
+        self.sprites["byClass"] = dict()
+        self.sprites["byID"] = dict()
 
         # Standard Temporaray variables
         self.temp = dict()
@@ -820,7 +834,6 @@ class Game(Canvas):
 
         # Startloop
         for name in tuple(dirs):
-            self.item_info.append(i)
             self.frames.append(Frame(self.frame, height=200, width=700))
             self.canvass.append(Canvas(self.frames[-1], height=200, width=700, bg="#7f7f7f", highlightthickness=0))
             self.canvass[-1].pack()
@@ -839,7 +852,7 @@ class Game(Canvas):
             self.buttons.append(
                 Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.open)
+            self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(name, event))
 
             self.buttons.append(
                 Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
@@ -925,7 +938,7 @@ class Game(Canvas):
         self.delete_all()
         self.load()
 
-    def open(self, event):
+    def open(self, name, event):
         # Getting row-index
         y = event.widget.master.grid_info()["row"]
 
@@ -934,7 +947,7 @@ class Game(Canvas):
 
         # Remove slots menu and run the game.
         self.delete_all()
-        self.run(src)
+        self.run(name)
 
     def delete_all(self):
         # Delete all main frames
@@ -964,36 +977,47 @@ class Game(Canvas):
         # Returning to title menu.
         Maintance().auto_save(self.save_name, self.stats, self.bubbles)
         self.returnmain = True
+        sleep(2)
         self.canvas.destroy()
         self.__init__(self.launcher_cfg, time(), True)
 
+    def _movent(self):
+        if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
+            if not self.modes["pause"]:
+                if not self.stats["paralis"]:
+                    x, y = get_coords(self.canvas, self.ship["id"])
+                    if self.stats["speedboost"]:
+                        a = 10
+                    else:
+                        a = 0
+                    if self.pressed['Up']:
+                        if y > 72 + self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"]/20 - a))
+                            self.root.update()
+                    elif self.pressed['Down']:
+                        if y < self.config["height"] - self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"]/20 + a))
+                            self.root.update()
+                    elif self.pressed['Left']:
+                        if x > 0 + self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], (-self.stats["shipspeed"]/20 - a), 0)
+                            self.root.update()
+                    elif self.pressed['Right']:
+                        if x < self.config["width"] - self.config["game"]["ship-radius"]:
+                            self.canvas.move(self.ship["id"], (self.stats["shipspeed"]/20 + a), 0)
+                            self.root.update()
+                    self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
+
     def movent_change(self):
+        time2 = time()
         while True:
-            if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
-                if not self.modes["pause"]:
-                    if not self.stats["paralis"]:
-                        x, y = get_coords(self.canvas, self.ship["id"])
-                        if self.stats["speedboost"]:
-                            a = 10
-                        else:
-                            a = 0
-                        if self.pressed['Up']:
-                            if y > 72 + self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] - a))
-                                self.root.update()
-                        elif self.pressed['Down']:
-                            if y < self.config["height"] - self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] + a))
-                                self.root.update()
-                        elif self.pressed['Left']:
-                            if x > 0 + self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] - a), 0)
-                                self.root.update()
-                        elif self.pressed['Right']:
-                            if x < self.config["width"] - self.config["game"]["ship-radius"]:
-                                self.canvas.move(self.ship["id"], (self.stats["shipspeed"] + a), 0)
-                                self.root.update()
-                        self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
+            time1 = time()
+            try:
+                self.move_fps = 1 / (time2 - time1)
+            except ZeroDivisionError:
+                self.move_fps = 1
+            Thread(None, lambda: self._movent()).start()
+            time2 = time()
 
     def _press(self, e):
         if e.keysym == "Up":
@@ -1049,17 +1073,49 @@ class Game(Canvas):
     def auto_save(self):
         while not self.returnmain:
             Maintance.auto_save(self.save_name, self.stats, self.bubbles)
+            print(self.returnmain)
             sleep(2)
 
     def update(self):
-        for event in self.mod_loader.events:
-            event.on_update(self)
+        if not self.stats["timebreak"]:
+            if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
+                if not self.stats["special-level"]:
+                    Thread(None,
+                           lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
+                                                 self.bubbles, self.modes,
+                                                 len(self.bubbles["bub-id"])),
+                           name="CreateBubbleThread").start()
+                else:
+                    Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
+                                                                     self.bubbles, self.stats,
+                                                                     self.bub, self.modes),
+                           name="SpecialModeCreateBubbleThread").start()
+        if self.commands["present"] is True:
+            # noinspection PyTypeChecker
+            self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
+                                               self.config, self.icons, self.fore, self.log)
+        if self.commands["special-mode"] is True:
+            State.set_state(self.canvas, log, self.stats, "SpecialLevel", self.back)
+            self.commands["special-mode"] = False
+        Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
+                                    self.stats,
+                                    self.ammo,
+                                    self.ship, self.canvas, log, self.back,
+                                    self.texts, self.panels)
+        Thread(None, lambda: refresh(self.stats, self.config, self.bubbles, self.bub, self.canvas,
+                                     self.back, self.texts, self.modes, self.panels),
+               name="RefreshThread").start()
+        for events in self.mod_loader.events.values():
+            for event in events:
+                event.on_update(self)
 
     def t_update(self):
-        for event in self.mod_loader.events:
-            event.on_t_update(self)
+        # print(self.mod_loader.events)
+        for events in self.mod_loader.events.values():
+            for event in events:
+                event.on_t_update(self)
 
-    # noinspection PyTypeChecker
+    # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
         from threading import Thread
 
@@ -1195,6 +1251,7 @@ class Game(Canvas):
 
         # Creating ship.
         self.ship["id"] = c.create_image(7.5, 7.5, image=self.ship["image"])
+        print(self.ship["id"])
 
         # Moving ship to position
         c.move(self.ship["id"], self.stats["ship-position"][0], self.stats["ship-position"][1])
@@ -1363,34 +1420,8 @@ class Game(Canvas):
 
                 while self.stats["lives"] > 0:
                     if not self.modes["pause"]:
-                        if not self.stats["timebreak"]:
-                            if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
-                                if not self.stats["special-level"]:
-                                    Thread(None,
-                                           lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
-                                                                 self.bubbles, self.modes,
-                                                                 len(self.bubbles["bub-id"])),
-                                           name="CreateBubbleThread").start()
-                                else:
-                                    Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
-                                                                                     self.bubbles, self.stats,
-                                                                                     self.bub, self.modes),
-                                           name="SpecialModeCreateBubbleThread").start()
-                        if self.commands["present"] is True:
-                            # noinspection PyTypeChecker
-                            self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
-                                                               self.config, self.icons, self.fore, self.log)
-                        if self.commands["special-mode"] is True:
-                            State.set_state(self.canvas, log, self.stats, "SpecialLevel", self.back)
-                            self.commands["special-mode"] = False
-                        Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
-                                                    self.stats,
-                                                    self.ammo,
-                                                    self.ship, self.canvas, log, self.back,
-                                                    self.texts, self.panels)
-                        Thread(None, lambda: refresh(self.stats, self.config, self.bubbles, self.bub, self.canvas,
-                                                     self.back, self.texts, self.modes, self.panels),
-                               name="RefreshThread").start()
+                        self.update()
+                        Thread(None, lambda: self.t_update(), "UpdateThread")
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()
