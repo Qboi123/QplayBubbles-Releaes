@@ -1412,9 +1412,9 @@ class Game(Canvas):
         width = self.config["width"]
 
         bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
-        bariers[0].create(2*width/5, height/2+72/2)
-        bariers[1].create(4*width/5, 10)
-        bariers[2].create(9*width/10, 10)
+        bariers[0].create(randint(0, width), height/2+72/2)
+        bariers[1].create(randint(0, width), height/2+72/2)
+        bariers[2].create(randint(0, width), height/2+72/2)
 
         try:
             # MAIN GAME LOOP

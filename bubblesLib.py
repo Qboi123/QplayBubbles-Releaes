@@ -1,4 +1,4 @@
-from .base import Bubble
+from .base import Bubble, StatusBubble
 from .fake_main import Game
 
 
@@ -10,3 +10,6 @@ class NormalBubble(Bubble):
 
     def on_collision(self, parent: Game):
         parent.stats["score"] += self.r
+
+
+class InfitraBubble(StatusBubble)

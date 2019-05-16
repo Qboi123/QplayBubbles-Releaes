@@ -6,6 +6,7 @@ TYPE_DANGEROUS = "dangerous"
 TYPE_NEUTRAL = "neutral"
 FORM_CIRCLE = "circle"
 FORM_RECT = "rectangle"
+BUB_NOSTATE = "nostate"
 LEFT = "left"
 RIGHT = "right"
 UP = "up"
@@ -128,8 +129,8 @@ class Sprite:
                 h = self.radius
                 w = self.radius
             elif self.form == FORM_RECT:
-                h = self.height / 2
-                w = self.width / 2
+                h = self.height / 4
+                w = self.width / 4
             else:
                 return
             if len(pos) == 4:
@@ -302,6 +303,7 @@ class Bubble(Sprite):
         self.parent = parent
         self.min = 9
         self.max = 60
+        self.bubtype = BUB_NOSTATE
         self.hardness = 1
         self.images = dict()
         self.collision_with = []
@@ -327,21 +329,26 @@ class Bubble(Sprite):
         self.index = parent.bubbles["bub-id"].index(self.ids, 0, len(parent.bubbles["bub-id"]))
 
     def on_move(self, parent: Game):
-        parent.canvas.move()
+        pass
 
     def on_collision(self, parent: Game):
         from .bubble import del_bubble
-        del_bubble(self.index, parent.bubbles, parent.canvas)
+        del_bubble(self.index, self.parent.bubbles, self.parent.canvas)
 
-    def pop(self, parent: Game):
+    def pop(self):
         pass
 
 
-class StatusBubbles(Bubble):
+ActionIsNoneWarning = Warning
+
+
+class StatusBubble(Bubble):
     def __init__(self, parent: Game):
         super().__init__(parent)
+        self.name = None
 
-    def status_event(self, parent: Game):
-        pass
-
-
+    def on_collfunc(self):
+        from .state import State
+        if self.name is None:
+            raise ActionIsNoneWarning("The name on status-bubble '%s' is None" % __name__)
+        State.set_state(self.parent.canvas, self.parent.log, self.parent.stats, self.name, self.parent.back)
