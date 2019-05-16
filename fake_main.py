@@ -526,8 +526,8 @@ class Game(Canvas):
                         "bub-position": list(), "bub-hardness": list(), "bub-index": list(), "key-active": False}
 
         # Ammo id-dictionary
-        self.ammo = {"ammo-id": list(), "ammo-radius": 5, "ammo-speed": list(), "ammo-position": list(),
-                     "ammo-damage": list(), "retime": start_time}
+        self.ammo = {"ammo-id": dict(), "ammo-radius": 5, "ammo-speed": dict(), "ammo-position": dict(),
+                     "ammo-damage": dict(), "retime": start_time}
 
         # Sets fullscreen if not
         if self.config["game"]["fullscreen"]:

@@ -536,7 +536,7 @@ class Collision:
         """
         x, y = get_coords(canvas, ammo["ammo-id"][index])
         if x > config["width"] + config["bubble"]["screen-gap"]:
-            del_shoot(canvas, index, ammo)
+            del_ammo(canvas, index, ammo)
 
     def check_collision(self, root, commands, bubble, config, stats, ammo, ship, canvas, log, backgrounds, texts,
                         panels):
@@ -569,41 +569,7 @@ class Collision:
                     self.clean_up_bub(canvas, index_bub, bubble, config, log)
                 # Collision with ammo
                 for ammo_index in range(len(ammo["ammo-id"].copy()) - 1, -1, -1):
-                    self.shot = ammo_index
-                    if not stats["timebreak"]:
-                        # self.move_ammo(ammo_index, ammo, canvas, log, )
-                        self.clean_up_shot(canvas, ammo_index, ammo, config)
-                    try:
-                        if distance(canvas, log, ammo["ammo-id"][ammo_index], bubble["bub-id"][index_bub][0]) < (
-                                1 + bubble["bub-radius"][index_bub]):
-                            if bubble["bub-hardness"][index_bub] == 1:
-                                try:
-                                    Thread(None, lambda: self.coll_func(index_bub, canvas, commands, root, log, stats,
-                                                                        (bubble["bub-radius"][index_bub] +
-                                                                         bubble["bub-speed"][index_bub]),
-                                                                        bubble["bub-action"][index_bub], bubble, backgrounds,
-                                                                        texts, panels, False)).start()
-                                except IndexError:
-                                    pass
-                                del_bubble(index_bub, bubble, canvas)
-                                replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
-                                if ammo["ammo-damage"][ammo_index] > 4:
-                                    del_shoot(canvas, ammo_index, ammo)
-                                # Thread(None, PlaySound("data/bubpop.wav", 1)).start()
-                            elif bubble["bub-hardness"][index_bub] > 1:
-                                replace_list(bubble["bub-hardness"], index_bub, bubble["bub-hardness"][index_bub] - 1)
-                                replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
-                                if ammo["ammo-damage"][ammo_index] > 4:
-                                    del_shoot(canvas, ammo_index, ammo)
-                            root.update()
-                    except TypeError:
-                        pass
-                    except IndexError:
-                        pass
-                    except AttributeError:
-                        exit(0)
-                    except TclError:
-                        exit(0)
+                    pass
             except TypeError:
                 pass
             except IndexError:

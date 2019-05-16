@@ -36,18 +36,18 @@ def move_ammo(canvas: Canvas, log, root: Tk, ammo: dict):
         root.update()
 
 
-def del_shoot(canvas: Canvas, index: int, ammo: dict):
+def del_ammo(canvas: Canvas, id: int, ammo: dict):
     """
     Deletes ammo by request.
     :param canvas:
     :param ammo:
-    :param index:
+    :param id:
     :return:
     """
-    canvas.delete(ammo["ammo-id"][index])
-    del ammo["ammo-id"][index]
-    del ammo["ammo-speed"][index]
-    del ammo["ammo-damage"][index]
+    canvas.delete(ammo["ammo-id"][id])
+    del ammo["ammo-id"][id]
+    del ammo["ammo-speed"][id]
+    del ammo["ammo-damage"][id]
 
 
 def clean_up_shots(canvas: Canvas, ammo: dict, config: Dict[str, Union[str, int]]):
@@ -58,4 +58,4 @@ def clean_up_shots(canvas: Canvas, ammo: dict, config: Dict[str, Union[str, int]
     for i in range(len(ammo["ammo-id"]) - 1, -1, -1):
         x, y = get_coords(canvas, ammo["ammo-id"][i])
         if x > config["width"] + config["screen-gap"]:
-            del_shoot(canvas, i, ammo)
+            del_ammo(canvas, i, ammo)

@@ -2,22 +2,35 @@ from .fake_main import Game
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
+
 TYPE_DANGEROUS = "dangerous"
 TYPE_NEUTRAL = "neutral"
+
 FORM_CIRCLE = "circle"
-FORM_RECT = "rectangle"
+FORM_RECT = "rectangle/line"
+FORM_LINE = "rectangle/line"
+
 BUB_NOSTATE = "nostate"
+BUB_WITHSTATE = "withstate"
+
 LEFT = "left"
 RIGHT = "right"
 UP = "up"
 DOWN = "down"
+
 TRUE = True
 FALSE = False
+
 COLOR_RED = "red"
+
 RED = COLOR_RED
 
 ANY_BUBBLE = "any.bubble"
 SHIP = "ship"
+
+OBJ_SHIP = SHIP
+OBJ_ANY_BUBBLE = ANY_BUBBLE
+OBJ_BARIER = "barier"
 
 
 # noinspection PyMissingConstructor
@@ -44,7 +57,7 @@ class Event:
     def on_t_update(self, parent: Game):
         pass
 
-    
+
 DirectionWaring = Warning
 
 
@@ -99,13 +112,15 @@ class Sprite:
         self.info = {"id": self.id,
                      "class": self}
         self.parent.sprites["byID"][self.info["id"]] = self.info
-        self.thread3 = StoppableThread(None, lambda: self.move(), __name__+"Thread").start()
+        self.thread3 = StoppableThread(None, lambda: self.move(), __name__ + ".Thread").start()
 
     def destroy(self):
         self.__active = False
-        self.thread3.stop()
-        self.thread.stop()
-        self.thread2.stop()
+        try:
+            self.thread3.stop()
+            self.thread2.stop()
+        except AttributeError:
+            pass
         del self.parent.sprites["byID"][self.info["id"]]
 
     def _on_move(self):
@@ -156,15 +171,24 @@ class Sprite:
                         self.direction = LEFT
                     if pos[0] <= w:
                         self.direction = RIGHT
-        self.parent.canvas.move(self.id, self.x_move/self.fps*2, self.y_move/self.fps*2)
+        self.parent.canvas.move(self.id, self.x_move / self.fps / 2, self.y_move / self.fps / 2)
 
     def _hurt_player(self):
         self.parent.stats["lives"] -= self.life_cost
 
+    def on_collide_bubble(self, index):
+        pass
+
+    def on_collide_ship(self, index):
+        pass
+
+    def on_collide_sprite(self, _class):
+        pass
+
     def _on_collision(self):
         from . import extras
         from . import bubble
-        
+
         from time import sleep
 
         if self.form == FORM_CIRCLE:
@@ -177,16 +201,18 @@ class Sprite:
             return
         if self.form == FORM_CIRCLE:
             config = self.parent.config
-            if SHIP in self.collision_with:    
+            if SHIP in self.collision_with:
                 distance = extras.distance(self.parent.canvas, self.parent.log, self.id, self.parent.ship["id"])
                 if distance < (config["game"]["ship-radius"] + self.radius):
+                    self.on_collide_ship(None)
                     self._hurt_player()
                     sleep(1)
             if ANY_BUBBLE in self.collision_with:
-                for index in range(len(self.parent.bubbles["bub-id"])-1, -1, -1):
-                    distance = extras.distance(self.parent.canvas, self.parent.log, self.id, 
+                for index in range(len(self.parent.bubbles["bub-id"]) - 1, -1, -1):
+                    distance = extras.distance(self.parent.canvas, self.parent.log, self.id,
                                                self.parent.bubbles["bub-id"][index])
                     if distance < (self.parent.bubbles["bub-radius"][index] + self.radius):
+                        self.on_collide_bubble(index)
                         bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
         elif self.form == FORM_RECT:
             if SHIP in self.collision_with:
@@ -196,54 +222,58 @@ class Sprite:
                 # print(pos, paddle_pos)
                 if len(paddle_pos) == 2:
                     if len(pos) == 2:
-                        if pos[0]+w >= paddle_pos[0] >= pos[0]-w:
-                            if pos[1]+h >= paddle_pos[1] >= pos[1]-h:
+                        if pos[0] + w >= paddle_pos[0] >= pos[0] - w:
+                            if pos[1] + h >= paddle_pos[1] >= pos[1] - h:
                                 self._hurt_player()
                     if len(pos) == 4:
                         # print("Domme fase 1")
-                        if pos[2]+w >= paddle_pos[0] >= pos[0]-w:
+                        if pos[2] + w >= paddle_pos[0] >= pos[0] - w:
                             # print("Domme fase 2")
-                            if pos[3]+h >= paddle_pos[1] >= pos[1]-h:
+                            if pos[3] + h >= paddle_pos[1] >= pos[1] - h:
                                 # print("Domme fase 3")
                                 self._hurt_player()
                                 # print("Domme fase 4")
                 elif len(paddle_pos) == 4:
                     if len(pos) == 2:
-                        if pos[0]+w >= paddle_pos[0] and pos[0] <= paddle_pos[2]-w:
-                            if pos[1]+h >= paddle_pos[1] and pos[1] <= paddle_pos[3]-h:
+                        if pos[0] + w >= paddle_pos[0] and pos[0] <= paddle_pos[2] - w:
+                            if pos[1] + h >= paddle_pos[1] and pos[1] <= paddle_pos[3] - h:
                                 self._hurt_player()
                     if len(pos) == 4:
-                        if pos[2]+w >= paddle_pos[0] and pos[0] <= paddle_pos[2]-w:
-                            if pos[3]+h >= paddle_pos[1] and pos[1] <= paddle_pos[3]-h:
+                        if pos[2] + w >= paddle_pos[0] and pos[0] <= paddle_pos[2] - w:
+                            if pos[3] + h >= paddle_pos[1] and pos[1] <= paddle_pos[3] - h:
                                 self._hurt_player()
             if ANY_BUBBLE in self.collision_with:
-                for index in range(len(self.parent.bubbles["bub-id"])-2, -1, -1):
+                for index in range(len(self.parent.bubbles["bub-id"]) - 2, -1, -1):
                     bub_h = bub_w = self.parent.bubbles["bub-radius"][index]
                     pos = self.parent.canvas.coords(self.id)
-                    print("[Index, len]: "+str([index, len(self.parent.bubbles["bub-id"])]))
+                    print("[Index, len]: " + str([index, len(self.parent.bubbles["bub-id"])]))
                     paddle_pos = self.parent.canvas.coords(self.parent.bubbles["bub-id"][index])
                     print(pos, paddle_pos)
                     if len(paddle_pos) == 2:
                         if len(pos) == 2:
-                            if pos[0]+w >= paddle_pos[0]-bub_w and pos[0]-w <= paddle_pos[0]+bub_w:
-                                if pos[1]+h >= paddle_pos[1]-bub_h and pos[1]-h <= paddle_pos[1]+bub_h:
+                            if pos[0] + w >= paddle_pos[0] - bub_w and pos[0] - w <= paddle_pos[0] + bub_w:
+                                if pos[1] + h >= paddle_pos[1] - bub_h and pos[1] - h <= paddle_pos[1] + bub_h:
+                                    self.on_collide_bubble(index)
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
                         if len(pos) == 4:
-                            if pos[2]+w >= paddle_pos[0]-bub_w and pos[0]-w <= paddle_pos[0]+bub_w:
-                                if pos[3]+h >= paddle_pos[1]-bub_h and pos[1]-h <= paddle_pos[1]+bub_h:
+                            if pos[2] + w >= paddle_pos[0] - bub_w and pos[0] - w <= paddle_pos[0] + bub_w:
+                                if pos[3] + h >= paddle_pos[1] - bub_h and pos[1] - h <= paddle_pos[1] + bub_h:
+                                    self.on_collide_bubble(index)
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
                     elif len(paddle_pos) == 4:
                         if len(pos) == 2:
-                            if pos[0]+w >= paddle_pos[0]-bub_w and pos[0] <= paddle_pos[2]+bub_w:
-                                if pos[1]+h >= paddle_pos[1]-bub_h and pos[1] <= paddle_pos[3]+bub_h:
+                            if pos[0] + w >= paddle_pos[0] - bub_w and pos[0] <= paddle_pos[2] + bub_w:
+                                if pos[1] + h >= paddle_pos[1] - bub_h and pos[1] <= paddle_pos[3] + bub_h:
+                                    self.on_collide_bubble(index)
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
                         if len(pos) == 4:
-                            if pos[2]+w >= paddle_pos[0]-bub_w and pos[0] <= paddle_pos[2]+bub_w:
-                                if pos[3]+h >= paddle_pos[1]-bub_h and pos[1] <= paddle_pos[3]+bub_h:
+                            if pos[2] + w >= paddle_pos[0] - bub_w and pos[0] <= paddle_pos[2] + bub_w:
+                                if pos[3] + h >= paddle_pos[1] - bub_h and pos[1] <= paddle_pos[3] + bub_h:
+                                    self.on_collide_bubble(index)
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
 
     def move(self):
-        from time import sleep, time
+        from time import time
         from .components import StoppableThread
         time2 = time()
         while self.__active:
@@ -266,8 +296,7 @@ class Sprite:
                     self.fps = 1
                 time2 = time()
                 self._on_move()
-                self.thread2 = StoppableThread(None, lambda: self._on_collision(), __name__ + "Collision").start()
-
+                self.thread2 = StoppableThread(None, lambda: self._on_collision(), __name__ + ".Collision").start()
 
 
 # noinspection PyRedundantParentheses
@@ -282,19 +311,19 @@ class BaseBarier(Sprite):
         self.type = TYPE_DANGEROUS
         self.form = FORM_RECT
         self.direction = UP
-        self.__speed = randint(80, 104)
+        self.__speed = randint(10, 13)
         self.x_speed = 0
         self.y_speed = self.__speed
         self.x_move = 0
         self.y_move = self.__speed
         self.height = 150
         self.width = 10
-        self.collision_with = [SHIP, ANY_BUBBLE]
-        
+        self.collision_with = [SHIP]
+
     def create(self, x, y):
-        self.id = self.parent.canvas.create_rectangle(x, y+72, x+10, y+222, fill=RED, outline=RED)
+        self.id = self.parent.canvas.create_rectangle(x, y + 72, x + 10, y + 222, fill=RED, outline=RED)
         # print(self.parent.canvas.coords(self.id))
-        super().create(x, 72+y)
+        super().create(x, 72 + y)
 
 
 # noinspection PyMethodOverriding
@@ -354,3 +383,93 @@ class StatusBubble(Bubble):
         if self.name is None:
             raise ActionIsNoneWarning("The name on status-bubble '%s' is None" % __name__)
         State.set_state(self.parent.canvas, self.parent.log, self.parent.stats, self.name, self.parent.back)
+
+
+class Ammo(Sprite):
+    def __init__(self, parent: Game):
+        super().__init__(parent)
+        self.form = FORM_LINE
+        self.return_border = FALSE
+        self.direction = LEFT
+        self.axis = [VERTICAL]
+        self.x_speed = 60
+        self.x_move = 60
+        self.y_speed = 0
+        self.y_move = 0
+        self.height = 1
+        self.width = 5
+
+    def destroy(self):
+        try:
+            self.thread4.stop()
+        except AttributeError:
+            pass
+        super().destroy()
+
+    def on_collide_bubble(self, index):
+        from tkinter import TclError
+        from .components import StoppableThread
+        from .bubble import del_bubble
+        from .extras import replace_list, distance
+        from .ammo import del_ammo
+
+        log = self.parent.log
+        ammo = self.parent.ammo
+        root = self.parent.root
+        texts = self.parent.texts
+        stats = self.parent.stats
+        canvas = self.parent.canvas
+        panels = self.parent.panels
+        bubble = self.parent.bubbles
+        commands = self.parent.commands
+        coll_func = self.parent.Coll.coll_func
+        ammo_index = self.id
+        backgrounds = self.parent.back
+
+        index_bub = index
+        try:
+            if distance(canvas, log, ammo["ammo-id"][ammo_index], bubble["bub-id"][index_bub][0]) < (
+                    1 + bubble["bub-radius"][index_bub]):
+                if bubble["bub-hardness"][index_bub] == 1:
+                    try:
+                        self.thread4 = StoppableThread(
+                            None,
+                            lambda: coll_func(index_bub, canvas, commands, root, log,
+                                              stats,
+                                              (bubble["bub-radius"][index_bub] +
+                                               bubble["bub-speed"][index_bub]),
+                                              bubble["bub-action"][index_bub], bubble,
+                                              backgrounds,
+                                              texts, panels, False)
+                            , __name__ + ".CollisionFunction").start()
+                    except IndexError:
+                        pass
+                    del_bubble(index_bub, bubble, canvas)
+                    replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
+                    if ammo["ammo-damage"][ammo_index] > 4:
+                        del_ammo(canvas, ammo_index, ammo)
+                    # Thread(None, PlaySound("data/bubpop.wav", 1)).start()
+                elif bubble["bub-hardness"][index_bub] > 1:
+                    replace_list(bubble["bub-hardness"], index_bub, bubble["bub-hardness"][index_bub] - 1)
+                    replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
+                    if ammo["ammo-damage"][ammo_index] > 4:
+                        del_ammo(canvas, ammo_index, ammo)
+                root.update()
+        except TypeError:
+            pass
+        except IndexError:
+            pass
+        except AttributeError:
+            self.destroy()
+        except TclError:
+            self.destroy()
+
+    def create(self, x, y):
+        id = self.parent.ship["id"]
+        x, y = self.parent.canvas.coords(id)
+
+        self.id = self.parent.canvas.create_line(x+7, y, x+12, y, fill="gold")
+        self.parent.ammo["ammo-id"][self.id] = self.id
+        self.parent.ammo["ammo-speed"][self.id] = 5
+        self.parent.ammo["ammo-damage"][self.id] = 0
+        super().create(x, y)

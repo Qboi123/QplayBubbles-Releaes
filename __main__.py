@@ -25,6 +25,8 @@ def control(parent: Game, event):
     :param parent: 
     :param event:
     """
+    from .base import Ammo
+
     p = parent
     if p.modes["store"] and p.commands["store"] is not None:
         if event.keysym == "Up":
@@ -137,6 +139,9 @@ def control(parent: Game, event):
 
             p.stats["teleports"] -= 1
             teleport(p.canvas, p.root, p.stats, p.modes, p.ship, p.tp, p.tp["id1"])
+    elif event.keysym.lower() == "space":
+        a = Ammo(p)
+        a.create(None, None)
     if event.keysym == "Escape" and (not p.modes["pause"]) and (not p.modes["store"]) and (not p.modes["teleport"]) and \
             (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
         p.modes["pause"] = True
