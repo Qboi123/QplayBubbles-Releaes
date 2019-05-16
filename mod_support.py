@@ -42,7 +42,8 @@ class Loader:
                     self.items[self.modsByModule[mod]] = self.items[self.modsByModule[mod]]+mod.items
                 else:
                     self.items[self.modsByModule[mod]] = mod.items
+        print(self.events)
 
     def post_initialize(self, parent):
         for mod in self.mods:
-            mod.post_initalize(parent)
+            mod.post_initialize(parent)

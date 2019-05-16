@@ -161,7 +161,7 @@ def control(parent: Game, event):
                                                           height=20, width=300)
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=p.return_main,
+                                                  command=lambda: p.return_main(),
                                                   relief=FLAT, bg="#1f1f1f", fg="#afafaf")
             back = "#1f1f1f"
             fore = "yellow"
@@ -184,7 +184,7 @@ def control(parent: Game, event):
                                                           height=500, width=300)
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=lambda: p.return_main,
+                                                  command=lambda: p.return_main(),
                                                   relief=FLAT, bg="#005f5f", fg="#7fffff")
 
             back = "#005f5f"
@@ -409,10 +409,13 @@ class Game(Canvas):
         import os
         import yaml
         from . import mod_support as mods
-        from .base import Sprite
+
+        print("started Game")
 
         # Load Mods
         self.mod_loader = mods.Loader(launcher_cfg)
+
+        print("started mods")
 
         # Laucher Config
         self.laucher_cfg = launcher_cfg
@@ -454,6 +457,8 @@ class Game(Canvas):
 
         # Stats
         self.stats = dict()
+
+        print("stats")
 
         # Sprites
         self.sprites = dict()
@@ -546,7 +551,7 @@ class Game(Canvas):
 
         if not already_opened:
             self.close = Button(self.root, text="X", fg="white", relief=FLAT, bg="#ff0000",
-                                command=lambda: self.root.destroy())
+                                command=lambda: os.kill(os.getpid(), -1))
             self.close.pack(side=TOP, fill=X)
 
         self.items = list()
@@ -1307,6 +1312,9 @@ class Game(Canvas):
         self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=("Helvetica", 60, "bold"))
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
 
+        # Threaded Automatic Save (TAS)
+        self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
+
         # Binding key-events for control
         c.bind_all('<Key>', lambda event: control(self, event))
 
@@ -1400,16 +1408,18 @@ class Game(Canvas):
 
         from .base import BaseBarier
 
+        height = self.config["height"]
+        width = self.config["width"]
+
         bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
-        bariers[0].create(2*self.config["width"]/5, 10)
-        bariers[1].create(4*self.config["width"]/5, 10)
-        bariers[2].create(9*self.config["width"]/10, 10)
+        bariers[0].create(2*width/5, height/2+72/2)
+        bariers[1].create(4*width/5, 10)
+        bariers[2].create(9*width/10, 10)
 
         try:
             # MAIN GAME LOOP
-            self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
             while True:
-                self.stats = self.cfg.auto_restore(self.save_name)
+                # self.stats = self.cfg.auto_restore(self.save_name)
                 t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
                                                   outline="#3f3f3f")
                 t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
@@ -1436,6 +1446,8 @@ class Game(Canvas):
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()
+                for barier in bariers:
+                    barier.destroy()
                 g1 = c.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
                 g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["score"]), fill='white',
                                    font=('Helvetica', 30))

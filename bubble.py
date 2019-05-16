@@ -663,7 +663,6 @@ def movebubble_thread(index, bubble, speed, action, id, radius, canvas, stats, m
             exit(0)
 
 
-
 def clean_all(bubble, canvas):
     """
     Deletes removes bubbles out of the game.
