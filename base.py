@@ -217,29 +217,27 @@ class Sprite:
                             if pos[3]+h >= paddle_pos[1] and pos[1] <= paddle_pos[3]-h:
                                 self._hurt_player()
             if ANY_BUBBLE in self.collision_with:
-                for index in range(len(self.parent.bubbles["bub-id"])-2, -1, -1):
-                    bub_h = bub_w = self.parent.bubbles["bub-radius"][index]
+                for index in range(len(self.parent.bubbles["bub-id"])-1, -1, -1):
                     pos = self.parent.canvas.coords(self.id)
-                    print("[Index, len]: "+str([index, len(self.parent.bubbles["bub-id"])]))
                     paddle_pos = self.parent.canvas.coords(self.parent.bubbles["bub-id"][index])
-                    print(pos, paddle_pos)
+                    # print(pos, paddle_pos)
                     if len(paddle_pos) == 2:
                         if len(pos) == 2:
-                            if pos[0]+w >= paddle_pos[0]-bub_w and pos[0]-w <= paddle_pos[0]+bub_w:
-                                if pos[1]+h >= paddle_pos[1]-bub_h and pos[1]-h <= paddle_pos[1]+bub_h:
+                            if pos[0]+w >= paddle_pos[0] >= pos[0]-w:
+                                if pos[1]+h >= paddle_pos[1] >= pos[1]-h:
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
                         if len(pos) == 4:
-                            if pos[2]+w >= paddle_pos[0]-bub_w and pos[0]-w <= paddle_pos[0]+bub_w:
-                                if pos[3]+h >= paddle_pos[1]-bub_h and pos[1]-h <= paddle_pos[1]+bub_h:
+                            if pos[2]+w >= paddle_pos[0] >= pos[0]-w:
+                                if pos[3]+h >= paddle_pos[1] >= pos[1]-h:
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
                     elif len(paddle_pos) == 4:
                         if len(pos) == 2:
-                            if pos[0]+w >= paddle_pos[0]-bub_w and pos[0] <= paddle_pos[2]+bub_w:
-                                if pos[1]+h >= paddle_pos[1]-bub_h and pos[1] <= paddle_pos[3]+bub_h:
+                            if pos[0]+w >= paddle_pos[0] and pos[0] <= paddle_pos[2]-w:
+                                if pos[1]+h >= paddle_pos[1] and pos[1] <= paddle_pos[3]-h:
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
                         if len(pos) == 4:
-                            if pos[2]+w >= paddle_pos[0]-bub_w and pos[0] <= paddle_pos[2]+bub_w:
-                                if pos[3]+h >= paddle_pos[1]-bub_h and pos[1] <= paddle_pos[3]+bub_h:
+                            if pos[2]+w >= paddle_pos[0] and pos[0] <= paddle_pos[2]-w:
+                                if pos[3]+h >= paddle_pos[1] and pos[1] <= paddle_pos[3]-h:
                                     bubble.del_bubble(index, self.parent.bubbles, self.parent.canvas)
 
     def move(self):
@@ -289,7 +287,7 @@ class BaseBarier(Sprite):
         self.y_move = self.__speed
         self.height = 150
         self.width = 10
-        self.collision_with = [SHIP, ANY_BUBBLE]
+        self.collision_with = [SHIP]
         
     def create(self, x, y):
         self.id = self.parent.canvas.create_rectangle(x, y+72, x+10, y+222, fill=RED, outline=RED)
