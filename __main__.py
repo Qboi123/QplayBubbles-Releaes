@@ -521,7 +521,7 @@ class Game(Canvas):
         if self.config["game"]["language"] == "tengwar":
             self.font = "Tengwar Annatar Regular"
         else:
-            self.font = self.font
+            self.font = "Helvetica"
 
         self.commands = {"store": False, "present": False, "special-mode": False}
 
@@ -761,7 +761,11 @@ class Game(Canvas):
 
         # Getting list of slots.
         path = "../../slots/"
-        index = os.listdir(path)
+        try:
+            index = os.listdir(path)
+        except FileNotFoundError:
+            os.makedirs(path, exist_ok=True)
+            index = os.listdir(path)
         dirs = []
         for item in index:
             file_path = path + item
@@ -900,9 +904,11 @@ class Game(Canvas):
 
             # Getting the input text.
             new = self.add_input.get()
+            if new in ("aux", "con", ".", ".."):
+                return
 
             # Creating dir for the game.
-            os.mkdir("../../slots/" + new)
+            os.makedirs("../../slots/" + new, exist_ok=True)
 
             # Copy the template (resetted save-files)
             self.copy("config/reset.json", "../../slots/" + new + "/game.json")
