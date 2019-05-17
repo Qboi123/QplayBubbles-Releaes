@@ -167,7 +167,7 @@ def control(parent: Game, event):
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
                                                   command=lambda: p.return_main(),
-                                                  relief=FLAT, bg="#1f1f1f", fg="#afafaf")
+                                                  relief=FLAT, bg="#1f1f1f", fg="#afafaf", font=p.font)
             back = "#1f1f1f"
             fore = "yellow"
         else:
@@ -190,7 +190,7 @@ def control(parent: Game, event):
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
                                                   command=lambda: p.return_main(),
-                                                  relief=FLAT, bg="#005f5f", fg="#7fffff")
+                                                  relief=FLAT, bg="#005f5f", fg="#7fffff", font=[p.font])
 
             back = "#005f5f"
             fore = "#7fffff"
@@ -224,7 +224,7 @@ def control(parent: Game, event):
         for i in range(len(a)):
             # print(a[i], b[i])
             place_bubble(canvass, p.bub, x, y, 25, a[i])
-            canvass.create_text(x, y + 40, text=p.lang[c[i]], fill=fore)
+            canvass.create_text(x, y + 40, text=p.lang[c[i]], fill=fore, font=[p.font])
             if x > 900:
                 x = 50
                 y += 100
@@ -518,6 +518,11 @@ class Game(Canvas):
         self.lang = yaml.safe_load(os.read(fd, 4096).decode())
         os.close(fd)
 
+        if self.config["game"]["language"] == "tengwar":
+            self.font = "Tengwar Annatar Regular"
+        else:
+            self.font = self.font
+
         self.commands = {"store": False, "present": False, "special-mode": False}
 
         # Player-prites
@@ -622,17 +627,17 @@ class Game(Canvas):
 
         self.start_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.load(),
                                 text=self.lang["home.start"],
-                                relief=FLAT, font=("helvetica", 20))
+                                relief=FLAT, font=(self.font, 20))
         self.start_btn.place(x=self.config["width"] / 2, y=self.config["height"] / 2 - 40, width=310, anchor=CENTER)
 
         self.quit_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.root.destroy(),
                                text=self.lang["home.quit"],
-                               relief=FLAT, font=("helvetica", 20))
+                               relief=FLAT, font=(self.font, 20))
         self.quit_btn.place(x=self.config["width"] / 2 + 80, y=self.config["height"] / 2 + 40, width=150, anchor=CENTER)
 
         self.options_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4,
                                   text=self.lang["home.options"],
-                                  relief=FLAT, font=("helvetica", 20))  # , command=lambda: self.options())
+                                  relief=FLAT, font=(self.font, 20))  # , command=lambda: self.options())
         self.options_btn.place(x=self.config["width"] / 2 - 80, y=self.config["height"] / 2 + 40, width=150,
                                anchor=CENTER)
 
@@ -769,9 +774,9 @@ class Game(Canvas):
 
         # Add-button and -entry (Input)
         self.add = Button(self.frame2, text=self.lang["slots.add"], relief=FLAT, bg="#7f7f7f", fg="white",
-                          command=self.add_save)
+                          command=self.add_save, font=[self.font])
         self.add.pack(side=RIGHT, padx=2, pady=5)
-        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief=FLAT)
+        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief=FLAT, font=("helvetica"))
         self.add_input.pack(side=LEFT, fill=X, expand=TRUE, padx=2, pady=5)
         self.add_input.bind("<Return>", self.add_event)
 
@@ -851,26 +856,26 @@ class Game(Canvas):
             self.canvass[-1].create_text(10, 10, text=name, fill="gold", anchor=NW,
                                          font=("Helvetica", 26, "bold"))
             self.canvass[-1].create_text(10, 50, text=infos["dates"][i], fill="#afafaf", anchor=NW,
-                                         font=("helvetica", 16))
+                                         font=("Helvetica", 16))
             self.canvass[-1].create_text(240, 50, text="Level: " + str(infos["level"][i]), fill="#afafaf", anchor=NW,
-                                         font=("helvetica", 16))
+                                         font=("Helvetica", 16))
             self.canvass[-1].create_text(370, 50, text="Score: " + str(infos["score"][i]), fill="#afafaf", anchor=NW,
-                                         font=("helvetica", 16))
+                                         font=("Helvetica", 16))
 
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7, font=[self.font]))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(name, event))
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7, font=[self.font]))
             self.buttons.copy()[-1].place(x=600, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.rename)
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7, font=[self.font]))
             self.buttons.copy()[-1].place(x=525, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.remove)
 
@@ -987,7 +992,10 @@ class Game(Canvas):
         # Returning to title menu.
         Maintance().auto_save(self.save_name, self.stats, self.bubbles)
         self.returnmain = True
-        self.t_auto_save.stop()
+        try:
+            self.t_auto_save.stop()
+        except AttributeError:
+            pass
         sleep(2)
         self.canvas.destroy()
         self.__init__(self.launcher_cfg, time(), True)
@@ -1278,20 +1286,20 @@ class Game(Canvas):
         self.canvas.create_line(0, 70, self.config["width"], 70, fill="lightblue")
         self.canvas.create_line(0, 69, self.config["width"], 69, fill="white")
 
-        c.create_text(55, 30, text=self.lang["info.score"], fill='orange')
-        c.create_text(110, 30, text=self.lang["info.level"], fill='orange')
-        c.create_text(165, 30, text=self.lang["info.speed"], fill='orange')
-        c.create_text(220, 30, text=self.lang["info.lives"], fill='orange')
-        c.create_text(330, 30, text=self.lang["info.state.score"], fill="gold")
-        c.create_text(400, 30, text=self.lang["info.state.protect"], fill="gold")
-        c.create_text(490, 30, text=self.lang["info.state.slowmotion"], fill="gold")
-        c.create_text(580, 30, text=self.lang["info.state.confusion"], fill="gold")
-        c.create_text(670, 30, text=self.lang["info.state.timebreak"], fill="gold")
-        c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold")
-        c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold")
-        c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold")
-        c.create_text(1030, 30, text=self.lang["info.state.notouch"], fill="gold")
-        c.create_text(1120, 30, text=self.lang["info.tps"], fill='gold')
+        c.create_text(55, 30, text=self.lang["info.score"], fill='orange', font=[self.font])
+        c.create_text(110, 30, text=self.lang["info.level"], fill='orange', font=[self.font])
+        c.create_text(165, 30, text=self.lang["info.speed"], fill='orange', font=[self.font])
+        c.create_text(220, 30, text=self.lang["info.lives"], fill='orange', font=[self.font])
+        c.create_text(330, 30, text=self.lang["info.state.score"], fill="gold", font=[self.font])
+        c.create_text(400, 30, text=self.lang["info.state.protect"], fill="gold", font=[self.font])
+        c.create_text(490, 30, text=self.lang["info.state.slowmotion"], fill="gold", font=[self.font])
+        c.create_text(580, 30, text=self.lang["info.state.confusion"], fill="gold", font=[self.font])
+        c.create_text(670, 30, text=self.lang["info.state.timebreak"], fill="gold", font=[self.font])
+        c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold", font=[self.font])
+        c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold", font=[self.font])
+        c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold", font=[self.font])
+        c.create_text(1030, 30, text=self.lang["info.state.notouch"], fill="gold", font=[self.font])
+        c.create_text(1120, 30, text=self.lang["info.tps"], fill='gold', font=[self.font])
         c.create_image(1185, 30, image=self.icons["store-diamond"])
         c.create_image(1185, 50, image=self.icons["store-coin"])
 
@@ -1312,9 +1320,9 @@ class Game(Canvas):
         self.texts["shiptp"] = c.create_text(1120, 50, fill='cyan')
         self.texts["diamond"] = c.create_text(1210, 30, fill='cyan')
         self.texts["coin"] = c.create_text(1210, 50, fill='cyan')
-        self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=("Helvetica", 50))
+        self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50))
 
-        self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=("Helvetica", 60, "bold"))
+        self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60, "bold"))
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
 
         # Threaded Automatic Save (TAS)
@@ -1429,10 +1437,10 @@ class Game(Canvas):
                                                   outline="#3f3f3f")
                 t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
                                              text="Creating bubbles...",
-                                             font=("Helvetica", 50), fill="#afafaf")
+                                             font=(self.font, 50), fill="#afafaf")
                 t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
                                              text="Thread 0 of 0 active",
-                                             font=("helvetica", 15), fill="#afafaf")
+                                             font=(self.font, 15), fill="#afafaf")
                 while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
                     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
                         len(self.bubbles["bub-index"]) - 1) + " active...")

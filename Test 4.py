@@ -130,7 +130,7 @@ if __name__ == '__main__':
         frames.append(tk.Frame(frame, height=200, width=700))
         canvass.append(tk.Canvas(frames[-1], height=200, width=700, bg="#7f7f7f", highlightthickness=0))
         canvass[-1].pack()
-        canvass[-1].create_text(10, 10, text=name, fill="#afafaf", anchor=NW, font=("Helvetica", 26))
+        canvass[-1].create_text(10, 10, text=name, fill="#afafaf", anchor=NW, font=(self.font, 26))
         canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
         open_btn.append(Button(frames[-1], relief=FLAT, text="open", bg="#afafaf"))

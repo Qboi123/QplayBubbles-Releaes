@@ -24,6 +24,8 @@ def control(parent, event):
     :param parent:
     :param event:
     """
+    from .base import Ammo
+
     p = parent
     if p.modes["store"] and p.commands["store"] is not None:
         if event.keysym == "Up":
@@ -136,6 +138,9 @@ def control(parent, event):
 
             p.stats["teleports"] -= 1
             teleport(p.canvas, p.root, p.stats, p.modes, p.ship, p.tp, p.tp["id1"])
+    elif event.keysym.lower() == "space":
+        a = Ammo(p)
+        a.create(None, None)
     if event.keysym == "Escape" and (not p.modes["pause"]) and (not p.modes["store"]) and (not p.modes["teleport"]) and \
             (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
         p.modes["pause"] = True
@@ -160,7 +165,7 @@ def control(parent, event):
                                                           height=20, width=300)
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=p.return_main,
+                                                  command=lambda: p.return_main(),
                                                   relief=FLAT, bg="#1f1f1f", fg="#afafaf")
             back = "#1f1f1f"
             fore = "yellow"
@@ -183,7 +188,7 @@ def control(parent, event):
                                                           height=500, width=300)
 
             p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=p.return_main,
+                                                  command=lambda: p.return_main(),
                                                   relief=FLAT, bg="#005f5f", fg="#7fffff")
 
             back = "#005f5f"
@@ -410,10 +415,13 @@ class Game(Canvas):
         import os
         import yaml
         from . import mod_support as mods
-        from .base import Sprite
+
+        print("started Game")
 
         # Load Mods
         self.mod_loader = mods.Loader(launcher_cfg)
+
+        print("started mods")
 
         # Laucher Config
         self.laucher_cfg = launcher_cfg
@@ -456,10 +464,12 @@ class Game(Canvas):
         # Stats
         self.stats = dict()
 
+        print("stats")
+
         # Sprites
         self.sprites = dict()
-        self.sprites["byClass"] = Dict(Sprite, dict)
-        self.sprites["byID"] = Dict(int, dict)
+        self.sprites["byClass"] = dict()
+        self.sprites["byID"] = dict()
 
         # Standard Temporaray variables
         self.temp = dict()
@@ -509,6 +519,11 @@ class Game(Canvas):
         self.lang = yaml.safe_load(os.read(fd, 4096).decode())
         os.close(fd)
 
+        if self.config["game"]["language"] == "tengwar":
+            self.font = "Tengwar Annatar Regular"
+        else:
+            self.font = self.font
+
         self.commands = {"store": False, "present": False, "special-mode": False}
 
         # Player-prites
@@ -526,8 +541,8 @@ class Game(Canvas):
                         "bub-position": list(), "bub-hardness": list(), "bub-index": list(), "key-active": False}
 
         # Ammo id-dictionary
-        self.ammo = {"ammo-id": dict(), "ammo-radius": 5, "ammo-speed": dict(), "ammo-position": dict(),
-                     "ammo-damage": dict(), "retime": start_time}
+        self.ammo = {"ammo-id": list(), "ammo-radius": 5, "ammo-speed": list(), "ammo-position": list(),
+                     "ammo-damage": list(), "retime": start_time}
 
         # Sets fullscreen if not
         if self.config["game"]["fullscreen"]:
@@ -547,7 +562,7 @@ class Game(Canvas):
 
         if not already_opened:
             self.close = Button(self.root, text="X", fg="white", relief=FLAT, bg="#ff0000",
-                                command=lambda: self.root.destroy())
+                                command=lambda: os.kill(os.getpid(), -1))
             self.close.pack(side=TOP, fill=X)
 
         self.items = list()
@@ -613,17 +628,17 @@ class Game(Canvas):
 
         self.start_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.load(),
                                 text=self.lang["home.start"],
-                                relief=FLAT, font=("helvetica", 20))
+                                relief=FLAT, font=(self.font, 20))
         self.start_btn.place(x=self.config["width"] / 2, y=self.config["height"] / 2 - 40, width=310, anchor=CENTER)
 
         self.quit_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.root.destroy(),
                                text=self.lang["home.quit"],
-                               relief=FLAT, font=("helvetica", 20))
+                               relief=FLAT, font=(self.font, 20))
         self.quit_btn.place(x=self.config["width"] / 2 + 80, y=self.config["height"] / 2 + 40, width=150, anchor=CENTER)
 
         self.options_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4,
                                   text=self.lang["home.options"],
-                                  relief=FLAT, font=("helvetica", 20))  # , command=lambda: self.options())
+                                  relief=FLAT, font=(self.font, 20))  # , command=lambda: self.options())
         self.options_btn.place(x=self.config["width"] / 2 - 80, y=self.config["height"] / 2 + 40, width=150,
                                anchor=CENTER)
 
@@ -840,13 +855,13 @@ class Game(Canvas):
             self.canvass[-1].pack()
 
             self.canvass[-1].create_text(10, 10, text=name, fill="gold", anchor=NW,
-                                         font=("Helvetica", 26, "bold"))
+                                         font=(self.font, 26, "bold"))
             self.canvass[-1].create_text(10, 50, text=infos["dates"][i], fill="#afafaf", anchor=NW,
-                                         font=("helvetica", 16))
+                                         font=(self.font, 16))
             self.canvass[-1].create_text(240, 50, text="Level: " + str(infos["level"][i]), fill="#afafaf", anchor=NW,
-                                         font=("helvetica", 16))
+                                         font=(self.font, 16))
             self.canvass[-1].create_text(370, 50, text="Score: " + str(infos["score"][i]), fill="#afafaf", anchor=NW,
-                                         font=("helvetica", 16))
+                                         font=(self.font, 16))
 
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
@@ -978,6 +993,10 @@ class Game(Canvas):
         # Returning to title menu.
         Maintance().auto_save(self.save_name, self.stats, self.bubbles)
         self.returnmain = True
+        try:
+            self.t_auto_save.stop()
+        except AttributeError:
+            pass
         sleep(2)
         self.canvas.destroy()
         self.__init__(self.launcher_cfg, time(), True)
@@ -988,16 +1007,16 @@ class Game(Canvas):
                 if not self.stats["paralis"]:
                     x, y = get_coords(self.canvas, self.ship["id"])
                     if self.stats["speedboost"]:
-                        a = 10
+                        a = 6
                     else:
-                        a = 0
+                        a = 1
                     if self.pressed['Up']:
                         if y > 72 + self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / 20 - a))
+                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / (self.move_fps / 2) - a))
                             self.root.update()
                     elif self.pressed['Down']:
                         if y < self.config["height"] - self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / 20 + a))
+                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / (self.move_fps / 2) + a))
                             self.root.update()
                     elif self.pressed['Left']:
                         if x > 0 + self.config["game"]["ship-radius"]:
@@ -1011,14 +1030,17 @@ class Game(Canvas):
 
     def movent_change(self):
         time2 = time()
-        while True:
+        while not self.returnmain:
             time1 = time()
             try:
-                self.move_fps = 1 / (time2 - time1)
+                # print(time1 - time2)
+                # print(1/(time1 - time2))
+                self.move_fps = 1 / (time1 - time2)
             except ZeroDivisionError:
                 self.move_fps = 1
-            Thread(None, lambda: self._movent()).start()
             time2 = time()
+            Thread(None, lambda: self._movent()).start()
+            sleep(0.01)
 
     def _press(self, e):
         if e.keysym == "Up":
@@ -1252,6 +1274,7 @@ class Game(Canvas):
 
         # Creating ship.
         self.ship["id"] = c.create_image(7.5, 7.5, image=self.ship["image"])
+        print(self.ship["id"])
 
         # Moving ship to position
         c.move(self.ship["id"], self.stats["ship-position"][0], self.stats["ship-position"][1])
@@ -1298,10 +1321,13 @@ class Game(Canvas):
         self.texts["shiptp"] = c.create_text(1120, 50, fill='cyan')
         self.texts["diamond"] = c.create_text(1210, 30, fill='cyan')
         self.texts["coin"] = c.create_text(1210, 50, fill='cyan')
-        self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=("Helvetica", 50))
+        self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50))
 
-        self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=("Helvetica", 60, "bold"))
+        self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60, "bold"))
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
+
+        # Threaded Automatic Save (TAS)
+        self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
 
         # Binding key-events for control
         c.bind_all('<Key>', lambda event: control(self, event))
@@ -1394,19 +1420,28 @@ class Game(Canvas):
         # Post Initalize mods
         self.mod_loader.post_initialize(self)
 
+        from .base import BaseBarier
+
+        height = self.config["height"]
+        width = self.config["width"]
+
+        bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
+        bariers[0].create(randint(0, width), height / 2 + 72 / 2)
+        bariers[1].create(randint(0, width), height / 2 + 72 / 2)
+        bariers[2].create(randint(0, width), height / 2 + 72 / 2)
+
         try:
             # MAIN GAME LOOP
-            Thread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
             while True:
-                self.stats = self.cfg.auto_restore(self.save_name)
+                # self.stats = self.cfg.auto_restore(self.save_name)
                 t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
                                                   outline="#3f3f3f")
                 t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
                                              text="Creating bubbles...",
-                                             font=("Helvetica", 50), fill="#afafaf")
+                                             font=(self.font, 50), fill="#afafaf")
                 t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
                                              text="Thread 0 of 0 active",
-                                             font=("helvetica", 15), fill="#afafaf")
+                                             font=(self.font, 15), fill="#afafaf")
                 while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
                     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
                         len(self.bubbles["bub-index"]) - 1) + " active...")
@@ -1425,6 +1460,8 @@ class Game(Canvas):
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()
+                for barier in bariers:
+                    barier.destroy()
                 g1 = c.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
                 g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["score"]), fill='white',
                                    font=('Helvetica', 30))

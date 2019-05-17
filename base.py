@@ -311,7 +311,7 @@ class BaseBarier(Sprite):
         self.type = TYPE_DANGEROUS
         self.form = FORM_RECT
         self.direction = UP
-        self.__speed = randint(10, 13)
+        self.__speed = randint(40, 52)
         self.x_speed = 0
         self.y_speed = self.__speed
         self.x_move = 0

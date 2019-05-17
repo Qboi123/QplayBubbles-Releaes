@@ -57,7 +57,7 @@ class Present:
         self.IconId2 = canvas.create_image(mid_x, 120, image=icons["present"])
         self.Diamonds = None
         self.Money = None
-        self.textid = canvas.create_text(mid_x, mid_y + 20, font=("Helvetica", 30), fill="black")
+        self.textid = canvas.create_text(mid_x, mid_y + 20, font=(self.font, 30), fill="black")
         self.fgid = canvas.create_image(mid_x, mid_y, image=foregrounds["store-fg"])
 
         # Ramdomizing Gifts for output
@@ -310,7 +310,7 @@ class Store:
 
         # Number of diamonds you have:
         self.vDiamonds = canvas.create_text(25, 25, text="Diamonds: " + str(stats["diamonds"]), fill="white", anchor=W,
-                                            font=("Helvetica", 18))
+                                            font=(self.font, 18))
 
         # Setups items and price.
         info = Reader("config/store.json").get_decoded()
@@ -678,7 +678,7 @@ class Window:
         Label-child for the virtual window.
         """
 
-        def __init__(self, canvas, parent, x, y, text="", color="black", font=("Helvetica", 9), anchor=CENTER):
+        def __init__(self, canvas, parent, x, y, text="", color="black", font=(), anchor=CENTER):
             self.canvas = canvas
             # Creates label.
             self.id = self.canvas.create_text(x, y, text=text, fill=color, font=font, anchor=anchor)
@@ -768,7 +768,7 @@ class CheatEngine:
         temp["special-level-save"] = stats["special-level-time"] - time()
 
         self.text = ""
-        self.text_id = canvas.create_text(10, config["height"] - 100, text="> ", font=("Helvetica", 24), anchor=SW)
+        self.text_id = canvas.create_text(10, config["height"] - 100, text="> ", font=(self.font, 24), anchor=SW)
         self.a = canvas.bind("<Key>",
                              lambda: self.input_event_handler(canvas, log, stats, backgrounds, bubble, event,
                                                               config, bub,
