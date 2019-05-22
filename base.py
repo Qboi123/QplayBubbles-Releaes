@@ -62,7 +62,8 @@ DirectionWaring = Warning
 
 
 class Sprite:
-    def __init__(self, parent: Game):
+    requires = ()
+    def __init__(self, **kwargs):
         name = "EmptySprite"
         self.parent = parent
 
@@ -112,7 +113,7 @@ class Sprite:
         self.info = {"id": self.id,
                      "class": self}
         self.parent.sprites["byID"][self.info["id"]] = self.info
-        self.thread3 = StoppableThread(None, lambda: self.move(), __name__ + ".Thread").start()
+2        self.thread3 = StoppableThread(None, lambda: self.move(), __name__ + ".Thread").start()
 
     def destroy(self):
         self.__active = False
@@ -295,8 +296,8 @@ class Sprite:
                 except ZeroDivisionError:
                     self.fps = 1
                 time2 = time()
-                self._on_move()
-                self.thread2 = StoppableThread(None, lambda: self._on_collision(), __name__ + ".Collision").start()
+                self.thread2 = StoppableThread(None, lambda: self._on_move(), __name__ + ".Collision").start()
+                self._on_collision()
 
 
 # noinspection PyRedundantParentheses
@@ -311,12 +312,12 @@ class BaseBarier(Sprite):
         self.type = TYPE_DANGEROUS
         self.form = FORM_RECT
         self.direction = UP
-        self.__speed = randint(40, 52)
+        self.__speed = randint(80, 104)
         self.x_speed = 0
         self.y_speed = self.__speed
         self.x_move = 0
         self.y_move = self.__speed
-        self.height = 150
+        self.height = 100
         self.width = 10
         self.collision_with = [SHIP]
 

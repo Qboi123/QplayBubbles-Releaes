@@ -483,7 +483,7 @@ class Collision:
         if action == "Teleporter":
             stats["teleports"] += 1
         if action == "StoneBub":
-            stats["score"] += (bubscore * (bubble["bub-hardness"][index] / 9))
+            stats["score"] += int((bubscore * bubble["bub-hardness"][index]))
         if action == "LevelKey":
             stats["level"] += 1
             # clean_level_keys()
