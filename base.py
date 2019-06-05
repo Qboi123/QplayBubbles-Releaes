@@ -1,4 +1,5 @@
 from .fake_main import Game
+from .components import StoppableThread
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
@@ -113,7 +114,7 @@ class Sprite:
         self.info = {"id": self.id,
                      "class": self}
         self.parent.sprites["byID"][self.info["id"]] = self.info
-2        self.thread3 = StoppableThread(None, lambda: self.move(), __name__ + ".Thread").start()
+        self.thread3 = StoppableThread(None, lambda: self.move(), __name__ + ".Thread").start()
 
     def destroy(self):
         self.__active = False
