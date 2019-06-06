@@ -3,6 +3,8 @@ if __name__ == "__main__":
     input()
     exit(1)
 
+from .base import Ammo
+
 from time import sleep
 
 from .ammo import *
@@ -12,6 +14,11 @@ from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
 
+FatalError = Exception
+
+ModRequirementInvalid = FatalError
+ClassRequirementInvalid = ModRequirementInvalid
+
 log = Logging("logs", True, True)
 
 log.info("<Root>", "Imports loading success")
@@ -19,7 +26,7 @@ log.info("<Root>", "Starting Game")
 
 
 def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, temp, panels, fore, ship, tp, lang,
-            return_main, icons, parent, bub, font, event):
+            return_main, icons, parent, bub, font, event, c_ammo):
     """
     Ship-motion event
     :param font:
@@ -158,7 +165,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
             stats["teleports"] -= 1
             teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
     elif event.keysym.lower() == "space":
-        a = Ammo(parent)
+        a = c_ammo()
         a.create(None, None)
     if event.keysym == "Escape" and (not modes["pause"]) and (not modes["store"]) and (not modes["teleport"]) and \
             (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
@@ -425,7 +432,7 @@ def r_start(bubble: Dict[str, Any], stats: Dict[str, Any], config: Dict[str, Any
         create_bubble(stats, config, bub, canvas, bubble, modes, i, x=x, y=y, r=r)
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,PyArgumentList,PyCallByClass
 class Game(Canvas):
     def __init__(self, launcher_cfg: Dict[str, Any], start_time=0.0, already_opened=False):
         super().__init__()
@@ -522,7 +529,7 @@ class Game(Canvas):
         self.panels = dict()
 
         # Initialize Canvas
-        self.canvas = None
+        self.canvas = Canvas
 
         # Icons and texts
         self.icons = dict()
@@ -1162,6 +1169,7 @@ class Game(Canvas):
             if not self.modes["pause"]:
                 if not self.stats["paralis"]:
                     if event.keysym == "space":
+                        # noinspection PyTypeChecker
                         create_shot(self.canvas, self.ammo, self.config, self.ship, self.stats)
 
     def auto_save(self):
@@ -1171,6 +1179,7 @@ class Game(Canvas):
             sleep(2)
 
     def update(self):
+        self.canvas.tag_raise(self.ship["id"])
         if not self.stats["timebreak"]:
             if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
                 if not self.stats["special-level"]:
@@ -1207,7 +1216,7 @@ class Game(Canvas):
         # print(self.mod_loader.events)
         for events in self.mod_loader.events.values():
             for event in events:
-                event.on_t_update(self)
+                Thread(None, lambda: event.on_t_update(self)).start()
 
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
@@ -1400,8 +1409,18 @@ class Game(Canvas):
         # Threaded Automatic Save (TAS)
         self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
 
+        kw = {}
+
+        for i in Ammo.requires
+            if i in self.__dict__.keys():
+                kw[i] = self.__dict__[i]
+            else:
+                raise ClassRequirementInvalid("Requirement \"%s\" of class Ammo is invalid." % i)
+        
+        self.c_ammo = Ammo()
+
         # Binding key-events for control
-        c.bind_all('<Key>', lambda event: control(self.modes, self.config, self.root, self.canvas, self.stats, self.bubbles, self.back, self.texts, self.commands, self.temp, self.panels, self.fore, self.ship, self.tp, self.lang, self.return_main, self.icons, self, self.bub, self.font, event))
+        c.bind_all('<Key>', lambda event: control(self.modes, self.config, self.root, self.canvas, self.stats, self.bubbles, self.back, self.texts, self.commands, self.temp, self.panels, self.fore, self.ship, self.tp, self.lang, self.return_main, self.icons, self, self.bub, self.font, event, self.c_ammo))
 
         c.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))
         c.bind_all("<KeyPress-Down>", lambda event: self.down_press(event))
@@ -1482,6 +1501,8 @@ class Game(Canvas):
         self.stats = self.cfg.auto_restore(self.save_name)
 
         start(self.bubbles, self.save_name, self.stats, self.config, self.bub, self.modes, self.canvas)
+
+        Maintance.auto_save(self.save_name, self.stats, self.bubbles)
 
         global Mainloop
         Mainloop = False
