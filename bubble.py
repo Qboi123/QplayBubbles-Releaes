@@ -1,7 +1,6 @@
 from .ammo import *
-from .info import *
 from .components import *
-from .extras import play_sound
+from .info import *
 
 
 def place_bubble(c, bub, x, y, r, act):
@@ -66,11 +65,9 @@ def place_bubble(c, bub, x, y, r, act):
         return c.create_image(x, y, image=bub["Present"][40])
 
 
-def create_bubble(stats, config, bub, c, bubble, modes, index, i=None, x=None, y=None, r=None, s=None):
+def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None, s=None):
     """
     Creates a bubble that can moving and removing by touching with the ship
-    :param index:
-    :param modes:
     :param s:
     :param bubble:
     :param c:
@@ -317,7 +314,7 @@ def del_bubble(index, bubble, canvas):
     del bubble["bub-index"][index]
 
 
-def clean_up_bubs(bubble, canvas, config):
+def clean_up_bubs(bubble, canvas):
     """
     Removes bubbles that's out of screen. If x is lower than -100
     """
@@ -408,6 +405,7 @@ class Collision:
         Collision.
         All bubbles have a function.
         This Method sets a state or sets a variable.
+        :param panels:
         :param log:
         :param log:
         :param index:
@@ -491,14 +489,14 @@ class Collision:
             view_level(canvas, root, texts, stats["level"])
         if action == "Present":
             commands["present"] = True
-        play_sound("data/sounds/bubpop.mp3")
+        # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/bubpop.mp3")
         if action == "SpecialKey":
             canvas.itemconfig(backgrounds["id"], image=backgrounds["special"])
             canvas.itemconfig(panels["game/top"], fill="#3f3f3f")
             stats["special-level"] = True
             stats["special-level-time"] = time() + 30
             log.info("State", "(CollFunc) Special Level State is ON!!!")
-            play_sound("data/sounds/specialmode.mp3")
+            # play_sound("versions/"+self.launcher_cfg["versionDir"]+"/data/sounds/specialmode.mp3")
         log.debug("CollFunc", "Bubble popped with id: "+str(index)+" | action: "+action)
 
     @staticmethod
@@ -578,6 +576,7 @@ class Collision:
                 exit(0)
             except AttributeError:
                 exit(0)
+
 
 def movebubble_thread(index, bubble, speed, action, id, radius, canvas, stats, modes):
     # print("start")

@@ -64,10 +64,10 @@ def my_excepthook(exc_type, exc_value, _tb):
 
     tme = time.strftime
     filename1 = tme("crashreport_%d_%m_%Y_-_%H_%M_%S.log")
-    save_path = "../../crashes/" + filename1
+    save_path = "crashes/" + filename1
 
     try:
-        os.makedirs("../../crashes")
+        os.makedirs("crashes")
     except FileExistsError:
         pass
     with open(save_path, "w+") as file:

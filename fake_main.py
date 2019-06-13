@@ -6,11 +6,17 @@ if __name__ == "__main__":
 from time import sleep
 
 from .ammo import *
+
 from .bubble import Collision, create_bubble, place_bubble
 from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
+
+FatalError = Exception
+
+ModRequirementInvalid = FatalError
+ClassRequirementInvalid = ModRequirementInvalid
 
 log = Logging("logs", True, True)
 
@@ -18,192 +24,210 @@ log.info("<Root>", "Imports loading success")
 log.info("<Root>", "Starting Game")
 
 
-def control(parent, event):
+def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, temp, panels, fore, ship, tp, lang,
+            return_main, icons, parent, bub, font, event, c_ammo, laucher_cfg):
     """
     Ship-motion event
+    :param font:
+    :param bub:
+    :param icons:
+    :param ship:
+    :param tp:
+    :param lang:
+    :param return_main:
+    :param commands:
+    :param fore:
+    :param panels:
+    :param temp:
+    :param modes:
+    :param config:
+    :param root:
+    :param canvas:
+    :param stats:
+    :param bubbles:
+    :param back:
+    :param texts:
     :param parent:
     :param event:
     """
-    from .base import Ammo
 
-    p = parent
-    if p.modes["store"] and p.commands["store"] is not None:
+    if modes["store"] and commands["store"] is not None:
         if event.keysym == "Up":
-            p.commands["store"].set_selected(p.canvas, -1)
+            commands["store"].set_selected(canvas, -1)
         if event.keysym == "Down":
-            p.commands["store"].set_selected(p.canvas, 1)
+            commands["store"].set_selected(canvas, 1)
         if event.keysym == "Left":
-            p.commands["store"].set_selected(p.canvas, int(-((p.config["height"] - 215) / 140 + 1)))
+            commands["store"].set_selected(canvas, int(-((config["height"] - 215) / 140 + 1)))
         if event.keysym == "Right":
-            p.commands["store"].set_selected(p.canvas, int((p.config["height"] - 215) / 140 + 1))
+            commands["store"].set_selected(canvas, int((config["height"] - 215) / 140 + 1))
         if event.keysym == "space":
-            p.commands["store"].buy_selected(p.config, p.modes, log, p.root, p.canvas, p.stats, p.bubbles, p.back,
-                                             p.texts,
-                                             p.commands, p.temp, p.panels)
+            commands["store"].buy_selected(config, modes, log, root, canvas, stats, bubbles, back,
+                                           texts,
+                                           commands, temp, panels)
         if event.keysym == "BackSpace":
-            p.commands["store"].exit(p.canvas, log, p.modes, p.stats, p.temp, p.commands)
-            p.commands["store"] = None
+            commands["store"].exit(canvas, log, modes, stats, temp, commands)
+            commands["store"] = None
         if event.keysym == "Escape":
             sleep(1)
-            p.commands["store"].exit(p.canvas, log, p.modes, p.stats, p.temp, p.commands)
-            p.commands["store"] = None
-    if p.modes["present"]:
+            commands["store"].exit(canvas, log, modes, stats, temp, commands)
+            commands["store"] = None
+    if modes["present"]:
         if event.keysym == "space":
-            if False != p.commands["present"] != True:
-                p.commands["present"].exit(p.canvas)
-                p.modes["pause"] = False
-                p.modes["present"] = False
-                p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
-                p.stats["secure-time"] = p.temp["secure-save"] + time()
-                p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
-                p.stats["confusion-time"] = p.temp["confusion-save"] + time()
-                p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
-                p.stats["paralis-time"] = p.temp["paralis-save"] + time()
-                p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
-                p.stats["notouch-time"] = p.temp["notouch-save"] + time()
-    if p.modes["teleport"]:
-        x, y = get_coords(p.canvas, p.tp["id1"])
+            if False != commands["present"] != True:
+                commands["present"].exit(canvas)
+                modes["pause"] = False
+                modes["present"] = False
+                stats["scorestate-time"] = temp["scorestate-save"] + time()
+                stats["secure-time"] = temp["secure-save"] + time()
+                stats["timebreak-time"] = temp["timebreak-save"] + time()
+                stats["confusion-time"] = temp["confusion-save"] + time()
+                stats["slowmotion-time"] = temp["slowmotion-save"] + time()
+                stats["paralis-time"] = temp["paralis-save"] + time()
+                stats["shotspeed-time"] = temp["shotspeed-save"] + time()
+                stats["notouch-time"] = temp["notouch-save"] + time()
+    if modes["teleport"]:
+        x, y = get_coords(canvas, tp["id1"])
         if event.keysym == 'Up':
             if y > 72 + 5:
-                p.canvas.move(p.tp["id1"], 0, -5)
-                p.canvas.move(p.tp["id2"], 0, -5)
-                p.canvas.move(p.tp["id3"], 0, -5)
-                p.canvas.move(p.tp["id4"], 0, -5)
+                canvas.move(tp["id1"], 0, -5)
+                canvas.move(tp["id2"], 0, -5)
+                canvas.move(tp["id3"], 0, -5)
+                canvas.move(tp["id4"], 0, -5)
         if event.keysym == "Down":
-            if y < p.config["height"] - 105 - 5:
-                p.canvas.move(p.tp["id1"], 0, 5)
-                p.canvas.move(p.tp["id2"], 0, 5)
-                p.canvas.move(p.tp["id3"], 0, 5)
-                p.canvas.move(p.tp["id4"], 0, 5)
+            if y < config["height"] - 105 - 5:
+                canvas.move(tp["id1"], 0, 5)
+                canvas.move(tp["id2"], 0, 5)
+                canvas.move(tp["id3"], 0, 5)
+                canvas.move(tp["id4"], 0, 5)
         if event.keysym == "Left":
             if x > 0 + 5:
-                p.canvas.move(p.tp["id1"], -5, 0)
-                p.canvas.move(p.tp["id2"], -5, 0)
-                p.canvas.move(p.tp["id3"], -5, 0)
-                p.canvas.move(p.tp["id4"], -5, 0)
+                canvas.move(tp["id1"], -5, 0)
+                canvas.move(tp["id2"], -5, 0)
+                canvas.move(tp["id3"], -5, 0)
+                canvas.move(tp["id4"], -5, 0)
         if event.keysym == "Right":
-            if x < p.config["width"] - 5:
-                p.canvas.move(p.tp["id1"], 5, 0)
-                p.canvas.move(p.tp["id2"], 5, 0)
-                p.canvas.move(p.tp["id3"], 5, 0)
-                p.canvas.move(p.tp["id4"], 5, 0)
+            if x < config["width"] - 5:
+                canvas.move(tp["id1"], 5, 0)
+                canvas.move(tp["id2"], 5, 0)
+                canvas.move(tp["id3"], 5, 0)
+                canvas.move(tp["id4"], 5, 0)
         if event.keysym == "BackSpace":
-            p.modes["pause"] = False
+            modes["pause"] = False
 
-            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
-            p.stats["secure-time"] = p.temp["secure-save"] + time()
-            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
-            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
-            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
-            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
-            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
-            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
+            stats["scorestate-time"] = temp["scorestate-save"] + time()
+            stats["secure-time"] = temp["secure-save"] + time()
+            stats["timebreak-time"] = temp["timebreak-save"] + time()
+            stats["confusion-time"] = temp["confusion-save"] + time()
+            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
+            stats["paralis-time"] = temp["paralis-save"] + time()
+            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
+            stats["notouch-time"] = temp["notouch-save"] + time()
         if event.keysym == "Escape":
-            p.modes["pause"] = False
+            modes["pause"] = False
 
-            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
-            p.stats["secure-time"] = p.temp["secure-save"] + time()
-            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
-            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
-            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
-            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
-            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
-            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
+            stats["scorestate-time"] = temp["scorestate-save"] + time()
+            stats["secure-time"] = temp["secure-save"] + time()
+            stats["timebreak-time"] = temp["timebreak-save"] + time()
+            stats["confusion-time"] = temp["confusion-save"] + time()
+            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
+            stats["paralis-time"] = temp["paralis-save"] + time()
+            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
+            stats["notouch-time"] = temp["notouch-save"] + time()
             sleep(1)
         if event.keysym == "Return":
-            p.modes["pause"] = False
+            modes["pause"] = False
 
-            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
-            p.stats["secure-time"] = p.temp["secure-save"] + time()
-            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
-            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
-            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
-            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
-            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
-            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
+            stats["scorestate-time"] = temp["scorestate-save"] + time()
+            stats["secure-time"] = temp["secure-save"] + time()
+            stats["timebreak-time"] = temp["timebreak-save"] + time()
+            stats["confusion-time"] = temp["confusion-save"] + time()
+            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
+            stats["paralis-time"] = temp["paralis-save"] + time()
+            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
+            stats["notouch-time"] = temp["notouch-save"] + time()
 
-            p.stats["teleports"] -= 1
-            teleport(p.canvas, p.root, p.stats, p.modes, p.ship, p.tp, p.tp["id1"])
+            stats["teleports"] -= 1
+            teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
         if event.keysym.lower() == "space":
-            p.modes["pause"] = False
+            modes["pause"] = False
 
-            p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
-            p.stats["secure-time"] = p.temp["secure-save"] + time()
-            p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
-            p.stats["confusion-time"] = p.temp["confusion-save"] + time()
-            p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
-            p.stats["paralis-time"] = p.temp["paralis-save"] + time()
-            p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
-            p.stats["notouch-time"] = p.temp["notouch-save"] + time()
+            stats["scorestate-time"] = temp["scorestate-save"] + time()
+            stats["secure-time"] = temp["secure-save"] + time()
+            stats["timebreak-time"] = temp["timebreak-save"] + time()
+            stats["confusion-time"] = temp["confusion-save"] + time()
+            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
+            stats["paralis-time"] = temp["paralis-save"] + time()
+            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
+            stats["notouch-time"] = temp["notouch-save"] + time()
 
-            p.stats["teleports"] -= 1
-            teleport(p.canvas, p.root, p.stats, p.modes, p.ship, p.tp, p.tp["id1"])
+            stats["teleports"] -= 1
+            teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
     elif event.keysym.lower() == "space":
-        a = Ammo(p)
+        a = c_ammo()
         a.create(None, None)
-    if event.keysym == "Escape" and (not p.modes["pause"]) and (not p.modes["store"]) and (not p.modes["teleport"]) and \
-            (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
-        p.modes["pause"] = True
+    if event.keysym == "Escape" and (not modes["pause"]) and (not modes["store"]) and (not modes["teleport"]) and \
+            (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
+        modes["pause"] = True
 
-        p.canvas.delete(p.icons["pause"])
-        if p.stats["special-level"]:
-            p.temp['pause/bg'] = p.canvas.create_rectangle(0, 69,
-                                                           p.config["width"],
-                                                           p.config[
-                                                               "height"],
-                                                           fill="#3f3f3f",
-                                                           outline="#3f3f3f")
-            p.temp['pause/top.line'] = p.canvas.create_line(0, 69, p.config["width"], 69,
-                                                            fill="#afafaf")
-            # p.temp['pause/bottom.line'] = p.canvas.create_line(0, p.config["height"] - 102, p.config["width"],
-            #                                                p.config["height"] - 102,
+        canvas.delete(icons["pause"])
+        if stats["special-level"]:
+            temp['pause/bg'] = canvas.create_rectangle(0, 69,
+                                                       config["width"],
+                                                       config[
+                                                           "height"],
+                                                       fill="#3f3f3f",
+                                                       outline="#3f3f3f")
+            temp['pause/toline'] = canvas.create_line(0, 69, config["width"], 69,
+                                                      fill="#afafaf")
+            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
+            #                                                config["height"] - 102,
             #                                                fill="#afafaf")
 
-            p.temp['pause/menu_frame'] = Frame(p.root, bg="#3f3f3f")
-            p.temp['pause/menu'] = p.canvas.create_window(p.config["middle-x"], p.config["middle-y"] / 2 + 130,
-                                                          window=p.temp['pause/menu_frame'], anchor='n',
-                                                          height=20, width=300)
+            temp['pause/menu_frame'] = Frame(root, bg="#3f3f3f")
+            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
+                                                      window=temp['pause/menu_frame'], anchor='n',
+                                                      height=20, width=300)
 
-            p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=lambda: p.return_main(),
-                                                  relief=FLAT, bg="#1f1f1f", fg="#afafaf")
+            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
+                                                command=lambda: return_main(),
+                                                relief=FLAT, bg="#1f1f1f", fg="#afafaf", font=font)
             back = "#1f1f1f"
             fore = "yellow"
         else:
-            p.temp['pause/bg'] = p.canvas.create_rectangle(0, 69,
-                                                           p.config["width"],
-                                                           p.config[
-                                                               "height"],
-                                                           fill="darkcyan",
-                                                           outline="darkcyan")
-            p.temp['pause/top.line'] = p.canvas.create_line(0, 69, p.config["width"], 69,
-                                                            fill="#7fffff")
-            # p.temp['pause/bottom.line'] = p.canvas.create_line(0, p.config["height"] - 102, p.config["width"],
-            #                                                p.config["height"] - 102,
+            temp['pause/bg'] = canvas.create_rectangle(0, 69,
+                                                       config["width"],
+                                                       config[
+                                                           "height"],
+                                                       fill="darkcyan",
+                                                       outline="darkcyan")
+            temp['pause/toline'] = canvas.create_line(0, 69, config["width"], 69,
+                                                      fill="#7fffff")
+            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
+            #                                                config["height"] - 102,
             #                                                fill="#7fffff")
 
-            p.temp['pause/menu_frame'] = Frame(p.root, bg="darkcyan")
-            p.temp['pause/menu'] = p.canvas.create_window(p.config["middle-x"], p.config["middle-y"] / 2 + 130,
-                                                          window=p.temp['pause/menu_frame'], anchor='n',
-                                                          height=500, width=300)
+            temp['pause/menu_frame'] = Frame(root, bg="darkcyan")
+            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
+                                                      window=temp['pause/menu_frame'], anchor='n',
+                                                      height=500, width=300)
 
-            p.temp["pause/back-to-menu"] = Button(p.temp["pause/menu_frame"], text=p.lang["pause.back-to-home"],
-                                                  command=lambda: p.return_main(),
-                                                  relief=FLAT, bg="#005f5f", fg="#7fffff")
+            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
+                                                command=lambda: return_main(),
+                                                relief=FLAT, bg="#005f5f", fg="#7fffff", font=[font])
 
             back = "#005f5f"
             fore = "#7fffff"
 
-        p.temp["s_frame"] = Frame(p.root, bg=back)
-        p.temp["s_frame"].place(x=p.config["middle-x"], y=p.config["middle-y"] / 2 + 250, anchor='n', width=1000)
+        temp["s_frame"] = Frame(root, bg=back)
+        temp["s_frame"].place(x=config["middle-x"], y=config["middle-y"] / 2 + 250, anchor='n', width=1000)
 
-        p.temp["sw"] = ScrolledWindow(p.temp["s_frame"], 1020, 321, height=321, width=1000)
+        temp["sw"] = ScrolledWindow(temp["s_frame"], 1020, 321, height=321, width=1000)
 
-        p.temp["canv"] = p.temp["sw"].canv
-        p.temp["canv"].config(bg=back)
-        p.temp["sw"].scrollwindow.config(bg=back)
+        temp["canv"] = temp["sw"].canv
+        temp["canv"].config(bg=back)
+        temp["sw"].scrollwindow.config(bg=back)
 
-        p.temp["frame"] = p.temp["sw"].scrollwindow
+        temp["frame"] = temp["sw"].scrollwindow
 
         a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
              "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
@@ -216,14 +240,14 @@ def control(parent, event):
              "bubble.coin", "bubble.state.notouch", "bubble.state.paralis", "bubble.diamond", "bubble.stonebubble",
              "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
 
-        canvass = Canvas(p.temp["frame"], bg=back, highlightthickness=0)
+        canvass = Canvas(temp["frame"], bg=back, highlightthickness=0)
         x = 50
         y = 50
-        p.temp["pause/bubble.p.iconss"] = []
+        temp["pause/bubble.iconss"] = []
         for i in range(len(a)):
             # print(a[i], b[i])
-            place_bubble(canvass, p.bub, x, y, 25, a[i])
-            canvass.create_text(x, y + 40, text=p.lang[c[i]], fill=fore)
+            place_bubble(canvass, bub, x, y, 25, a[i])
+            canvass.create_text(x, y + 40, text=lang[c[i]], fill=fore, font=[font])
             if x > 900:
                 x = 50
                 y += 100
@@ -233,89 +257,89 @@ def control(parent, event):
         canvass.config(height=y + 70, width=1000)
         canvass.pack(fill=Y)
 
-        p.temp["pause/back-to-menu"].pack(fill=X)
+        temp["pause/back-to-menu"].pack(fill=X)
 
-        p.icons["pause"] = p.canvas.create_image(p.config["middle-x"], p.config["middle-y"] / 2,
-                                                 image=p.icons["pause-id"])
+        icons["pause"] = canvas.create_image(config["middle-x"], config["middle-y"] / 2,
+                                             image=icons["pause-id"])
 
-        p.canvas.itemconfig(p.texts["pause"], text="")
-        p.root.update()
+        canvas.itemconfig(texts["pause"], text="")
+        root.update()
 
-        p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
-        p.temp["secure-save"] = p.stats["secure-time"] - time()
-        p.temp["timebreak-save"] = p.stats["timebreak-time"] - time()
-        p.temp["confusion-save"] = p.stats["confusion-time"] - time()
-        p.temp["slowmotion-save"] = p.stats["slowmotion-time"] - time()
-        p.temp["paralis-save"] = p.stats["paralis-time"] - time()
-        p.temp["shotspeed-save"] = p.stats["shotspeed-time"] - time()
-        p.temp["notouch-save"] = p.stats["notouch-time"] - time()
-        p.temp["special-level-save"] = p.stats["special-level-time"] - time()
-    elif event.keysym == "Escape" and p.modes["pause"] and (not p.modes["store"]) and (not p.modes["teleport"]) and \
-            (not p.modes["window"]) and (not p.modes["present"]) and (not p.modes["cheater"]):
-        p.modes["pause"] = False
+        temp["scorestate-save"] = stats["scorestate-time"] - time()
+        temp["secure-save"] = stats["secure-time"] - time()
+        temp["timebreak-save"] = stats["timebreak-time"] - time()
+        temp["confusion-save"] = stats["confusion-time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
+        temp["paralis-save"] = stats["paralis-time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
+        temp["notouch-save"] = stats["notouch-time"] - time()
+        temp["special-level-save"] = stats["special-level-time"] - time()
+    elif event.keysym == "Escape" and modes["pause"] and (not modes["store"]) and (not modes["teleport"]) and \
+            (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
+        modes["pause"] = False
 
-        p.canvas.itemconfig(p.icons["pause"], state=HIDDEN)
-        p.canvas.itemconfig(p.texts["pause"], text="")
+        canvas.itemconfig(icons["pause"], state=HIDDEN)
+        canvas.itemconfig(texts["pause"], text="")
 
-        p.temp["pause/back-to-menu"].destroy()
-        p.temp['pause/menu_frame'].destroy()
-        p.temp["s_frame"].destroy()
+        temp["pause/back-to-menu"].destroy()
+        temp['pause/menu_frame'].destroy()
+        temp["s_frame"].destroy()
 
-        p.canvas.delete(p.temp['pause/top.line'])
-        # p.canvas.delete(p.temp['pause/bottom.line'])
-        p.canvas.delete(p.temp['pause/menu'])
-        p.canvas.delete(p.temp['pause/bg'])
+        canvas.delete(temp['pause/toline'])
+        # canvas.delete(temp['pause/bottom.line'])
+        canvas.delete(temp['pause/menu'])
+        canvas.delete(temp['pause/bg'])
 
-        p.root.update()
+        root.update()
 
-        p.stats["scorestate-time"] = p.temp["scorestate-save"] + time()
-        p.stats["secure-time"] = p.temp["secure-save"] + time()
-        p.stats["timebreak-time"] = p.temp["timebreak-save"] + time()
-        p.stats["confusion-time"] = p.temp["confusion-save"] + time()
-        p.stats["slowmotion-time"] = p.temp["slowmotion-save"] + time()
-        p.stats["paralis-time"] = p.temp["paralis-save"] + time()
-        p.stats["shotspeed-time"] = p.temp["shotspeed-save"] + time()
-        p.stats["notouch-time"] = p.temp["notouch-save"] + time()
-    if event.keysym == "t" and p.stats["teleports"] > 0 and (not p.modes["teleport"]):
-        p.modes["pause"] = True
+        stats["scorestate-time"] = temp["scorestate-save"] + time()
+        stats["secure-time"] = temp["secure-save"] + time()
+        stats["timebreak-time"] = temp["timebreak-save"] + time()
+        stats["confusion-time"] = temp["confusion-save"] + time()
+        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
+        stats["paralis-time"] = temp["paralis-save"] + time()
+        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
+        stats["notouch-time"] = temp["notouch-save"] + time()
+    if event.keysym == "t" and stats["teleports"] > 0 and (not modes["teleport"]):
+        modes["pause"] = True
 
-        p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
-        p.temp["secure-save"] = p.stats["secure-time"] - time()
-        p.temp["timebreak-save"] = p.stats["timebreak-time"] - time()
-        p.temp["confusion-save"] = p.stats["confusion-time"] - time()
-        p.temp["slowmotion-save"] = p.stats["slowmotion-time"] - time()
-        p.temp["paralis-save"] = p.stats["paralis-time"] - time()
-        p.temp["shotspeed-save"] = p.stats["shotspeed-time"] - time()
-        p.temp["notouch-save"] = p.stats["notouch-time"] - time()
-        p.temp["special-level-save"] = p.stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate-time"] - time()
+        temp["secure-save"] = stats["secure-time"] - time()
+        temp["timebreak-save"] = stats["timebreak-time"] - time()
+        temp["confusion-save"] = stats["confusion-time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
+        temp["paralis-save"] = stats["paralis-time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
+        temp["notouch-save"] = stats["notouch-time"] - time()
+        temp["special-level-save"] = stats["special-level-time"] - time()
 
-        p.modes["teleport"] = True
+        modes["teleport"] = True
 
-        tp_mode(p.canvas, p.config, p.stats, p.modes, p.tp)
-    if event.keysym.lower() == "e" and (not p.modes["store"]):
-        p.modes["pause"] = True
-        p.temp["scorestate-save"] = p.stats["scorestate-time"] - time()
-        p.temp["secure-save"] = p.stats["secure-time"] - time()
-        p.temp["timebreak-save"] = p.stats["timebreak-time"] - time()
-        p.temp["confusion-save"] = p.stats["confusion-time"] - time()
-        p.temp["slowmotion-save"] = p.stats["slowmotion-time"] - time()
-        p.temp["paralis-save"] = p.stats["paralis-time"] - time()
-        p.temp["shotspeed-save"] = p.stats["shotspeed-time"] - time()
-        p.temp["notouch-save"] = p.stats["notouch-time"] - time()
-        p.temp["special-level-save"] = p.stats["special-level-time"] - time()
-        p.modes["store"] = True
+        tp_mode(canvas, config, stats, modes, tp)
+    if event.keysym.lower() == "e" and (not modes["store"]):
+        modes["pause"] = True
+        temp["scorestate-save"] = stats["scorestate-time"] - time()
+        temp["secure-save"] = stats["secure-time"] - time()
+        temp["timebreak-save"] = stats["timebreak-time"] - time()
+        temp["confusion-save"] = stats["confusion-time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
+        temp["paralis-save"] = stats["paralis-time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
+        temp["notouch-save"] = stats["notouch-time"] - time()
+        temp["special-level-save"] = stats["special-level-time"] - time()
+        modes["store"] = True
         log.debug("bub_move", "Creating Store() to variable \"store\"")
-        log.debug("bub_move", "storemode=" + str(p.modes["store"]))
-        p.commands["store"] = Store(p.canvas, log, p.config, p.modes, p.stats, p.icons, p.fore)
+        log.debug("bub_move", "storemode=" + str(modes["store"]))
+        commands["store"] = Store(canvas, log, config, modes, stats, icons, fore, font, laucher_cfg)
     # if event.char == "/":
-    #     CheatEngine().event_handler(p.canvas, p.modes, p.stats, p.config, p.temp, log, backgrounds, bubble, event, bub)
-    # if p.modes["cheater"]:
-    #     CheatEngine().input_event_handler(p.canvas, log, p.stats, backgrounds, bubble, event, p.config, bub, p.temp,
-    #                                       p.modes)
+    #     CheatEngine().event_handler(canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub)
+    # if modes["cheater"]:
+    #     CheatEngine().input_event_handler(canvas, log, stats, backgrounds, bubble, event, config, bub, temp,
+    #                                       modes)
 
     if event.keysym == "Escape":
         pass
-    p.root.update()
+    root.update()
 
 
 class Maintance:
@@ -334,8 +358,8 @@ class Maintance:
         print(os.curdir)
 
         try:
-            cfg.Writer("../../slots/" + save_name + "/game.json", game_stats.copy())
-            cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
+            cfg.Writer("slots/" + save_name + "/game.json", game_stats.copy())
+            cfg.Writer("slots/" + save_name + "/bubble.json", bubble.copy())
         except FileNotFoundError as e:
             print(e.args)
             print(e.filename)
@@ -348,7 +372,7 @@ class Maintance:
         """
         from . import config as cfg
 
-        game_stats = cfg.Reader("../../slots/" + save_name + "/game.json").get_decoded()
+        game_stats = cfg.Reader("slots/" + save_name + "/game.json").get_decoded()
 
         return game_stats
 
@@ -360,16 +384,16 @@ class Maintance:
 
         from . import config as cfg
 
-        stats = cfg.Reader("config/reset.json").get_decoded()
-        bubble = cfg.Reader("config/reset-bubble.json").get_decoded()
+        stats = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json").get_decoded()
+        bubble = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json").get_decoded()
 
-        cfg.Writer("../../slots/" + save_name + "/game.json", stats.copy())
-        cfg.Writer("../../slots/" + save_name + "/bubble.json", bubble.copy())
+        cfg.Writer("slots/" + save_name + "/game.json", stats.copy())
+        cfg.Writer("slots/" + save_name + "/bubble.json", bubble.copy())
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
           modes: Dict[str, bool], canvas: Canvas):
-    bubs = Reader("../../slots/" + save_name + "/bubble.json").get_decoded()
+    bubs = Reader("slots/" + save_name + "/bubble.json").get_decoded()
     if len(bubs["bub-id"]) <= 1:
         r_start(bubble, stats, config, bub, canvas, modes)
         return
@@ -379,11 +403,11 @@ def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config:
         # print(i)
     for i in range(len(bubs["bub-id"]) - 1):
         if bubs["bub-special"]:
-            create_bubble(stats, config, bub, canvas, bubble, modes, i, bubs["bub-index"][i],
+            create_bubble(stats, config, bub, canvas, bubble, bubs["bub-index"][i],
                           bubs["bub-position"][i][0] + config["width"],
                           bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
         elif not bubs["bub-special"]:
-            SpecialMode.create_bubble(canvas, config, bubble, stats, bub, modes, bubs["bub-index"][i],
+            SpecialMode.create_bubble(canvas, config, bubble, stats, bub, bubs["bub-index"][i],
                                       bubs["bub-position"][i][0] + config["width"],
                                       bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
 
@@ -403,10 +427,10 @@ def r_start(bubble: Dict[str, Any], stats: Dict[str, Any], config: Dict[str, Any
         y = randint(72 + r, (config["height"] - r))
         # spd = stats["bubspeed"]
         # i = randint(0, 1600)
-        create_bubble(stats, config, bub, canvas, bubble, modes, i, x=x, y=y, r=r)
+        create_bubble(stats, config, bub, canvas, bubble, x=x, y=y, r=r)
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,PyArgumentList,PyCallByClass
 class Game(Canvas):
     def __init__(self, launcher_cfg: Dict[str, Any], start_time=0.0, already_opened=False):
         super().__init__()
@@ -503,7 +527,7 @@ class Game(Canvas):
         self.panels = dict()
 
         # Initialize Canvas
-        self.canvas = None
+        self.canvas = Canvas
 
         # Icons and texts
         self.icons = dict()
@@ -513,16 +537,18 @@ class Game(Canvas):
         self.back = dict()
         self.fore = dict()
 
-        self.config = config.Reader("config/startup.json").get_decoded()
+        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.json").get_decoded()
 
-        fd = os.open("../../lang/" + self.config["game"]["language"] + ".yaml", os.O_RDONLY | os.O_CREAT)
+        fd = os.open("lang/" + self.config["game"]["language"] + ".yaml", os.O_RDONLY | os.O_CREAT)
         self.lang = yaml.safe_load(os.read(fd, 4096).decode())
         os.close(fd)
 
         if self.config["game"]["language"] == "tengwar":
             self.font = "Tengwar Annatar Regular"
+            self.f_size = 0
         else:
-            self.font = self.font
+            self.font = "Helvetica"
+            self.f_size = -4
 
         self.commands = {"store": False, "present": False, "special-mode": False}
 
@@ -531,7 +557,7 @@ class Game(Canvas):
         self.tp = dict()
 
         # Configuration
-        self.config = config.Reader("config/startup.json").get_decoded()
+        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.json").get_decoded()
 
         # Bubble / bubble-info
         self.bub = dict()
@@ -628,17 +654,17 @@ class Game(Canvas):
 
         self.start_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.load(),
                                 text=self.lang["home.start"],
-                                relief=FLAT, font=(self.font, 20))
+                                relief=FLAT, font=(self.font, 20 + self.f_size))
         self.start_btn.place(x=self.config["width"] / 2, y=self.config["height"] / 2 - 40, width=310, anchor=CENTER)
 
         self.quit_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.root.destroy(),
                                text=self.lang["home.quit"],
-                               relief=FLAT, font=(self.font, 20))
+                               relief=FLAT, font=(self.font, 20 + self.f_size))
         self.quit_btn.place(x=self.config["width"] / 2 + 80, y=self.config["height"] / 2 + 40, width=150, anchor=CENTER)
 
         self.options_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4,
                                   text=self.lang["home.options"],
-                                  relief=FLAT, font=(self.font, 20))  # , command=lambda: self.options())
+                                  relief=FLAT, font=(self.font, 20 + self.f_size))  # , command=lambda: self.options())
         self.options_btn.place(x=self.config["width"] / 2 - 80, y=self.config["height"] / 2 + 40, width=150,
                                anchor=CENTER)
 
@@ -713,14 +739,14 @@ class Game(Canvas):
         import os
         import yaml
 
-        a = os.listdir("../../lang/")
+        a = os.listdir("lang/")
         b = []
         c = []
         self.lang_btn.menu = Menu(self.lang_btn, tearoff=0)
         self.lang_btn["menu"] = self.lang_btn.menu
 
         for i in a:
-            file = open("../../lang/" + i, "r")
+            file = open("lang/" + i, "r")
             b.append(yaml.unsafe_load(file)["options.name"])
             c.append(i)
             file.close()
@@ -733,7 +759,7 @@ class Game(Canvas):
     def options_save(self):
         import yaml
 
-        file = open("../../lang/" + self.lang_selected.get(), "r")
+        file = open("lang/" + self.lang_selected.get(), "r")
         self.lang = yaml.safe_load(file)
         file.close()
 
@@ -761,8 +787,12 @@ class Game(Canvas):
         # Removes title-menu items.
 
         # Getting list of slots.
-        path = "../../slots/"
-        index = os.listdir(path)
+        path = "slots/"
+        try:
+            index = os.listdir(path)
+        except FileNotFoundError:
+            os.makedirs(path, exist_ok=True)
+            index = os.listdir(path)
         dirs = []
         for item in index:
             file_path = path + item
@@ -775,9 +805,9 @@ class Game(Canvas):
 
         # Add-button and -entry (Input)
         self.add = Button(self.frame2, text=self.lang["slots.add"], relief=FLAT, bg="#7f7f7f", fg="white",
-                          command=self.add_save)
+                          command=self.add_save, font=[self.font, 15 + self.f_size])
         self.add.pack(side=RIGHT, padx=2, pady=5)
-        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief=FLAT)
+        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief=FLAT, font=("helvetica"))
         self.add_input.pack(side=LEFT, fill=X, expand=TRUE, padx=2, pady=5)
         self.add_input.bind("<Return>", self.add_event)
 
@@ -813,7 +843,7 @@ class Game(Canvas):
         # Getting the list of directories in the slots-folder.
         import os
 
-        names = os.listdir("../../slots/")
+        names = os.listdir("slots/")
 
         # Information variables for each slot.
         infos = {"dates": [], "score": [], "level": []}
@@ -822,7 +852,7 @@ class Game(Canvas):
 
         # Prepare info variables
         for i in names:
-            mtime = os.path.getmtime("../../slots/" + i + "/bubble.json")
+            mtime = os.path.getmtime("slots/" + i + "/bubble.json")
             a = time.localtime(mtime)
 
             b = list(a)
@@ -839,7 +869,7 @@ class Game(Canvas):
             tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
             infos["dates"].append(tme_var)
 
-            a = Reader("../../slots/" + i + "/game.json").get_decoded()
+            a = Reader("slots/" + i + "/game.json").get_decoded()
             infos["score"].append(a["score"])
             infos["level"].append(a["level"])
 
@@ -855,30 +885,39 @@ class Game(Canvas):
             self.canvass[-1].pack()
 
             self.canvass[-1].create_text(10, 10, text=name, fill="gold", anchor=NW,
-                                         font=(self.font, 26, "bold"))
+                                         font=("Helvetica", 26, "bold"))
             self.canvass[-1].create_text(10, 50, text=infos["dates"][i], fill="#afafaf", anchor=NW,
-                                         font=(self.font, 16))
+                                         font=("Helvetica", 16))
             self.canvass[-1].create_text(240, 50, text="Level: " + str(infos["level"][i]), fill="#afafaf", anchor=NW,
-                                         font=(self.font, 16))
+                                         font=("Helvetica", 16))
             self.canvass[-1].create_text(370, 50, text="Score: " + str(infos["score"][i]), fill="#afafaf", anchor=NW,
-                                         font=(self.font, 16))
+                                         font=("Helvetica", 16))
 
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7,
+                       font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(name, event))
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7,
+                       font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=600, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.rename)
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7))
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7,
+                       font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=525, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.remove)
+
+            self.buttons.append(
+                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.reset"], bg="#afafaf", width=7,
+                       font=[self.font, 15 + self.f_size]))
+            self.buttons.copy()[-1].place(x=450, y=175, anchor=SE)
+            self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.reset_save)
 
             self.frames[-1].grid(row=i)
 
@@ -887,6 +926,41 @@ class Game(Canvas):
         # Using this so the program doesn't exit automaticly
         self.root.mainloop()
 
+    def reset_save(self, event):
+        import os
+
+        # Getting row-index.
+        y = event.widget.master.grid_info()["row"]
+
+        # Getting source dir.
+        src = self.item_info[y]
+
+        # Removing the files inside.
+        for i in os.listdir("slots/" + src):
+            os.remove("slots/" + src + "/" + i)
+
+        # Remove the slot (dir)
+        os.removedirs("slots/" + src)
+
+        # Disabling the input and the button.
+        self.add_input.config(state=DISABLED)
+        self.add.config(state=DISABLED)
+
+        # Getting the input text.
+        if src in ("aux", "con", ".", ".."):
+            return
+
+        # Creating dir for the game.
+        os.makedirs("slots/" + src, exist_ok=True)
+
+        # Copy the template (resetted save-files)
+        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json", "slots/" + src + "/game.json")
+        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json", "slots/" + src + "/bubble.json")
+
+        # Refreshing slots-menu
+        self.delete_all()
+        self.load()
+
     def add_save(self):
         """
         Adding a slot to your game.
@@ -894,20 +968,22 @@ class Game(Canvas):
         """
         import os
 
-        if len(os.listdir("../../slots/")) <= 4000:
+        if len(os.listdir("slots/")) <= 4000:
             # Disabling the input and the button.
             self.add_input.config(state=DISABLED)
             self.add.config(state=DISABLED)
 
             # Getting the input text.
             new = self.add_input.get()
+            if new in ("aux", "con", ".", ".."):
+                return
 
             # Creating dir for the game.
-            os.mkdir("../../slots/" + new)
+            os.makedirs("slots/" + new, exist_ok=True)
 
             # Copy the template (resetted save-files)
-            self.copy("config/reset.json", "../../slots/" + new + "/game.json")
-            self.copy("config/reset-bubble.json", "../../slots/" + new + "/bubble.json")
+            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json", "slots/" + new + "/game.json")
+            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json", "slots/" + new + "/bubble.json")
 
             # Refresh slots-menu
             self.delete_all()
@@ -924,11 +1000,11 @@ class Game(Canvas):
         src = self.item_info[y]
 
         # Removing the files inside.
-        for i in os.listdir("../../slots/" + src):
-            os.remove("../../slots/" + src + "/" + i)
+        for i in os.listdir("slots/" + src):
+            os.remove("slots/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("../../slots/" + src)
+        os.removedirs("slots/" + src)
 
         # Refreshing slots-menu
         self.delete_all()
@@ -948,7 +1024,7 @@ class Game(Canvas):
 
         # noinspection PyTypeChecker
         # Rename the dir for the slot.
-        os.rename("../../slots/" + src, "../../slots/" + new)
+        os.rename("slots/" + src, "slots/" + new)
 
         # Refreshing slots-menu
         self.delete_all()
@@ -975,7 +1051,7 @@ class Game(Canvas):
         self.save_name = save_name
 
         # Reload stats with the reader.
-        self.stats = Reader("../../slots/" + self.save_name + "/game.json").get_decoded()
+        self.stats = Reader("slots/" + self.save_name + "/game.json").get_decoded()
 
         # Create canvas.
         self.canvas = Canvas(self.root, height=self.config["height"], width=self.config["width"], highlightthickness=0)
@@ -1091,6 +1167,7 @@ class Game(Canvas):
             if not self.modes["pause"]:
                 if not self.stats["paralis"]:
                     if event.keysym == "space":
+                        # noinspection PyTypeChecker
                         create_shot(self.canvas, self.ammo, self.config, self.ship, self.stats)
 
     def auto_save(self):
@@ -1100,23 +1177,23 @@ class Game(Canvas):
             sleep(2)
 
     def update(self):
+        self.canvas.tag_raise(self.ship["id"])
         if not self.stats["timebreak"]:
             if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
                 if not self.stats["special-level"]:
                     Thread(None,
                            lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
-                                                 self.bubbles, self.modes,
-                                                 len(self.bubbles["bub-id"])),
+                                                 self.bubbles),
                            name="CreateBubbleThread").start()
                 else:
                     Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
                                                                      self.bubbles, self.stats,
-                                                                     self.bub, self.modes),
+                                                                     self.bub),
                            name="SpecialModeCreateBubbleThread").start()
         if self.commands["present"] is True:
             # noinspection PyTypeChecker
             self.commands["present"] = Present(self.canvas, self.stats, self.temp, self.modes,
-                                               self.config, self.icons, self.fore, self.log)
+                                               self.config, self.icons, self.fore, self.log, self.font)
         if self.commands["special-mode"] is True:
             State.set_state(self.canvas, log, self.stats, "SpecialLevel", self.back)
             self.commands["special-mode"] = False
@@ -1136,7 +1213,7 @@ class Game(Canvas):
         # print(self.mod_loader.events)
         for events in self.mod_loader.events.values():
             for event in events:
-                event.on_t_update(self)
+                Thread(None, lambda: event.on_t_update(self)).start()
 
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
@@ -1186,93 +1263,130 @@ class Game(Canvas):
 
         # Adding the different resolutions to the bubbles.
         for i in range(9, 61):
-            self.bub["Normal"][i] = PhotoImage(file="data/bubbles/Normal/" + str(i) + "px.png")
-            self.bub["Triple"][i] = PhotoImage(file="data/bubbles/Triple/" + str(i) + "px.png")
-            self.bub["Double"][i] = PhotoImage(file="data/bubbles/Double/" + str(i) + "px.png")
-            self.bub["SpeedDown"][i] = PhotoImage(file="data/bubbles/SpeedDown/" + str(i) + "px.png")
-            self.bub["SpeedUp"][i] = PhotoImage(file="data/bubbles/SpeedUp/" + str(i) + "px.png")
-            self.bub["Up"][i] = PhotoImage(file="data/bubbles/Up/" + str(i) + "px.png")
-            self.bub["Ultimate"][i] = PhotoImage(file="data/bubbles/Ultimate/" + str(i) + "px.png")
-            self.bub["Kill"][i] = PhotoImage(file="data/bubbles/Kill/" + str(i) + "px.png")
-            self.bub["Teleporter"][i] = PhotoImage(file="data/bubbles/Teleporter/" + str(i) + "px.png")
-            self.bub["SlowMotion"][i] = PhotoImage(file="data/bubbles/SlowMotion/" + str(i) + "px.png")
-            self.bub["DoubleState"][i] = PhotoImage(file="data/bubbles/DoubleState/" + str(i) + "px.png")
-            self.bub["Protect"][i] = PhotoImage(file="data/bubbles/Protect/" + str(i) + "px.png")
-            self.bub["ShotSpdStat"][i] = PhotoImage(file="data/bubbles/ShotSpdStat/" + str(i) + "px.png")
-            self.bub["HyperMode"][i] = PhotoImage(file="data/bubbles/HyperMode/" + str(i) + "px.png")
-            self.bub["TimeBreak"][i] = PhotoImage(file="data/bubbles/TimeBreak/" + str(i) + "px.png")
-            self.bub["Confusion"][i] = PhotoImage(file="data/bubbles/Confusion/" + str(i) + "px.png")
-            self.bub["Paralis"][i] = PhotoImage(file="data/bubbles/Paralis/" + str(i) + "px.png")
-            self.bub["StoneBub"][i] = PhotoImage(file="data/bubbles/StoneBub/" + str(i) + "px.png")
-            self.bub["NoTouch"][i] = PhotoImage(file="data/bubbles/NoTouch/" + str(i) + "px.png")
+            self.bub["Normal"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Normal/" + str(i) + "px.png")
+            self.bub["Triple"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Triple/" + str(i) + "px.png")
+            self.bub["Double"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Double/" + str(i) + "px.png")
+            self.bub["SpeedDown"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpeedDown/" + str(i) + "px.png")
+            self.bub["SpeedUp"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpeedUp/" + str(i) + "px.png")
+            self.bub["Up"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Up/" + str(i) + "px.png")
+            self.bub["Ultimate"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Ultimate/" + str(i) + "px.png")
+            self.bub["Kill"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Kill/" + str(i) + "px.png")
+            self.bub["Teleporter"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Teleporter/" + str(i) + "px.png")
+            self.bub["SlowMotion"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SlowMotion/" + str(i) + "px.png")
+            self.bub["DoubleState"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/DoubleState/" + str(i) + "px.png")
+            self.bub["Protect"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Protect/" + str(i) + "px.png")
+            self.bub["ShotSpdStat"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/ShotSpdStat/" + str(i) + "px.png")
+            self.bub["HyperMode"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/HyperMode/" + str(i) + "px.png")
+            self.bub["TimeBreak"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/TimeBreak/" + str(i) + "px.png")
+            self.bub["Confusion"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Confusion/" + str(i) + "px.png")
+            self.bub["Paralis"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Paralis/" + str(i) + "px.png")
+            self.bub["StoneBub"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/StoneBub/" + str(i) + "px.png")
+            self.bub["NoTouch"][i] = PhotoImage(
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/NoTouch/" + str(i) + "px.png")
 
         # Adding the static-resolution-bubbles.
-        self.bub["Key"][60] = PhotoImage(file="data/bubbles/Key.png")
-        self.bub["Diamond"][36] = PhotoImage(file="data/bubbles/Diamond.png")
-        self.bub["Present"][40] = PhotoImage(file="data/bubbles/Present.png")
+        self.bub["Key"][60] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Key.png")
+        self.bub["Diamond"][36] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Diamond.png")
+        self.bub["Present"][40] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Present.png")
         # noinspection PyTypeChecker
-        self.bub["Coin"] = PhotoImage(file="data/CoinBub.png")
-        self.bub["SpecialKey"][48] = PhotoImage(file="data/bubbles/SpecialMode.png")
+        self.bub["Coin"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/CoinBub.png")
+        self.bub["SpecialKey"][48] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpecialMode.png")
 
         # Adding ship image.
-        self.ship["image"] = PhotoImage(file="data/Ship.png")
+        self.ship["image"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Ship.png")
 
         # Reload stats with auto-restore.
         self.stats = Maintance().auto_restore(self.save_name)
 
         # Getting the normal background.
-        self.back["normal"] = PhotoImage(file="data/BackGround.png")
+        self.back["normal"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/BackGround.png")
 
         # Getting the store-icons.
         self.icons["store-pack"] = list()
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/Key.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/Teleport.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/Shield.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/DiamondBuy.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/BuyACake.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/Pop_3_bubs.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/PlusLife.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/SpeedBoost.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/SpecialMode.png"))
-        self.icons["store-pack"].append(PhotoImage(file="data/Images/StoreItems/DoubleScore.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Key.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Teleport.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Shield.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/DiamondBuy.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/BuyACake.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Pop_3_bubs.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/PlusLife.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/SpeedBoost.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/SpecialMode.png"))
+        self.icons["store-pack"].append(
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/DoubleScore.png"))
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
 
         # Unknown
-        self.back["line"] = PhotoImage(file="data/LineIcon.png")
+        self.back["line"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/LineIcon.png")
 
         # Setting present foreground
-        self.fore["present-fg"] = PhotoImage(file="data/EventBackground.png")
+        self.fore["present-fg"] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/EventBackground.png")
 
         # Setting present icons.
-        self.icons["circle"] = PhotoImage(file="data/Circle.png")
-        self.icons["present"] = PhotoImage(file="data/Present.png")
+        self.icons["circle"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Circle.png")
+        self.icons["present"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Present.png")
 
         # Setting store foreground
-        self.fore["store-fg"] = PhotoImage(file="data/FG2.png")
+        self.fore["store-fg"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/FG2.png")
 
         # Setting standard store icons.
-        self.icons["store-diamond"] = PhotoImage(file="data/Diamond.png")
-        self.icons["store-coin"] = PhotoImage(file="data/Coin.png")
+        self.icons["store-diamond"] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/Diamond.png")
+        self.icons["store-coin"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Coin.png")
 
         # Setting pause-icon.
-        self.icons["pause-id"] = PhotoImage(file="data/Pause.png")
+        self.icons["pause-id"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Pause.png")
 
         # Setting slowmotion-icon.
-        self.icons["slowmotion"] = PhotoImage(file="data/SlowMotionIcon.png")
+        self.icons["slowmotion"] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/SlowMotionIcon.png")
 
         # Setting special background.
-        self.back["special"] = PhotoImage(file="data/Images/Backgrounds/GameBG Special2.png")
+        self.back["special"] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/Backgrounds/GameBG Special2.png")
 
         # Setting normal background.
-        self.back["normal"] = PhotoImage(file="data/Images/Backgrounds/GameBG2.png")
+        self.back["normal"] = PhotoImage(
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/Backgrounds/GameBG2.png")
 
         # Setting background from nothing to normal.
         self.back["id"] = self.canvas.create_image(0, 0, anchor=NW, image=self.back["normal"])
 
-        # Creating ship.
+        # Creating shi
         self.ship["id"] = c.create_image(7.5, 7.5, image=self.ship["image"])
         print(self.ship["id"])
 
@@ -1287,20 +1401,20 @@ class Game(Canvas):
         self.canvas.create_line(0, 70, self.config["width"], 70, fill="lightblue")
         self.canvas.create_line(0, 69, self.config["width"], 69, fill="white")
 
-        c.create_text(55, 30, text=self.lang["info.score"], fill='orange')
-        c.create_text(110, 30, text=self.lang["info.level"], fill='orange')
-        c.create_text(165, 30, text=self.lang["info.speed"], fill='orange')
-        c.create_text(220, 30, text=self.lang["info.lives"], fill='orange')
-        c.create_text(330, 30, text=self.lang["info.state.score"], fill="gold")
-        c.create_text(400, 30, text=self.lang["info.state.protect"], fill="gold")
-        c.create_text(490, 30, text=self.lang["info.state.slowmotion"], fill="gold")
-        c.create_text(580, 30, text=self.lang["info.state.confusion"], fill="gold")
-        c.create_text(670, 30, text=self.lang["info.state.timebreak"], fill="gold")
-        c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold")
-        c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold")
-        c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold")
-        c.create_text(1030, 30, text=self.lang["info.state.notouch"], fill="gold")
-        c.create_text(1120, 30, text=self.lang["info.tps"], fill='gold')
+        c.create_text(55, 30, text=self.lang["info.score"], fill='orange', font=[self.font, 15 + self.f_size])
+        c.create_text(110, 30, text=self.lang["info.level"], fill='orange', font=[self.font, 15 + self.f_size])
+        c.create_text(165, 30, text=self.lang["info.speed"], fill='orange', font=[self.font, 15 + self.f_size])
+        c.create_text(220, 30, text=self.lang["info.lives"], fill='orange', font=[self.font, 15 + self.f_size])
+        c.create_text(330, 30, text=self.lang["info.state.score"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(400, 30, text=self.lang["info.state.protect"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(490, 30, text=self.lang["info.state.slowmotion"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(580, 30, text=self.lang["info.state.confusion"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(670, 30, text=self.lang["info.state.timebreak"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(1030, 30, text=self.lang["info.state.notouch"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(1120, 30, text=self.lang["info.tps"], fill='gold', font=[self.font, 15 + self.f_size])
         c.create_image(1185, 30, image=self.icons["store-diamond"])
         c.create_image(1185, 50, image=self.icons["store-coin"])
 
@@ -1321,16 +1435,30 @@ class Game(Canvas):
         self.texts["shiptp"] = c.create_text(1120, 50, fill='cyan')
         self.texts["diamond"] = c.create_text(1210, 30, fill='cyan')
         self.texts["coin"] = c.create_text(1210, 50, fill='cyan')
-        self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50))
+        self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50 + self.f_size))
 
-        self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60, "bold"))
+        self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60 + self.f_size, "bold"))
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
 
         # Threaded Automatic Save (TAS)
         self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
 
+        kw = {}
+
+        for i in Ammo.requires:
+            if i in self.__dict__.keys():
+                kw[i] = self.__dict__[i]
+            else:
+                raise ClassRequirementInvalid("Requirement \"%s\" of class Ammo is invalid." % i)
+
+        self.c_ammo = Ammo()
+
         # Binding key-events for control
-        c.bind_all('<Key>', lambda event: control(self, event))
+        c.bind_all('<Key>',
+                   lambda event: control(self.modes, self.config, self.root, self.canvas, self.stats, self.bubbles,
+                                         self.back, self.texts, self.commands, self.temp, self.panels, self.fore,
+                                         self.ship, self.tp, self.lang, self.return_main, self.icons, self, self.bub,
+                                         self.font, event, self.c_ammo, laucher_cfg=self.launcher_cfg))
 
         c.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))
         c.bind_all("<KeyPress-Down>", lambda event: self.down_press(event))
@@ -1412,6 +1540,8 @@ class Game(Canvas):
 
         start(self.bubbles, self.save_name, self.stats, self.config, self.bub, self.modes, self.canvas)
 
+        Maintance.auto_save(self.save_name, self.stats, self.bubbles)
+
         global Mainloop
         Mainloop = False
 
@@ -1425,10 +1555,27 @@ class Game(Canvas):
         height = self.config["height"]
         width = self.config["width"]
 
+        a = randint(0, width)
+        b = randint(0, width)
+        c = randint(0, width)
+
+        d = stats["ship-position"][0]
+
+        e = 40
+
+        if a + e < d or d > a - e:
+            a = d - e
+        if b + e < d or d > b - e:
+            b = d - e - 20
+        if c + e < d or d > c - e:
+            c = d - e - 40
+
         bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
-        bariers[0].create(randint(0, width), height / 2 + 72 / 2)
-        bariers[1].create(randint(0, width), height / 2 + 72 / 2)
-        bariers[2].create(randint(0, width), height / 2 + 72 / 2)
+        bariers[0].create(a, height / 2 + 72 / 2)
+        bariers[1].create(b, height / 2 + 72 / 2)
+        bariers[2].create(c, height / 2 + 72 / 2)
+
+        c = self.canvas
 
         try:
             # MAIN GAME LOOP
@@ -1438,10 +1585,10 @@ class Game(Canvas):
                                                   outline="#3f3f3f")
                 t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
                                              text="Creating bubbles...",
-                                             font=(self.font, 50), fill="#afafaf")
+                                             font=(self.font, 50 + self.f_size), fill="#afafaf")
                 t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
                                              text="Thread 0 of 0 active",
-                                             font=(self.font, 15), fill="#afafaf")
+                                             font=(self.font, 15 + self.f_size), fill="#afafaf")
                 while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
                     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
                         len(self.bubbles["bub-index"]) - 1) + " active...")

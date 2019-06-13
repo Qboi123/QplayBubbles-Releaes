@@ -1,12 +1,12 @@
-from threading import Thread
-from threadsafe_tkinter import *
-from time import time
-from random import randint
-
-from .extras import play_sound
-from .state import State
-from .config import Reader
 import threading
+from random import randint
+from threading import Thread
+from time import time
+
+from threadsafe_tkinter import *
+
+from .config import Reader
+from .state import State
 
 
 class StoppableThread(threading.Thread):
@@ -29,7 +29,7 @@ class Present:
     Giving a present activated by a bubble
     """
 
-    def __init__(self, canvas, stats, temp, modes, config, icons, foregrounds, log):
+    def __init__(self, canvas, stats, temp, modes, config, icons, foregrounds, log, font):
         # Sets pause, and presentmode for controling information.
         modes["pause"] = True
         modes["present"] = True
@@ -57,7 +57,7 @@ class Present:
         self.IconId2 = canvas.create_image(mid_x, 120, image=icons["present"])
         self.Diamonds = None
         self.Money = None
-        self.textid = canvas.create_text(mid_x, mid_y + 20, font=(self.font, 30), fill="black")
+        self.textid = canvas.create_text(mid_x, mid_y + 20, font=(font, 30), fill="black")
         self.fgid = canvas.create_image(mid_x, mid_y, image=foregrounds["store-fg"])
 
         # Ramdomizing Gifts for output
@@ -119,14 +119,14 @@ class Present:
             stats["diamonds"] += self.Diamonds
             stats["coins"] += self.Money
 
-            play_sound("data/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
         elif 1 <= index < 200:
             # Teleport
             text = "You earned:\n1 Teleport"
             canvas.itemconfig(self.textid, text=text)
             stats["teleports"] += 1
 
-            play_sound("data/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
         elif 200 <= index < 360:
             # Giving a Protection
             # Text for information
@@ -138,7 +138,7 @@ class Present:
             # Globals and status setup
             State.set_state(canvas, log, stats, "Protect", backgrounds=None)
 
-            play_sound("data/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
         else:
             # Nothing gives
             text = "O, oh. There's nothing"
@@ -162,7 +162,7 @@ class Present:
 
 class SpecialMode:
     @staticmethod
-    def create_bubble(canvas, config, bubble, stats, bub, modes, id2=None, loc_x=None, loc_y=None, rad=None, spd=None):
+    def create_bubble(canvas, config, bubble, stats, bub, id2=None, loc_x=None, loc_y=None, rad=None, spd=None):
         """
         Creates bubble.
         :param spd:
@@ -177,7 +177,6 @@ class SpecialMode:
         :param id2:
         :return:
         """
-        from .bubble import movebubble_thread
         if id2 is not None:
             index = id2
         else:
@@ -270,7 +269,7 @@ class Store:
     virtual money (Coins and Diamonds).
     """
 
-    def __init__(self, canvas, log, config, modes, stats, icons, foregrounds):
+    def __init__(self, canvas, log, config, modes, stats, icons, foregrounds, font, launcher_cfg):
         """
         Set store menu.
         Base of menu control
@@ -279,6 +278,7 @@ class Store:
         :rtype: object
         """
         # Logging information for debug.
+        self.l_cfg = launcher_cfg
         self.foregrounds = foregrounds
         log.info("Store.__init__", "Player Opened the store")
 
@@ -310,10 +310,10 @@ class Store:
 
         # Number of diamonds you have:
         self.vDiamonds = canvas.create_text(25, 25, text="Diamonds: " + str(stats["diamonds"]), fill="white", anchor=W,
-                                            font=(self.font, 18))
+                                            font=(font, 18))
 
         # Setups items and price.
-        info = Reader("config/store.json").get_decoded()
+        info = Reader("versions/"+launcher_cfg["versionDir"]+"/config/store.json").get_decoded()
 
         i = 0
 
@@ -449,7 +449,7 @@ class Store:
                 stats["special-level"] = True
                 stats["special-level-time"] = time() + 40
                 log.info("State", "(CollFunc) Special Level State is ON!!!")
-                play_sound("data/sounds/specialmode.mp3")
+                # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/specialmode.mp3")
             if self.selected == 9:
                 stats["scorestate"] = 2
                 stats["scorestate-time"] = time() + randint(20, 40)
@@ -475,13 +475,12 @@ class Store:
         modes["store"] = False
 
         mid_x = config["middle-x"]
-        mid_y = config["middle-y"]
 
         def storemode_on():
             modes["store"] = True
 
         # Creates window
-        self.w = Window(canvas, config, title="Continue?", height=50, width=200, parent_is_store=True,
+        self.w = Window(canvas, self.l_cfg, config, title="Continue?", height=50, width=200, parent_is_store=True,
                         close_event=lambda: (
                             self.b.destroy(), self.b2.destroy(), None, storemode_on()), root=root)
 
@@ -565,7 +564,7 @@ class Window:
     Creates a virtual window in the canvas.
     """
 
-    def __init__(self, canvas, config, title="window", height=600, width=800, parent_is_store=False,
+    def __init__(self, canvas, launcher_cfg, config, title="window", height=600, width=800, parent_is_store=False,
                  close_event=object, root=Tk):
         # Window variables
         self.canvas = canvas
@@ -582,17 +581,17 @@ class Window:
         self.close_event = close_event
 
         # Creates window.
-        self.title_mid = PhotoImage(file="data/borders/titlebar-mid-focused.png")
-        self.title_left = PhotoImage(file="data/borders/titlebar-left-focused.png")
-        self.title_right = PhotoImage(file="data/borders/titlebar-right-focused.png")
+        self.title_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-mid-focused.png")
+        self.title_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-left-focused.png")
+        self.title_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-right-focused.png")
 
-        self.border_left = PhotoImage(file="data/borders/frame-left-focused.png")
-        self.border_right = PhotoImage(file="data/borders/frame-right-focused.png")
-        self.border_bottom_mid = PhotoImage(file="data/borders/frame-bottom-mid-focused.png")
-        self.border_bottom_left = PhotoImage(file="data/borders/frame-bottom-left-focused.png")
-        self.border_bottom_right = PhotoImage(file="data/borders/frame-bottom-right-focused.png")
-        self.close = PhotoImage(file="data/borders/button-close.png")
-        self.close_press = PhotoImage(file="data/borders/button-close-prelight.png")
+        self.border_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-left-focused.png")
+        self.border_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-right-focused.png")
+        self.border_bottom_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-mid-focused.png")
+        self.border_bottom_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-left-focused.png")
+        self.border_bottom_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-right-focused.png")
+        self.close = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/button-close.png")
+        self.close_press = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/button-close-prelight.png")
 
         self.id.append(canvas.create_rectangle(self.x1 - 6, self.y1 + 14, self.x2 + 6, self.y2 + 6, fill="lightgray",
                                                outline="#272727"))
@@ -739,9 +738,10 @@ class CheatEngine:
         self.text_id = None
         self.a = None
 
-    def event_handler(self, canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub):
+    def event_handler(self, canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub, font):
         """
         The "/" key event handler.
+        :param font:
         :param log:
         :param log:
         :param bub:
@@ -768,7 +768,7 @@ class CheatEngine:
         temp["special-level-save"] = stats["special-level-time"] - time()
 
         self.text = ""
-        self.text_id = canvas.create_text(10, config["height"] - 100, text="> ", font=(self.font, 24), anchor=SW)
+        self.text_id = canvas.create_text(10, config["height"] - 100, text="> ", font=(font, 24), anchor=SW)
         self.a = canvas.bind("<Key>",
                              lambda: self.input_event_handler(canvas, log, stats, backgrounds, bubble, event,
                                                               config, bub,
@@ -828,6 +828,8 @@ class CheatEngine:
     def add_level_key(stats, config, bubble, canvas, modes, bub, params):
         """
         Adds Level Key. This is only used for the Cheat.
+        :param bub:
+        :param modes:
         :param canvas:
         :param bubble:
         :param config:
@@ -841,7 +843,7 @@ class CheatEngine:
                 a = int(params[0])
                 if 0 <= a < 10:
                     for i in range(0, a):
-                        Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, modes, len(bubble["bub-id"]))).start()
+                        Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble)).start()
 
     @staticmethod
     def clean_all_bubbles(bubble, canvas, params):
@@ -926,7 +928,7 @@ class CheatEngine:
             if p.isnumeric():
                 if i:
                     for _ in range(int(float(p))):
-                        Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, modes, len(bubble["bub-id"]), float(i))).start()
+                        Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, float(i))).start()
         if len(params) == 5:
             i = 0
             if params[0] in act:
@@ -976,7 +978,7 @@ class CheatEngine:
             if params[1].isnumeric() and params[2].isnumeric() and params[3].isnumeric() and params[4].isnumeric():
                 if i:
                     for _ in range(int(float(params[1]))):
-                        Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, modes, len(bubble["bubid"]), i, float(params[2]),
+                        Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, i, float(params[2]),
                                                            float(params[3]), float(params[4]))).start()
 
     @staticmethod

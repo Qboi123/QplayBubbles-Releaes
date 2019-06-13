@@ -1,5 +1,4 @@
 from .fake_main import Game
-from .components import StoppableThread
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
@@ -62,8 +61,10 @@ class Event:
 DirectionWaring = Warning
 
 
+# noinspection PyUnusedLocal
 class Sprite:
     requires = ("sprites", "config", "canvas", "stats", "log", "ship", "bubbles")
+
     def __init__(self, **kw):
         name = "EmptySprite"
 
@@ -377,7 +378,8 @@ ActionIsNoneWarning = Warning
 
 
 class StatusBubble(Bubble): 
-    requires = tuple(list(super().requires) + ["back"])
+    requires = tuple(list(Bubble.requires) + ["back"])
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self._kw = kw
@@ -391,7 +393,8 @@ class StatusBubble(Bubble):
 
 
 class Ammo(Sprite):
-    requires = tuple(list(super().requires) + ["ship", "ammo"])
+    requires = tuple(list(Sprite.requires) + ["ship", "ammo"])
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self._kw = kw
@@ -447,15 +450,15 @@ class Ammo(Sprite):
                                                bubble["bub-speed"][index_bub]),
                                               bubble["bub-action"][index_bub], bubble,
                                               backgrounds,
-                                              texts, panels, False)
-                            , __name__ + ".CollisionFunction").start()
+                                              texts, panels, False),
+                            __name__ + ".CollisionFunction").start()
                     except IndexError:
                         pass
                     del_bubble(index_bub, bubble, canvas)
                     replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
                     if ammo["ammo-damage"][ammo_index] > 4:
                         del_ammo(canvas, ammo_index, ammo)
-                    # Thread(None, PlaySound("data/bubpop.wav", 1)).start()
+                    # Thread(None, PlaySound("versions/"+self.launcher_cfg["versionDir"]+"/data/bubpop.wav", 1)).start()
                 elif bubble["bub-hardness"][index_bub] > 1:
                     replace_list(bubble["bub-hardness"], index_bub, bubble["bub-hardness"][index_bub] - 1)
                     replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
