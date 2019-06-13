@@ -3,6 +3,10 @@ if __name__ == "__main__":
     input()
     exit(1)
 
+import json
+import numpy as np
+import neural_net as nn
+
 from time import sleep
 
 from .ammo import *
@@ -333,7 +337,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
     #                                       modes)
 
     if event.keysym == "Escape":
-        pass
+        s.save()
     root.update()
 
 
@@ -1209,6 +1213,10 @@ class Game(Canvas):
             for event in events:
                 event.on_t_update(self)
 
+    def r_update(self):
+        self.update()
+        Thread(None, lambda: self.t_update(), "UpdateThread")
+
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
         from threading import Thread
@@ -1415,6 +1423,7 @@ class Game(Canvas):
         c.bind_all("<KeyRelease-Down>", lambda event: self.down_release(event))
         c.bind_all("<KeyRelease-Left>", lambda event: self.left_release(event))
         c.bind_all("<KeyRelease-Right>", lambda event: self.right_release(event))
+        c.bind_all("<Key-Z>", lambda event: self.r_update())
 
         # Thread(None, lambda: c.bind("<Motion>", MotionEventHandler)).start()
         # Thread(None, lambda: c.bind("<ButtonPress-1>", Button1PressEventHandler)).start()
@@ -1543,8 +1552,7 @@ class Game(Canvas):
 
                 while self.stats["lives"] > 0:
                     if not self.modes["pause"]:
-                        self.update()
-                        Thread(None, lambda: self.t_update(), "UpdateThread")
+                        pass
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()
@@ -1591,6 +1599,42 @@ class Game(Canvas):
                     exit(0)
                 else:
                     raise AttributeError(e.args[0])
+
+
+class S:
+    def __init__(self):
+        self.inputs = []
+        self.outputs = [[]]
+    def save(self):
+        with open("input.json", "w") as file:
+            json_str = self.inputs
+            json_inputs = json.encoder.JSONEncoder().encode(json_str)
+
+        with open("output.json", "w") as file:
+            json_str = self.outputs
+            json_outputs = json.encoder.JSONEncoder().encode(json_str)
+        #
+        # neural_network = nn.NeuralNetwork()
+        # print("Random synaptic weights: \n%s" % neural_network.synaptic_weights)
+        #
+        # self.training_inputs = np.array(json_inputs)
+        #
+        # self.training_outputs = np.array(json_outputs).T
+        #
+        # neural_network.train(self.training_inputs, self.training_outputs, 100000)
+        #
+        # print("Synaptic weights after training: \n%s" % neural_network.synaptic_weights)
+
+    def update(self, input, output):
+        print()
+        print("> [player_x, player_y, player_r, bubble_x, bubble_y, bubble_r, bubble_bad")
+        print("  %s = %s" % (input, output))
+        self.inputs.append(input)
+        self.outputs[0].append(output)
+
+
+
+s = S()
 
 
 if __name__ == "__main__":
