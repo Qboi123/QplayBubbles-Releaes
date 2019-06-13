@@ -259,7 +259,7 @@ def refresh(stats, config, bubble, bub, canvas, backgrounds, texts, modes, panel
     if stats["score"] / config["game"]["level-score"] > stats["level"]:
         if randint(0, 125) == 0:
             if not bubble["key-active"]:
-                Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, modes, len(bubble["bub-id"]), i=-1)).start()
+                Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, i=-1)).start()
                 config["bubble"]["max-speed"] += 0.2
                 bubble["key-active"] = True
     Thread(None, lambda: refresh_state(stats, bubble, canvas, backgrounds, panels)).start()
