@@ -5,7 +5,7 @@ if __name__ == "__main__":
 
 import json
 import numpy as np
-import neural_net as nn
+# import neural_net as nn
 
 from time import sleep
 
@@ -16,6 +16,14 @@ from .components import *
 from .extras import Logging, refresh, shuffling
 from .special import ScrolledWindow
 from .teleport import *
+
+import sys
+
+launcher_cfg = {"version": "v1.5.0-pre1",
+                "versionDir": "v1_5_0_pre1",
+                "launcher": None,
+                "args": sys.argv
+                }
 
 FatalError = Exception
 
@@ -386,11 +394,12 @@ class Maintance:
         """
         Resets the game fully
         """
+        global laucher_cfg
 
         from . import config as cfg
 
-        stats = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json").get_decoded()
-        bubble = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json").get_decoded()
+        stats = cfg.Reader("versions/" + launcher_cfg["versionDir"] + "/config/reset.json").get_decoded()
+        bubble = cfg.Reader("versions/" + launcher_cfg["versionDir"] + "/config/reset-bubble.json").get_decoded()
 
         cfg.Writer("slots/" + save_name + "/game.json", stats.copy())
         cfg.Writer("slots/" + save_name + "/bubble.json", bubble.copy())
@@ -451,11 +460,10 @@ class Game(Canvas):
 
         print("started mods")
 
-        # Laucher Config
-        self.laucher_cfg = launcher_cfg
-
-        # Laucher Config
+        # Launcher Config
         self.launcher_cfg = launcher_cfg
+        global laucher_cfg
+        launcher_cfg = self.launcher_cfg
 
         # Define Empty Attributes for use with slots-menu
         self.item_info = None
@@ -541,7 +549,8 @@ class Game(Canvas):
         self.back = dict()
         self.fore = dict()
 
-        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.json").get_decoded()
+        self.config = config.Reader(
+            "versions/" + self.launcher_cfg["versionDir"] + "/config/startup.json").get_decoded()
 
         fd = os.open("lang/" + self.config["game"]["language"] + ".yaml", os.O_RDONLY | os.O_CREAT)
         self.lang = yaml.safe_load(os.read(fd, 4096).decode())
@@ -561,7 +570,8 @@ class Game(Canvas):
         self.tp = dict()
 
         # Configuration
-        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.json").get_decoded()
+        self.config = config.Reader(
+            "versions/" + self.launcher_cfg["versionDir"] + "/config/startup.json").get_decoded()
 
         # Bubble / bubble-info
         self.bub = dict()
@@ -903,7 +913,7 @@ class Game(Canvas):
                 Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7,
                        font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(name, event))
+            self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(event))
 
             self.buttons.append(
                 Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7,
@@ -958,8 +968,9 @@ class Game(Canvas):
         os.makedirs("slots/" + src, exist_ok=True)
 
         # Copy the template (resetted save-files)
-        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json", "slots/" + src + "/game.json")
-        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json", "slots/" + src + "/bubble.json")
+        self.copy("versions/" + self.launcher_cfg["versionDir"] + "/config/reset.json", "slots/" + src + "/game.json")
+        self.copy("versions/" + self.launcher_cfg["versionDir"] + "/config/reset-bubble.json",
+                  "slots/" + src + "/bubble.json")
 
         # Refreshing slots-menu
         self.delete_all()
@@ -986,8 +997,10 @@ class Game(Canvas):
             os.makedirs("slots/" + new, exist_ok=True)
 
             # Copy the template (resetted save-files)
-            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json", "slots/" + new + "/game.json")
-            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json", "slots/" + new + "/bubble.json")
+            self.copy("versions/" + self.launcher_cfg["versionDir"] + "/config/reset.json",
+                      "slots/" + new + "/game.json")
+            self.copy("versions/" + self.launcher_cfg["versionDir"] + "/config/reset-bubble.json",
+                      "slots/" + new + "/bubble.json")
 
             # Refresh slots-menu
             self.delete_all()
@@ -1034,7 +1047,7 @@ class Game(Canvas):
         self.delete_all()
         self.load()
 
-    def open(self, name, event):
+    def open(self, event):
         # Getting row-index
         y = event.widget.master.grid_info()["row"]
 
@@ -1043,7 +1056,7 @@ class Game(Canvas):
 
         # Remove slots menu and run the game.
         self.delete_all()
-        self.run(name)
+        self.run(src)
 
     def delete_all(self):
         # Delete all main frames
@@ -1227,10 +1240,21 @@ class Game(Canvas):
     def main(self):
         from threading import Thread
 
+        t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
+                                          outline="#3f3f3f")
+        t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
+                                     text="Loading...",
+                                     font=(self.font, 50 + self.f_size), fill="#afafaf")
+        t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
+                                     text="Loading Mods",
+                                     font=(self.font, 15 + self.f_size), fill="#afafaf")
+        self.canvas.update()
+
         # Pre-Initialize
         self.mod_loader.pre_initialize(self)
 
-        # Updates canvas.
+        self.canvas.itemconfig(t1, text="Loading...")
+        self.canvas.itemconfig(t2, text="Loading Config")
         self.canvas.update()
 
         # Reload config resolution.
@@ -1243,6 +1267,10 @@ class Game(Canvas):
         # Reload middle positions.
         mid_x = self.config["width"] / 2
         mid_y = self.config["height"] / 2
+
+        self.canvas.itemconfig(t1, text="Loading Bubbles")
+        self.canvas.itemconfig(t2, text="Creating Dicts")
+        self.canvas.update()
 
         # Adding the dictionaries for the bubbles. With different res.
         self.bub["Normal"] = dict()
@@ -1310,6 +1338,10 @@ class Game(Canvas):
             self.bub["NoTouch"][i] = PhotoImage(
                 file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/NoTouch/" + str(i) + "px.png")
 
+            self.canvas.itemconfig(t1, text="Loading Bubbles Sizes")
+            self.canvas.itemconfig(t2, text="Loading %s of %s" % (i, 60))
+            self.canvas.update()
+
         # Adding the static-resolution-bubbles.
         self.bub["Key"][60] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Key.png")
         self.bub["Diamond"][36] = PhotoImage(
@@ -1327,61 +1359,125 @@ class Game(Canvas):
         # Reload stats with auto-restore.
         self.stats = Maintance().auto_restore(self.save_name)
 
+        self.canvas.itemconfig(t1, text="Loading Background")
+        self.canvas.itemconfig(t2, text="Normal")
+        self.canvas.update()
+
         # Getting the normal background.
         self.back["normal"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/BackGround.png")
+
+        self.canvas.itemconfig(t1, text="Loading Icons")
+        self.canvas.itemconfig(t2, text="")
+        self.canvas.update()
 
         # Getting the store-icons.
         self.icons["store-pack"] = list()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Key.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Key")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Teleport.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Teleport")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Shield.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Shield")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/DiamondBuy.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Diamond")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/BuyACake.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Buy A Cake")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Pop_3_bubs.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Pop 3 Bubbles")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/PlusLife.png"))
+        self.canvas.itemconfig(t2, text="Store Item: PlusLife")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/SpeedBoost.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Speedboost")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/SpecialMode.png"))
+        self.canvas.itemconfig(t2, text="Store Item: Special Mode")
+        self.canvas.update()
         self.icons["store-pack"].append(
             PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/DoubleScore.png"))
+        self.canvas.itemconfig(t2, text="Double Score")
+        self.canvas.update()
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
 
+        self.canvas.itemconfig(t1, text="Loading Background")
+        self.canvas.itemconfig(t2, text="Line")
+        self.canvas.update()
         # Unknown
         self.back["line"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/LineIcon.png")
+
+        self.canvas.itemconfig(t1, text="Loading Foreground")
+        self.canvas.itemconfig(t2, text="For Bubble Gift")
+        self.canvas.update()
 
         # Setting present foreground
         self.fore["present-fg"] = PhotoImage(
             file="versions/" + self.launcher_cfg["versionDir"] + "/data/EventBackground.png")
 
+        self.canvas.itemconfig(t1, text="Loading Icons")
+        self.canvas.itemconfig(t2, text="Circle")
+        self.canvas.update()
+
         # Setting present icons.
         self.icons["circle"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Circle.png")
+
+        self.canvas.itemconfig(t1, text="Loading Icons")
+        self.canvas.itemconfig(t2, text="Present")
+        self.canvas.update()
+
         self.icons["present"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Present.png")
+
+        self.canvas.itemconfig(t1, text="Loading Foreground")
+        self.canvas.itemconfig(t2, text="Store FG")
+        self.canvas.update()
 
         # Setting store foreground
         self.fore["store-fg"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/FG2.png")
+
+        self.canvas.itemconfig(t1, text="Loading Icons")
+        self.canvas.itemconfig(t2, text="Store: Diamond & Coin")
+        self.canvas.update()
 
         # Setting standard store icons.
         self.icons["store-diamond"] = PhotoImage(
             file="versions/" + self.launcher_cfg["versionDir"] + "/data/Diamond.png")
         self.icons["store-coin"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Coin.png")
 
+        self.canvas.itemconfig(t1, text="Loading Icons")
+        self.canvas.itemconfig(t2, text="Pause")
+        self.canvas.update()
+
         # Setting pause-icon.
         self.icons["pause-id"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Pause.png")
+
+        self.canvas.itemconfig(t1, text="Loading Icons")
+        self.canvas.itemconfig(t2, text="SlowMotion")
+        self.canvas.update()
 
         # Setting slowmotion-icon.
         self.icons["slowmotion"] = PhotoImage(
             file="versions/" + self.launcher_cfg["versionDir"] + "/data/SlowMotionIcon.png")
+
+        self.canvas.itemconfig(t1, text="Loading Background")
+        self.canvas.itemconfig(t2, text="Special")
+        self.canvas.update()
 
         # Setting special background.
         self.back["special"] = PhotoImage(
@@ -1390,6 +1486,8 @@ class Game(Canvas):
         # Setting normal background.
         self.back["normal"] = PhotoImage(
             file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/Backgrounds/GameBG2.png")
+        self.canvas.itemconfig(t2, text="Normal")
+        self.canvas.update()
 
         # Setting background from nothing to normal.
         self.back["id"] = self.canvas.create_image(0, 0, anchor=NW, image=self.back["normal"])
@@ -1401,52 +1499,94 @@ class Game(Canvas):
         # Moving ship to position
         c.move(self.ship["id"], self.stats["ship-position"][0], self.stats["ship-position"][1])
 
+        self.canvas.itemconfig(t1, text="Creating Stats objects")
+        self.canvas.itemconfig(t2, text="")
+
         # Initializing the panels for the game.
         self.panels["game/top"] = self.canvas.create_rectangle(
             -1, -1, self.config["width"], 69, fill="darkcyan"
         )
+
         # Create seperating lines.
         self.canvas.create_line(0, 70, self.config["width"], 70, fill="lightblue")
         self.canvas.create_line(0, 69, self.config["width"], 69, fill="white")
 
         c.create_text(55, 30, text=self.lang["info.score"], fill='orange', font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="Score")
         c.create_text(110, 30, text=self.lang["info.level"], fill='orange', font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="Level")
         c.create_text(165, 30, text=self.lang["info.speed"], fill='orange', font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="Speed")
         c.create_text(220, 30, text=self.lang["info.lives"], fill='orange', font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="Lives")
         c.create_text(330, 30, text=self.lang["info.state.score"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="Score State")
         c.create_text(400, 30, text=self.lang["info.state.protect"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Protect")
         c.create_text(490, 30, text=self.lang["info.state.slowmotion"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Slow Motion")
         c.create_text(580, 30, text=self.lang["info.state.confusion"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Confusion")
         c.create_text(670, 30, text=self.lang["info.state.timebreak"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Time Break")
         c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State SpeedBoost")
         c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Paralize")
         c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Ammo Speed")
         c.create_text(1030, 30, text=self.lang["info.state.notouch"], fill="gold", font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="State Ghost Mode")
         c.create_text(1120, 30, text=self.lang["info.tps"], fill='gold', font=[self.font, 15 + self.f_size])
+        self.canvas.itemconfig(t2, text="Teleports")
         c.create_image(1185, 30, image=self.icons["store-diamond"])
+        self.canvas.itemconfig(t2, text="Diamonds")
         c.create_image(1185, 50, image=self.icons["store-coin"])
+        self.canvas.itemconfig(t2, text="Coins")
+
+        self.canvas.itemconfig(t1, text="Creating Stats Data")
+        self.canvas.itemconfig(t2, text="")
 
         # Game information values.
         self.texts["score"] = c.create_text(55, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="Score")
         self.texts["level"] = c.create_text(110, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="Level")
         self.texts["speed"] = c.create_text(165, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="Speed")
         self.texts["lives"] = c.create_text(220, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="Lives")
         self.texts["scorestate"] = c.create_text(330, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Score")
         self.texts["secure"] = c.create_text(400, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Protection")
         self.texts["slowmotion"] = c.create_text(490, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Slowmotion")
         self.texts["confusion"] = c.create_text(580, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Confusion")
         self.texts["timebreak"] = c.create_text(670, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Time Break")
         self.texts["speedboost"] = c.create_text(760, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State SpeedBoost")
         self.texts["paralis"] = c.create_text(850, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Paralis")
         self.texts["shotspeed"] = c.create_text(940, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Ammo Speed")
         self.texts["notouch"] = c.create_text(1030, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Ghost Mode")
         self.texts["shiptp"] = c.create_text(1120, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="Teleports")
         self.texts["diamond"] = c.create_text(1210, 30, fill='cyan')
+        self.canvas.itemconfig(t2, text="Diamonds")
         self.texts["coin"] = c.create_text(1210, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="Coins")
         self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50 + self.f_size))
+        self.canvas.itemconfig(t2, text="Level View")
 
         self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60 + self.f_size, "bold"))
+        self.canvas.itemconfig(t2, text="Pauze")
         self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
+        self.canvas.itemconfig(t2, text="Pauze")
 
         # Threaded Automatic Save (TAS)
         self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
@@ -1462,12 +1602,15 @@ class Game(Canvas):
         self.c_ammo = Ammo()
 
         # Binding key-events for control
+        self.canvas.itemconfig(t1, text="Binding Objects")
+        self.canvas.itemconfig(t2, text="Main Binding")
         c.bind_all('<Key>',
                    lambda event: control(self.modes, self.config, self.root, self.canvas, self.stats, self.bubbles,
                                          self.back, self.texts, self.commands, self.temp, self.panels, self.fore,
                                          self.ship, self.tp, self.lang, self.return_main, self.icons,
                                          self.bub, self.font, event, self.c_ammo, self.launcher_cfg))
 
+        self.canvas.itemconfig(t2, text="Player Motion")
         c.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))
         c.bind_all("<KeyPress-Down>", lambda event: self.down_press(event))
         c.bind_all("<KeyPress-Left>", lambda event: self.left_press(event))
@@ -1502,6 +1645,9 @@ class Game(Canvas):
         self.ammo["retime"] = time()
 
         stats = self.stats
+
+        self.canvas.itemconfig(t1, text="Fixing Saved States")
+        self.canvas.itemconfig(t2, text="")
 
         if stats["scorestate-time"] <= time():
             stats["scorestate"] = 1
@@ -1556,6 +1702,9 @@ class Game(Canvas):
         self.stats = stats
 
         # Post Initalize mods
+
+        self.canvas.itemconfig(t1, text="Post Initialize Mods")
+        self.canvas.itemconfig(t2, text="")
         self.mod_loader.post_initialize(self)
 
         from .base import BaseBarier
@@ -1589,14 +1738,6 @@ class Game(Canvas):
             # MAIN GAME LOOP
             while True:
                 # self.stats = self.cfg.auto_restore(self.save_name)
-                t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
-                                                  outline="#3f3f3f")
-                t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
-                                             text="Creating bubbles...",
-                                             font=(self.font, 50 + self.f_size), fill="#afafaf")
-                t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
-                                             text="Thread 0 of 0 active",
-                                             font=(self.font, 15 + self.f_size), fill="#afafaf")
                 while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
                     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
                         len(self.bubbles["bub-index"]) - 1) + " active...")
@@ -1610,7 +1751,8 @@ class Game(Canvas):
 
                 while self.stats["lives"] > 0:
                     if not self.modes["pause"]:
-                        pass
+                        self.update()
+                        Thread(None, lambda: self.t_update()).start()
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()
@@ -1663,6 +1805,7 @@ class S:
     def __init__(self):
         self.inputs = []
         self.outputs = [[]]
+
     def save(self):
         with open("input.json", "w") as file:
             json_str = self.inputs
@@ -1691,9 +1834,7 @@ class S:
         self.outputs[0].append(output)
 
 
-
 s = S()
-
 
 if __name__ == "__main__":
     print("Error: Can't open this file. Please open this file with the launcher.")
