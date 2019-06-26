@@ -260,7 +260,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
         for i in range(len(a)):
             # print(a[i], b[i])
             place_bubble(canvass, bub, x, y, 25, a[i])
-            canvass.create_text(x, y + 40, text=lang[c[i]], fill=fore, font=[font])
+            canvass.create_text(x, y + 40, text=lang[c[i]], fill=fore, font=[font, 10])
             if x > 900:
                 x = 50
                 y += 100
@@ -418,11 +418,11 @@ def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config:
     for i in range(len(bubs["bub-id"]) - 1):
         if bubs["bub-special"]:
             create_bubble(stats, config, bub, canvas, bubble, bubs["bub-index"][i],
-                          bubs["bub-position"][i][0] + config["width"],
+                          bubs["bub-position"][i][0],
                           bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
         elif not bubs["bub-special"]:
             SpecialMode.create_bubble(canvas, config, bubble, stats, bub, bubs["bub-index"][i],
-                                      bubs["bub-position"][i][0] + config["width"],
+                                      bubs["bub-position"][i][0],
                                       bubs["bub-position"][i][1], bubs["bub-radius"][i], bubs["bub-speed"][i])
 
 
@@ -600,10 +600,10 @@ class Game(Canvas):
         # Collision class
         self.Coll = Collision()
 
-        if not already_opened:
-            self.close = Button(self.root, text="X", fg="white", relief=FLAT, bg="#ff0000",
-                                command=lambda: os.kill(os.getpid(), -1))
-            self.close.pack(side=TOP, fill=X)
+        # if not already_opened:
+        #     self.close = Button(self.root, text="X", fg="white", relief=FLAT, bg="#ff0000",
+        #                         command=lambda: os.kill(os.getpid(), -1))
+        #     self.close.pack(side=TOP, fill=X)
 
         self.items = list()
 
@@ -1105,19 +1105,19 @@ class Game(Canvas):
                         a = 1
                     if self.pressed['Up']:
                         if y > 72 + self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / (self.move_fps / 2) - a))
+                            self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / (self.move_fps / 4) - a))
                             self.root.update()
                     elif self.pressed['Down']:
                         if y < self.config["height"] - self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / (self.move_fps / 2) + a))
+                            self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / (self.move_fps / 4) + a))
                             self.root.update()
                     elif self.pressed['Left']:
                         if x > 0 + self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] / 20 - a), 0)
+                            self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] / (self.move_fps / 4) - a), 0)
                             self.root.update()
                     elif self.pressed['Right']:
                         if x < self.config["width"] - self.config["game"]["ship-radius"]:
-                            self.canvas.move(self.ship["id"], (self.stats["shipspeed"] / 20 + a), 0)
+                            self.canvas.move(self.ship["id"], (self.stats["shipspeed"] / (self.move_fps / 4) + a), 0)
                             self.root.update()
                     self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
 
@@ -1169,15 +1169,54 @@ class Game(Canvas):
 
     def up_release(self, event):
         self.pressed["Up"] = False
+        if self.modes["teleport"]:
+            x, y = get_coords(self.canvas, self.tp["id1"])
+            if y > 72 + 5:
+                self.canvas.move(self.tp["id1"], 0, -5)
+                self.canvas.move(self.tp["id2"], 0, -5)
+                self.canvas.move(self.tp["id3"], 0, -5)
+                self.canvas.move(self.tp["id4"], 0, -5)
+        if self.modes["store"]:
+            if event.keysym == "Up":
+                self.commands["store"].set_selected(self.canvas, -1)
+            if event.keysym == "Right":
+                self.commands["store"].set_selected(self.canvas, int((self.config["height"] - 215) / 140 + 1))
 
     def down_release(self, event):
         self.pressed["Down"] = False
+        if self.modes["teleport"]:
+            x, y = get_coords(self.canvas, self.tp["id1"])
+            if y < self.config["height"] - 105 - 5:
+                self.canvas.move(self.tp["id1"], 0, 5)
+                self.canvas.move(self.tp["id2"], 0, 5)
+                self.canvas.move(self.tp["id3"], 0, 5)
+                self.canvas.move(self.tp["id4"], 0, 5)
+        if self.modes["store"]:
+            self.commands["store"].set_selected(self.canvas, 1)
 
     def left_release(self, event):
         self.pressed["Left"] = False
+        if self.modes["teleport"]:
+            x, y = get_coords(self.canvas, self.tp["id1"])
+            if x > 0 + 5:
+                self.canvas.move(self.tp["id1"], -5, 0)
+                self.canvas.move(self.tp["id2"], -5, 0)
+                self.canvas.move(self.tp["id3"], -5, 0)
+                self.canvas.move(self.tp["id4"], -5, 0)
+        if self.modes["store"]:
+            self.commands["store"].set_selected(self.canvas, int(-((self.config["height"] - 215) / 140 + 1)))
 
     def right_release(self, event):
         self.pressed["Right"] = False
+        if self.modes["teleport"]:
+            x, y = get_coords(self.canvas, self.tp["id1"])
+            if x < self.config["width"] - 5:
+                self.canvas.move(self.tp["id1"], 5, 0)
+                self.canvas.move(self.tp["id2"], 5, 0)
+                self.canvas.move(self.tp["id3"], 5, 0)
+                self.canvas.move(self.tp["id4"], 5, 0)
+        if self.modes["store"]:
+            self.commands["store"].set_selected(self.canvas, int((self.config["height"] - 215) / 140 + 1))
 
     def shot(self, event):
         if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
@@ -1296,50 +1335,35 @@ class Game(Canvas):
         self.bub["Diamond"] = dict()
         self.bub["Present"] = dict()
         self.bub["SpecialKey"] = dict()
+        from lib import utils
+
+        _min = 21
+        _max = 80
 
         # Adding the different resolutions to the bubbles.
-        for i in range(9, 61):
-            self.bub["Normal"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Normal/" + str(i) + "px.png")
-            self.bub["Triple"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Triple/" + str(i) + "px.png")
-            self.bub["Double"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Double/" + str(i) + "px.png")
-            self.bub["SpeedDown"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpeedDown/" + str(i) + "px.png")
-            self.bub["SpeedUp"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpeedUp/" + str(i) + "px.png")
-            self.bub["Up"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Up/" + str(i) + "px.png")
-            self.bub["Ultimate"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Ultimate/" + str(i) + "px.png")
-            self.bub["Kill"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Kill/" + str(i) + "px.png")
-            self.bub["Teleporter"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Teleporter/" + str(i) + "px.png")
-            self.bub["SlowMotion"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SlowMotion/" + str(i) + "px.png")
-            self.bub["DoubleState"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/DoubleState/" + str(i) + "px.png")
-            self.bub["Protect"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Protect/" + str(i) + "px.png")
-            self.bub["ShotSpdStat"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/ShotSpdStat/" + str(i) + "px.png")
-            self.bub["HyperMode"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/HyperMode/" + str(i) + "px.png")
-            self.bub["TimeBreak"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/TimeBreak/" + str(i) + "px.png")
-            self.bub["Confusion"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Confusion/" + str(i) + "px.png")
-            self.bub["Paralis"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Paralis/" + str(i) + "px.png")
-            self.bub["StoneBub"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/StoneBub/" + str(i) + "px.png")
-            self.bub["NoTouch"][i] = PhotoImage(
-                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/NoTouch/" + str(i) + "px.png")
+        for i in range(_min, _max + 1):
+            self.bub["Normal"][i] = utils.createbubble_image((i, i), None, "white")
+            self.bub["Double"][i] = utils.createbubble_image((i, i), None, "gold")
+            self.bub["Triple"][i] = utils.createbubble_image((i, i), None, "blue", "#007fff", "#00ffff", "white")
+            self.bub["SpeedDown"][i] = utils.createbubble_image((i, i), None, "#ffffff", "#a7a7a7", "#7f7f7f", "#373737")
+            self.bub["SpeedUp"][i] = utils.createbubble_image((i, i), None, "#ffffff", "#7fff7f", "#00ff00", "#007f00")
+            self.bub["Up"][i] = utils.createbubble_image((i, i), None, "#00ff00", "#00ff00", "#00000000", "#00ff00")
+            self.bub["Ultimate"][i] = utils.createbubble_image((i, i), None, "gold", "gold", "orange", "gold")
+            self.bub["Kill"][i] = utils.createbubble_image((i, i), None, "#7f0000", "#7f007f", "#7f0000",)
+            self.bub["Teleporter"][i] = utils.createbubble_image((i, i), None, "#7f7f7f", "#7f7f7f", "#ff1020", "#373737")
+            self.bub["SlowMotion"][i] = utils.createbubble_image((i, i), None, "#ffffffff", "#00000000", "#000000ff")
+            self.bub["DoubleState"][i] = utils.createbubble_image((i, i), None, "gold", "#00000000", "gold", "gold")
+            self.bub["Protect"][i] = utils.createbubble_image((i, i), None, "#00ff00", "#3fff3f", "#7fff7f", "#9fff9f")
+            self.bub["ShotSpdStat"][i] = utils.createbubble_image((i, i), None, "#ff7f00", "#ff7f00", "gold")
+            self.bub["HyperMode"][i] = utils.createbubble_image((i, i), None, "black", "black", "white", "black")
+            self.bub["TimeBreak"][i] = utils.createbubble_image((i, i), None, "red", "orange", "yellow", "white")
+            self.bub["Confusion"][i] = utils.createbubble_image((i, i), None, "black", "purple", "magenta", "white")
+            self.bub["Paralis"][i] = utils.createbubble_image((i, i), None, "#ffff00", "#ffff00", "#ffff7f", "#ffffff")
+            self.bub["StoneBub"][i] = utils.createbubble_image((i, i), None, "black", "orange", "yellow")
+            self.bub["NoTouch"][i] = utils.createbubble_image((i, i), None, "#7f7f7f", "#7f7f7f", "#7f7f7f", "#373737")
 
             self.canvas.itemconfig(t1, text="Loading Bubbles Sizes")
-            self.canvas.itemconfig(t2, text="Loading %s of %s" % (i, 60))
+            self.canvas.itemconfig(t2, text="Loading %s of %s" % (i - _min, _max - 1 - _min))
             self.canvas.update()
 
         # Adding the static-resolution-bubbles.
@@ -1352,6 +1376,9 @@ class Game(Canvas):
         self.bub["Coin"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/CoinBub.png")
         self.bub["SpecialKey"][48] = PhotoImage(
             file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpecialMode.png")
+
+        for i in self.bub.keys():
+            print("%s: %s" % (i, self.bub[i]))
 
         # Adding ship image.
         self.ship["image"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Ship.png")
@@ -1589,7 +1616,7 @@ class Game(Canvas):
         self.canvas.itemconfig(t2, text="Pauze")
 
         # Threaded Automatic Save (TAS)
-        self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
+        # self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
 
         kw = {}
 
@@ -1622,14 +1649,7 @@ class Game(Canvas):
         c.bind_all("<KeyRelease-Right>", lambda event: self.right_release(event))
         c.bind_all("<Key-Z>", lambda event: self.r_update())
 
-        Thread(None, lambda: self.movent_change(), "MotionThread").start()
-
-        # Thread(None, lambda: c.bind("<Motion>", MotionEventHandler)).start()
-        # Thread(None, lambda: c.bind("<ButtonPress-1>", Button1PressEventHandler)).start()
-        # Thread(None, lambda: c.bind("<ButtonRelease-1>", Button1ReleaseEventHandler)).start()
-
         # Binding other key-events.
-        # c.bind_all('<KeyRelease-Escape>', lambda event: self.return_main())
         c.bind_all('Configure', lambda event: self.resize)
 
         log.info("Game.main", "Key-bindings binded to 'move_ship'")
@@ -1734,6 +1754,8 @@ class Game(Canvas):
 
         c = self.canvas
 
+        Thread(None, lambda: self.movent_change(), "MotionThread").start()
+
         try:
             # MAIN GAME LOOP
             while True:
@@ -1753,6 +1775,7 @@ class Game(Canvas):
                     if not self.modes["pause"]:
                         self.update()
                         Thread(None, lambda: self.t_update()).start()
+
                     self.root.update()
                     self.root.update_idletasks()
                 self.root.update()

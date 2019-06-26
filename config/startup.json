@@ -2,7 +2,7 @@
   "bubble": {
     "chance": 10,
     "max-radius": 30,
-    "min-radius": 6,
+    "min-radius": 21,
     "max-speed": 4.8,
     "screen-gap": 100
   },
