@@ -448,22 +448,27 @@ class Game(Canvas):
     def __init__(self, launcher_cfg: Dict[str, Any], start_time=0.0, already_opened=False):
         super().__init__()
 
+        # Launcher Config
+        self.launcher_cfg = launcher_cfg
+        self.version = self.launcher_cfg["version"]
+        self.versionDir = self.launcher_cfg["versionDir"]
+
+        # Imports
         from . import config
+        from lib import utils
         import os
         import yaml
         from . import mod_support as mods
 
         print("started Game")
 
+        if not os.path.exists("mods/%s" % self.versionDir):
+            os.makedirs("mods/%s" % self.versionDir)
+
         # Load Mods
         self.mod_loader = mods.Loader(launcher_cfg)
 
         print("started mods")
-
-        # Launcher Config
-        self.launcher_cfg = launcher_cfg
-        global laucher_cfg
-        launcher_cfg = self.launcher_cfg
 
         # Define Empty Attributes for use with slots-menu
         self.item_info = None
@@ -554,6 +559,7 @@ class Game(Canvas):
 
         fd = os.open("lang/" + self.config["game"]["language"] + ".yaml", os.O_RDONLY | os.O_CREAT)
         self.lang = yaml.safe_load(os.read(fd, 4096).decode())
+
         os.close(fd)
 
         if self.config["game"]["language"] == "tengwar":

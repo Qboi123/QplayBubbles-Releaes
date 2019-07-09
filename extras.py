@@ -2,6 +2,32 @@
 from tkinter import TclError
 
 
+def dict2class(obj: dict):
+    import sys
+    class DictClass:
+        def __init__(self):
+            pass
+
+    print("Object: %s" % obj)
+
+    dictClass = DictClass()
+
+    print("Keys: %s" % list(obj.keys()))
+
+    for index in range(len(list(obj.keys()))):
+        key = list(obj.keys())[index]
+        value = list(obj.values())[index]
+        print("Key: %s | Value: %s" % (key, value))
+        if type(key) == dict:
+            print("ERROR: Key is a Dict!", file=sys.stderr)
+            exit(1)
+        if type(value) == dict:
+            value = dict2class(value)
+        dictClass.__dict__[key] = value
+
+    return dictClass
+
+
 class Logging:
     """
     Logging class for logs
