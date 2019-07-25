@@ -1,4 +1,3 @@
-from .fake_main import Game
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
@@ -35,15 +34,15 @@ OBJ_BARIER = "barier"
 
 # noinspection PyMissingConstructor
 class StoreItem:
-    def __init__(self, parent: Game):
+    def __init__(self, parent):
         self.parent = parent
         self.coins = 0
         self.diamonds = 0
 
-    def on_buy(self, parent: Game):
+    def on_buy(self, parent):
         pass
 
-    def on_select(self, parent: Game):
+    def on_select(self, parent):
         pass
 
 
@@ -51,10 +50,10 @@ class Event:
     def __init__(self):
         pass
 
-    def on_update(self, parent: Game):
+    def on_update(self, parent):
         pass
 
-    def on_t_update(self, parent: Game):
+    def on_t_update(self, parent):
         pass
 
 
@@ -363,10 +362,10 @@ class Bubble(Sprite):
         self._kw["bubbles"]["bubbles"]["bub-speed"].append(s)
         self.index = self._kw["bubbles"]["bubbles"]["bub-id"].index(self.ids, 0, len(self._kw["bubbles"]["bubbles"]["bub-id"]))
 
-    def on_move(self, parent: Game):
+    def on_move(self, parent):
         pass
 
-    def on_collision(self, parent: Game):
+    def on_collision(self, parent):
         from .bubble import del_bubble
         del_bubble(self.index, self._kw["bubbles"], self._kw["canvas"])
 

@@ -1,14 +1,13 @@
 from .base import Bubble, StatusBubble
-from .fake_main import Game
 
 
 class NormalBubble(Bubble):
-    def __init__(self, parent: Game):
+    def __init__(self, parent):
         super().__init__(parent)
         self.name = "Normal"
         self.radius = int()
 
-    def on_collision(self, parent: Game):
+    def on_collision(self, parent):
         parent.stats["score"] += self.r
 
 

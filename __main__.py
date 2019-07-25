@@ -459,6 +459,7 @@ class Game(Canvas):
         import os
         import yaml
         from . import mod_support as mods
+        from lib import xbox
 
         print("started Game")
 
@@ -504,6 +505,7 @@ class Game(Canvas):
 
         # Stats
         self.stats = dict()
+        self.xControl = dict()
 
         print("stats")
 
@@ -1131,6 +1133,7 @@ class Game(Canvas):
         time2 = time()
         while not self.returnmain:
             time1 = time()
+
             try:
                 # print(time1 - time2)
                 # print(1/(time1 - time2))
@@ -1140,6 +1143,89 @@ class Game(Canvas):
             time2 = time()
             Thread(None, lambda: self._movent()).start()
             sleep(0.01)
+            
+    def _xbox_input(self):
+        time2 = time()
+        while not self.returnmain:
+            self.xbox.update()
+            a = [int(self.xbox.LeftJoystickX * 7), int(self.xbox.LeftJoystickY * 7)]
+            b = [int(self.xbox.RightJoystickX * 7), int(self.xbox.RightJoystickY * 7)]
+            self.xControl["LeftJoystick"] = a
+            self.xControl["RightJoystick"] = b
+            self.xControl["A"] = bool(self.xbox.A)
+            self.xControl["B"] = bool(self.xbox.B)
+            self.xControl["X"] = bool(self.xbox.X)
+            self.xControl["Y"] = bool(self.xbox.Y)
+            self.xControl["Start"] = bool(self.xbox.Start)
+            self.xControl["Back"] = bool(self.xbox.Back)
+            self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
+            self.xControl["RightBumper"] = bool(self.xbox.RightBumper)
+            self.xControl["LeftTrigger"] = int((self.xbox.LeftBumper + 1) / 2 * 7)
+            self.xControl["RightTrigger"] = int((self.xbox.RightBumper + 1) / 2 * 7)
+            
+    def xboxDeamon(self):
+        time2 = time()
+        while not self.returnmain:
+            time1 = time()
+
+            try:
+                # print(time1 - time2)
+                # print(1/(time1 - time2))
+                self.move_fps = 1 / (time1 - time2)
+            except ZeroDivisionError:
+                self.move_fps = 1
+            time2 = time()
+            Thread(None, lambda: self.xMovent()).start()
+            sleep(0.01)
+            
+    def xMovent(self):
+        if self.modes["present"]:
+            if self.xControl["A"]:
+                if False != self.commands["present"] != True:
+                    self.commands["present"].exit(self.canvas)
+                    self.modes["pause"] = False
+                    self.modes["present"] = False
+                    self.stats["scorestate-time"] = self.temp["scorestate-save"] + time()
+                    self.stats["secure-time"] = self.temp["secure-save"] + time()
+                    self.stats["timebreak-time"] = self.temp["timebreak-save"] + time()
+                    self.stats["confusion-time"] = self.temp["confusion-save"] + time()
+                    self.stats["slowmotion-time"] = self.temp["slowmotion-save"] + time()
+                    self.stats["paralis-time"] = self.temp["paralis-save"] + time()
+                    self.stats["shotspeed-time"] = self.temp["shotspeed-save"] + time()
+                    self.stats["notouch-time"] = self.temp["notouch-save"] + time()
+
+        if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
+            if not self.modes["pause"]:
+                if not self.stats["paralis"]:
+                    x, y = get_coords(self.canvas, self.ship["id"])
+                    if self.stats["speedboost"]:
+                        a = 6
+                    else:
+                        a = 1
+
+                    self.canvas.move(self.ship["id"],
+                                     ((self.stats["shipspeed"] / (self.move_fps / 4) + a)) * self.xControl[
+                                         "LeftJoystick"][0] / 7,
+                                     -(((self.stats["shipspeed"] / (self.move_fps / 4) + a)) * self.xControl[
+                                         "LeftJoystick"][1] / 7))
+
+                    # if self.xControl['Up']:
+                    #     if y > 72 + self.config["game"]["ship-radius"]:
+                    #         self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / (self.move_fps / 4) - a))
+                    #         self.root.update()
+                    # elif self.xControl['Down']:
+                    #     if y < self.config["height"] - self.config["game"]["ship-radius"]:
+                    #         self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / (self.move_fps / 4) + a))
+                    #         self.root.update()
+                    # elif self.xControl['Left']:
+                    #     if x > 0 + self.config["game"]["ship-radius"]:
+                    #         self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] / (self.move_fps / 4) - a), 0)
+                    #         self.root.update()
+                    # elif self.xControl['Right']:
+                    #     if x < self.config["width"] - self.config["game"]["ship-radius"]:
+                    #         self.canvas.move(self.ship["id"], (self.stats["shipspeed"] / (self.move_fps / 4) + a), 0)
+                    #         self.root.update()
+                    # self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
 
     def _press(self, e):
         if e.keysym == "Up":
@@ -1284,7 +1370,28 @@ class Game(Canvas):
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
         from threading import Thread
+        from lib import xbox
 
+        print("[Game]:", "Starting XboxController")
+        self.xbox = xbox.XboxController()
+        print("[Game]:", "Started XboxController")
+
+        self.xControl = dict()
+
+        a = [int(self.xbox.LeftJoystickX * 7), int(self.xbox.LeftJoystickY * 7)]
+        b = [int(self.xbox.RightJoystickX * 7), int(self.xbox.RightJoystickY * 7)]
+        self.xControl["LeftJoystick"] = a
+        self.xControl["RightJoystick"] = b
+        self.xControl["A"] = bool(self.xbox.A)
+        self.xControl["B"] = bool(self.xbox.B)
+        self.xControl["X"] = bool(self.xbox.X)
+        self.xControl["Y"] = bool(self.xbox.Y)
+        self.xControl["Start"] = bool(self.xbox.Start)
+        self.xControl["Back"] = bool(self.xbox.Back)
+        self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
+        self.xControl["RightBumper"] = bool(self.xbox.RightBumper)
+        self.xControl["LeftTrigger"] = int((self.xbox.LeftBumper + 1) / 2 * 7)
+        self.xControl["RightTrigger"] = int((self.xbox.RightBumper + 1) / 2 * 7)
         t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
                                           outline="#3f3f3f")
         t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
@@ -1760,6 +1867,10 @@ class Game(Canvas):
 
         c = self.canvas
 
+        print("[XboxController]:", "Starting Daemons")
+
+        Thread(None, lambda: self._xbox_input(), daemon=True).start()
+        Thread(None, lambda: self.xboxDeamon(), daemon=True).start()
         Thread(None, lambda: self.movent_change(), "MotionThread").start()
 
         try:
