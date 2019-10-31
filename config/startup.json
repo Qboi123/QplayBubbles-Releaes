@@ -4,6 +4,7 @@
     "max-radius": 30,
     "min-radius": 21,
     "max-speed": 4.8,
+    "base-speed": 4.8,
     "screen-gap": 100
   },
   "game": {

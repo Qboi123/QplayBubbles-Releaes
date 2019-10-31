@@ -1,0 +1,2145 @@
+[Thu Oct 17 13:59:38 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 13:59:38 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 13:59:39 2019] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}}
+[Thu Oct 17 14:00:00 2019] [Err]: Exception in thread Thread-606:
+[Thu Oct 17 14:00:00 2019] [Err]: Exception in thread Thread-603:
+[Thu Oct 17 14:00:00 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:00 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:00 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:00 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:00 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:01 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:01 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:01 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:01 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:01 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:01 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:01 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:01 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:01 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:01 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:01 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:01 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:01 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:01 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: Exception in thread Thread-612:
+[Thu Oct 17 14:00:01 2019] [Err]: Exception in thread Thread-609:
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:01 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:01 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:01 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:01 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:01 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:01 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:01 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:01 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:01 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:01 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:01 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:01 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: Exception in thread Thread-615:
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:01 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:01 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:01 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:01 2019] [Err]: 
+[Thu Oct 17 14:00:01 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:02 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:02 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:02 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:02 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:02 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]: Exception in thread Thread-618:
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:02 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]: Exception in thread Thread-621:
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:02 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:02 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:02 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:02 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:02 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:02 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:02 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:02 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:02 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:02 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]: Exception in thread Thread-627:
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]: Exception in thread Thread-624:
+[Thu Oct 17 14:00:02 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:02 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:02 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:02 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]: 
+[Thu Oct 17 14:00:02 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:02 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:02 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:03 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:03 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:03 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:03 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:03 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:03 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:03 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:03 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:03 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:03 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:03 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]: Exception in thread Thread-630:
+[Thu Oct 17 14:00:03 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:03 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:03 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:03 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:03 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:03 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:03 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:03 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:03 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]: Exception in thread Thread-633:
+[Thu Oct 17 14:00:03 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:03 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:03 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:03 2019] [Err]: 
+[Thu Oct 17 14:00:03 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:03 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:03 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:03 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:03 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:04 2019] [Err]: Exception in thread Thread-636:
+[Thu Oct 17 14:00:04 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:04 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:04 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:04 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:04 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:04 2019] [Err]: Exception in thread Thread-639:
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:04 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:04 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:04 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:04 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:04 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:04 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:04 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:04 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:04 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:04 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:04 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:04 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:04 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:04 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:04 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:04 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:04 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]: Exception in thread Thread-645:
+[Thu Oct 17 14:00:04 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:04 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:04 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:04 2019] [Err]: 
+[Thu Oct 17 14:00:04 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:04 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:04 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:04 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:05 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:05 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-642:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:05 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-648:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 20, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     x = (pos[0] + pos[2]) / 2
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]: IndexError: list index out of range
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-666:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-720:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-878:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-792:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-768:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-875:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-873:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-834:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-860:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-837:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-869:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-839:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-684:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-780:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-863:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-872:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-845:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-672:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-825:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-881:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-804:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-861:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-866:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-657:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-771:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-851:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-810:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-836:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-735:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-795:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-857:
+:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-854:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-678:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-717:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-848:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-711:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-696:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-765:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-744:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-786:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-708:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-756:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-813:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-842:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-651:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-729:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-726:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-747:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-801:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-867:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-870:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-858:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-723:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-774:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-714:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-675:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-876:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-654:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-777:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-705:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-828:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-879:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-681:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-699:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-849:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-798:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-831:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-807:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-864:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-789:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-783:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-843:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-693:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-855:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-687:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-750:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-702:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-669:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-732:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-762:
+[Thu Oct 17 14:00:05 2019] [Out]: Quit[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-690:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-819:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-753:
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-741:
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-852:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+Hub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Exception in thread Thread-663:
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\Git[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+s
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+ents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [[Thu Oct 17 14:00:05 2019] [Err]: [Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 15, in get_coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     pos = c.coords(id_num)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+es\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2469, in coords
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+s\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 54, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\l[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'coords') + args))]
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+s\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+ter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     Thread(None, lambda: self.background.move_bubbles()).start()
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+s\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 116, in cleanup_bubs
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 126, in move_bubbles
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+[Thu Oct 17 14:00:05 2019] [Err]:     self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+_init__.py", line 88, in call_tk_attr_thread[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+safe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+uint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2514, in delete
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2591, in move
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+hreadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+ackages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'delete') + args)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     self.tk.call((self._w, 'move') + args)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+ackages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+equests
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+ther exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+kinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:   File "C:\Users\quint\Anaconda3\li[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:05 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]:     raise result
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:05 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+  self.call_tk_attr_threadsafe(_f, *a, **kw))
+s\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: 
+ring handling of the above exception, another exception occurred:
+\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 88, in call_tk_attr_threadsafe
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+ring handling of the above excepti[Thu Oct 17 14:00:06 2019] [Err]:[Thu Oct 17 14:00:06 2019] [Err]: Traceback (m[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+ring handling [Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:     raise result
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), F[Thu Oct 17 14:00:06 2019] [Err]: 
+init__.py",[Thu Oct 17 14:00:06 2019] [Err]: 
+File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _boot[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 133, in process_requests
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self[Thu Oct 17 14:00:06 2019] [Err]:     response[[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+strap_inner
+, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     response[:] = (func(*a, **kw), False)
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+(*self._args, **self._kwargs)
+py", line 865, in run
+strap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclErro[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+strap_inner
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: _tkinter.TclError: invalid command name ".!canvas"
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 917, in _bootstrap_inner
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+(*self._args, **self._kwargs)
+py", line 865, in run
+.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     self.run()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+p_bubs()).start()
+un
+.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\threading.py", line 865, in run
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+bbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:     self._target(*self._args, **self._kwargs)
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 55, in <lambda>
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_co[Thu O[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+tle.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     Thread(None, lambda: self.background.cleanup_bubs()).start()
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 114, in cleanup_bubs
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: 
+meError: name 'TclError' is not defined
+ayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     x, y, = get_coords(self._canvas, self.__bubbles[index])
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+ayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+ror' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py", line 25, in get_coords
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: Na[Thu Oct 17 14:00:06 2019] [Err]: 
+ned
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]:     except TclError:
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:06 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:06 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+meError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: NameError: name 'TclError' is not defined
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 
+[Thu Oct 17 14:00:07 2019] [Err]: 

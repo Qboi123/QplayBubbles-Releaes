@@ -1,0 +1,22 @@
+[Thu Oct 17 13:06:55 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 13:06:55 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 13:06:58 2019] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x0000016E38A5B7B8>
+[Thu Oct 17 13:06:58 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 13:06:58 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 71, in __del__
+[Thu Oct 17 13:06:58 2019] [Err]:     self.destroy()
+[Thu Oct 17 13:06:58 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 65, in destroy
+[Thu Oct 17 13:06:59 2019] [Err]:     self.background.destroy()
+[Thu Oct 17 13:06:59 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 127, in destroy
+[Thu Oct 17 13:06:59 2019] [Err]:     self._canvas.destroy()
+[Thu Oct 17 13:06:59 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Thu Oct 17 13:06:59 2019] [Err]:     self.tk.call('destroy', self._w)
+[Thu Oct 17 13:06:59 2019] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed
+[Thu Oct 17 13:06:59 2019] [Err]: Exception ignored in: <function Background.__del__ at 0x0000016E38A5BAE8>
+[Thu Oct 17 13:06:59 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 13:06:59 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 130, in __del__
+[Thu Oct 17 13:06:59 2019] [Err]:     self.destroy()
+[Thu Oct 17 13:06:59 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 127, in destroy
+[Thu Oct 17 13:06:59 2019] [Err]:     self._canvas.destroy()
+[Thu Oct 17 13:06:59 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Thu Oct 17 13:06:59 2019] [Err]:     self.tk.call('destroy', self._w)
+[Thu Oct 17 13:06:59 2019] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed

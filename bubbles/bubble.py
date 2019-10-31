@@ -1,5 +1,5 @@
 from random import randint
-from ..bubble import Bubble
+from versions.v1_5_0_pre5.lib.bubble import Bubble
 
 
 class NormalBubble(Bubble):

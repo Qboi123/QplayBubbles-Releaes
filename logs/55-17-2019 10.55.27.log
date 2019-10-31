@@ -1,0 +1,14 @@
+[Thu Oct 17 12:55:27 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 12:55:27 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 12:55:27 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 12:55:27 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Thu Oct 17 12:55:27 2019] [Err]:     Main.Game(launcher_cfg)
+[Thu Oct 17 12:55:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 8, in __init__
+[Thu Oct 17 12:55:27 2019] [Err]:     self.initialize()
+[Thu Oct 17 12:55:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 97, in initialize
+[Thu Oct 17 12:55:27 2019] [Err]:     from .classes import BUBBLES, EVENTS, SPRITES
+[Thu Oct 17 12:55:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\classes.py", line 3, in <module>
+[Thu Oct 17 12:55:27 2019] [Err]:     from .events import *
+[Thu Oct 17 12:55:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\events.py", line 1, in <module>
+[Thu Oct 17 12:55:27 2019] [Err]:     from lib.utils.__init__ import XboxController
+[Thu Oct 17 12:55:27 2019] [Err]: ImportError: cannot import name 'XboxController' from 'lib.utils.__init__' (C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py)

@@ -1,0 +1,54 @@
+[Fri Oct 25 19:42:13 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Fri Oct 25 19:42:13 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Fri Oct 25 19:42:13 2019] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}}
+[Fri Oct 25 19:42:27 2019] [Err]: Exception in Tkinter callback
+[Fri Oct 25 19:42:27 2019] [Err]: Traceback (most recent call last):
+[Fri Oct 25 19:42:27 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 1705, in __call__
+[Fri Oct 25 19:42:27 2019] [Err]:     return self.func(*args)
+[Fri Oct 25 19:42:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\slots.py", line 62, in <lambda>
+[Fri Oct 25 19:42:27 2019] [Err]:     font=[self.font, 20 + self.f_size], command=lambda: self.add_save_menu())
+[Fri Oct 25 19:42:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\slots.py", line 408, in add_save_menu
+[Fri Oct 25 19:42:27 2019] [Err]:     self.cFCanvas.create_text(5, 5, text=addSaveText, fill=self.accent.getColor(), anchor=NW, font=(self.font, 24))
+[Fri Oct 25 19:42:27 2019] [Err]: AttributeError: 'SlotsMenu' object has no attribute 'accent'
+[Fri Oct 25 19:42:32 2019] [Err]: Traceback (most recent call last):
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Fri Oct 25 19:42:32 2019] [Err]:     Main.Game(launcher_cfg)
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 20, in __init__
+[Fri Oct 25 19:42:32 2019] [Err]:     self.slotsMenu = SlotsMenu(self.start_game, self.return_title)
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\slots.py", line 254, in __init__
+[Fri Oct 25 19:42:32 2019] [Err]:     self.root.update_idletasks()
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 1182, in update_idletasks
+[Fri Oct 25 19:42:32 2019] [Err]:     self.tk.call('update', 'idletasks')
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Fri Oct 25 19:42:32 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 78, in call_tk_attr_threadsafe
+[Fri Oct 25 19:42:32 2019] [Err]:     return tk_attr(*a, **kw)
+[Fri Oct 25 19:42:32 2019] [Err]: _tkinter.TclError: can't invoke "update" command: application has been destroyed
+[Fri Oct 25 19:42:32 2019] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x0000027627470950>
+[Fri Oct 25 19:42:32 2019] [Err]: Traceback (most recent call last):
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 86, in __del__
+[Fri Oct 25 19:42:32 2019] [Err]:     self.destroy()
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 80, in destroy
+[Fri Oct 25 19:42:32 2019] [Err]:     self.background.destroy()
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 172, in destroy
+[Fri Oct 25 19:42:32 2019] [Err]:     self._canvas.destroy()
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Fri Oct 25 19:42:32 2019] [Err]:     self.tk.call('destroy', self._w)
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Fri Oct 25 19:42:32 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 78, in call_tk_attr_threadsafe
+[Fri Oct 25 19:42:32 2019] [Err]:     return tk_attr(*a, **kw)
+[Fri Oct 25 19:42:32 2019] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed
+[Fri Oct 25 19:42:32 2019] [Err]: Exception ignored in: <function Background.__del__ at 0x0000027627470D90>
+[Fri Oct 25 19:42:32 2019] [Err]: Traceback (most recent call last):
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 175, in __del__
+[Fri Oct 25 19:42:32 2019] [Err]:     self.destroy()
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 172, in destroy
+[Fri Oct 25 19:42:32 2019] [Err]:     self._canvas.destroy()
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Fri Oct 25 19:42:32 2019] [Err]:     self.tk.call('destroy', self._w)
+[Fri Oct 25 19:42:32 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Fri Oct 25 19:42:32 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Fri Oct 25 19:42:33 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 78, in call_tk_attr_threadsafe
+[Fri Oct 25 19:42:33 2019] [Err]:     return tk_attr(*a, **kw)
+[Fri Oct 25 19:42:33 2019] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed

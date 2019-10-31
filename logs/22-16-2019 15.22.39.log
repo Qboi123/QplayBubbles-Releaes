@@ -1,0 +1,21 @@
+[Wed Oct 16 17:22:39 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Wed Oct 16 17:22:39 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Wed Oct 16 17:22:39 2019] [Err]: Traceback (most recent call last):
+[Wed Oct 16 17:22:39 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 38, in pre_initialize
+[Wed Oct 16 17:22:39 2019] [Err]:     config = JSONDecoder().decode(file.read())
+[Wed Oct 16 17:22:39 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\json\decoder.py", line 337, in decode
+[Wed Oct 16 17:22:39 2019] [Err]:     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+[Wed Oct 16 17:22:39 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\json\decoder.py", line 355, in raw_decode
+[Wed Oct 16 17:22:39 2019] [Err]:     raise JSONDecodeError("Expecting value", s, err.value) from None
+[Wed Oct 16 17:22:39 2019] [Err]: json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[Wed Oct 16 17:22:39 2019] [Err]: 
+[Wed Oct 16 17:22:39 2019] [Err]: During handling of the above exception, another exception occurred:
+[Wed Oct 16 17:22:39 2019] [Err]: 
+[Wed Oct 16 17:22:39 2019] [Err]: Traceback (most recent call last):
+[Wed Oct 16 17:22:39 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Wed Oct 16 17:22:39 2019] [Err]:     Main.Game(launcher_cfg)
+[Wed Oct 16 17:22:39 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 7, in __init__
+[Wed Oct 16 17:22:39 2019] [Err]:     self.pre_initialize()
+[Wed Oct 16 17:22:39 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 60, in pre_initialize
+[Wed Oct 16 17:22:39 2019] [Err]:     raise Warning(*err.args)
+[Wed Oct 16 17:22:39 2019] [Err]: Warning: Expecting value: line 1 column 1 (char 0)

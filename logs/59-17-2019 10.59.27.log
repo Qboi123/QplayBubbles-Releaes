@@ -1,0 +1,17 @@
+[Thu Oct 17 12:59:27 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 12:59:27 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 12:59:27 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 12:59:27 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Thu Oct 17 12:59:27 2019] [Err]:     Main.Game(launcher_cfg)
+[Thu Oct 17 12:59:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 13, in __init__
+[Thu Oct 17 12:59:27 2019] [Err]:     choice = TitleMenu()
+[Thu Oct 17 12:59:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 8, in __init__
+[Thu Oct 17 12:59:27 2019] [Err]:     from .utils import get_root
+[Thu Oct 17 12:59:27 2019] [Err]: ImportError: cannot import name 'get_root' from 'lib.utils' (C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py)
+[Thu Oct 17 12:59:28 2019] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x000001CE32C26400>
+[Thu Oct 17 12:59:28 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 12:59:28 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 68, in __del__
+[Thu Oct 17 12:59:28 2019] [Err]:     self.destroy()
+[Thu Oct 17 12:59:28 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 62, in destroy
+[Thu Oct 17 12:59:28 2019] [Err]:     self.background.destroy()
+[Thu Oct 17 12:59:28 2019] [Err]: AttributeError: 'TitleMenu' object has no attribute 'background'

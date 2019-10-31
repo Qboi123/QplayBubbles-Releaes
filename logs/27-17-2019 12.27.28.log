@@ -1,0 +1,3 @@
+[Thu Oct 17 14:27:28 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 14:27:28 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 14:27:28 2019] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}}

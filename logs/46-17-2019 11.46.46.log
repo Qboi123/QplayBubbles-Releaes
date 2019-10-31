@@ -1,0 +1,33 @@
+[Thu Oct 17 13:46:46 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 13:46:46 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 13:46:46 2019] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}}
+[Thu Oct 17 13:46:53 2019] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x000002DCF257C840>
+[Thu Oct 17 13:46:53 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 75, in __del__
+[Thu Oct 17 13:46:53 2019] [Err]:     self.destroy()
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 69, in destroy
+[Thu Oct 17 13:46:53 2019] [Err]:     self.background.destroy()
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 134, in destroy
+[Thu Oct 17 13:46:53 2019] [Err]:     self._canvas.destroy()
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Thu Oct 17 13:46:53 2019] [Err]:     self.tk.call('destroy', self._w)
+[Thu Oct 17 13:46:53 2019] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed
+[Thu Oct 17 13:46:53 2019] [Err]: Exception ignored in: <function Background.__del__ at 0x000002DCF257CBF8>
+[Thu Oct 17 13:46:53 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 137, in __del__
+[Thu Oct 17 13:46:53 2019] [Err]:     self.destroy()
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 134, in destroy
+[Thu Oct 17 13:46:53 2019] [Err]:     self._canvas.destroy()
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Thu Oct 17 13:46:53 2019] [Err]:     self.tk.call('destroy', self._w)
+[Thu Oct 17 13:46:53 2019] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed
+[Thu Oct 17 13:46:53 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Thu Oct 17 13:46:53 2019] [Err]:     Main.Game(launcher_cfg)
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 20, in __init__
+[Thu Oct 17 13:46:53 2019] [Err]:     self.slotsMenu = SlotsMenu(self.start_game, self.return_title)
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\slots.py", line 251, in __init__
+[Thu Oct 17 13:46:53 2019] [Err]:     self.root.update_idletasks()
+[Thu Oct 17 13:46:53 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\tkinter\__init__.py", line 1182, in update_idletasks
+[Thu Oct 17 13:46:53 2019] [Err]:     self.tk.call('update', 'idletasks')
+[Thu Oct 17 13:46:53 2019] [Err]: _tkinter.TclError: can't invoke "update" command: application has been destroyed

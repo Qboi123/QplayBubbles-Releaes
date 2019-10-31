@@ -1,0 +1,10 @@
+[Thu Oct 17 12:56:39 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 12:56:39 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 12:56:40 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 12:56:40 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Thu Oct 17 12:56:40 2019] [Err]:     Main.Game(launcher_cfg)
+[Thu Oct 17 12:56:40 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 8, in __init__
+[Thu Oct 17 12:56:40 2019] [Err]:     self.initialize()
+[Thu Oct 17 12:56:40 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 100, in initialize
+[Thu Oct 17 12:56:40 2019] [Err]:     self.registry.register("Sprites", "%s:%s" % (i.sprite_prefix, i.sprite_id))
+[Thu Oct 17 12:56:40 2019] [Err]: TypeError: register() missing 1 required positional argument: 'value'

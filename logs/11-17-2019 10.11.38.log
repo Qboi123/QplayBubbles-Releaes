@@ -1,0 +1,21 @@
+[Thu Oct 17 12:11:38 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
+[Thu Oct 17 12:11:38 2019] [Out]: Launcher Path: C:\Users\quint\Documents
+[Thu Oct 17 12:11:38 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 12:11:38 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 38, in pre_initialize
+[Thu Oct 17 12:11:38 2019] [Err]:     config = JSONDecoder().decode(file.read())
+[Thu Oct 17 12:11:38 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\json\decoder.py", line 337, in decode
+[Thu Oct 17 12:11:38 2019] [Err]:     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+[Thu Oct 17 12:11:38 2019] [Err]:   File "C:\Users\quint\Anaconda3\lib\json\decoder.py", line 355, in raw_decode
+[Thu Oct 17 12:11:38 2019] [Err]:     raise JSONDecodeError("Expecting value", s, err.value) from None
+[Thu Oct 17 12:11:38 2019] [Err]: json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[Thu Oct 17 12:11:38 2019] [Err]: 
+[Thu Oct 17 12:11:38 2019] [Err]: During handling of the above exception, another exception occurred:
+[Thu Oct 17 12:11:38 2019] [Err]: 
+[Thu Oct 17 12:11:38 2019] [Err]: Traceback (most recent call last):
+[Thu Oct 17 12:11:38 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 105, in <module>
+[Thu Oct 17 12:11:38 2019] [Err]:     Main.Game(launcher_cfg)
+[Thu Oct 17 12:11:38 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 7, in __init__
+[Thu Oct 17 12:11:38 2019] [Err]:     self.pre_initialize()
+[Thu Oct 17 12:11:38 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 78, in pre_initialize
+[Thu Oct 17 12:11:38 2019] [Err]:     file.write(JSONEncoder.encode(config))
+[Thu Oct 17 12:11:38 2019] [Err]: TypeError: encode() missing 1 required positional argument: 'o'
