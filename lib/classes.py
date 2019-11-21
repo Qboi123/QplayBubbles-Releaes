@@ -8,4 +8,4 @@ from typing import *
 SPRITES: List[Type[Sprite]] = [Bubble]
 BUBBLES: List[Type[Bubble]] = [NormalBubble]
 STATUSES: List[Type[Status]] = []
-EVENTS: List[Type[BaseEvent]] = []
+EVENTS: List[BaseEvent] = []

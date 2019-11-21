@@ -1,3 +1,4 @@
+PyYAML
 threadsafe_tkinter
 Pillow
 inputs

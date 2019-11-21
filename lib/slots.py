@@ -2,26 +2,46 @@ from time import sleep
 
 from threadsafe_tkinter import *
 
-from .utils.get_set import get_root
+from lib.base import Accent
+from .utils.config import *
+from .utils.get_set import get_root, get_game
 
 
 class SlotsMenu(object):
+    addBtn: Button
+    run: Callable
+    returnTitle: Callable
+    root: Tk
+    game: Optional[Canvas]
+    gameBuild: int
+    version: int
+    versionDir: int
+    accent: Accent
+    frame3a: Frame
+    frame2a: Frame
+    cFCanvas: Canvas
+
     # noinspection PyPep8Naming
-    def __init__(self, open_command, back_command):
+    def __init__(self, open_command: Callable, back_command: Callable):
         """
         This is the Slots Menu.
 
         Loading slots-menu.
         :return:
         """
+        self.accent = Accent("#ff3f00")
         from .ui.special import ScrolledWindow
         from .registry import get_value, get_register
         import os
 
         self.root = get_root()
+        self.game = get_game()
+        self.gameBuild: int = self.game.gameBuild
+        self.version: int = self.game.version
+        self.versionDir: int = self.game.versionDir
 
         self.run = open_command
-        self.return_title = back_command
+        self.returnTitle = back_command
 
         self.font = get_value("Config", "font")["family"]
         self.f_size = get_value("Config", "font")["size"]
@@ -30,15 +50,16 @@ class SlotsMenu(object):
         # Removes title-menu items.
 
         # Getting list of slots.
-        path = "slots/"
+        path: str = "slots/"
         try:
-            index = os.listdir(path)
+            index: List[str] = os.listdir(path)
         except FileNotFoundError:
             os.makedirs(path, exist_ok=True)
             index = os.listdir(path)
-        dirs = []
+        dirs: List[str] = []
+        item: str
         for item in index:
-            filePath = path + item
+            filePath: str = path + item
 
             if os.path.isdir(filePath):
                 dirs.append(item)
@@ -50,12 +71,27 @@ class SlotsMenu(object):
         self.frame3 = Frame(self.frame3a, bg="#5c5c5c", height=30, width=900)
 
         # Language Alternatives
-        addBtnText = self.checkLangItem("slots.create", "Create")
-        openBtnText = self.checkLangItem("slots.open", "Open")
-        renameBtnText = self.checkLangItem("slots.rename", "Rename")
-        deleteBtnText = self.checkLangItem("slots.remove", "Remove")
-        resetBtnText = self.checkLangItem("slots.reset", "Reset")
-        backBtnText = self.checkLangItem("menu.cancel", "Cancel")
+        addBtnText: str = self.checkLangItem("slots.create", "Create")
+        openBtnText: str = self.checkLangItem("slots.open", "Open")
+        renameBtnText: str = self.checkLangItem("slots.rename", "Rename")
+        deleteBtnText: str = self.checkLangItem("slots.remove", "Remove")
+        resetBtnText: str = self.checkLangItem("slots.reset", "Reset")
+        backBtnText: str = self.checkLangItem("menu.cancel", "Cancel")
+
+        # Define "rename" menu objects
+        self.canvasRenameSave: Union[Frame, None] = None
+        self.cFrame: Union[Frame, None] = None
+        self.cFCanvas: Union[Canvas, None] = None
+        self.renameInput: Union[Entry, None] = None
+        self.saveRename: Union[Button, None] = None
+        self.saveRenameCancel: Union[Button, None] = None
+
+        # Define "create save" menu objects
+        self.canvasAddSave: Union[Frame, None] = None
+        self.saveInput: Union[Entry, None] = None
+        self.seedInput: Union[Entry, None] = None
+        self.saveAdd: Union[Button, None] = None
+        self.saveAddCancel: Union[Button, None] = None
 
         # Buttons
         self.addBtn = Button(self.frame2, text=addBtnText, relief=FLAT, bg="#7f7f7f", fg="white",
@@ -267,12 +303,11 @@ class SlotsMenu(object):
             self.selected = y
             self.selectedCanv = event.widget
 
-        # Getting source dir.
-        src = self.itemInfo[y]
-
-    def hasKey(self, _dict: dict, key):
+    @staticmethod
+    def hasKey(_dict: dict, key):
         return True if key in _dict.keys() else False
 
+    # noinspection PyUnusedLocal
     def reset_save(self, event):
         import os
 
@@ -283,6 +318,7 @@ class SlotsMenu(object):
         src = self.itemInfo[y]
 
         # Backups the old stats, for seed and high score.
+        # noinspection PyUnresolvedReferences
         if self.selectedCanv.build < 16:
             stats_old = ConfigReader("slots/%s/game.json" % src).get_decoded()
         else:
@@ -347,7 +383,7 @@ class SlotsMenu(object):
 
         # Refreshing slots-menu
         self.delete_all()
-        self.__init__()
+        self.__init__(self.run, self.returnTitle)
 
     def checkLangItem(self, item, alt) -> str:
         return self.lang[item] if item in self.lang.keys() else alt
@@ -388,7 +424,7 @@ class SlotsMenu(object):
         self.cFCanvas.destroy()
         self.cFrame.destroy()
         self.canvasRenameSave.destroy()
-        self.load()
+        self.__init__(self.run, self.returnTitle)
 
     def add_save_menu(self):
         self.delete_all()
@@ -429,7 +465,7 @@ class SlotsMenu(object):
         self.cFCanvas.destroy()
         self.cFrame.destroy()
         self.canvasAddSave.destroy()
-        self.load()
+        self.__init__(self.run, self.returnTitle)
 
     def add_save(self) -> object:
         """
@@ -493,6 +529,7 @@ class SlotsMenu(object):
 
         # noinspection PyTypeChecker
 
+    # noinspection PyUnusedLocal
     def remove(self, event) -> None:
         import os
 
@@ -512,7 +549,7 @@ class SlotsMenu(object):
 
         # Refreshing slots-menu
         self.delete_all()
-        self.load()
+        self.__init__(self.run, self.returnTitle)
 
     def rename(self) -> None:
         import os
@@ -535,10 +572,10 @@ class SlotsMenu(object):
         self.delete_rename_menu()
 
     def title_back(self):
-        self.active=False
+        self.active = False
         sleep(0.1)
         self.destroy()
-        self.return_title(self)
+        self.returnTitle(self)
 
     def destroy(self) -> None:
         # Delete all main frames
@@ -556,12 +593,15 @@ class SlotsMenu(object):
         self.frame2a.destroy()
         self.frame3a.destroy()
 
+    # noinspection PyUnusedLocal
     def open(self, event) -> None:
         # Getting row-index
         # y = event.widget.master.grid_info()["row"]
         if len(self.canvass) > 0:
             y = self.selected
             print("Running Save Index: %s " % y)
+
+            # noinspection PyUnresolvedReferences
             build = self.selectedCanv.build
 
             # Getting source dir.

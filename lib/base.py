@@ -20,6 +20,17 @@ TYPE_INV = "type invisible"
 TYPE_INVISIBLE = TYPE_INV
 
 
+class Accent(object):
+    def __init__(self, color):
+        self.__color = color
+        self._color = property(self.getColor())
+
+    def getColor(self):
+        return self.__color
+
+
+
+
 class Sprite(object):
     # Define Sprite ID and Prefix
     sprite_id: str = "bubble"

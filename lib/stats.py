@@ -18,12 +18,18 @@ def add_stats(**kwargs):
     return stats
 
 
-def set_stats(**kwargs):
+def set_kwstats(**kwargs):
     global stats
     for i in range(len(kwargs.keys())):
         key = list(kwargs.keys())[i]
         value = list(kwargs.values())[i]
         stats[key] = value
+    return stats
+
+
+def set_stat(name: str, **kwargs):
+    global stats
+    stats[name] = kwargs
     return stats
 
 

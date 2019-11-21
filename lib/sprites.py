@@ -1,6 +1,7 @@
 from PIL.ImageTk import PhotoImage
 
 from .base import *
+from .player import Player
 
 
 class Bubble(Sprite):
@@ -44,6 +45,8 @@ class Bubble(Sprite):
 
         # Image
         self._image: Union[PhotoImage, None] = None
+        
+        self.__bubbleParent = parent
 
     def on_create(self):
         Sprite.create(self)
@@ -58,3 +61,11 @@ class Bubble(Sprite):
 
     def post_initialize(self):
         pass
+    
+    def update(self):
+        self.__bubbleParent.on_update()
+    
+    def on_update(self):
+        pass
+    
+Player = Player

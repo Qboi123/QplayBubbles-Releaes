@@ -1,15 +1,14 @@
 import time
-from threading import Thread
-from threadsafe_tkinter import *
 from random import randint
 from typing import Union
+
+from threadsafe_tkinter import *
 
 
 class TitleMenu:
     def __init__(self):
         from .utils.get_set import get_root
         from .registry import registry
-        import sys
 
         # Detect Root
         self._root = get_root()
@@ -18,6 +17,8 @@ class TitleMenu:
         self.font = "Helvetica"
         self.f_size = 12
 
+        self._root.update()
+        self._root.update_idletasks()
         # Defining self.background class.
         self.background = Background(self._root)
 
@@ -26,17 +27,19 @@ class TitleMenu:
 
         self.startBtn = Button(self._root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.set("start"),
                                text=self.lang["home.start"],
-                               relief=FLAT, font=(self.font, 9+self.f_size))
-        self.startBtn.place(x=self._root.winfo_width() / 2, y=self._root.winfo_height() / 2 - 40, width=310, anchor=CENTER)
+                               relief=FLAT, font=(self.font, 9 + self.f_size))
+        self.startBtn.place(x=self._root.winfo_width() / 2, y=self._root.winfo_height() / 2 - 40, width=310,
+                            anchor=CENTER)
 
         self.quitBtn = Button(self._root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.set("quit"),
                               text=self.lang["home.quit"],
-                              relief=FLAT, font=(self.font, 9+self.f_size))
-        self.quitBtn.place(x=self._root.winfo_width() / 2 + 80, y=self._root.winfo_height() / 2 + 40, width=150, anchor=CENTER)
+                              relief=FLAT, font=(self.font, 9 + self.f_size))
+        self.quitBtn.place(x=self._root.winfo_width() / 2 + 80, y=self._root.winfo_height() / 2 + 40, width=150,
+                           anchor=CENTER)
 
         self.optionsBtn = Button(self._root, bg="#007f7f", fg="#7fffff", bd=4,
                                  text=self.lang["home.options"],
-                                 relief=FLAT, font=(self.font, 9+self.f_size), command=lambda: self.set("options"))
+                                 relief=FLAT, font=(self.font, 9 + self.f_size), command=lambda: self.set("options"))
         self.optionsBtn.place(x=self._root.winfo_width() / 2 - 80, y=self._root.winfo_height() / 2 + 40, width=150,
                               anchor=CENTER)
 
@@ -46,6 +49,8 @@ class TitleMenu:
         self._selected: Union[str, None] = None
 
         self.exists = True
+
+        self.background.start()
 
         # Non-stop refreshing the background.
         time2 = time.time()
@@ -60,7 +65,7 @@ class TitleMenu:
             time2 = time.time()
             try:
                 self.background.create_bubble()
-                Thread(None, lambda: self.background.move_bubbles(self.move_fps)).start()
+                self.background.move_bubbles(self.move_fps)
                 self.background.cleanup_bubs()
                 self.background.update()
                 # time.sleep(0.0001)
@@ -85,6 +90,7 @@ class TitleMenu:
     def __del__(self):
         self.destroy()
 
+
 class Background:
     """
     Background for the title menu.
@@ -101,16 +107,39 @@ class Background:
         self.__bubbles = []
         self.__speed = []
 
+        self.maxBubbles = 200
+
+        # for i in range(0, 150):
+        #     self.create_bubble()
+
+    def start(self):
+        while len(self.__bubbles) < self.maxBubbles:
+            try:
+                if len(self.__bubbles) < self.maxBubbles:
+                    r = randint(9, 60)
+                    x = randint(0 - int(r), self._root.winfo_width() + r)
+                    y = randint(int(r), int(self._canvas.winfo_height() - r))
+
+                    spd = randint(7, 10)
+
+                    self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
+                    self.__speed.append(spd)
+            except IndexError:
+                pass
+            except TclError:
+                pass
+
     def create_bubble(self):
         try:
-            r = randint(9, 60)
-            x = self._root.winfo_width() + 100
-            y = randint(int(r), int(self._canvas.winfo_height() - r))
+            if len(self.__bubbles) < self.maxBubbles:
+                r = randint(9, 60)
+                x = self._root.winfo_width() + r
+                y = randint(int(r), int(self._canvas.winfo_height() - r))
 
-            spd = randint(7, 10)
+                spd = randint(7, 10)
 
-            self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
-            self.__speed.append(spd)
+                self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
+                self.__speed.append(spd)
         except IndexError:
             pass
         except TclError:
@@ -136,7 +165,7 @@ class Background:
             except TclError:
                 pass
 
-    def move_bubble(self, index, fps1, fps2):
+    def move_bubble(self, index, fps1):
         try:
             self._canvas.move(self.__bubbles[index], -self.__speed[index] / (fps1 / 40), 0)
         except TclError:
@@ -149,17 +178,17 @@ class Background:
         Move all bubble to the left with the self.__speed with index of the bubble
         :return:
         """
-        time2 = time.time()
         for index in range(len(self.__bubbles) - 1, -1, -1):
-            time1 = time.time()
             try:
                 # print(time1 - time2)
                 # print(1/(time1 - time2))
-                fps2 = 1 / (time1 - time2)
+                # noinspection PyUnboundLocalVariable
+                pass
             except ZeroDivisionError:
-                fps2 = 1
-            time2 = time.time()
-            Thread(None, lambda: self.move_bubble(index, fps1, fps2)).start()
+                pass
+            except NameError:
+                pass
+            self.move_bubble(index, fps1)
 
     def update(self):
         self._canvas.update()

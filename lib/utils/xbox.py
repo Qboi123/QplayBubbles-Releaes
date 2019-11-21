@@ -1,13 +1,12 @@
-from inputs import get_gamepad, UnpluggedError
+from inputs import get_gamepad, UnpluggedError, devices
 import threading
-
 import math
 
 class XboxController(object):
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
 
-    def __init__(self, widget):
+    def __init__(self, widget=None):
 
         self.leftJoystickY = 0
         self.leftJoystickX = 0
@@ -44,8 +43,8 @@ class XboxController(object):
     #     rb = self.rightBumper
     #     return [x, y, a, b, rb]
 
-
-    def _event(self, event):
+    def _event(self):
+        event = get_gamepad()
         if event.code == 'ABS_Y':
             self.leftJoystickY = int(event.state / XboxController.MAX_JOY_VAL * 10)  # normalize between -1 and 1
         elif event.code == 'ABS_X':
@@ -110,12 +109,13 @@ class XboxController(object):
         # print(event.__dict__)
 
     def update(self):
-        try:
-            events = get_gamepad()
-        except UnpluggedError:
-            return
-        for event in events:
-            self._event(event)
+        if len(devices.gamepads) != 0:
+            try:
+                events = get_gamepad()
+            except UnpluggedError:
+                return
+            for event in events:
+                self._event()
 
 if __name__ == '__main__':
     def update():

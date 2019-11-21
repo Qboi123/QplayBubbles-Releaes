@@ -1,173 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e0e04bdf-3d64-4037-a93c-4a83ac3ee173" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/bubbles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/classes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/evals.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/events.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/game.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/player.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/registry.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/slots.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/sprites.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/stats.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/status.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/title.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/ui/special.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/ui/theme.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/get_set.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/keyboard.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/mouse.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/xbox.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/global over files/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/global over files/settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/global over files/subfile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/maintance.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/startup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bubbles/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bubbles/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bubbles/bubble.py" beforeDir="false" afterPath="$PROJECT_DIR$/bubbles/bubble.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/startup.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/startup.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/Images/Backgrounds/GameBG.pdn" beforeDir="false" afterPath="$PROJECT_DIR$/data/Images/Backgrounds/GameBG.pdn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Test 3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Test 4.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Test 5.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ammo.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/archivement.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/bubble.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/bubblesLib.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/error.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/exceptions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/extras.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/fake_main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/info.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/mod.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modSupport.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/mod_support.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/setup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/special.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/state.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/teleport.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/test2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/multiSave.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/oldOldSetup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprites.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/version.json" beforeDir="false" afterPath="$PROJECT_DIR$/version.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/bubbles.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/bubbles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/classes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/slots.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/slots.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sprites.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sprites.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/stats.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/status.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/status.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/title.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/title.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/get_set.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/get_set.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/xbox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/Main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/title.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2040">
-              <caret line="140" column="86" selection-start-line="140" selection-start-column="86" selection-end-line="140" selection-end-column="86" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/threadsafe_tkinter/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1005">
-              <caret line="70" selection-start-line="70" selection-end-line="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/utils/get_set.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib.old/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21315">
-              <caret line="1431" column="112" selection-start-line="1431" selection-start-column="93" selection-end-line="1431" selection-end-column="112" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/utils/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/bubbles.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/slots.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="488">
-              <caret line="407" selection-start-line="407" selection-end-line="407" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib.old/bubble.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5700">
-              <caret line="382" column="22" selection-start-line="382" selection-start-column="19" selection-end-line="382" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/startup.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="6" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -176,58 +37,8 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>self.</find>
-      <find>get</find>
-      <find>tkinter</find>
-      <find>from tkinter import</find>
-      <find>import tkinter as</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>from threadsafe_tkinter import</replace>
-      <replace>import threadsafe_tkinter as</replace>
-    </replaceStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/version.json" />
-        <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/lib/utils/sprites.py" />
-        <option value="$PROJECT_DIR$/test/global over files/subfile.py" />
-        <option value="$PROJECT_DIR$/test/global over files/main.py" />
-        <option value="$PROJECT_DIR$/test/global over files/settings.py" />
-        <option value="$PROJECT_DIR$/lib/utils/keyboard.py" />
-        <option value="$PROJECT_DIR$/lib/utils/mouse.py" />
-        <option value="$PROJECT_DIR$/lib/utils/xbox.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/lib.old/special.py" />
-        <option value="$PROJECT_DIR$/lib/utils.py" />
-        <option value="$PROJECT_DIR$/lib/classes.py" />
-        <option value="$PROJECT_DIR$/__main__.py" />
-        <option value="$PROJECT_DIR$/lib/game.py" />
-        <option value="$PROJECT_DIR$/lib/registry.py" />
-        <option value="$PROJECT_DIR$/lib/stats.py" />
-        <option value="$PROJECT_DIR$/lib.old/bubble.py" />
-        <option value="$PROJECT_DIR$/lib/player.py" />
-        <option value="$PROJECT_DIR$/lib/base.py" />
-        <option value="$PROJECT_DIR$/lib/sprites.py" />
-        <option value="$PROJECT_DIR$/lib/evals.py" />
-        <option value="$PROJECT_DIR$/lib/status.py" />
-        <option value="$PROJECT_DIR$/lib/bubbles.py" />
-        <option value="$PROJECT_DIR$/lib/events.py" />
-        <option value="$PROJECT_DIR$/lib/Main.py" />
-        <option value="$PROJECT_DIR$/lib/utils/get_set.py" />
-        <option value="$PROJECT_DIR$/lib/utils/__init__.py" />
-        <option value="$PROJECT_DIR$/lib.old/__init__.py" />
-        <option value="$PROJECT_DIR$/lib/title.py" />
-        <option value="$PROJECT_DIR$/lib/slots.py" />
-      </list>
-    </option>
   </component>
   <component name="ProjectConfigurationFiles">
     <option name="files">
@@ -240,64 +51,26 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="953" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="QplayBubbles-Releaes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QplayBubbles-Releaes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QplayBubbles-Releaes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QplayBubbles-Releaes" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QplayBubbles-Releaes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QplayBubbles-Releaes" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QplayBubbles-Releaes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QplayBubbles-Releaes" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QplayBubbles-Releaes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QplayBubbles-Releaes" type="462c0819:PsiDirectoryNode" />
-              <item name="lib.old" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectId" id="1T8uPb7Udp211deN6pexT4Pe4Wf" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Qplay-Launcher-Updater/main.py" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/lib.old/__init__.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
-      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\quint\OneDrive\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\ui" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
+      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -312,7 +85,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.__main__">
+  <component name="RunManager" selected="Python.RUN DEBUG">
     <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="QplayBubbles-Releaes" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -334,7 +107,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="__main__" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="RUN DEBUG" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="QplayBubbles-Releaes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -347,7 +120,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/__main__.py" />
-      <option name="PARAMETERS" value="v1.5.1-pre5 v1_5_1_pre5 16" />
+      <option name="PARAMETERS" value="v1.5.1-pre5 v1_5_1_pre5 16 --debug" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -419,7 +192,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.__main__" />
+      <item itemvalue="Python.RUN DEBUG" />
       <item itemvalue="Python.Main" />
       <item itemvalue="Python.stats" />
       <item itemvalue="Python.base" />
@@ -427,13 +200,16 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.__main__" />
+        <item itemvalue="Python.RUN DEBUG" />
         <item itemvalue="Python.title" />
         <item itemvalue="Python.Main" />
         <item itemvalue="Python.base" />
         <item itemvalue="Python.stats" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -448,362 +224,18 @@
     </task>
     <servers />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23076923" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947312" weight="0.23943663" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50052685" side_tool="true" weight="0.23726977" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/lib/utils/get_set.py</url>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/info.py" />
-    <entry file="file://$PROJECT_DIR$/lib/mod.py" />
-    <entry file="file://$PROJECT_DIR$/lib/mod_support.py" />
-    <entry file="file://$PROJECT_DIR$/lib/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/lib/ammo.py" />
-    <entry file="file://$PROJECT_DIR$/lib/archivement.py" />
-    <entry file="file://$PROJECT_DIR$/lib/theme.py" />
-    <entry file="file://$PROJECT_DIR$/lib/xbox.py" />
-    <entry file="file://$PROJECT_DIR$/lib/events" />
-    <entry file="file://$PROJECT_DIR$/lib.old/xbox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="785">
-          <caret line="114" lean-forward="true" selection-start-line="5" selection-end-line="114" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/global over files/subfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/global over files/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="4" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-          <folding>
-            <element signature="e#11#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/global over files/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utils/keyboard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="118" selection-start-line="83" selection-end-line="118" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utils/mouse.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1114">
-          <caret column="32" selection-start-column="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utils/xbox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="152" column="21" selection-start-line="152" selection-start-column="21" selection-end-line="152" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/theme.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-616" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ui/theme.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/special.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1305">
-          <caret line="102" column="70" selection-start-line="102" selection-start-column="70" selection-end-line="102" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utils/config.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Qplay-Launcher-Updater/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="615" selection-start-line="615" selection-end-line="617" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/version.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/genericpath.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2205">
-          <caret line="148" selection-start-line="148" selection-end-line="148" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/classes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/stats.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="96" selection-start-line="3" selection-start-column="96" selection-end-line="3" selection-end-column="96" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="1174" column="8" selection-start-line="1174" selection-start-column="8" selection-end-line="1174" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/game.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/json/decoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="354" selection-start-line="354" selection-end-line="354" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/game.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/sprites.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-592">
-          <caret line="22" column="6" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/player.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="14" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/evals.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="29" lean-forward="true" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/status.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/extras.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="262" lean-forward="true" selection-start-line="240" selection-end-line="262" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/events.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/__main__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/registry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/title.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2040">
-          <caret line="140" column="86" selection-start-line="140" selection-start-column="86" selection-end-line="140" selection-end-column="86" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/threadsafe_tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="70" selection-start-line="70" selection-end-line="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utils/get_set.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21315">
-          <caret line="1431" column="112" selection-start-line="1431" selection-start-column="93" selection-end-line="1431" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utils/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/bubbles.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib.old/bubble.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5700">
-          <caret line="382" column="22" selection-start-line="382" selection-start-column="19" selection-end-line="382" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/startup.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="6" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/slots.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="407" selection-start-line="407" selection-end-line="407" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="masterDetails">
     <states>

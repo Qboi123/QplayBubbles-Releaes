@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     launcher_cfg = {"version": sys.argv[1],
                     "versionDir": sys.argv[2],
-                    "build": int(sys.argv[3]),
+                    "build": sys.argv[3],
                     "file": sys.argv[0],
                     "debug": False
                     }
@@ -103,8 +103,7 @@ if __name__ == "__main__":
 
     sys.path.append(main_path)
 
-    if not launcher_cfg["debug"]:
-        os.chdir("../../")
+    os.chdir("../../")
 
     from lib import Main
     Main.Game(launcher_cfg)

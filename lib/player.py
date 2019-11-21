@@ -1,5 +1,4 @@
 from .base import Sprite
-from .sprites import Bubble
 from .status import *
 from typing import *
 
