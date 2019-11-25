@@ -14,7 +14,7 @@ def get_root() -> Tk:
 
 
 # noinspection PyUnresolvedReferences,PyProtectedMember
-def get_game() -> Union[Canvas, None]:
+def get_game():
     if hasattr(tk._default_root, "game"):
         return tk._default_root.game
     else:

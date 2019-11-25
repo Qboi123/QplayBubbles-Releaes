@@ -5,24 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0e04bdf-3d64-4037-a93c-4a83ac3ee173" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/maintance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/startup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/utils/SeedSystemBubble.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slots.old/Some stupid name! LOL/bubble.data" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slots.old/Some stupid name! LOL/game.data" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slots.old/Some stupid name! LOL/info.data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/QplayBubbles-Releaes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/QplayBubbles-Releaes.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__main__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/bubbles.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/bubbles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/maintance.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/maintance.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/slots.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/slots.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sprites.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sprites.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/stats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/status.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/status.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/title.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/title.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/get_set.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/get_set.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/xbox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/05-25-2019 09.05.21.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/05-25-2019 09.05.21.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/06-25-2019 09.06.52.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/06-25-2019 09.06.52.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/07-25-2019 09.07.27.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/07-25-2019 09.07.27.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/28-25-2019 12.28.18.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/28-25-2019 12.28.18.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slots/Some stupid name! LOL/bubble.data" beforeDir="false" afterPath="$PROJECT_DIR$/slots/Some stupid name! LOL/bubble.data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slots/Some stupid name! LOL/game.data" beforeDir="false" afterPath="$PROJECT_DIR$/slots/Some stupid name! LOL/game.data" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +47,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="ProjectConfigurationFiles">
     <option name="files">
@@ -57,20 +66,22 @@
   </component>
   <component name="PropertiesComponent">
     <property name="add_unversioned_files" value="$PROJECT_DIR$/lib.old/__init__.py" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Anaconda3/Tools/scripts/pickle2db.py" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\Code\QplayBubbles-Releaes\lib" />
+      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
+      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\Code\QplayBubbles-Releaes" />
       <recent name="C:\Users\quint\OneDrive\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\ui" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
-      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -223,6 +234,9 @@
       <updated>1569578592915</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

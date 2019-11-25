@@ -27,6 +27,25 @@ def get_coords(c: tk.Canvas, id_num: int):
         exit(0)
 
 
+def get_size_dict():
+    pass
+
+
+def get_rgblist_from_hex(_hex: str):
+    if _hex[0] == "#":
+        if len(_hex) == 6:
+            _hex2 = _hex[1:]
+            _r = _hex2[0:2]
+            _g = _hex2[2:4]
+            _b = _hex2[4:6]
+            return [_r, _g, _b]
+
+
+def get_rgblist_from_color(name: str):
+    from matplotlib import colors
+    return list(colors.to_rgb(name))
+
+
 def seedint_lookup(i, minimal, maximal):
     return int((((i + 1) / 2) * (maximal - minimal)) + minimal)
 
@@ -36,6 +55,13 @@ def seedint(seed, x, y, minimal, maximal):
 
     out = OpenSimplex(seed).noise2d(x, y)
     return int((((out + 1) / 2) * (maximal - minimal)) + minimal)
+
+
+def seedrange(seed, x, y, minimal, maximal):
+    from opensimplex import OpenSimplex
+
+    out = OpenSimplex(seed).noise2d(x, y)
+    return (((out + 1) / 2) * (maximal - minimal)) + minimal
 
 
 def extract_zipfile(path2zip: str, extract_path: str):

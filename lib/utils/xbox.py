@@ -22,7 +22,7 @@ class XboxController(object):
         self.b = 0
         self.leftThumb = 0
         self.rightThumb = 0
-        self.nack = 0
+        self.back = 0
         self.start = 0
         self.leftDPad = 0
         self.rightDPad = 0

@@ -30,6 +30,11 @@ class Convert(json.JSONDecoder):
         file.close()
 
 
+class ConvertBubble(object):
+    def __init__(self, _bubble_index, _bubble_data):
+        pass
+
+
 class File():
     def __init__(self, config_file):
         self._fp = open(config_file, "wb+")

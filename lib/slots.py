@@ -372,9 +372,9 @@ class SlotsMenu(object):
                         "bub-speed": list(), "bub-position": list(), "bub-hardness": list(), "bub-index": list(),
                         "key-active": False}
 
-        Writer("/slots/%s/game.data" % src, stats_data, "wb+")
-        Writer("/slots/%s/bubble.data" % src, bubbles_data, "wb+")
-        Writer("/slots/%s/info.data" % src, info_data, "wb+")
+        Writer("slots/%s/game.data" % src, stats_data, "wb+")
+        Writer("slots/%s/bubble.data" % src, bubbles_data, "wb+")
+        Writer("slots/%s/info.data" % src, info_data, "wb+")
 
         # # Copy the template (resetted save-files)
         # self.copy("versions/" + self.launcherCfg["versionDir"] + "/config/reset.data", "slots/" + src + "/game.data")

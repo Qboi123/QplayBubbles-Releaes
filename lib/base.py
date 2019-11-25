@@ -1,5 +1,8 @@
 from typing import *
 
+from lib.utils import get_rgblist_from_hex
+from lib.utils.get_set import get_canvas
+
 AXIS_HORIZONTAL = "axis horizontal"
 AXIS_VERTICAL = "axis vertical"
 AXIS_DIAGONAL_NW = "axis diagonal nw se"
@@ -18,6 +21,140 @@ TYPE_LINE = "type line"
 TYPE_TEXT = "type text"
 TYPE_INV = "type invisible"
 TYPE_INVISIBLE = TYPE_INV
+
+
+class Size(object):
+    def __init__(self, height: int, width: int):
+        self.height: int = height
+        self.width: int = width
+
+    def __add__(self, other):
+        if type(other) == type(self):
+            return self.__init__(self.height + other.height, self.width + other.width)
+        elif type(other) == List:
+            return self.__init__(self.height + other[0], self.width + other[1])
+        elif type(other) == Dict:
+            return self.__init__(self.height + other["height"], self.width + other["width"])
+        else:
+            raise TypeError("Can't add %s to %s" % (type(other), type(self)))
+
+    def __sub__(self, other):
+        if type(other) == type(self):
+            return self.__init__(self.height - other.height, self.width - other.width)
+        elif type(other) == List:
+            return self.__init__(self.height - other[0], self.width - other[1])
+        elif type(other) == Dict:
+            return self.__init__(self.height - other["height"], self.width - other["width"])
+        else:
+            raise TypeError("Can't add %s to %s" % (type(other), type(self)))
+
+    def __eq__(self, other):
+        if type(other) == type(self):
+            return (self.height == other.height) and (self.width == other.width)
+        elif type(other) == List:
+            return self.__init__(self.height + other[0], self.width + other[1])
+        elif type(other) == Dict:
+            return self.__init__(self.height + other["height"], self.width + other["width"])
+
+    def __int__(self):
+        return self.height * self.width
+
+    def __setitem__(self, key: str, value: int):
+        if key == "height":
+            self.height = value
+        elif key == "width":
+            self.width = value
+        else:
+            raise KeyError("Key \"%s\" isn't compatible with %s" % (key, type(self)))
+
+    def __getitem__(self, item: str):
+        if item == "height":
+            return self.height
+        elif item == "width":
+            return self.width
+        else:
+            raise KeyError("Key \"%s\" isn't compatible with %s" % (item, type(self)))
+
+    def __delitem__(self, key):
+        raise PermissionError("Key \"%s\" is read-write only (not deletable)" % key)
+
+    def __delattr__(self, item):
+        raise PermissionError("Attribute \"%s\" is read-write only (not deletable)" % item)
+
+
+class Point2D(object):
+    def __init__(self, x, y):
+        self.x: int = x
+        self.y: int = y
+
+    def __add__(self, other):
+        if type(other) == type(self):
+            return self.__init__(self.x + other.x, self.y + other.y)
+        elif type(other) == List:
+            return self.__init__(self.x + other[0], self.y + other[1])
+        elif type(other) == Dict:
+            return self.__init__(self.x + other["x"], self.y + other["y"])
+        else:
+            raise TypeError("Can't add %s to %s" % (type(other), type(self)))
+
+    def __sub__(self, other):
+        if type(other) == type(self):
+            return self.__init__(self.x - other.height, self.y - other.width)
+        elif type(other) == List:
+            return self.__init__(self.x - other[0], self.y - other[1])
+        elif type(other) == Dict:
+            return self.__init__(self.x - other["x"], self.y - other["y"])
+        else:
+            raise TypeError("Can't add %s to %s" % (type(other), type(self)))
+
+    def __eq__(self, other):
+        if type(other) == type(self):
+            return (self.x == other.x) and (self.y == other.y)
+        elif type(other) == List:
+            return self.__init__(self.x + other[0], self.y + other[1])
+        elif type(other) == Dict:
+            return self.__init__(self.x + other["x"], self.y + other["y"])
+
+    def __int__(self):
+        return self.x * self.y
+
+    def __setitem__(self, key: str, value: int):
+        if key == "x":
+            self.x = value
+        elif key == "y":
+            self.y = value
+        else:
+            raise KeyError("Key \"%s\" isn't compatible with %s" % (key, type(self)))
+
+    def __getitem__(self, item: str):
+        if item == "x":
+            return self.x
+        elif item == "y":
+            return self.y
+        else:
+            raise KeyError("Key \"%s\" isn't compatible with %s" % (item, type(self)))
+
+    def __delitem__(self, key):
+        raise PermissionError("Key \"%s\" is read-write only (not deletable)" % key)
+
+    def __delattr__(self, item):
+        raise PermissionError("Attribute \"%s\" is read-write only (not deletable)" % item)
+
+
+class ColorRGB(object):
+    def __init__(self, color=Union[List[int, int, int], str, int]):
+        if type(color) == List[int, int, int]:
+            self.r = color[0]
+            self.g = color[1]
+            self.b = color[2]
+        elif type(color) == str:
+            _rgb = get_rgblist_from_hex(color)
+            if _rgb is None:
+                get_rgblist_from_color(color)
+            else:
+                self.r = color[0]
+                self.g = color[1]
+                self.b = color[2]
 
 
 class Accent(object):

@@ -22,6 +22,8 @@ class Bubble(Sprite):
         else:
             raise TypeError("{name} is not a subclass of Bubble.".format(name=parent.__name__))
 
+        self.rarity: int = 100
+
         # Define HP
         self.health: float = 0.5
 

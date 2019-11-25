@@ -25,7 +25,7 @@ class Maintance:
             print(e.filename2)
 
     @staticmethod
-    def auto_restore(save_name: str):
+    def auto_restore_stats(save_name: str):
         """
         Restoring. (For Auto-Restore)
         """
@@ -34,6 +34,17 @@ class Maintance:
         game_stats = cfg.Reader("slots/" + save_name + "/game.data").get_decoded()
 
         return game_stats
+
+    @staticmethod
+    def auto_restore_bubbles(save_name: str):
+        """
+        Restoring. (For Auto-Restore)
+        """
+        from .utils import config as cfg
+
+        bubbles = cfg.Reader("slots/" + save_name + "/bubble.data").get_decoded()
+
+        return bubbles
 
     @staticmethod
     def reset(save_name: str):
