@@ -1,6 +1,6 @@
 from typing import *
 
-from lib.utils import get_rgblist_from_hex
+from lib.utils import get_rgblist_from_hex, to_rgb
 from lib.utils.get_set import get_canvas
 
 AXIS_HORIZONTAL = "axis horizontal"
@@ -87,23 +87,26 @@ class Point2D(object):
         self.x: int = x
         self.y: int = y
 
+    def __str__(self):
+        return "Point2D(x=%s, y=%s)" % (self.x, self.y)
+
     def __add__(self, other):
         if type(other) == type(self):
-            return self.__init__(self.x + other.x, self.y + other.y)
+            return Point2D(self.x + other.x, self.y + other.y)
         elif type(other) == List:
-            return self.__init__(self.x + other[0], self.y + other[1])
+            return Point2D(self.x + other[0], self.y + other[1])
         elif type(other) == Dict:
-            return self.__init__(self.x + other["x"], self.y + other["y"])
+            return Point2D(self.x + other["x"], self.y + other["y"])
         else:
             raise TypeError("Can't add %s to %s" % (type(other), type(self)))
 
     def __sub__(self, other):
         if type(other) == type(self):
-            return self.__init__(self.x - other.height, self.y - other.width)
+            return Point2D(self.x - other.height, self.y - other.width)
         elif type(other) == List:
-            return self.__init__(self.x - other[0], self.y - other[1])
+            return Point2D(self.x - other[0], self.y - other[1])
         elif type(other) == Dict:
-            return self.__init__(self.x - other["x"], self.y - other["y"])
+            return Point2D(self.x - other["x"], self.y - other["y"])
         else:
             raise TypeError("Can't add %s to %s" % (type(other), type(self)))
 
@@ -111,9 +114,9 @@ class Point2D(object):
         if type(other) == type(self):
             return (self.x == other.x) and (self.y == other.y)
         elif type(other) == List:
-            return self.__init__(self.x + other[0], self.y + other[1])
+            return (self.x == other[0]) and (self.y == other[1])
         elif type(other) == Dict:
-            return self.__init__(self.x + other["x"], self.y + other["y"])
+            return (self.x == other["x"]) and (self.y == other["y"])
 
     def __int__(self):
         return self.x * self.y
@@ -142,19 +145,20 @@ class Point2D(object):
 
 
 class ColorRGB(object):
-    def __init__(self, color=Union[List[int, int, int], str, int]):
-        if type(color) == List[int, int, int]:
+    def __init__(self, color=Union[List[int], str, int]):
+        if type(color) == List[int]:
             self.r = color[0]
             self.g = color[1]
             self.b = color[2]
         elif type(color) == str:
-            _rgb = get_rgblist_from_hex(color)
-            if _rgb is None:
-                get_rgblist_from_color(color)
-            else:
-                self.r = color[0]
-                self.g = color[1]
-                self.b = color[2]
+            _rgb = to_rgb(color)
+
+            self.r = _rgb[0]
+            self.g = _rgb[1]
+            self.b = _rgb[2]
+        elif type(color) == int:
+            _hex = hex(color)
+            _rgb = get_rgblist_from_hex()
 
 
 class Accent(object):

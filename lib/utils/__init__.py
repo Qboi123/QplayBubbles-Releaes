@@ -1,3 +1,5 @@
+from typing import List, Union
+
 import threadsafe_tkinter as tk
 import tkinter.tix as tix
 from threadsafe_tkinter import TclError
@@ -41,9 +43,34 @@ def get_rgblist_from_hex(_hex: str):
             return [_r, _g, _b]
 
 
-def get_rgblist_from_color(name: str):
+def to_rgb(color: str):
     from matplotlib import colors
-    return list(colors.to_rgb(name))
+    _r, _g, _b = colors.to_rgb(color)
+    _r *= 255; _g *= 255; _b *= 255
+    return [_r, _g, _b]
+
+
+def to_hex(color: Union[str, List[int]]):
+    from matplotlib import colors
+    if type(color) == list:
+        _r, _g, _b = color
+        _r /= 255; _g /= 255; _b /= 255
+        colors.to_hex([_r, _g, _b])
+    elif type(color) == str:
+        colors.to_hex(color)
+
+
+def hex2colorhex(color: int):
+    legacy_hex = "#"+hex(color)[2:]
+    len_hex = len(legacy_hex)
+    if len_hex >= 7:
+        raise ValueError("Integer Color is higher than 16777215!")
+    elif len_hex == 6:
+        return legacy_hex
+    elif len_hex <= 5:
+        _temp43df = "0" * (6 - len_hex)
+        _hex = legacy_hex + _temp43df
+        return _hex
 
 
 def seedint_lookup(i, minimal, maximal):
