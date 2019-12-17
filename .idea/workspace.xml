@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0e04bdf-3d64-4037-a93c-4a83ac3ee173" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/get_set.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/get_set.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,9 +44,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="add_unversioned_files" value="$PROJECT_DIR$/lib.old/__init__.py" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Anaconda3/Tools/scripts/pickle2db.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../JungleMaze" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">

@@ -1,4 +1,4 @@
-from typing import *
+from typing import List, Dict, Union, NoReturn
 
 from lib.utils import get_rgblist_from_hex, to_rgb
 from lib.utils.get_set import get_canvas

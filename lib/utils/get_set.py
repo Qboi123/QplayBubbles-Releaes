@@ -1,6 +1,6 @@
 # noinspection PyProtectedMember
 from tkinter import _default_root as tkd
-from typing import *
+from typing import Union, NoReturn
 
 import threadsafe_tkinter as tk
 from threadsafe_tkinter import *
