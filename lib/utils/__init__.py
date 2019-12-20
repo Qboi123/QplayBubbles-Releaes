@@ -33,9 +33,27 @@ def seedint_lookup(i, minimal, maximal):
 
 def seedint(seed, x, y, minimal, maximal):
     from opensimplex import OpenSimplex
+    import sys
 
     out = OpenSimplex(seed).noise2d(x, y)
-    return int((((out + 1) / 2) * (maximal - minimal)) + minimal)
+    out = ((out + 1) / 2)
+    if round(out, 1) == 1 or round(out, 1) == -1:
+        sys.stdout.write("||x:%s|y:%s|out:%s||" % (x, y, out))
+    else:
+        sys.stderr.write("||x:%s|y:%s|out:%s||" % (x, y, out))
+
+    out2 = int((out * (maximal - minimal)) + minimal)
+    if out2 == maximal:
+        print("\n\nOutput is the same as maximal")
+    return out2
+    # return int((((out + 1) / 2) * (maximal - minimal)) + minimal)
+
+
+def seed(seed, x, y):
+    from opensimplex import OpenSimplex
+
+    out = OpenSimplex(seed).noise2d(x, y)
+    # return int((((out + 1) / 2) * (maximal - minimal)) + minimal)
 
 
 def extract_zipfile(path2zip: str, extract_path: str):

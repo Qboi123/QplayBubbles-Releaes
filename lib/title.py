@@ -109,18 +109,28 @@ class Background:
 
         self.maxBubbles = 200
 
+        self.xupd = 1
+
         # for i in range(0, 150):
         #     self.create_bubble()
 
     def start(self):
-        while len(self.__bubbles) < self.maxBubbles:
+        from .utils import seedint
+        for i in range(-self._root.winfo_width(), 0):
             try:
-                if len(self.__bubbles) < self.maxBubbles:
-                    r = randint(9, 60)
-                    x = randint(0 - int(r), self._root.winfo_width() + r)
-                    y = randint(int(r), int(self._canvas.winfo_height() - r))
+                # r = randint(9, 60)
+                # x = randint(0 - int(r), self._root.winfo_width() + r)
+                # y = randint(int(r), int(self._canvas.winfo_height() - r))
 
-                    spd = randint(7, 10)
+                a = seedint(65535, i, 0, 0, 5)
+                if a == 0:
+
+                    r = seedint(65535, i, 1, 9, 60)
+                    x = seedint(65535, i, 2, 0 - int(r), self._root.winfo_width() + r)
+                    y = seedint(65535, i, 3, int(r), int(self._canvas.winfo_height() - r))
+
+                    # spd = randint(7, 10)
+                    spd = seedint(65535, 0, 4, 7, 10)
 
                     self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
                     self.__speed.append(spd)
@@ -130,16 +140,28 @@ class Background:
                 pass
 
     def create_bubble(self):
+        from .utils import seedint
         try:
             if len(self.__bubbles) < self.maxBubbles:
-                r = randint(9, 60)
-                x = self._root.winfo_width() + r
-                y = randint(int(r), int(self._canvas.winfo_height() - r))
+                # r = randint(9, 60)
+                # x = self._root.winfo_width() + r
+                # y = randint(int(r), int(self._canvas.winfo_height() - r))
+                #
+                # spd = randint(7, 10)
+                i = self.xupd
 
-                spd = randint(7, 10)
+                a = seedint(65535, i, 0, 0, 3)
+                if a == 0:
 
-                self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
-                self.__speed.append(spd)
+                    r = seedint(65535, i, 1, 9, 60)
+                    x = self._root.winfo_width() + r
+                    y = seedint(65535, i, 3, r + 10, self._canvas.winfo_height() - r - 10)
+
+                    # spd = randint(7, 10)
+                    spd = seedint(65535, 0, 4, 7, 10)
+
+                    self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
+                    self.__speed.append(spd)
         except IndexError:
             pass
         except TclError:
@@ -168,6 +190,7 @@ class Background:
     def move_bubble(self, index, fps1):
         try:
             self._canvas.move(self.__bubbles[index], -self.__speed[index] / (fps1 / 40), 0)
+            self.xupd += 1
         except TclError:
             pass
         except IndexError:

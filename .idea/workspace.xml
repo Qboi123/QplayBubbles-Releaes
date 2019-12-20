@@ -5,24 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0e04bdf-3d64-4037-a93c-4a83ac3ee173" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/maintance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/startup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testfiles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__main__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ropeproject/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/.ropeproject/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/bubbles.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/bubbles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/slots.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/slots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sprites.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sprites.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/stats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/status.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/status.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/title.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/title.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/get_set.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/get_set.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/xbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,20 +45,21 @@
   </component>
   <component name="PropertiesComponent">
     <property name="add_unversioned_files" value="$PROJECT_DIR$/lib.old/__init__.py" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Private-PyCharmProjects/System Utils" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
+      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\quint\OneDrive\Documents\GitHub\Qplay-Bubbles-Installer" />
       <recent name="C:\Users\quint\OneDrive\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
       <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\ui" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils" />
-      <recent name="C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -85,7 +74,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.RUN DEBUG">
+  <component name="RunManager" selected="Python.testfiles">
     <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="QplayBubbles-Releaes" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -99,6 +88,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Qplay Bubbles Installer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="QplayBubbles-Releaes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="D:/Programeren/wxPython" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="D:/Programeren/wxPython/Qplay Bubbles Installer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -128,7 +138,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="base" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="testfiles" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="QplayBubbles-Releaes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -136,32 +146,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lib" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/base.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="stats" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="QplayBubbles-Releaes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lib" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/stats.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testfiles.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -194,17 +183,17 @@
     <list>
       <item itemvalue="Python.RUN DEBUG" />
       <item itemvalue="Python.Main" />
-      <item itemvalue="Python.stats" />
-      <item itemvalue="Python.base" />
       <item itemvalue="Python.title" />
+      <item itemvalue="Python.Qplay Bubbles Installer" />
+      <item itemvalue="Python.testfiles" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.testfiles" />
         <item itemvalue="Python.RUN DEBUG" />
-        <item itemvalue="Python.title" />
         <item itemvalue="Python.Main" />
-        <item itemvalue="Python.base" />
-        <item itemvalue="Python.stats" />
+        <item itemvalue="Python.Qplay Bubbles Installer" />
+        <item itemvalue="Python.title" />
       </list>
     </recent_temporary>
   </component>

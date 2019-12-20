@@ -69,8 +69,13 @@ class Game(object):
             elif self.t_choice == "quit":
                 print("Quit")
                 self.active = False
+            elif self.t_choice == "options":
+                self.t_choice = TitleMenu().get()
+                self.active = True
+                continue
             else:
                 print("error")
+
         exit(0)
 
     def return_title(self, slots_menu):
