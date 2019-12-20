@@ -9,7 +9,7 @@ from tkinter import PhotoImage, Button, Canvas, TRUE, FLAT, NW, TclError, HIDDEN
 from lib.maintance import Maintance
 from lib.registry import get_register
 from lib.startup import start
-from lib.stats import get_stat, set_stat
+from lib.stats import get_stats, set_stat, set_stats, get_stat
 from lib.utils import get_coords
 from .utils.config import Convert, Reader
 
@@ -202,234 +202,234 @@ class Game(object):
         self._root.game = self
 
     def _movent(self):
-        from lib.stats import get_stat
-        if (not get_stat("Modes")["teleport"]) and (not get_stat("Modes")["store"]) and (
-                not get_stat("Modes")["window"]):
-            if not get_stat("Modes")["pause"]:
-                if not get_stat("Stats")["paralis"]:
+        from lib.stats import get_stats
+        if (not get_stats("Modes")["teleport"]) and (not get_stats("Modes")["store"]) and (
+                not get_stats("Modes")["window"]):
+            if not get_stats("Modes")["pause"]:
+                if not get_stats("Stats")["paralis"]:
                     x, y = get_coords(self.canvas, self.ship["id"])
-                    if get_stat("Stats")["speedboost"]:
+                    if get_stats("Stats")["speedboost"]:
                         a = 6
                     else:
                         a = 1
-                    if get_stat("Temp")["Pressed"]['Up']:
+                    if get_stats("Temp")["Pressed"]['Up']:
                         if y > 72 + get_register("Config")["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], 0,
-                                             (-get_stat("Stats")["shipspeed"] / (self.move_fps / 4) - a))
+                                             (-get_stats("Stats")["shipspeed"] / (self.move_fps / 4) - a))
                             self._root.update()
-                    elif get_stat("Temp")["Pressed"]['Down']:
+                    elif get_stats("Temp")["Pressed"]['Down']:
                         if y < get_register("Config")["height"] - get_register("Config")["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], 0,
-                                             (get_stat("Stats")["shipspeed"] / (self.move_fps / 4) + a))
+                                             (get_stats("Stats")["shipspeed"] / (self.move_fps / 4) + a))
                             self._root.update()
-                    elif get_stat("Temp")["Pressed"]['Left']:
+                    elif get_stats("Temp")["Pressed"]['Left']:
                         if x > 0 + get_register("Config")["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"],
-                                             (-get_stat("Stats")["shipspeed"] / (self.move_fps / 4) - a), 0)
+                                             (-get_stats("Stats")["shipspeed"] / (self.move_fps / 4) - a), 0)
                             self._root.update()
-                    elif get_stat("Temp")["Pressed"]['Right']:
+                    elif get_stats("Temp")["Pressed"]['Right']:
                         if x < get_register("Config")["width"] - get_register("Config")["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"],
-                                             (get_stat("Stats")["shipspeed"] / (self.move_fps / 4) + a), 0)
+                                             (get_stats("Stats")["shipspeed"] / (self.move_fps / 4) + a), 0)
                             self._root.update()
-                    get_stat("Stats")["ship-position"] = get_coords(self.canvas, self.ship["id"])
+                    get_stats("Stats")["ship-position"] = get_coords(self.canvas, self.ship["id"])
 
     # noinspection PyTypeChecker,PyUnresolvedReferences
     def xboxControlDeamon(self):
         while not self.returnmain:
             if self.returnmain:
                 threading.Event()
-            if get_stat("Modes")["store"] and get_stat("Commands")["store"] is not None:
+            if get_stats("Modes")["store"] and get_stats("Commands")["store"] is not None:
                 if self.xControl["UpDPad"]:
-                    get_stat("Commands")["store"].set_selected(self.canvas, -1)
+                    get_stats("Commands")["store"].set_selected(self.canvas, -1)
                 if self.xControl["DownDPad"]:
-                    get_stat("Commands")["store"].set_selected(self.canvas, 1)
+                    get_stats("Commands")["store"].set_selected(self.canvas, 1)
                 if self.xControl["LeftDPad"]:
-                    get_stat("Commands")["store"].set_selected(self.canvas, -get_stat("Commands")["store"].f - 1)
+                    get_stats("Commands")["store"].set_selected(self.canvas, -get_stats("Commands")["store"].f - 1)
                 if self.xControl["RightDPad"]:
-                    get_stat("Commands")["store"].set_selected(self.canvas, get_stat("Commands")["store"].f - 1)
+                    get_stats("Commands")["store"].set_selected(self.canvas, get_stats("Commands")["store"].f - 1)
                 if self.xControl["A"]:
-                    get_stat("Commands")["store"].buy_selected(get_register("Config"), get_stat("Modes"), self.log,
-                                                               self._root,
-                                                               self.canvas,
-                                                               get_stat("Stats"), get_stat("Bubbles"),
-                                                               get_register("Background"),
-                                                               get_register("Texts"), get_stat("Commands"),
-                                                               get_stat("Temp"), get_register("Panels"))
+                    get_stats("Commands")["store"].buy_selected(get_register("Config"), get_stats("Modes"), self.log,
+                                                                self._root,
+                                                                self.canvas,
+                                                                get_stats("Stats"), get_stats("Bubbles"),
+                                                                get_register("Background"),
+                                                                get_register("Texts"), get_stats("Commands"),
+                                                                get_stats("Temp"), get_register("Panels"))
                 if self.xControl["B"]:
-                    get_stat("Commands")["store"].exit(self.canvas, self.log, get_stat("Modes"), get_stat("Stats"),
-                                                       get_stat("Temp"),
-                                                       get_stat("Commands"))
-                    get_stat("Commands")["store"] = None
+                    get_stats("Commands")["store"].exit(self.canvas, self.log, get_stats("Modes"), get_stats("Stats"),
+                                                        get_stats("Temp"),
+                                                        get_stats("Commands"))
+                    get_stats("Commands")["store"] = None
                 if self.xControl["Back"]:
                     sleep(1)
-                    get_stat("Commands")["store"].exit(self.canvas, self.log, get_stat("Modes"), get_stat("Stats"),
-                                                       get_stat("Temp"),
-                                                       get_stat("Commands"))
-                    get_stat("Commands")["store"] = None
-            if get_stat("Modes")["present"]:
+                    get_stats("Commands")["store"].exit(self.canvas, self.log, get_stats("Modes"), get_stats("Stats"),
+                                                        get_stats("Temp"),
+                                                        get_stats("Commands"))
+                    get_stats("Commands")["store"] = None
+            if get_stats("Modes")["present"]:
                 if self.xControl["A"]:
-                    if False != get_stat("Commands")["present"] != True:
-                        get_stat("Commands")["present"].exit(self.canvas)
-                        get_stat("Modes")["pause"] = False
-                        get_stat("Modes")["present"] = False
-                        get_stat("Stats")["scorestate-time"] = get_stat("Temp")["scorestate-save"] + time()
-                        get_stat("Stats")["secure-time"] = get_stat("Temp")["secure-save"] + time()
-                        get_stat("Stats")["timebreak-time"] = get_stat("Temp")["timebreak-save"] + time()
-                        get_stat("Stats")["confusion-time"] = get_stat("Temp")["confusion-save"] + time()
-                        get_stat("Stats")["slowmotion-time"] = get_stat("Temp")["slowmotion-save"] + time()
-                        get_stat("Stats")["paralis-time"] = get_stat("Temp")["paralis-save"] + time()
-                        get_stat("Stats")["shotspeed-time"] = get_stat("Temp")["shotspeed-save"] + time()
-                        get_stat("Stats")["notouch-time"] = get_stat("Temp")["notouch-save"] + time()
-            if get_stat("Modes")["teleport"]:
-                x, y = get_coords(self.canvas, get_stat("TP")["id1"])
+                    if False != get_stats("Commands")["present"] != True:
+                        get_stats("Commands")["present"].exit(self.canvas)
+                        get_stats("Modes")["pause"] = False
+                        get_stats("Modes")["present"] = False
+                        get_stats("Stats")["scorestate-time"] = get_stats("Temp")["scorestate-save"] + time()
+                        get_stats("Stats")["secure-time"] = get_stats("Temp")["secure-save"] + time()
+                        get_stats("Stats")["timebreak-time"] = get_stats("Temp")["timebreak-save"] + time()
+                        get_stats("Stats")["confusion-time"] = get_stats("Temp")["confusion-save"] + time()
+                        get_stats("Stats")["slowmotion-time"] = get_stats("Temp")["slowmotion-save"] + time()
+                        get_stats("Stats")["paralis-time"] = get_stats("Temp")["paralis-save"] + time()
+                        get_stats("Stats")["shotspeed-time"] = get_stats("Temp")["shotspeed-save"] + time()
+                        get_stats("Stats")["notouch-time"] = get_stats("Temp")["notouch-save"] + time()
+            if get_stats("Modes")["teleport"]:
+                x, y = get_coords(self.canvas, get_stats("TP")["id1"])
                 if self.xControl['UpDPad']:
                     if y > 72 + 5:
-                        self.canvas.move(get_stat("TP")["id1"], 0, -5)
-                        self.canvas.move(get_stat("TP")["id2"], 0, -5)
-                        self.canvas.move(get_stat("TP")["id3"], 0, -5)
-                        self.canvas.move(get_stat("TP")["id4"], 0, -5)
+                        self.canvas.move(get_stats("TP")["id1"], 0, -5)
+                        self.canvas.move(get_stats("TP")["id2"], 0, -5)
+                        self.canvas.move(get_stats("TP")["id3"], 0, -5)
+                        self.canvas.move(get_stats("TP")["id4"], 0, -5)
                 if self.xControl["DownDPad"]:
                     if y < get_register("Config")["height"] - 105 - 5:
-                        self.canvas.move(get_stat("TP")["id1"], 0, 5)
-                        self.canvas.move(get_stat("TP")["id2"], 0, 5)
-                        self.canvas.move(get_stat("TP")["id3"], 0, 5)
-                        self.canvas.move(get_stat("TP")["id4"], 0, 5)
+                        self.canvas.move(get_stats("TP")["id1"], 0, 5)
+                        self.canvas.move(get_stats("TP")["id2"], 0, 5)
+                        self.canvas.move(get_stats("TP")["id3"], 0, 5)
+                        self.canvas.move(get_stats("TP")["id4"], 0, 5)
                 if self.xControl["LeftDPad"]:
                     if x > 0 + 5:
-                        self.canvas.move(get_stat("TP")["id1"], -5, 0)
-                        self.canvas.move(get_stat("TP")["id2"], -5, 0)
-                        self.canvas.move(get_stat("TP")["id3"], -5, 0)
-                        self.canvas.move(get_stat("TP")["id4"], -5, 0)
+                        self.canvas.move(get_stats("TP")["id1"], -5, 0)
+                        self.canvas.move(get_stats("TP")["id2"], -5, 0)
+                        self.canvas.move(get_stats("TP")["id3"], -5, 0)
+                        self.canvas.move(get_stats("TP")["id4"], -5, 0)
                 if self.xControl["RightDPad"]:
                     if x < get_register("Config")["width"] - 5:
-                        self.canvas.move(get_stat("TP")["id1"], 5, 0)
-                        self.canvas.move(get_stat("TP")["id2"], 5, 0)
-                        self.canvas.move(get_stat("TP")["id3"], 5, 0)
-                        self.canvas.move(get_stat("TP")["id4"], 5, 0)
+                        self.canvas.move(get_stats("TP")["id1"], 5, 0)
+                        self.canvas.move(get_stats("TP")["id2"], 5, 0)
+                        self.canvas.move(get_stats("TP")["id3"], 5, 0)
+                        self.canvas.move(get_stats("TP")["id4"], 5, 0)
                 if self.xControl["B"]:
-                    get_stat("Modes")["pause"] = False
+                    get_stats("Modes")["pause"] = False
 
-                    get_stat("Stats")["scorestate-time"] = get_stat("Temp")["scorestate-save"] + time()
-                    get_stat("Stats")["secure-time"] = get_stat("Temp")["secure-save"] + time()
-                    get_stat("Stats")["timebreak-time"] = get_stat("Temp")["timebreak-save"] + time()
-                    get_stat("Stats")["confusion-time"] = get_stat("Temp")["confusion-save"] + time()
-                    get_stat("Stats")["slowmotion-time"] = get_stat("Temp")["slowmotion-save"] + time()
-                    get_stat("Stats")["paralis-time"] = get_stat("Temp")["paralis-save"] + time()
-                    get_stat("Stats")["shotspeed-time"] = get_stat("Temp")["shotspeed-save"] + time()
-                    get_stat("Stats")["notouch-time"] = get_stat("Temp")["notouch-save"] + time()
+                    get_stats("Stats")["scorestate-time"] = get_stats("Temp")["scorestate-save"] + time()
+                    get_stats("Stats")["secure-time"] = get_stats("Temp")["secure-save"] + time()
+                    get_stats("Stats")["timebreak-time"] = get_stats("Temp")["timebreak-save"] + time()
+                    get_stats("Stats")["confusion-time"] = get_stats("Temp")["confusion-save"] + time()
+                    get_stats("Stats")["slowmotion-time"] = get_stats("Temp")["slowmotion-save"] + time()
+                    get_stats("Stats")["paralis-time"] = get_stats("Temp")["paralis-save"] + time()
+                    get_stats("Stats")["shotspeed-time"] = get_stats("Temp")["shotspeed-save"] + time()
+                    get_stats("Stats")["notouch-time"] = get_stats("Temp")["notouch-save"] + time()
                 if self.xControl["Back"]:
-                    get_stat("Modes")["pause"] = False
+                    get_stats("Modes")["pause"] = False
 
-                    get_stat("Stats")["scorestate-time"] = get_stat("Temp")["scorestate-save"] + time()
-                    get_stat("Stats")["secure-time"] = get_stat("Temp")["secure-save"] + time()
-                    get_stat("Stats")["timebreak-time"] = get_stat("Temp")["timebreak-save"] + time()
-                    get_stat("Stats")["confusion-time"] = get_stat("Temp")["confusion-save"] + time()
-                    get_stat("Stats")["slowmotion-time"] = get_stat("Temp")["slowmotion-save"] + time()
-                    get_stat("Stats")["paralis-time"] = get_stat("Temp")["paralis-save"] + time()
-                    get_stat("Stats")["shotspeed-time"] = get_stat("Temp")["shotspeed-save"] + time()
-                    get_stat("Stats")["notouch-time"] = get_stat("Temp")["notouch-save"] + time()
+                    get_stats("Stats")["scorestate-time"] = get_stats("Temp")["scorestate-save"] + time()
+                    get_stats("Stats")["secure-time"] = get_stats("Temp")["secure-save"] + time()
+                    get_stats("Stats")["timebreak-time"] = get_stats("Temp")["timebreak-save"] + time()
+                    get_stats("Stats")["confusion-time"] = get_stats("Temp")["confusion-save"] + time()
+                    get_stats("Stats")["slowmotion-time"] = get_stats("Temp")["slowmotion-save"] + time()
+                    get_stats("Stats")["paralis-time"] = get_stats("Temp")["paralis-save"] + time()
+                    get_stats("Stats")["shotspeed-time"] = get_stats("Temp")["shotspeed-save"] + time()
+                    get_stats("Stats")["notouch-time"] = get_stats("Temp")["notouch-save"] + time()
                     sleep(1)
                 if self.xControl["A"]:
-                    get_stat("Modes")["pause"] = False
+                    get_stats("Modes")["pause"] = False
 
-                    get_stat("Stats")["scorestate-time"] = get_stat("Temp")["scorestate-save"] + time()
-                    get_stat("Stats")["secure-time"] = get_stat("Temp")["secure-save"] + time()
-                    get_stat("Stats")["timebreak-time"] = get_stat("Temp")["timebreak-save"] + time()
-                    get_stat("Stats")["confusion-time"] = get_stat("Temp")["confusion-save"] + time()
-                    get_stat("Stats")["slowmotion-time"] = get_stat("Temp")["slowmotion-save"] + time()
-                    get_stat("Stats")["paralis-time"] = get_stat("Temp")["paralis-save"] + time()
-                    get_stat("Stats")["shotspeed-time"] = get_stat("Temp")["shotspeed-save"] + time()
-                    get_stat("Stats")["notouch-time"] = get_stat("Temp")["notouch-save"] + time()
+                    get_stats("Stats")["scorestate-time"] = get_stats("Temp")["scorestate-save"] + time()
+                    get_stats("Stats")["secure-time"] = get_stats("Temp")["secure-save"] + time()
+                    get_stats("Stats")["timebreak-time"] = get_stats("Temp")["timebreak-save"] + time()
+                    get_stats("Stats")["confusion-time"] = get_stats("Temp")["confusion-save"] + time()
+                    get_stats("Stats")["slowmotion-time"] = get_stats("Temp")["slowmotion-save"] + time()
+                    get_stats("Stats")["paralis-time"] = get_stats("Temp")["paralis-save"] + time()
+                    get_stats("Stats")["shotspeed-time"] = get_stats("Temp")["shotspeed-save"] + time()
+                    get_stats("Stats")["notouch-time"] = get_stats("Temp")["notouch-save"] + time()
 
-                    get_stat("Stats")["teleports"] -= 1
-                    teleport(self.canvas, self._root, get_stat("Stats"), get_stat("Modes"), self.ship, get_stat("TP"),
-                             get_stat("TP")["id1"])
+                    get_stats("Stats")["teleports"] -= 1
+                    teleport(self.canvas, self._root, get_stats("Stats"), get_stats("Modes"), self.ship, get_stats("TP"),
+                             get_stats("TP")["id1"])
             elif self.xControl:
                 pass
                 # a = self.c_ammo()
                 # a.create(None, None)
-            if self.xControl["Back"] and (not get_stat("Modes")["pause"]) and (not get_stat("Modes")["store"]) and (
-                    not get_stat("Modes")["teleport"]) and \
-                    (not get_stat("Modes")["window"]) and (not get_stat("Modes")["present"]) and (
-                    not get_stat("Modes")["cheater"]):
-                get_stat("Modes")["pause"] = True
+            if self.xControl["Back"] and (not get_stats("Modes")["pause"]) and (not get_stats("Modes")["store"]) and (
+                    not get_stats("Modes")["teleport"]) and \
+                    (not get_stats("Modes")["window"]) and (not get_stats("Modes")["present"]) and (
+                    not get_stats("Modes")["cheater"]):
+                get_stats("Modes")["pause"] = True
 
                 self.canvas.delete(get_registrer("Icons")["pause"])
-                if get_stat("Stats")["special-level"]:
-                    get_stat("Temp")['pause/bg'] = self.canvas.create_rectangle(0, 69,
-                                                                                get_register("Config")["width"],
-                                                                                get_register("Config")[
+                if get_stats("Stats")["special-level"]:
+                    get_stats("Temp")['pause/bg'] = self.canvas.create_rectangle(0, 69,
+                                                                                 get_register("Config")["width"],
+                                                                                 get_register("Config")[
                                                                                     "height"],
-                                                                                fill="#3f3f3f",
-                                                                                outline="#3f3f3f")
-                    get_stat("Temp")['pause/toline'] = self.canvas.create_line(0, 69, get_register("Config")["width"],
-                                                                               69,
-                                                                               fill="#afafaf")
-                    # get_stat("Temp")['pause/bottom.line'] = self.canvas.create_line(0, get_register("Config")[
+                                                                                 fill="#3f3f3f",
+                                                                                 outline="#3f3f3f")
+                    get_stats("Temp")['pause/toline'] = self.canvas.create_line(0, 69, get_register("Config")["width"],
+                                                                                69,
+                                                                                fill="#afafaf")
+                    # get_stats("Temp")['pause/bottom.line'] = self.canvas.create_line(0, get_register("Config")[
                     # "height"] - 102, get_register("Config")["width"], get_register("Config")["height"] - 102,
                     # fill="#afafaf")
 
-                    get_stat("Temp")['pause/menu_frame'] = Frame(self._root, bg="#3f3f3f")
-                    get_stat("Temp")['pause/menu'] = self.canvas.create_window(get_register("Config")["middle-x"],
-                                                                               get_register("Config")[
+                    get_stats("Temp")['pause/menu_frame'] = Frame(self._root, bg="#3f3f3f")
+                    get_stats("Temp")['pause/menu'] = self.canvas.create_window(get_register("Config")["middle-x"],
+                                                                                get_register("Config")[
                                                                                    "middle-y"] / 2 + 130,
-                                                                               window=get_stat("Temp")[
+                                                                                window=get_stats("Temp")[
                                                                                    'pause/menu_frame'],
-                                                                               anchor='n',
-                                                                               height=20, width=300)
+                                                                                anchor='n',
+                                                                                height=20, width=300)
 
-                    get_stat("Temp")["pause/back-to-menu"] = Button(get_stat("Temp")["pause/menu_frame"],
-                                                                    text=self.lang["pause.back-to-home"],
-                                                                    command=lambda: self.return_main(),
-                                                                    relief=FLAT, bg="#1f1f1f", fg="#afafaf",
-                                                                    font=self.font)
+                    get_stats("Temp")["pause/back-to-menu"] = Button(get_stats("Temp")["pause/menu_frame"],
+                                                                     text=self.lang["pause.back-to-home"],
+                                                                     command=lambda: self.return_main(),
+                                                                     relief=FLAT, bg="#1f1f1f", fg="#afafaf",
+                                                                     font=self.font)
                     back = "#1f1f1f"
                     fore = "yellow"
                 else:
-                    get_stat("Temp")['pause/bg'] = self.canvas.create_rectangle(0, 69,
-                                                                                get_register("Config")["width"],
-                                                                                get_register("Config")[
+                    get_stats("Temp")['pause/bg'] = self.canvas.create_rectangle(0, 69,
+                                                                                 get_register("Config")["width"],
+                                                                                 get_register("Config")[
                                                                                     "height"],
-                                                                                fill="darkcyan",
-                                                                                outline="darkcyan")
-                    get_stat("Temp")['pause/toline'] = self.canvas.create_line(0, 69, get_register("Config")["width"],
-                                                                               69,
-                                                                               fill="#7fffff")
-                    # get_stat("Temp")['pause/bottom.line'] = self.canvas.create_line(0, get_register("Config")[
+                                                                                 fill="darkcyan",
+                                                                                 outline="darkcyan")
+                    get_stats("Temp")['pause/toline'] = self.canvas.create_line(0, 69, get_register("Config")["width"],
+                                                                                69,
+                                                                                fill="#7fffff")
+                    # get_stats("Temp")['pause/bottom.line'] = self.canvas.create_line(0, get_register("Config")[
                     # "height"] - 102, get_register("Config")["width"], get_register("Config")["height"] - 102,
                     # fill="#7fffff")
 
-                    get_stat("Temp")['pause/menu_frame'] = Frame(self._root, bg="darkcyan")
-                    get_stat("Temp")['pause/menu'] = self.canvas.create_window(get_register("Config")["middle-x"],
-                                                                               get_register("Config")[
+                    get_stats("Temp")['pause/menu_frame'] = Frame(self._root, bg="darkcyan")
+                    get_stats("Temp")['pause/menu'] = self.canvas.create_window(get_register("Config")["middle-x"],
+                                                                                get_register("Config")[
                                                                                    "middle-y"] / 2 + 130,
-                                                                               window=get_stat("Temp")[
+                                                                                window=get_stats("Temp")[
                                                                                    'pause/menu_frame'],
-                                                                               anchor='n',
-                                                                               height=500, width=300)
+                                                                                anchor='n',
+                                                                                height=500, width=300)
 
-                    get_stat("Temp")["pause/back-to-menu"] = Button(get_stat("Temp")["pause/menu_frame"],
-                                                                    text=self.lang["pause.back-to-home"],
-                                                                    command=lambda: self.return_main(),
-                                                                    relief=FLAT, bg="#005f5f", fg="#7fffff",
-                                                                    font=[self.font])
+                    get_stats("Temp")["pause/back-to-menu"] = Button(get_stats("Temp")["pause/menu_frame"],
+                                                                     text=self.lang["pause.back-to-home"],
+                                                                     command=lambda: self.return_main(),
+                                                                     relief=FLAT, bg="#005f5f", fg="#7fffff",
+                                                                     font=[self.font])
 
                     back = "#005f5f"
                     fore = "#7fffff"
 
-                get_stat("Temp")["s_frame"] = Frame(self._root, bg=back)
-                get_stat("Temp")["s_frame"].place(x=get_register("Config")["middle-x"],
-                                                  y=get_register("Config")["middle-y"] / 2 + 250, anchor='n',
-                                                  width=1000)
+                get_stats("Temp")["s_frame"] = Frame(self._root, bg=back)
+                get_stats("Temp")["s_frame"].place(x=get_register("Config")["middle-x"],
+                                                   y=get_register("Config")["middle-y"] / 2 + 250, anchor='n',
+                                                   width=1000)
 
-                get_stat("Temp")["sw"] = ScrolledWindow(get_stat("Temp")["s_frame"], 1020, 321, height=321, width=1000)
+                get_stats("Temp")["sw"] = ScrolledWindow(get_stats("Temp")["s_frame"], 1020, 321, height=321, width=1000)
 
-                get_stat("Temp")["canv"] = get_stat("Temp")["sw"].canv
-                get_stat("Temp")["canv"].config(bg=back)
-                get_stat("Temp")["sw"].scrollwindow.config(bg=back)
+                get_stats("Temp")["canv"] = get_stats("Temp")["sw"].canv
+                get_stats("Temp")["canv"].config(bg=back)
+                get_stats("Temp")["sw"].scrollwindow.config(bg=back)
 
-                get_stat("Temp")["frame"] = get_stat("Temp")["sw"].scrollwindow
+                get_stats("Temp")["frame"] = get_stats("Temp")["sw"].scrollwindow
 
                 a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
                      "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
@@ -446,10 +446,10 @@ class Game(object):
                     "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
 
                 # noinspection PyAttributeOutsideInit
-                self.canvass = Canvas(get_stat("Temp")["frame"], bg=back, highlightthickness=0)
+                self.canvass = Canvas(get_stats("Temp")["frame"], bg=back, highlightthickness=0)
                 x = 50
                 y = 50
-                get_stat("Temp")["pause/bubble.iconss"] = []
+                get_stats("Temp")["pause/bubble.iconss"] = []
                 for i in range(len(a)):
                     # print(a[i], b[i])
                     place_bubble(self.canvass, self.bub, x, y, 25, a[i])
@@ -463,7 +463,7 @@ class Game(object):
                 self.canvass.config(height=y + 70, width=1000)
                 self.canvass.pack(fill=Y)
 
-                get_stat("Temp")["pause/back-to-menu"].pack(fill=X)
+                get_stats("Temp")["pause/back-to-menu"].pack(fill=X)
 
                 get_register("Icons")["pause"] = self.canvas.create_image(get_register("Config")["middle-x"],
                                                                           get_register("Config")["middle-y"] / 2,
@@ -472,83 +472,83 @@ class Game(object):
                 self.canvas.itemconfig(texts["pause"], text="")
                 self._root.update()
 
-                get_stat("Temp")["scorestate-save"] = get_stat("Stats")["scorestate-time"] - time()
-                get_stat("Temp")["secure-save"] = get_stat("Stats")["secure-time"] - time()
-                get_stat("Temp")["timebreak-save"] = get_stat("Stats")["timebreak-time"] - time()
-                get_stat("Temp")["confusion-save"] = get_stat("Stats")["confusion-time"] - time()
-                get_stat("Temp")["slowmotion-save"] = get_stat("Stats")["slowmotion-time"] - time()
-                get_stat("Temp")["paralis-save"] = get_stat("Stats")["paralis-time"] - time()
-                get_stat("Temp")["shotspeed-save"] = get_stat("Stats")["shotspeed-time"] - time()
-                get_stat("Temp")["notouch-save"] = get_stat("Stats")["notouch-time"] - time()
-                get_stat("Temp")["special-level-save"] = get_stat("Stats")["special-level-time"] - time()
-            elif self.xControl["Back"] and get_stat("Modes")["pause"] and (not get_stat("Modes")["store"]) and (
-                    not get_stat("Modes")["teleport"]) and \
-                    (not get_stat("Modes")["window"]) and (not get_stat("Modes")["present"]) and (
-                    not get_stat("Modes")["cheater"]):
-                get_stat("Modes")["pause"] = False
+                get_stats("Temp")["scorestate-save"] = get_stats("Stats")["scorestate-time"] - time()
+                get_stats("Temp")["secure-save"] = get_stats("Stats")["secure-time"] - time()
+                get_stats("Temp")["timebreak-save"] = get_stats("Stats")["timebreak-time"] - time()
+                get_stats("Temp")["confusion-save"] = get_stats("Stats")["confusion-time"] - time()
+                get_stats("Temp")["slowmotion-save"] = get_stats("Stats")["slowmotion-time"] - time()
+                get_stats("Temp")["paralis-save"] = get_stats("Stats")["paralis-time"] - time()
+                get_stats("Temp")["shotspeed-save"] = get_stats("Stats")["shotspeed-time"] - time()
+                get_stats("Temp")["notouch-save"] = get_stats("Stats")["notouch-time"] - time()
+                get_stats("Temp")["special-level-save"] = get_stats("Stats")["special-level-time"] - time()
+            elif self.xControl["Back"] and get_stats("Modes")["pause"] and (not get_stats("Modes")["store"]) and (
+                    not get_stats("Modes")["teleport"]) and \
+                    (not get_stats("Modes")["window"]) and (not get_stats("Modes")["present"]) and (
+                    not get_stats("Modes")["cheater"]):
+                get_stats("Modes")["pause"] = False
 
                 self.canvas.itemconfig("Config")(get_register("Icons")["pause"], state=HIDDEN)
                 self.canvas.itemconfig("Config")(texts["pause"], text="")
 
-                get_stat("Temp")["pause/back-to-menu"].destroy()
-                get_stat("Temp")['pause/menu_frame'].destroy()
-                get_stat("Temp")["s_frame"].destroy()
+                get_stats("Temp")["pause/back-to-menu"].destroy()
+                get_stats("Temp")['pause/menu_frame'].destroy()
+                get_stats("Temp")["s_frame"].destroy()
 
-                self.canvas.delete(get_stat("Temp")['pause/toline'])
-                # self.canvas.delete(get_stat("Temp")['pause/bottom.line'])
-                self.canvas.delete(get_stat("Temp")['pause/menu'])
-                self.canvas.delete(get_stat("Temp")['pause/bg'])
+                self.canvas.delete(get_stats("Temp")['pause/toline'])
+                # self.canvas.delete(get_stats("Temp")['pause/bottom.line'])
+                self.canvas.delete(get_stats("Temp")['pause/menu'])
+                self.canvas.delete(get_stats("Temp")['pause/bg'])
 
                 self._root.update()
 
-                get_stat("Stats")["scorestate-time"] = get_stat("Temp")["scorestate-save"] + time()
-                get_stat("Stats")["secure-time"] = get_stat("Temp")["secure-save"] + time()
-                get_stat("Stats")["timebreak-time"] = get_stat("Temp")["timebreak-save"] + time()
-                get_stat("Stats")["confusion-time"] = get_stat("Temp")["confusion-save"] + time()
-                get_stat("Stats")["slowmotion-time"] = get_stat("Temp")["slowmotion-save"] + time()
-                get_stat("Stats")["paralis-time"] = get_stat("Temp")["paralis-save"] + time()
-                get_stat("Stats")["shotspeed-time"] = get_stat("Temp")["shotspeed-save"] + time()
-                get_stat("Stats")["notouch-time"] = get_stat("Temp")["notouch-save"] + time()
-            if self.xControl["Y"] and get_stat("Stats")["teleports"] > 0 and (not get_stat("Modes")["teleport"]):
-                get_stat("Modes")["pause"] = True
+                get_stats("Stats")["scorestate-time"] = get_stats("Temp")["scorestate-save"] + time()
+                get_stats("Stats")["secure-time"] = get_stats("Temp")["secure-save"] + time()
+                get_stats("Stats")["timebreak-time"] = get_stats("Temp")["timebreak-save"] + time()
+                get_stats("Stats")["confusion-time"] = get_stats("Temp")["confusion-save"] + time()
+                get_stats("Stats")["slowmotion-time"] = get_stats("Temp")["slowmotion-save"] + time()
+                get_stats("Stats")["paralis-time"] = get_stats("Temp")["paralis-save"] + time()
+                get_stats("Stats")["shotspeed-time"] = get_stats("Temp")["shotspeed-save"] + time()
+                get_stats("Stats")["notouch-time"] = get_stats("Temp")["notouch-save"] + time()
+            if self.xControl["Y"] and get_stats("Stats")["teleports"] > 0 and (not get_stats("Modes")["teleport"]):
+                get_stats("Modes")["pause"] = True
 
-                get_stat("Temp")["scorestate-save"] = get_stat("Stats")["scorestate-time"] - time()
-                get_stat("Temp")["secure-save"] = get_stat("Stats")["secure-time"] - time()
-                get_stat("Temp")["timebreak-save"] = get_stat("Stats")["timebreak-time"] - time()
-                get_stat("Temp")["confusion-save"] = get_stat("Stats")["confusion-time"] - time()
-                get_stat("Temp")["slowmotion-save"] = get_stat("Stats")["slowmotion-time"] - time()
-                get_stat("Temp")["paralis-save"] = get_stat("Stats")["paralis-time"] - time()
-                get_stat("Temp")["shotspeed-save"] = get_stat("Stats")["shotspeed-time"] - time()
-                get_stat("Temp")["notouch-save"] = get_stat("Stats")["notouch-time"] - time()
-                get_stat("Temp")["special-level-save"] = get_stat("Stats")["special-level-time"] - time()
+                get_stats("Temp")["scorestate-save"] = get_stats("Stats")["scorestate-time"] - time()
+                get_stats("Temp")["secure-save"] = get_stats("Stats")["secure-time"] - time()
+                get_stats("Temp")["timebreak-save"] = get_stats("Stats")["timebreak-time"] - time()
+                get_stats("Temp")["confusion-save"] = get_stats("Stats")["confusion-time"] - time()
+                get_stats("Temp")["slowmotion-save"] = get_stats("Stats")["slowmotion-time"] - time()
+                get_stats("Temp")["paralis-save"] = get_stats("Stats")["paralis-time"] - time()
+                get_stats("Temp")["shotspeed-save"] = get_stats("Stats")["shotspeed-time"] - time()
+                get_stats("Temp")["notouch-save"] = get_stats("Stats")["notouch-time"] - time()
+                get_stats("Temp")["special-level-save"] = get_stats("Stats")["special-level-time"] - time()
 
-                get_stat("Modes")["teleport"] = True
+                get_stats("Modes")["teleport"] = True
 
-                get_stat("Modes")["tp"](self.canvas, get_register("Config"), get_stat("Stats"), get_stat("Modes"),
-                                        get_stat("TP"))
-            if self.xControl["X"] and (not get_stat("Modes")["store"]):
-                get_stat("Modes")["pause"] = True
-                get_stat("Temp")["scorestate-save"] = get_stat("Stats")["scorestate-time"] - time()
-                get_stat("Temp")["secure-save"] = get_stat("Stats")["secure-time"] - time()
-                get_stat("Temp")["timebreak-save"] = get_stat("Stats")["timebreak-time"] - time()
-                get_stat("Temp")["confusion-save"] = get_stat("Stats")["confusion-time"] - time()
-                get_stat("Temp")["slowmotion-save"] = get_stat("Stats")["slowmotion-time"] - time()
-                get_stat("Temp")["paralis-save"] = get_stat("Stats")["paralis-time"] - time()
-                get_stat("Temp")["shotspeed-save"] = get_stat("Stats")["shotspeed-time"] - time()
-                get_stat("Temp")["notouch-save"] = get_stat("Stats")["notouch-time"] - time()
-                get_stat("Temp")["special-level-save"] = get_stat("Stats")["special-level-time"] - time()
-                get_stat("Modes")["store"] = True
+                get_stats("Modes")["tp"](self.canvas, get_register("Config"), get_stats("Stats"), get_stats("Modes"),
+                                         get_stats("TP"))
+            if self.xControl["X"] and (not get_stats("Modes")["store"]):
+                get_stats("Modes")["pause"] = True
+                get_stats("Temp")["scorestate-save"] = get_stats("Stats")["scorestate-time"] - time()
+                get_stats("Temp")["secure-save"] = get_stats("Stats")["secure-time"] - time()
+                get_stats("Temp")["timebreak-save"] = get_stats("Stats")["timebreak-time"] - time()
+                get_stats("Temp")["confusion-save"] = get_stats("Stats")["confusion-time"] - time()
+                get_stats("Temp")["slowmotion-save"] = get_stats("Stats")["slowmotion-time"] - time()
+                get_stats("Temp")["paralis-save"] = get_stats("Stats")["paralis-time"] - time()
+                get_stats("Temp")["shotspeed-save"] = get_stats("Stats")["shotspeed-time"] - time()
+                get_stats("Temp")["notouch-save"] = get_stats("Stats")["notouch-time"] - time()
+                get_stats("Temp")["special-level-save"] = get_stats("Stats")["special-level-time"] - time()
+                get_stats("Modes")["store"] = True
                 self.log.debug("bub_move", "Creating Store() to variable \"store\"")
-                self.log.debug("bub_move", "storemode=" + str(get_stat("Modes")["store"]))
-                get_stat("Commands")["store"] = Store(self.canvas, self.log, get_register("Config"), get_stat("Modes"),
-                                                      get_stat("Stats"), get_register("Icons"),
-                                                      get_register("Foreground"),
-                                                      self.font, self.launcherCfg)
-            # if event.char == "/": CheatEngine().event_handler(self.canvas, get_stat("Modes"), get_stat("Stats"),
-            # get_register("Config"), get_stat("Temp"), self.log, get_register("Background"), bubble, event,
-            # self.bub) if get_stat("Modes")[ "cheater"]: CheatEngine().input_event_handler(self.canvas, self.log,
-            # get_stat("Stats"), get_register("Background"), bubble, event, get_register("Config"), self.bub,
-            # get_stat("Temp"), get_stat("Modes"))
+                self.log.debug("bub_move", "storemode=" + str(get_stats("Modes")["store"]))
+                get_stats("Commands")["store"] = Store(self.canvas, self.log, get_register("Config"), get_stats("Modes"),
+                                                       get_stats("Stats"), get_register("Icons"),
+                                                       get_register("Foreground"),
+                                                       self.font, self.launcherCfg)
+            # if event.char == "/": CheatEngine().event_handler(self.canvas, get_stats("Modes"), get_stats("Stats"),
+            # get_register("Config"), get_stats("Temp"), self.log, get_register("Background"), bubble, event,
+            # self.bub) if get_stats("Modes")[ "cheater"]: CheatEngine().input_event_handler(self.canvas, self.log,
+            # get_stats("Stats"), get_register("Background"), bubble, event, get_register("Config"), self.bub,
+            # get_stats("Temp"), get_stats("Modes"))
 
             if self.xControl["Back"]:
                 s.save()
@@ -610,180 +610,180 @@ class Game(object):
             sleep(0.01)
 
     def xMovement(self):
-        if get_stat("Modes")["present"]:
+        if get_stats("Modes")["present"]:
             if self.xControl["A"]:
-                if False != get_stat("Commands")["present"] != True:
+                if False != get_stats("Commands")["present"] != True:
                     # noinspection PyUnresolvedReferences
-                    get_stat("Commands")["present"].exit(self.canvas)
-                    get_stat("Modes")["pause"] = False
-                    get_stat("Modes")["present"] = False
-                    get_stat("Stats")["scorestate-time"] = get_stat("Temp")["scorestate-save"] + time()
-                    get_stat("Stats")["secure-time"] = get_stat("Temp")["secure-save"] + time()
-                    get_stat("Stats")["timebreak-time"] = get_stat("Temp")["timebreak-save"] + time()
-                    get_stat("Stats")["confusion-time"] = get_stat("Temp")["confusion-save"] + time()
-                    get_stat("Stats")["slowmotion-time"] = get_stat("Temp")["slowmotion-save"] + time()
-                    get_stat("Stats")["paralis-time"] = get_stat("Temp")["paralis-save"] + time()
-                    get_stat("Stats")["shotspeed-time"] = get_stat("Temp")["shotspeed-save"] + time()
-                    get_stat("Stats")["notouch-time"] = get_stat("Temp")["notouch-save"] + time()
+                    get_stats("Commands")["present"].exit(self.canvas)
+                    get_stats("Modes")["pause"] = False
+                    get_stats("Modes")["present"] = False
+                    get_stats("Stats")["scorestate-time"] = get_stats("Temp")["scorestate-save"] + time()
+                    get_stats("Stats")["secure-time"] = get_stats("Temp")["secure-save"] + time()
+                    get_stats("Stats")["timebreak-time"] = get_stats("Temp")["timebreak-save"] + time()
+                    get_stats("Stats")["confusion-time"] = get_stats("Temp")["confusion-save"] + time()
+                    get_stats("Stats")["slowmotion-time"] = get_stats("Temp")["slowmotion-save"] + time()
+                    get_stats("Stats")["paralis-time"] = get_stats("Temp")["paralis-save"] + time()
+                    get_stats("Stats")["shotspeed-time"] = get_stats("Temp")["shotspeed-save"] + time()
+                    get_stats("Stats")["notouch-time"] = get_stats("Temp")["notouch-save"] + time()
 
-        if (not get_stat("Modes")["teleport"]) and (not get_stat("Modes")["store"]) and (
-                not get_stat("Modes")["window"]):
-            if not get_stat("Modes")["pause"]:
-                if not get_stat("Stats")["paralis"]:
+        if (not get_stats("Modes")["teleport"]) and (not get_stats("Modes")["store"]) and (
+                not get_stats("Modes")["window"]):
+            if not get_stats("Modes")["pause"]:
+                if not get_stats("Stats")["paralis"]:
                     x, y = get_coords(self.canvas, self.ship["id"])
-                    if get_stat("Stats")["speedboost"]:
+                    if get_stats("Stats")["speedboost"]:
                         a = 6
                     else:
                         a = 1
 
                     self.canvas.move(self.ship["id"],
-                                     (get_stat("Stats")["shipspeed"] / (self.xmove_fps / 4) + a) * self.xControl[
+                                     (get_stats("Stats")["shipspeed"] / (self.xmove_fps / 4) + a) * self.xControl[
                                          "LeftJoystick"][0] / 7,
-                                     -((get_stat("Stats")["shipspeed"] / (self.xmove_fps / 4) + a) * self.xControl[
+                                     -((get_stats("Stats")["shipspeed"] / (self.xmove_fps / 4) + a) * self.xControl[
                                          "LeftJoystick"][1] / 7))
                     self.canvas.update()
 
                     # if self.xControl['Up']:
                     #     if y > 72 + get_register("Config")["game"]["ship-radius"]:
-                    #         self.canvas.move(self.ship["id"], 0, (-get_stat("Stats")["shipspeed"] / (self.move_fps / 4) - a))
+                    #         self.canvas.move(self.ship["id"], 0, (-get_stats("Stats")["shipspeed"] / (self.move_fps / 4) - a))
                     #         self._root.update()
                     # elif self.xControl['Down']:
                     #     if y < get_register("Config")["height"] - get_register("Config")["game"]["ship-radius"]:
-                    #         self.canvas.move(self.ship["id"], 0, (get_stat("Stats")["shipspeed"] / (self.move_fps / 4) + a))
+                    #         self.canvas.move(self.ship["id"], 0, (get_stats("Stats")["shipspeed"] / (self.move_fps / 4) + a))
                     #         self._root.update()
                     # elif self.xControl['Left']:
                     #     if x > 0 + get_register("Config")["game"]["ship-radius"]:
-                    #         self.canvas.move(self.ship["id"], (-get_stat("Stats")["shipspeed"] / (self.move_fps / 4) - a), 0)
+                    #         self.canvas.move(self.ship["id"], (-get_stats("Stats")["shipspeed"] / (self.move_fps / 4) - a), 0)
                     #         self._root.update()
                     # elif self.xControl['Right']:
                     #     if x < get_register("Config")["width"] - get_register("Config")["game"]["ship-radius"]:
-                    #         self.canvas.move(self.ship["id"], (get_stat("Stats")["shipspeed"] / (self.move_fps / 4) + a), 0)
+                    #         self.canvas.move(self.ship["id"], (get_stats("Stats")["shipspeed"] / (self.move_fps / 4) + a), 0)
                     #         self._root.update()
-                    # get_stat("Stats")["ship-position"] = get_coords(self.canvas, self.ship["id"])
+                    # get_stats("Stats")["ship-position"] = get_coords(self.canvas, self.ship["id"])
 
     @staticmethod
     def _press(e):
         if e.keysym == "Up":
-            get_stat("Pressed")["Up"] = True
+            get_stats("Pressed")["Up"] = True
         if e.keysym == "Down":
-            get_stat("Pressed")["Down"] = True
+            get_stats("Pressed")["Down"] = True
         if e.keysym == "Left":
-            get_stat("Pressed")["Left"] = True
+            get_stats("Pressed")["Left"] = True
         if e.keysym == "Right":
-            get_stat("Pressed")["Right"] = True
+            get_stats("Pressed")["Right"] = True
 
     @staticmethod
     def _release(e):
         if e.keysym == "Up":
-            get_stat("Pressed")["Up"] = False
+            get_stats("Pressed")["Up"] = False
         if e.keysym == "Down":
-            get_stat("Pressed")["Down"] = False
+            get_stats("Pressed")["Down"] = False
         if e.keysym == "Left":
-            get_stat("Pressed")["Left"] = False
+            get_stats("Pressed")["Left"] = False
         if e.keysym == "Right":
-            get_stat("Pressed")["Right"] = False
+            get_stats("Pressed")["Right"] = False
 
     @staticmethod
     def up_press(event):
-        get_stat("Pressed")["Up"] = True
+        get_stats("Pressed")["Up"] = True
 
     @staticmethod
     def down_press(event):
-        get_stat("Pressed")["Down"] = True
+        get_stats("Pressed")["Down"] = True
 
     @staticmethod
     def left_press(event):
-        get_stat("Pressed")["Left"] = True
+        get_stats("Pressed")["Left"] = True
 
     @staticmethod
     def right_press(event):
-        get_stat("Pressed")["Right"] = True
+        get_stats("Pressed")["Right"] = True
 
     def up_release(self, event):
-        get_stat("Pressed")["Up"] = False
-        if get_stat("Modes")["teleport"]:
-            x, y = get_coords(self.canvas, get_stat("TP")["id1"])
+        get_stats("Pressed")["Up"] = False
+        if get_stats("Modes")["teleport"]:
+            x, y = get_coords(self.canvas, get_stats("TP")["id1"])
             if y > 72 + 5:
-                self.canvas.move(get_stat("TP")["id1"], 0, -5)
-                self.canvas.move(get_stat("TP")["id2"], 0, -5)
-                self.canvas.move(get_stat("TP")["id3"], 0, -5)
-                self.canvas.move(get_stat("TP")["id4"], 0, -5)
-        if get_stat("Modes")["store"]:
+                self.canvas.move(get_stats("TP")["id1"], 0, -5)
+                self.canvas.move(get_stats("TP")["id2"], 0, -5)
+                self.canvas.move(get_stats("TP")["id3"], 0, -5)
+                self.canvas.move(get_stats("TP")["id4"], 0, -5)
+        if get_stats("Modes")["store"]:
             if event.keysym == "Up":
-                get_stat("Commands")["store"].set_selected(self.canvas, -1)
+                get_stats("Commands")["store"].set_selected(self.canvas, -1)
             if event.keysym == "Right":
-                get_stat("Commands")["store"].set_selected(self.canvas,
-                                                           int((get_register("Config")["height"] - 215) / 140 + 1))
+                get_stats("Commands")["store"].set_selected(self.canvas,
+                                                            int((get_register("Config")["height"] - 215) / 140 + 1))
 
     def down_release(self, event):
-        get_stat("Pressed")["Down"] = False
-        if get_stat("Modes")["teleport"]:
-            x, y = get_coords(self.canvas, get_stat("TP")["id1"])
+        get_stats("Pressed")["Down"] = False
+        if get_stats("Modes")["teleport"]:
+            x, y = get_coords(self.canvas, get_stats("TP")["id1"])
             if y < get_register("Config")["height"] - 105 - 5:
-                self.canvas.move(get_stat("TP")["id1"], 0, 5)
-                self.canvas.move(get_stat("TP")["id2"], 0, 5)
-                self.canvas.move(get_stat("TP")["id3"], 0, 5)
-                self.canvas.move(get_stat("TP")["id4"], 0, 5)
-        if get_stat("Modes")["store"]:
-            get_stat("Commands")["store"].set_selected(self.canvas, 1)
+                self.canvas.move(get_stats("TP")["id1"], 0, 5)
+                self.canvas.move(get_stats("TP")["id2"], 0, 5)
+                self.canvas.move(get_stats("TP")["id3"], 0, 5)
+                self.canvas.move(get_stats("TP")["id4"], 0, 5)
+        if get_stats("Modes")["store"]:
+            get_stats("Commands")["store"].set_selected(self.canvas, 1)
 
     def left_release(self, event):
-        get_stat("Pressed")["Left"] = False
-        if get_stat("Modes")["teleport"]:
-            x, y = get_coords(self.canvas, get_stat("TP")["id1"])
+        get_stats("Pressed")["Left"] = False
+        if get_stats("Modes")["teleport"]:
+            x, y = get_coords(self.canvas, get_stats("TP")["id1"])
             if x > 0 + 5:
-                self.canvas.move(get_stat("TP")["id1"], -5, 0)
-                self.canvas.move(get_stat("TP")["id2"], -5, 0)
-                self.canvas.move(get_stat("TP")["id3"], -5, 0)
-                self.canvas.move(get_stat("TP")["id4"], -5, 0)
-        if get_stat("Modes")["store"]:
-            get_stat("Commands")["store"].set_selected(self.canvas,
-                                                       int(-((get_register("Config")["height"] - 215) / 140 + 1)))
+                self.canvas.move(get_stats("TP")["id1"], -5, 0)
+                self.canvas.move(get_stats("TP")["id2"], -5, 0)
+                self.canvas.move(get_stats("TP")["id3"], -5, 0)
+                self.canvas.move(get_stats("TP")["id4"], -5, 0)
+        if get_stats("Modes")["store"]:
+            get_stats("Commands")["store"].set_selected(self.canvas,
+                                                        int(-((get_register("Config")["height"] - 215) / 140 + 1)))
 
     def right_release(self, event):
-        get_stat("Pressed")["Right"] = False
-        if get_stat("Modes")["teleport"]:
-            x, y = get_coords(self.canvas, get_stat("TP")["id1"])
+        get_stats("Pressed")["Right"] = False
+        if get_stats("Modes")["teleport"]:
+            x, y = get_coords(self.canvas, get_stats("TP")["id1"])
             if x < get_register("Config")["width"] - 5:
-                self.canvas.move(get_stat("TP")["id1"], 5, 0)
-                self.canvas.move(get_stat("TP")["id2"], 5, 0)
-                self.canvas.move(get_stat("TP")["id3"], 5, 0)
-                self.canvas.move(get_stat("TP")["id4"], 5, 0)
-        if get_stat("Modes")["store"]:
-            get_stat("Commands")["store"].set_selected(self.canvas,
-                                                       int((get_register("Config")["height"] - 215) / 140 + 1))
+                self.canvas.move(get_stats("TP")["id1"], 5, 0)
+                self.canvas.move(get_stats("TP")["id2"], 5, 0)
+                self.canvas.move(get_stats("TP")["id3"], 5, 0)
+                self.canvas.move(get_stats("TP")["id4"], 5, 0)
+        if get_stats("Modes")["store"]:
+            get_stats("Commands")["store"].set_selected(self.canvas,
+                                                        int((get_register("Config")["height"] - 215) / 140 + 1))
 
     # noinspection PyMethodMayBeStatic,PyMethodMayBeStatic
     def shot(self, event):
         print("WARNING: Using shot event. This not been used anymore, because of incompatibility.", file=sys.stderr)
 
     # def shot(self, event):
-    #     if (not get_stat("Modes")["teleport"]) and (not get_stat("Modes")["store"]) and (not get_stat("Modes")["window"]):
-    #         if not get_stat("Modes")["pause"]:
-    #             if not get_stat("Stats")["paralis"]:
+    #     if (not get_stats("Modes")["teleport"]) and (not get_stats("Modes")["store"]) and (not get_stats("Modes")["window"]):
+    #         if not get_stats("Modes")["pause"]:
+    #             if not get_stats("Stats")["paralis"]:
     #                 if event.keysym == "space":
     #                     # noinspection PyTypeChecker
-    #                     create_shot(self.canvas, self.ammo, get_register("Config"), self.ship, get_stat("Stats"))
+    #                     create_shot(self.canvas, self.ammo, get_register("Config"), self.ship, get_stats("Stats"))
 
     def auto_save(self):
         while not self.returnmain:
-            Maintance.auto_save(self.saveName, get_stat("Stats"), get_stat("Bubbles"))
+            Maintance.auto_save(self.saveName, get_stats("Stats"), get_stats("Bubbles"))
             print(self.returnmain)
             sleep(2)
 
     def moveSingleBubble(self, index):
         try:
-            for j in range(len(get_stat("Bubbles")["bub-id"][index]) - 1, -1, -1):
-                if not get_stat("Bubbles")["bub-action"][index] == "Null":
-                    if get_stat("Stats")["slowmotion"]:
-                        self.canvas.move(get_stat("Bubbles")["bub-id"][index][j],
-                                         -get_stat("Bubbles")["bub-speed"][index] / 10 / (self.xmove_fps / 4), 0)
+            for j in range(len(get_stats("Bubbles")["bub-id"][index]) - 1, -1, -1):
+                if not get_stats("Bubbles")["bub-action"][index] == "Null":
+                    if get_stats("Stats")["slowmotion"]:
+                        self.canvas.move(get_stats("Bubbles")["bub-id"][index][j],
+                                         -get_stats("Bubbles")["bub-speed"][index] / 10 / (self.xmove_fps / 4), 0)
                     else:
-                        self.canvas.move(get_stat("Bubbles")["bub-id"][index][j],
-                                         -get_stat("Bubbles")["bub-speed"][index] / (self.xmove_fps / 4), 0)
+                        self.canvas.move(get_stats("Bubbles")["bub-id"][index][j],
+                                         -get_stats("Bubbles")["bub-speed"][index] / (self.xmove_fps / 4), 0)
                     self._root.update()
-                x, y, = get_coords(self.canvas, get_stat("Bubbles")["bub-id"][index][j])
-                get_stat("Bubbles")["bub-position"][index] = [x, y]
+                x, y, = get_coords(self.canvas, get_stats("Bubbles")["bub-id"][index][j])
+                get_stats("Bubbles")["bub-position"][index] = [x, y]
                 self.canvas.update()
         except IndexError:
             pass
@@ -797,7 +797,7 @@ class Game(object):
         The base of motion for the bubbles
         """
         try:
-            for bub_index in range(len(get_stat("Bubbles")["bub-id"])):
+            for bub_index in range(len(get_stats("Bubbles")["bub-id"])):
                 Thread(None, lambda: self.moveSingleBubble(bub_index)).start()
         except IndexError:
             pass
@@ -829,14 +829,19 @@ class Game(object):
         self.saveName = save_name
         self.saveBuild = save_build
         from .utils import xbox
-        from .utils.get_set import get_canvas
-        from .stats import get_stat
-        from .registry import get_register
+        from .utils.get_set import get_canvas, set_canvas
+        from .stats import get_stats
+        from .registry import get_register, add_register, set_register, get_value, register
 
         # Create canvas.
         self.canvas = Canvas(self._root, height=get_register("Config")["height"], width=get_register("Config")["width"],
                              highlightthickness=0)
-        self.canvas.pack(expand=TRUE)
+        self.canvas.place(x=0, y=0)
+        self.canvas.update()
+        self.canvas.update_idletasks()
+        self._root.update()
+        self._root.update_idletasks()
+        set_canvas(self.canvas)
         t0 = self.canvas.create_rectangle(0, 0, get_register("Config")["width"], get_register("Config")["height"],
                                           fill="#3f3f3f", outline="#3f3f3f")
         t1 = self.canvas.create_text(get_register("Config")["middle-x"], get_register("Config")["middle-y"] - 30,
@@ -856,8 +861,10 @@ class Game(object):
         if type(self.saveBuild) != int:
             self.canvas.itemconfig(t1, text="Game can't load!")
             self.canvas.itemconfig(t2, text="Build version isn't an integer.")
-            Button(self._root, relief=FLAT, text=self.checkLangItem("general.back-to-title", "Back to title"), bg="#7f7f7f", fg="white",
-                   font=[get_register("Config")["font"]["family"], 20 + get_register("Config")["font"]["size"]], command=lambda: self.__init__(self.launcher_cfg))
+            Button(self._root, relief=FLAT, text=self.checkLangItem("general.back-to-title", "Back to title"),
+                   bg="#7f7f7f", fg="white",
+                   font=[get_register("Config")["font"]["family"], 20 + get_register("Config")["font"]["size"]],
+                   command=lambda: self.__init__(self.launcher_cfg))
             self.canvas.mainloop()
             exit(0)
 
@@ -872,7 +879,7 @@ class Game(object):
 
             text = "Return to Title"
             try:
-                text = get_register("Config")["game"]["language"]["error.return"]
+                text = get_register("Language")["error.return"]
             except KeyError:
                 text = "Return to Title"
             self.incompBtn = Button(self.canvas, relief=FLAT, text=text, bg="#afafaf", width=7,
@@ -886,10 +893,10 @@ class Game(object):
             Convert("slots/" + self.saveName + "/game.json").convert()
             Convert("slots/" + self.saveName + "/bubble.json").convert()
         if 7 >= self.saveBuild < 16:
-            get_stat("")["seed"] = 0
+            get_stats("")["seed"] = 0
 
         # Reload Save Data
-        set_stat("Stats", **Reader("slots/" + self.saveName + "/game.data").get_decoded())
+        set_stats("Stats", Reader("slots/" + self.saveName + "/game.data").get_decoded())
         try:
             self.saveInfo = Reader("slots/" + self.saveName + "/info.data").get_decoded()
         except FileNotFoundError:
@@ -1029,202 +1036,230 @@ class Game(object):
         self.ship["image"] = PhotoImage(file="" + self.gameversion_dir + "/data/Ship.png")
 
         # Reload stats with auto-restore.
-        set_stat(Maintance.auto_restore(self.saveName))
+        set_stats("Stats", Maintance.auto_restore_stats(self.saveName))
 
         self.canvas.itemconfig(t1, text="Loading Background")
         self.canvas.itemconfig(t2, text="Normal")
         self.canvas.update()
 
         # Getting the normal background.
-        get_register("Background")["normal"] = PhotoImage(file="" + self.gameversion_dir + "/data/BackGround.png")
+        add_register("Background", {})
+        register("Background", "normal", PhotoImage(file="" + self.gameversion_dir + "/data/BackGround.png"))
 
         self.canvas.itemconfig(t1, text="Loading Icons")
         self.canvas.itemconfig(t2, text="")
         self.canvas.update()
 
         # Getting the store-icons.
-        get_register("Icons")["store-pack"] = list()
-        get_register("Icons")["store-pack"].append(
+        add_register("Icons", {})
+        register("Icons", "store-pack", list())
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/Key.png"))
         self.canvas.itemconfig(t2, text="Store Item: Key")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/Teleport.png"))
         self.canvas.itemconfig(t2, text="Store Item: Teleport")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/Shield.png"))
         self.canvas.itemconfig(t2, text="Store Item: Shield")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/DiamondBuy.png"))
         self.canvas.itemconfig(t2, text="Store Item: Diamond")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/BuyACake.png"))
         self.canvas.itemconfig(t2, text="Store Item: Buy A Cake")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/Pop_3_bubs.png"))
         self.canvas.itemconfig(t2, text="Store Item: Pop 3 Bubbles")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/PlusLife.png"))
         self.canvas.itemconfig(t2, text="Store Item: PlusLife")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/SpeedBoost.png"))
         self.canvas.itemconfig(t2, text="Store Item: Speedboost")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/SpecialMode.png"))
         self.canvas.itemconfig(t2, text="Store Item: Special Mode")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(
+        get_value("Icons", "store-pack").append(
             PhotoImage(file="" + self.gameversion_dir + "/data/Images/StoreItems/DoubleScore.png"))
         self.canvas.itemconfig(t2, text="Double Score")
         self.canvas.update()
-        get_register("Icons")["store-pack"].append(None)
-        get_register("Icons")["store-pack"].append(None)
-        get_register("Icons")["store-pack"].append(None)
-        get_register("Icons")["store-pack"].append(None)
+        get_value("Icons", "store-pack").append(None)
+        get_value("Icons", "store-pack").append(None)
+        get_value("Icons", "store-pack").append(None)
+        get_value("Icons", "store-pack").append(None)
 
         self.canvas.itemconfig(t1, text="Loading Background")
         self.canvas.itemconfig(t2, text="Line")
         self.canvas.update()
         # Unknown
-        get_register("Background")["line"] = PhotoImage(file="" + self.gameversion_dir + "/data/LineIcon.png")
+        register("Background", "line", PhotoImage(file="" + self.gameversion_dir + "/data/LineIcon.png"))
 
         self.canvas.itemconfig(t1, text="Loading Foreground")
         self.canvas.itemconfig(t2, text="For Bubble Gift")
         self.canvas.update()
 
+        add_register("Foreground", {})
         # Setting present foreground
-        get_register("Foreground")["present-fg"] = PhotoImage(
-            file="" + self.gameversion_dir + "/data/EventBackground.png")
+        register("Foreground", "present-fg", PhotoImage(
+            file="" + self.gameversion_dir + "/data/EventBackground.png"))
 
         self.canvas.itemconfig(t1, text="Loading Icons")
         self.canvas.itemconfig(t2, text="Circle")
         self.canvas.update()
 
         # Setting present icons.
-        get_register("Icons")["circle"] = PhotoImage(file="" + self.gameversion_dir + "/data/Circle.png")
+        register("Icons", "circle", PhotoImage(file="" + self.gameversion_dir + "/data/Circle.png"))
 
         self.canvas.itemconfig(t1, text="Loading Icons")
         self.canvas.itemconfig(t2, text="Present")
         self.canvas.update()
 
-        get_register("Icons")["present"] = PhotoImage(file="" + self.gameversion_dir + "/data/Present.png")
+        register("Icons", "present", PhotoImage(file="" + self.gameversion_dir + "/data/Present.png"))
 
         self.canvas.itemconfig(t1, text="Loading Foreground")
         self.canvas.itemconfig(t2, text="Store FG")
         self.canvas.update()
 
         # Setting store foreground
-        get_register("Foreground")["store-fg"] = PhotoImage(file="" + self.gameversion_dir + "/data/FG2.png")
+        register("Foreground", "store-fg", PhotoImage(file="" + self.gameversion_dir + "/data/FG2.png"))
 
         self.canvas.itemconfig(t1, text="Loading Icons")
         self.canvas.itemconfig(t2, text="Store: Diamond & Coin")
         self.canvas.update()
 
         # Setting standard store icons.
-        get_register("Icons")["store-diamond"] = PhotoImage(
-            file="" + self.gameversion_dir + "/data/Diamond.png")
-        get_register("Icons")["store-coin"] = PhotoImage(file="" + self.gameversion_dir + "/data/Coin.png")
+        register("Icons", "store-diamond", PhotoImage(
+            file="" + self.gameversion_dir + "/data/Diamond.png"))
+        register("Icons", "store-coin", PhotoImage(file="" + self.gameversion_dir + "/data/Coin.png"))
 
         self.canvas.itemconfig(t1, text="Loading Icons")
         self.canvas.itemconfig(t2, text="Pause")
         self.canvas.update()
 
         # Setting pause-icon.
-        get_register("Icons")["pause-id"] = PhotoImage(file="" + self.gameversion_dir + "/data/Pause.png")
+        register("Icons", "pause-id", PhotoImage(file="" + self.gameversion_dir + "/data/Pause.png"))
 
         self.canvas.itemconfig(t1, text="Loading Icons")
         self.canvas.itemconfig(t2, text="SlowMotion")
         self.canvas.update()
 
         # Setting slowmotion-icon.
-        get_register("Icons")["slowmotion"] = PhotoImage(
-            file="" + self.gameversion_dir + "/data/SlowMotionIcon.png")
+        register("Icons", "slowmotion", PhotoImage(
+            file="" + self.gameversion_dir + "/data/SlowMotionIcon.png"))
 
         self.canvas.itemconfig(t1, text="Loading Background")
         self.canvas.itemconfig(t2, text="Special")
         self.canvas.update()
 
         # Setting special background.
-        get_register("Background")["special"] = PhotoImage(
-            file="" + self.gameversion_dir + "/data/Images/Backgrounds/GameBG Special2.png")
+        register("Background", "special", PhotoImage(
+            file="" + self.gameversion_dir + "/data/Images/Backgrounds/GameBG Special2.png"))
 
         # Setting normal background.
-        get_register("Background")["normal"] = PhotoImage(
-            file="" + self.gameversion_dir + "/data/Images/Backgrounds/GameBG2.png")
+        register("Background", "normal", PhotoImage(
+            file="" + self.gameversion_dir + "/data/Images/Backgrounds/GameBG2.png"))
         self.canvas.itemconfig(t2, text="Normal")
         self.canvas.update()
 
         # Setting background from nothing to normal.
-        get_register("Background")["id"] = self.canvas.create_image(0, 0, anchor=NW,
-                                                                    image=get_register("Background")["normal"])
+        register("Background", "id", self.canvas.create_image(0, 0, anchor=NW,
+                                                              image=get_register("Background")["normal"]))
 
         # Creating shi
-        self.ship["id"] = c.create_image(7.5, 7.5, image=self.ship["image"])
+        self.ship["id"] = self.canvas.create_image(7.5, 7.5, image=self.ship["image"])
         print(self.ship["id"])
 
         # Moving ship to position
-        c.move(self.ship["id"], get_stat("Stats")["ship-position"][0], get_stat("Stats")["ship-position"][1])
+        c.move(self.ship["id"], get_stats("Stats")["ship-position"][0], get_stats("Stats")["ship-position"][1])
 
         self.canvas.itemconfig(t1, text="Creating Stats objects")
         self.canvas.itemconfig(t2, text="")
 
+        add_register("Panels", {})
+
         # Initializing the panels for the game.
-        get_register("Panels")["game/top"] = self.canvas.create_rectangle(
+        register("Panels", "game/top", self.canvas.create_rectangle(
             -1, -1, get_register("Config")["width"], 69, fill="darkcyan"
-        )
+        ))
 
         # Create seperating lines.
         self.canvas.create_line(0, 70, get_register("Config")["width"], 70, fill="lightblue")
         self.canvas.create_line(0, 69, get_register("Config")["width"], 69, fill="white")
 
-        c.create_text(55, 30, text=get_register("Config")["game"]["language"]["info.score"], fill='orange',
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(55, 30, text=get_register("Language")["info.score"], fill='orange',
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="Score")
-        c.create_text(110, 30, text=get_register("Config")["game"]["language"]["info.level"], fill='orange',
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(110, 30, text=get_register("Language")["info.level"], fill='orange',
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="Level")
-        c.create_text(165, 30, text=get_register("Config")["game"]["language"]["info.speed"], fill='orange',
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(165, 30, text=get_register("Language")["info.speed"], fill='orange',
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="Speed")
-        c.create_text(220, 30, text=get_register("Config")["game"]["language"]["info.lives"], fill='orange',
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(220, 30, text=get_register("Language")["info.lives"], fill='orange',
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="Lives")
-        c.create_text(330, 30, text=get_register("Config")["game"]["language"]["info.state.score"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(330, 30, text=get_register("Language")["info.state.score"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="Score State")
-        c.create_text(400, 30, text=get_register("Config")["game"]["language"]["info.state.protect"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(400, 30, text=get_register("Language")["info.state.protect"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Protect")
-        c.create_text(490, 30, text=get_register("Config")["game"]["language"]["info.state.slowmotion"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(490, 30, text=get_register("Language")["info.state.slowmotion"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Slow Motion")
-        c.create_text(580, 30, text=get_register("Config")["game"]["language"]["info.state.confusion"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(580, 30, text=get_register("Language")["info.state.confusion"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Confusion")
-        c.create_text(670, 30, text=get_register("Config")["game"]["language"]["info.state.timebreak"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(670, 30, text=get_register("Language")["info.state.timebreak"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Time Break")
-        c.create_text(760, 30, text=get_register("Config")["game"]["language"]["info.state.spdboost"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(760, 30, text=get_register("Language")["info.state.spdboost"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State SpeedBoost")
-        c.create_text(850, 30, text=get_register("Config")["game"]["language"]["info.state.paralis"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(850, 30, text=get_register("Language")["info.state.paralis"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Paralize")
-        c.create_text(940, 30, text=get_register("Config")["game"]["language"]["info.state.shotspeed"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(940, 30, text=get_register("Language")["info.state.shotspeed"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Ammo Speed")
-        c.create_text(1030, 30, text=get_register("Config")["game"]["language"]["info.state.notouch"], fill="gold",
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(1030, 30, text=get_register("Language")["info.state.notouch"],
+                                fill="gold",
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="State Ghost Mode")
-        c.create_text(1120, 30, text=get_register("Config")["game"]["language"]["info.tps"], fill='gold',
-                      font=[get_register("Config")["font"]["family"], 15 + get_register("Config")["font"]["size"]])
+        self.canvas.create_text(1120, 30, text=get_register("Language")["info.tps"], fill='gold',
+                                font=[get_register("Config")["font"]["family"],
+                                      15 + get_register("Config")["font"]["size"]])
         self.canvas.itemconfig(t2, text="Teleports")
         c.create_image(1185, 30, image=get_register("Icons")["store-diamond"])
         self.canvas.itemconfig(t2, text="Diamonds")
@@ -1234,48 +1269,50 @@ class Game(object):
         self.canvas.itemconfig(t1, text="Creating Stats Data")
         self.canvas.itemconfig(t2, text="")
 
+        add_register("Texts", {})
+
         # Game information values.
-        get_register("Texts")["score"] = c.create_text(55, 50, fill='cyan')
+        register("Texts", "score", self.canvas.create_text(55, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="Score")
-        get_register("Texts")["level"] = c.create_text(110, 50, fill='cyan')
+        register("Texts", "level", self.canvas.create_text(110, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="Level")
-        get_register("Texts")["speed"] = c.create_text(165, 50, fill='cyan')
+        register("Texts", "speed", self.canvas.create_text(165, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="Speed")
-        get_register("Texts")["lives"] = c.create_text(220, 50, fill='cyan')
+        register("Texts", "lives", self.canvas.create_text(220, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="Lives")
-        get_register("Texts")["scorestate"] = c.create_text(330, 50, fill='cyan')
+        register("Texts", "scorestate", self.canvas.create_text(330, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Score")
-        get_register("Texts")["secure"] = c.create_text(400, 50, fill='cyan')
+        register("Texts", "secure", self.canvas.create_text(400, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Protection")
-        get_register("Texts")["slowmotion"] = c.create_text(490, 50, fill='cyan')
+        register("Texts", "slowmotion", self.canvas.create_text(490, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Slowmotion")
-        get_register("Texts")["confusion"] = c.create_text(580, 50, fill='cyan')
+        register("Texts", "confusion", self.canvas.create_text(580, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Confusion")
-        get_register("Texts")["timebreak"] = c.create_text(670, 50, fill='cyan')
+        register("Texts", "timebreak", self.canvas.create_text(670, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Time Break")
-        get_register("Texts")["speedboost"] = c.create_text(760, 50, fill='cyan')
+        register("Texts", "speedboost", self.canvas.create_text(760, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State SpeedBoost")
-        get_register("Texts")["paralis"] = c.create_text(850, 50, fill='cyan')
+        register("Texts", "paralis", self.canvas.create_text(850, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Paralis")
-        get_register("Texts")["shotspeed"] = c.create_text(940, 50, fill='cyan')
+        register("Texts", "shotspeed", self.canvas.create_text(940, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Ammo Speed")
-        get_register("Texts")["notouch"] = c.create_text(1030, 50, fill='cyan')
+        register("Texts", "notouch", self.canvas.create_text(1030, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="State Ghost Mode")
-        get_register("Texts")["shiptp"] = c.create_text(1120, 50, fill='cyan')
+        register("Texts", "shiptp", self.canvas.create_text(1120, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="Teleports")
-        get_register("Texts")["diamond"] = c.create_text(1210, 30, fill='cyan')
+        register("Texts", "diamond", self.canvas.create_text(1210, 30, fill='cyan'))
         self.canvas.itemconfig(t2, text="Diamonds")
-        get_register("Texts")["coin"] = c.create_text(1210, 50, fill='cyan')
+        register("Texts", "coin", self.canvas.create_text(1210, 50, fill='cyan'))
         self.canvas.itemconfig(t2, text="Coins")
-        get_register("Texts")["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(
-            get_register("Config")["font"]["family"], 50 + get_register("Config")["font"]["size"]))
+        register("Texts", "level-view", self.canvas.create_text(mid_x, mid_y, fill='Orange', font=(
+            get_register("Config")["font"]["family"], 50 + get_register("Config")["font"]["size"])))
         self.canvas.itemconfig(t2, text="Level View")
 
-        get_register("Texts")["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(
-            get_register("Config")["font"]["family"], 60 + get_register("Config")["font"]["size"], "bold"))
+        register("Texts", "pause", self.canvas.create_text(mid_x, mid_y, fill='Orange', font=(
+            get_value("Config", "font")["family"], 60 + get_value("Config", "font")["size"], "bold")))
         self.canvas.itemconfig(t2, text="Pauze")
-        get_register("Icons")["pause"] = c.create_image(mid_x, mid_y, image=get_register("Icons")["pause-id"],
-                                                        state=HIDDEN)
+        register("Icons", "pause", self.canvas.create_image(mid_x, mid_y, image=get_register("Icons")["pause-id"],
+                                                            state=HIDDEN))
         self.canvas.itemconfig(t2, text="Pauze")
 
         # Threaded Automatic Save (TAS)
@@ -1296,12 +1333,12 @@ class Game(object):
         self.canvas.itemconfig(t2, text="Main Binding")
         c.bind_all('<Key>',
                    lambda event: control(event))
-        # get_stat("Modes"), get_register("Config"), self._root, self.canvas,
-        # get_stat("Stats"),
-        # get_stat("Bubbles"),
-        # get_register("Background"), get_register("Texts"), get_stat("Commands"),
-        # get_stat("Temp"), get_register("Panels"), get_register("Foreground"),
-        # self.ship, get_stat("TP"), get_register("Config")["game"]["language"],
+        # get_stats("Modes"), get_register("Config"), self._root, self.canvas,
+        # get_stats("Stats"),
+        # get_stats("Bubbles"),
+        # get_register("Background"), get_register("Texts"), get_stats("Commands"),
+        # get_stats("Temp"), get_register("Panels"), get_register("Foreground"),
+        # self.ship, get_stats("TP"), get_register("Language"),
         # self.return_main,
         # get_register("Icons"),
         # self.bub, get_register("Config")["font"]["family"], event, self.c_ammo,
@@ -1323,18 +1360,18 @@ class Game(object):
         # c.bind_all('Configure', lambda event: self.resize)
 
         print("Key-bindings binded to 'move_ship'")
-        if len(get_stat("Bubbles")["bub-id"]) == 0:
+        if len(get_stats("Bubbles")["bub-id"]) == 0:
             print("Bubbel-ID lijst is gelijk aan lengte nul.", file=sys.stderr)
 
-        if len(get_stat("Bubbles")["bub-action"]) == 0:
+        if len(get_stats("Bubbles")["bub-action"]) == 0:
             print("Bubble-actie lijst is gelijk aan lengte nul.", file=sys.stderr)
 
-        if len(get_stat("Bubbles")["bub-speed"]) == 0:
+        if len(get_stats("Bubbles")["bub-speed"]) == 0:
             print("Bubbel-snelheid lijst is gelijk aan lengte nul.", file=sys.stderr)
 
-        set_stat("Ammo", retime=time())
+        set_stats("Ammo", retime=time())
 
-        stats = get_stat("Stats")
+        stats = get_stats("Stats")
 
         self.canvas.itemconfig(t1, text="Fixing Saved States")
         self.canvas.itemconfig(t2, text="")
@@ -1376,23 +1413,31 @@ class Game(object):
             stats["hiscore"] = stats["score"]
         if stats["confusion"] and not stats["secure"]:
             pass
-            # shuffling(get_stat("Bubbles"))
+            # shuffling(get_stats("Bubbles"))
 
-        get_stat("Bubbles")["active2"] = []
-        get_stat("Bubbles")["active"] = 0
+        set_stats("Bubbles", Maintance.auto_restore_bubbles(self.saveName))
 
-        set_stat("Stats", **Maintance.auto_restore(self.saveName))
+        set_stat("Bubbles", active2=[])
+        set_stat("Bubbles", active=0)
 
-        start(get_stat("Bubbles"), self.saveName, get_stat("Stats"), get_register("Config"), get_register("Bub"),
-              get_stat("Modes"),
+        set_stats("Stats", Maintance.auto_restore_stats(self.saveName))
+
+        print("{DEBUG}: Stats after Restore at line(s) 1412 - 1415:")
+        print("{DEBUG}: BUBBLES | %s" % get_stats("Bubbles"))
+
+        start(get_stats("Bubbles"), self.saveName, get_stats("Stats"), get_register("Config"), get_register("Bubbles"),
+              get_stats("Modes"),
               self.canvas)
 
-        Maintance.auto_save(self.saveName, get_stat("Stats"), get_stat("Bubbles"))
+        print("{DEBUG}: Stats after Start Bubble Generation at line(s) 1417 - 1412:")
+        print("{DEBUG}: BUBBLES | %s" % get_stats("Bubbles"))
+
+        Maintance.auto_save(self.saveName, get_stats("Stats"), get_stats("Bubbles"))
 
         global Mainloop
         Mainloop = False
 
-        set_stat("Stats", **stats)
+        set_stats("Stats", stats)
 
         # Post Initalize mods
 
@@ -1433,21 +1478,35 @@ class Game(object):
         Thread(None, lambda: self.movementChangeDaemon(), "MotionThread").start()
         Thread(None, lambda: self.moveBubblesDaemon(), "BubbleMove").start()
 
+        self.canvas.delete(t0)
+        self.canvas.delete(t1)
+        self.canvas.delete(t2)
+
     def mainloop(self):
         """
         Mainloop method. This is the Mainloop of the game.
         For more information go to https://www.google.com and search for "what is a mainloop?"
         """
-        from .stats import get_stat
-        for i in get_stat("Bubbles"):
-            i.update()
-        # for i in get_stat("States"):
+        # for i in get_stats("States"):
         #     pass
+        while not self.returnmain:
+            self.update()
+        pass
+
     def t_update(self):
         # print(self.mod_loader.events)
-        for events in self.modLoader.events.values():
-            for event in events:
-                Thread(None, lambda: event.on_t_update(self)).start()
+        # for events in self.modLoader.events.values():
+        #     for event in events:
+        #         Thread(None, lambda: event.on_t_update(self)).start()
+        pass  # /kill @e
+
+    def update(self):
+        # self.get_bubbles()
+
+        from .stats import get_stats
+        from .data import GetBubbleClassByID
+        for i in get_stats("Bubbles")["bub-id"]:
+            GetBubbleClassByID(i).update()
 
     def r_update(self):
         self.update()
@@ -1461,7 +1520,7 @@ class Game(object):
         try:
             # MAIN GAME LOOP
             while True:
-                # self.stats = self.cfg.auto_restore(self.save_name)
+                # self.stats = self.cfg.auto_restore_stats(self.save_name)
                 # while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
                 #     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
                 #         len(self.bubbles["bub-index"]) - 1) + " active...")
@@ -1469,28 +1528,25 @@ class Game(object):
                 #     self.root.update()
                 #     sleep(0.1)
 
-                self.canvas.delete(t0)
-                self.canvas.delete(t1)
-                self.canvas.delete(t2)
-
                 print("[MAIN]: starting mainloop")
 
                 self.mainLoop()
 
-                self.root.update()
+                self._root.update()
+
                 # for barier in bariers:
                 #     barier.destroy()
-                g1 = c.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
-                g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["score"]), fill='white',
-                                   font=('Helvetica', 30))
-                g3 = c.create_text(mid_x, mid_y + 90, text='Level: ' + str(self.stats["level"]), fill='white',
-                                   font=('Helvetica', 30))
+                g1 = self.canvas.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
+                g2 = self.canvas.create_text(mid_x, mid_y + 60, text='Score: ' + str(get_stat("Stats", "score")), fill='white',
+                                             font=('Helvetica', 30))
+                g3 = self.canvas.create_text(mid_x, mid_y + 90, text='Level: ' + str(get_stat("Stats", "level")), fill='white',
+                                             font=('Helvetica', 30))
                 log.info("Game.main", "Game Over!")
-                self.root.update()
+                self._root.update()
                 sleep(4)
-                c.delete(g1)
-                c.delete(g2)
-                c.delete(g3)
+                self.canvas.delete(g1)
+                self.canvas.delete(g2)
+                self.canvas.delete(g3)
                 del g1, g2, g3
                 Maintance().reset(self.saveName)
                 self.return_main()
@@ -1544,4 +1600,7 @@ class Game(object):
             self.root.update_idletasks()
 
     def r_update(self):
+        pass
+
+    def return_main(self):
         pass

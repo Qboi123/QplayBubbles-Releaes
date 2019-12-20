@@ -1,6 +1,6 @@
 # noinspection PyProtectedMember
 from tkinter import _default_root as tkd
-from typing import *
+from typing import Union, NoReturn
 
 import threadsafe_tkinter as tk
 from threadsafe_tkinter import *
@@ -14,7 +14,7 @@ def get_root() -> Tk:
 
 
 # noinspection PyUnresolvedReferences,PyProtectedMember
-def get_game() -> Union[Canvas, None]:
+def get_game():
     if hasattr(tk._default_root, "game"):
         return tk._default_root.game
     else:

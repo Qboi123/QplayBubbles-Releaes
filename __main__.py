@@ -44,6 +44,7 @@ class Log(io.IOBase):
             self.write(line)
 
     def potato(self, exefile):
+        self.write(exefile)
         self.flush()
 
     def flush(self):
