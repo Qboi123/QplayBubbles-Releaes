@@ -1,0 +1,2 @@
+BUBBLE2NAME = {}
+NAME2BUBBLE = {}

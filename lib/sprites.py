@@ -1,27 +1,15 @@
 from PIL.ImageTk import PhotoImage
+from shapely.geometry import Point
 
 from .base import *
 from .player import Player
+from lib import globals as g
+from .stats import get_stats
+from .utils import seedint
 
 
-class Bubble(Sprite):
-    # Define Sprite ID and Prefix
-    sprite_id: str = "bubble"
-    sprite_prefix: str = "qplay"
-
-    # Define Bubble ID and Prefix
-    bubble_id: str = "base"
-    bubble_prefix: str = "qplay"
-
-    def __init__(self, parent):
-        
-        Sprite.__init__(self, Bubble)
-
-        if issubclass(parent, Sprite):
-            self._bubbleParent = parent
-        else:
-            raise TypeError("{name} is not a subclass of Bubble.".format(name=parent.__name__))
-
+class Bubble(object):
+    def __init__(self):
         self.rarity: int = 100
 
         # Define HP
@@ -47,27 +35,69 @@ class Bubble(Sprite):
 
         # Image
         self._image: Union[PhotoImage, None] = None
-        
-        self.__bubbleParent = parent
+
+    def set_unlocalized_name(self, name):
+        if name in g.NAME2BUBBLE.keys():
+            raise ValueError(f"Name already used: '{name}'")
+        if name in g.BUBBLE2NAME.values():
+            raise ValueError(f"Name already used: '{name}'")
+        if self in g.NAME2BUBBLE.values():
+            raise ValueError(f"Unlocalized name already set")
+        if self in g.BUBBLE2NAME.keys():
+            raise ValueError(f"Unlocalized name already set")
+        g.NAME2BUBBLE[name] = self
+        g.BUBBLE2NAME[self] = name
+
+    def get_unlocalized_name(self):
+        if self not in g.BUBBLE2NAME.keys():
+            raise ValueError(f"Unlocalized name not set yet: '{self.__module__}.{self.__class__.__name__}'")
+        return g.BUBBLE2NAME[self]
 
     def on_create(self):
-        Sprite.create(self)
+        pass
 
     def pre_initialize(self):
         pass
 
     def initialize(self):
         pass
-        # from . import bubbles
-        # _bubbles = dir(bubbles)
 
     def post_initialize(self):
         pass
-    
-    def update(self):
-        self.__bubbleParent.on_update()
-    
+
     def on_update(self):
         pass
-    
+
+
+class BubbleObject(Sprite):
+    # Define Sprite ID and Prefix
+    sprite_id: str = "bubble"
+    sprite_prefix: str = "qplay"
+
+    def __init__(self, base_class: Bubble, x: int, y: int, radius: int, xupd):
+        super(BubbleObject, self).__init__()
+
+        self.health = base_class.health
+        self.speedMultiplier = base_class.speedMultiplier
+        self.attackMultiplier = base_class.attackMultiplier
+        self.defenceMultiplier = base_class.defenceMultiplier
+
+        self.collisionable = base_class.collisionable
+        self.collisionWith = base_class.collisionWith
+
+        self.type = base_class.type
+        self.form = base_class.form
+
+        if self.form == FORM_CIRCLE:
+            self.geometry: Point = Point(x, y).buffer(radius)
+        else:
+            raise TypeError("Bubble must have the form 'circle' (FORM_CIRCLE)")
+
+        self.radius = radius
+        self.diameter = radius * 2
+
+        self._image = reg
+        self._id = get_canvas().create_image(x, y, seedint(get_stats("game")["seed"], xupd, 2, 15, 30))
+
+
 Player = Player

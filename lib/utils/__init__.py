@@ -1,3 +1,4 @@
+from random import Random
 from typing import List, Union
 
 import threadsafe_tkinter as tk
@@ -81,18 +82,24 @@ def seedint(seed, x, y, minimal, maximal):
     from opensimplex import OpenSimplex
     import sys
 
-    out = OpenSimplex(seed).noise2d(x, y)
-    out = ((out + 1) / 2)
-    if round(out, 1) == 1 or round(out, 1) == -1:
-        sys.stdout.write("||x:%s|y:%s|out:%s||" % (x, y, out))
-    else:
-        sys.stderr.write("||x:%s|y:%s|out:%s||" % (x, y, out))
+    seed_x = seed.randint(0, x) if x > 0 else seed.randint(x, 0)
+    seed_y = Random(seed_x).randint(0, y) if y > 0 else Random(seed_x).randint(y, 0)
+    seed_out = Random(seed_y)
+    rand = seed_out.randint(minimal, maximal)
+    return rand
 
-    out2 = int((out * (maximal - minimal)) + minimal)
-    if out2 == maximal:
-        print("\n\nOutput is the same as maximal")
-    return out2
-    # return int((((out + 1) / 2) * (maximal - minimal)) + minimal)
+    # out = OpenSimplex(seed).noise2d(x, y)
+    # out = ((out + 1) / 2)
+    # if round(out, 1) == 1 or round(out, 1) == -1:
+    #     sys.stdout.write("||x:%s|y:%s|out:%s||" % (x, y, out))
+    # else:
+    #     sys.stderr.write("||x:%s|y:%s|out:%s||" % (x, y, out))
+    #
+    # out2 = int((out * (maximal - minimal)) + minimal)
+    # if out2 == maximal:
+    #     print("\n\nOutput is the same as maximal")
+    # return out2
+    # # return int((((out + 1) / 2) * (maximal - minimal)) + minimal)
 
 
 def seed(seed, x, y):

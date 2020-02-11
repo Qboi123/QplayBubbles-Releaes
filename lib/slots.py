@@ -377,8 +377,8 @@ class SlotsMenu(object):
         Writer("slots/%s/info.data" % src, info_data, "wb+")
 
         # # Copy the template (resetted save-files)
-        # self.copy("versions/" + self.launcherCfg["versionDir"] + "/config/reset.data", "slots/" + src + "/game.data")
-        # self.copy("versions/" + self.launcherCfg["versionDir"] + "/config/reset-bubble.data",
+        # self.copy("versions/" + self.launcherConfig["versionDir"] + "/config/reset.data", "slots/" + src + "/game.data")
+        # self.copy("versions/" + self.launcherConfig["versionDir"] + "/config/reset-bubble.data",
         #           "slots/" + src + "/bubble.data")
 
         # Refreshing slots-menu
@@ -517,9 +517,9 @@ class SlotsMenu(object):
             Writer("slots/%s/info.data" % new, info_data, "wb+")
 
             # # Copy the template (resetted save-files)
-            # self.copy("versions/" + self.launcherCfg["versionDir"] + "/config/reset.data",
+            # self.copy("versions/" + self.launcherConfig["versionDir"] + "/config/reset.data",
             #           "slots/" + new + "/game.data")
-            # self.copy("versions/" + self.launcherCfg["versionDir"] + "/config/reset-bubble.data",
+            # self.copy("versions/" + self.launcherConfig["versionDir"] + "/config/reset-bubble.data",
             #           "slots/" + new + "/bubble.data")
             # Writer("slots/" + self.saveName + "/info.data",
             #        """{\n  "LastPlayedOn": {\n    "build": %s\n  }\n}""".encode() % self.gameBuild)

@@ -5,12 +5,18 @@ from typing import Union, NoReturn
 import threadsafe_tkinter as tk
 from threadsafe_tkinter import *
 
-tk._default_root = tkd
+
+if not hasattr(tk, "_default_root"):
+    tk._default_root = tkd
 
 
 # noinspection PyUnresolvedReferences,PyProtectedMember
 def get_root() -> Tk:
     return tk._default_root
+
+
+def set_root(root: Tk):
+    tk._default_root = root
 
 
 # noinspection PyUnresolvedReferences,PyProtectedMember

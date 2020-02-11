@@ -177,7 +177,7 @@ class Sprite(object):
     sprite_id: str = "bubble"
     sprite_prefix: str = "qplay"
 
-    def __init__(self, parent) -> None:
+    def __init__(self)-> None:
         """
         Target Damage = attackMP / targetDefenceMP
 
@@ -185,19 +185,19 @@ class Sprite(object):
         Sprite.sprite_prefix is used so the game knows from what Mod it used from
 
         Sptite.health is a float about HP
-        Sprite.attackMultiplier is an integer used for Target Damage
+        Sprite.attackMultiplier is an integer used for target damage
         Sprite.defenceMultiplier is an integer used for decreasing Sprite's damage
-        Sprite.speedMultiplier is an integer used for Pixels per Tick
+        Sprite.speedMultiplier is an integer used for pixels per tick
         Sprite.collisionable is a boolean that is used to en- / disable collision
         Sprite.collisionWith is a list with Sprite IDs inside
-        Sprite.moveAxis is a Axis string using for direction
+        Sprite.moveAxis is a axis string used for direction
         Sprite.returnBorder is a boolean. If True, when the sprite touches the border it's direction will invert
         :type parent: type[Sprite]
         """
-        if issubclass(parent, Sprite):
-            self._parent = parent
-        else:
-            raise TypeError("Parent is not a subclass of Sprite.")
+        # if issubclass(parent, Sprite):
+        #     self._parent = parent
+        # else:
+        #     raise TypeError("Parent is not a subclass of Sprite.")
 
         # Define HP
         self.health: float = 0.001
@@ -218,7 +218,6 @@ class Sprite(object):
         # Define Look
         self.type = TYPE_IMAGE
         self.form = FORM_NONE
-        self.create()
 
     def create(self, *args: List[int], **kwargs) -> NoReturn:
         """

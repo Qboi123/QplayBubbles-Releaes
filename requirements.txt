@@ -5,3 +5,4 @@ Pillow
 inputs
 wxpython
 opensimplex
+Shapely

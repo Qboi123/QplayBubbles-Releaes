@@ -1,5 +1,6 @@
+import os
 import time
-from random import randint
+from random import randint, Random
 from typing import Union
 
 from threadsafe_tkinter import *
@@ -88,7 +89,10 @@ class TitleMenu:
         self.optionsBtn.destroy()
 
     def __del__(self):
-        self.destroy()
+        try:
+            self.destroy()
+        except TclError:
+            os.kill(os.getpid(), 0)
 
 
 class Background:
@@ -102,6 +106,8 @@ class Background:
         self._root = root
         self._canvas = Canvas(root, bg="#00afaf", highlightthickness=0)
         self._canvas.pack(fill=BOTH, expand=TRUE)
+
+        self.seed = Random(65535)
 
         # Bubble-sprites config.
         self.__bubbles = []
@@ -122,15 +128,15 @@ class Background:
                 # x = randint(0 - int(r), self._root.winfo_width() + r)
                 # y = randint(int(r), int(self._canvas.winfo_height() - r))
 
-                a = seedint(65535, i, 0, 0, 5)
+                a = seedint(self.seed, i, 0, 0, 5)
                 if a == 0:
 
-                    r = seedint(65535, i, 1, 9, 60)
-                    x = seedint(65535, i, 2, 0 - int(r), self._root.winfo_width() + r)
-                    y = seedint(65535, i, 3, int(r), int(self._canvas.winfo_height() - r))
+                    r = seedint(self.seed, i, 1, 9, 60)
+                    x = seedint(self.seed, i, 2, 0 - int(r), self._root.winfo_width() + r)
+                    y = seedint(self.seed, i, 3, int(r), int(self._canvas.winfo_height() - r))
 
                     # spd = randint(7, 10)
-                    spd = seedint(65535, 0, 4, 7, 10)
+                    spd = seedint(self.seed, 0, 4, 7, 10)
 
                     self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
                     self.__speed.append(spd)
@@ -150,15 +156,15 @@ class Background:
                 # spd = randint(7, 10)
                 i = self.xupd
 
-                a = seedint(65535, i, 0, 0, 3)
+                a = seedint(self.seed, i, 0, 0, 3)
                 if a == 0:
 
-                    r = seedint(65535, i, 1, 9, 60)
+                    r = seedint(self.seed, i, 1, 9, 60)
                     x = self._root.winfo_width() + r
-                    y = seedint(65535, i, 3, r + 10, self._canvas.winfo_height() - r - 10)
+                    y = seedint(self.seed, i, 3, r + 10, self._canvas.winfo_height() - r - 10)
 
                     # spd = randint(7, 10)
-                    spd = seedint(65535, 0, 4, 7, 10)
+                    spd = seedint(self.seed, 0, 4, 7, 10)
 
                     self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
                     self.__speed.append(spd)
