@@ -1,0 +1,15 @@
+[Mon Dec  2 12:17:25 2019] [Out]: Args: ['/run/media/lab/DATA/Code/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16', '--debug']
+[Mon Dec  2 12:17:25 2019] [Out]: Launcher Path: /run/media/lab/DATA
+[Mon Dec  2 12:17:26 2019] [Out]: {'version': 'v1.5.1-pre5', 'versionDir': 'v1_5_1_pre5', 'build': 16, 'file': '/run/media/lab/DATA/Code/QplayBubbles-Releaes/__main__.py', 'debug': True}
+[Mon Dec  2 12:17:26 2019] [Out]: ['.git', '.gitignore', '.idea', '.ropeproject', '.travis.yml', 'LICENSE', '__init__.py', '__main__.py', 'bubbles', 'config', 'data', 'lang', 'lib', 'logging.conf', 'logs', 'requirements.txt', 'slots', 'test', 'version.json', 'slots.old', 'test.py']
+[Mon Dec  2 12:17:26 2019] [Out]: /run/media/lab/DATA/Code/QplayBubbles-Releaes
+[Mon Dec  2 12:17:26 2019] [Err]: Traceback (most recent call last):
+[Mon Dec  2 12:17:26 2019] [Err]:   File "/run/media/lab/DATA/Code/QplayBubbles-Releaes/__main__.py", line 111, in <module>
+[Mon Dec  2 12:17:27 2019] [Err]:     Main.Game(launcher_cfg)
+[Mon Dec  2 12:17:27 2019] [Err]:   File "/run/media/lab/DATA/Code/QplayBubbles-Releaes/lib/Main.py", line 41, in __init__
+[Mon Dec  2 12:17:27 2019] [Err]:     self._root = Tk()
+[Mon Dec  2 12:17:27 2019] [Err]:   File "/usr/lib/python3.6/site-packages/threadsafe_tkinter/__init__.py", line 150, in _tk_init_override
+[Mon Dec  2 12:17:27 2019] [Err]:     self._orig_init(*a, **kw)
+[Mon Dec  2 12:17:28 2019] [Err]:   File "/usr/lib/python3.6/tkinter/__init__.py", line 2023, in __init__
+[Mon Dec  2 12:17:28 2019] [Err]:     self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+[Mon Dec  2 12:17:28 2019] [Err]: _tkinter.TclError: unknown color name "BACKGROUND"

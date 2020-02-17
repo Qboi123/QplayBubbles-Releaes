@@ -1,8 +1,0 @@
-matplotlib
-PyYAML
-threadsafe_tkinter
-Pillow
-inputs
-wxpython
-opensimplex
-Shapely

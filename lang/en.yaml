@@ -8,11 +8,8 @@ home.start: "START"
 home.quit: "QUIT"
 home.options: "OPTIONS"
 
-# General Text
-general.back-to-title: "Back to title"
-
 # Pause Menu
-pause.back-to-home: "Save and go back to title"
+pause.back-to-home: "Save and go back to home"
 
 # Slots Menu
 slots.open: "Open"

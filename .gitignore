@@ -1,5 +1,3 @@
-
-QplayBubbles-Releaes/
-lib.old
-*.pyc
-logs/
+/logs/
+/slots/
+/slots.old/

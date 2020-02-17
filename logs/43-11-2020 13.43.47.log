@@ -1,0 +1,11 @@
+[Tue Feb 11 14:43:47 2020] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__main__.py', '1.5.0-pre5', '1_5_0_pre5', '16', '--debug']
+[Tue Feb 11 14:43:47 2020] [Out]: Launcher Path: G:\
+[Tue Feb 11 14:43:51 2020] [Out]: {'version': '1.5.0-pre5', 'versionDir': '1_5_0_pre5', 'build': 16, 'file': 'G:/Code/QplayBubbles-Releaes/__main__.py', 'debug': True}
+[Tue Feb 11 14:43:51 2020] [Out]: ['.git', '.gitignore', '.idea', '.ropeproject', '.travis.yml', 'LICENSE', '__init__.py', '__main__.py', 'bubbles', 'config', 'data', 'lang', 'lib', 'logging.conf', 'logs', 'requirements.txt', 'slots', 'test', 'version.json', 'slots.old', 'test.py', 'TestFile.gpg', 'testfiles.py']
+[Tue Feb 11 14:43:51 2020] [Out]: G:\Code\QplayBubbles-Releaes
+[Tue Feb 11 14:43:51 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 14:43:51 2020] [Err]:   File "G:/Code/QplayBubbles-Releaes/__main__.py", line 111, in <module>
+[Tue Feb 11 14:43:51 2020] [Err]:     Main.Game(launcher_cfg)
+[Tue Feb 11 14:43:51 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 38, in __init__
+[Tue Feb 11 14:43:51 2020] [Err]:     self.window = RootWindow(launcher_cfg)
+[Tue Feb 11 14:43:51 2020] [Err]: TypeError: __init__() missing 1 required positional argument: 'start_command'

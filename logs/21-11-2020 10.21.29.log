@@ -1,0 +1,20 @@
+[Tue Feb 11 11:21:29 2020] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__init__.py', '1.5.0-pre5', '1_5_0_pre5', '16', '--debug']
+[Tue Feb 11 11:21:29 2020] [Out]: Launcher Path: G:\
+[Tue Feb 11 11:21:31 2020] [Out]: {'version': '1.5.0-pre5', 'versionDir': '1_5_0_pre5', 'build': '16', 'file': 'G:/Code/QplayBubbles-Releaes/__init__.py', 'debug': True}
+[Tue Feb 11 11:21:31 2020] [Out]: ['Code', 'Downloads', 'logs', "Programma's", '$RECYCLE.BIN', 'System Volume Information', 'Pop-dark', 'Nieuwe map', 'Compiled']
+[Tue Feb 11 11:21:31 2020] [Out]: G:\
+[Tue Feb 11 11:21:33 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 11:21:33 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 104, in pre_initialize
+[Tue Feb 11 11:21:33 2020] [Err]:     with open("config/config.json") as file:
+[Tue Feb 11 11:21:33 2020] [Err]: FileNotFoundError: [Errno 2] No such file or directory: 'config/config.json'
+[Tue Feb 11 11:21:33 2020] [Err]: 
+[Tue Feb 11 11:21:33 2020] [Err]: During handling of the above exception, another exception occurred:
+[Tue Feb 11 11:21:33 2020] [Err]: 
+[Tue Feb 11 11:21:33 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 11:21:33 2020] [Err]:   File "G:/Code/QplayBubbles-Releaes/__init__.py", line 109, in <module>
+[Tue Feb 11 11:21:33 2020] [Err]:     Main.Game(launcher_cfg)
+[Tue Feb 11 11:21:33 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 54, in __init__
+[Tue Feb 11 11:21:33 2020] [Err]:     self.pre_initialize()
+[Tue Feb 11 11:21:33 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 133, in pre_initialize
+[Tue Feb 11 11:21:33 2020] [Err]:     with open("config/config.json", "w+") as file:
+[Tue Feb 11 11:21:33 2020] [Err]: FileNotFoundError: [Errno 2] No such file or directory: 'config/config.json'

@@ -1,0 +1,36 @@
+[Mon Nov 25 11:33:48 2019] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16', '--debug']
+[Mon Nov 25 11:33:48 2019] [Out]: Launcher Path: G:\
+[Mon Nov 25 11:33:48 2019] [Out]: {'version': 'v1.5.1-pre5', 'versionDir': 'v1_5_1_pre5', 'build': 16, 'file': 'G:/Code/QplayBubbles-Releaes/__main__.py', 'debug': True}
+[Mon Nov 25 11:33:48 2019] [Out]: ['.git', '.gitignore', '.idea', '.ropeproject', '.travis.yml', 'bubbles', 'config', 'data', 'lang', 'lib', 'LICENSE', 'logging.conf', 'logs', 'requirements.txt', 'slots', 'slots.old', 'test', 'version.json', '__init__.py', '__main__.py']
+[Mon Nov 25 11:33:48 2019] [Out]: G:\Code\QplayBubbles-Releaes
+[Mon Nov 25 11:33:48 2019] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}, 'height': 1, 'width': 1, 'middle-y': 1, 'middle-x': 1}
+[Mon Nov 25 11:33:49 2019] [Out]: Object: {'LastPlayedOn': {'build': '16'}}
+[Mon Nov 25 11:33:49 2019] [Out]: Keys: ['LastPlayedOn']
+[Mon Nov 25 11:33:49 2019] [Out]: Key: LastPlayedOn | Value: {'build': '16'}
+[Mon Nov 25 11:33:49 2019] [Out]: Object: {'build': '16'}
+[Mon Nov 25 11:33:49 2019] [Out]: Keys: ['build']
+[Mon Nov 25 11:33:49 2019] [Out]: Key: build | Value: 16
+[Mon Nov 25 11:33:49 2019] [Out]: {'LastPlayedOn': <lib.utils.dict2class.<locals>.DictClass object at 0x0000024EF859A788>}
+[Mon Nov 25 11:33:50 2019] [Out]: [SelectCanvas]: CLICK!
+[Mon Nov 25 11:33:50 2019] [Out]: event.widget.__dict__: {'widgetName': 'canvas', 'master': <tkinter.Frame object .!frame3.!frame.!frame.!frame>, 'tk': <threadsafe_tkinter.TkWrapper object at 0x0000024EF7F9BA88>, '_name': '!canvas', '_w': '.!frame3.!frame.!frame.!frame.!canvas', 'children': {}, '_tclCommands': ['2538219142664<lambda>'], 'build': '16'}
+[Mon Nov 25 11:33:50 2019] [Out]: event.widget.master.grid_info(): {'in': <tkinter.Frame object .!frame3.!frame.!frame>, 'column': 0, 'row': 0, 'columnspan': 1, 'rowspan': 1, 'ipadx': 0, 'ipady': 0, 'padx': 0, 'pady': 0, 'sticky': ''}
+[Mon Nov 25 11:33:50 2019] [Out]: [SelectCanvas]: Row 0
+[Mon Nov 25 11:33:51 2019] [Out]: Running Save Index: 0 
+[Mon Nov 25 11:33:51 2019] [Out]: [SaveLoading]: Loading Save Some stupid name! LOL
+[Mon Nov 25 11:33:51 2019] [Out]: [SaveLoading]: Build of Save is 16
+[Mon Nov 25 11:33:51 2019] [Out]: Game Stating
+[Mon Nov 25 11:33:51 2019] [Out]: [Game]: Starting XboxController
+[Mon Nov 25 11:33:51 2019] [Out]: [Game]: Started XboxController
+[Mon Nov 25 11:33:52 2019] [Out]: 5
+[Mon Nov 25 11:33:52 2019] [Out]: Key-bindings binded to 'move_ship'
+[Mon Nov 25 11:33:52 2019] [Err]: Exception in Tkinter callback
+[Mon Nov 25 11:33:52 2019] [Err]: Traceback (most recent call last):
+[Mon Nov 25 11:33:52 2019] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\tkinter\__init__.py", line 1705, in __call__
+[Mon Nov 25 11:33:52 2019] [Err]:     return self.func(*args)
+[Mon Nov 25 11:33:52 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 101, in <lambda>
+[Mon Nov 25 11:33:52 2019] [Err]:     font=[self.font, 20 + self.f_size], command=lambda: self.open(None))
+[Mon Nov 25 11:33:52 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 612, in open
+[Mon Nov 25 11:33:52 2019] [Err]:     self.run(src, build)
+[Mon Nov 25 11:33:52 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 1354, in start_game
+[Mon Nov 25 11:33:52 2019] [Err]:     if len(get_stats("Bubbles")["bub-id"]) == 0:
+[Mon Nov 25 11:33:52 2019] [Err]: TypeError: 'type' object is not subscriptable

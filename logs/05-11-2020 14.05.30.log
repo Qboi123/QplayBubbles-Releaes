@@ -1,0 +1,24 @@
+[Tue Feb 11 15:05:30 2020] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__main__.py', '1.5.0-pre5', '1_5_0_pre5', '16', '--debug']
+[Tue Feb 11 15:05:30 2020] [Out]: Launcher Path: G:\
+[Tue Feb 11 15:05:30 2020] [Out]: {'version': '1.5.0-pre5', 'versionDir': '1_5_0_pre5', 'build': 16, 'file': 'G:/Code/QplayBubbles-Releaes/__main__.py', 'debug': True}
+[Tue Feb 11 15:05:30 2020] [Out]: ['.git', '.gitignore', '.idea', '.ropeproject', '.travis.yml', 'LICENSE', '__init__.py', '__main__.py', 'bubbles', 'config', 'data', 'lang', 'lib', 'logging.conf', 'logs', 'requirements.txt', 'slots', 'test', 'version.json', 'slots.old', 'test.py', 'TestFile.gpg', 'testfiles.py']
+[Tue Feb 11 15:05:30 2020] [Out]: G:\Code\QplayBubbles-Releaes
+[Tue Feb 11 15:05:30 2020] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}, 'height': 1, 'width': 1, 'middle-y': 1, 'middle-x': 1}
+[Tue Feb 11 15:05:33 2020] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x00000242BB84D5E8>
+[Tue Feb 11 15:05:33 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 15:05:33 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\title.py", line 94, in __del__
+[Tue Feb 11 15:05:33 2020] [Err]:     sys.exit(0)
+[Tue Feb 11 15:05:33 2020] [Err]: SystemExit: 0
+[Tue Feb 11 15:05:33 2020] [Err]: Exception ignored in: <function Background.__del__ at 0x00000242BB84DAF8>
+[Tue Feb 11 15:05:33 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 15:05:33 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\title.py", line 232, in __del__
+[Tue Feb 11 15:05:33 2020] [Err]:     self.destroy()
+[Tue Feb 11 15:05:33 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\title.py", line 229, in destroy
+[Tue Feb 11 15:05:33 2020] [Err]:     self._canvas.destroy()
+[Tue Feb 11 15:05:33 2020] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\tkinter\__init__.py", line 2305, in destroy
+[Tue Feb 11 15:05:33 2020] [Err]:     self.tk.call('destroy', self._w)
+[Tue Feb 11 15:05:33 2020] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Tue Feb 11 15:05:33 2020] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Tue Feb 11 15:05:33 2020] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 78, in call_tk_attr_threadsafe
+[Tue Feb 11 15:05:33 2020] [Err]:     return tk_attr(*a, **kw)
+[Tue Feb 11 15:05:33 2020] [Err]: _tkinter.TclError: can't invoke "destroy" command: application has been destroyed

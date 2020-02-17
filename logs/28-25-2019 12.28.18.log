@@ -1,0 +1,71 @@
+[Mon Nov 25 13:28:18 2019] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16', '--debug']
+[Mon Nov 25 13:28:18 2019] [Out]: Launcher Path: G:\
+[Mon Nov 25 13:28:18 2019] [Out]: {'version': 'v1.5.1-pre5', 'versionDir': 'v1_5_1_pre5', 'build': 16, 'file': 'G:/Code/QplayBubbles-Releaes/__main__.py', 'debug': True}
+[Mon Nov 25 13:28:18 2019] [Out]: ['.git', '.gitignore', '.idea', '.ropeproject', '.travis.yml', 'bubbles', 'config', 'data', 'lang', 'lib', 'LICENSE', 'logging.conf', 'logs', 'requirements.txt', 'slots', 'slots.old', 'test', 'version.json', '__init__.py', '__main__.py']
+[Mon Nov 25 13:28:18 2019] [Out]: G:\Code\QplayBubbles-Releaes
+[Mon Nov 25 13:28:18 2019] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}, 'height': 1, 'width': 1, 'middle-y': 1, 'middle-x': 1}
+[Mon Nov 25 13:28:20 2019] [Out]: Object: {'LastPlayedOn': {'build': '16'}}
+[Mon Nov 25 13:28:20 2019] [Out]: Keys: ['LastPlayedOn']
+[Mon Nov 25 13:28:20 2019] [Out]: Key: LastPlayedOn | Value: {'build': '16'}
+[Mon Nov 25 13:28:20 2019] [Out]: Object: {'build': '16'}
+[Mon Nov 25 13:28:20 2019] [Out]: Keys: ['build']
+[Mon Nov 25 13:28:20 2019] [Out]: Key: build | Value: 16
+[Mon Nov 25 13:28:20 2019] [Out]: {'LastPlayedOn': <lib.utils.dict2class.<locals>.DictClass object at 0x000001917C6D9648>}
+[Mon Nov 25 13:28:20 2019] [Out]: Object: {'LastPlayedOn': {'build': 16, 'version': 'v1.5.1-pre5', 'version-dir': 'v1_5_1_pre5'}, 'seed': 123456}
+[Mon Nov 25 13:28:20 2019] [Out]: Keys: ['LastPlayedOn', 'seed']
+[Mon Nov 25 13:28:20 2019] [Out]: Key: LastPlayedOn | Value: {'build': 16, 'version': 'v1.5.1-pre5', 'version-dir': 'v1_5_1_pre5'}
+[Mon Nov 25 13:28:20 2019] [Out]: Object: {'build': 16, 'version': 'v1.5.1-pre5', 'version-dir': 'v1_5_1_pre5'}
+[Mon Nov 25 13:28:20 2019] [Out]: Keys: ['build', 'version', 'version-dir']
+[Mon Nov 25 13:28:20 2019] [Out]: Key: build | Value: 16
+[Mon Nov 25 13:28:20 2019] [Out]: Key: version | Value: v1.5.1-pre5
+[Mon Nov 25 13:28:20 2019] [Out]: Key: version-dir | Value: v1_5_1_pre5
+[Mon Nov 25 13:28:20 2019] [Out]: Key: seed | Value: 123456
+[Mon Nov 25 13:28:20 2019] [Out]: {'LastPlayedOn': <lib.utils.dict2class.<locals>.DictClass object at 0x000001917B785E08>, 'seed': 123456}
+[Mon Nov 25 13:28:21 2019] [Out]: [SelectCanvas]: CLICK!
+[Mon Nov 25 13:28:21 2019] [Out]: event.widget.__dict__: {'widgetName': 'canvas', 'master': <tkinter.Frame object .!frame3.!frame.!frame.!frame>, 'tk': <threadsafe_tkinter.TkWrapper object at 0x000001917B785F08>, '_name': '!canvas', '_w': '.!frame3.!frame.!frame.!frame.!canvas', 'children': {}, '_tclCommands': ['1724369441928<lambda>'], 'build': '16'}
+[Mon Nov 25 13:28:21 2019] [Out]: event.widget.master.grid_info(): {'in': <tkinter.Frame object .!frame3.!frame.!frame>, 'column': 0, 'row': 0, 'columnspan': 1, 'rowspan': 1, 'ipadx': 0, 'ipady': 0, 'padx': 0, 'pady': 0, 'sticky': ''}
+[Mon Nov 25 13:28:21 2019] [Out]: [SelectCanvas]: Row 0
+[Mon Nov 25 13:28:23 2019] [Out]: [SelectCanvas]: CLICK!
+[Mon Nov 25 13:28:23 2019] [Out]: event.widget.__dict__: {'widgetName': 'canvas', 'master': <tkinter.Frame object .!frame3.!frame.!frame.!frame2>, 'tk': <threadsafe_tkinter.TkWrapper object at 0x000001917B785F08>, '_name': '!canvas', '_w': '.!frame3.!frame.!frame.!frame2.!canvas', 'children': {}, '_tclCommands': ['1724369455752<lambda>'], 'build': 16}
+[Mon Nov 25 13:28:23 2019] [Out]: event.widget.master.grid_info(): {'in': <tkinter.Frame object .!frame3.!frame.!frame>, 'column': 0, 'row': 1, 'columnspan': 1, 'rowspan': 1, 'ipadx': 0, 'ipady': 0, 'padx': 0, 'pady': 0, 'sticky': ''}
+[Mon Nov 25 13:28:23 2019] [Out]: [SelectCanvas]: Row 1
+[Mon Nov 25 13:28:24 2019] [Out]: Running Save Index: 1 
+[Mon Nov 25 13:28:24 2019] [Out]: [SaveLoading]: Loading Save Test!!!
+[Mon Nov 25 13:28:24 2019] [Out]: [SaveLoading]: Build of Save is 16
+[Mon Nov 25 13:28:24 2019] [Out]: Game Stating
+[Mon Nov 25 13:28:24 2019] [Out]: [Game]: Starting XboxController
+[Mon Nov 25 13:28:24 2019] [Out]: [Game]: Started XboxController
+[Mon Nov 25 13:28:25 2019] [Out]: 5
+[Mon Nov 25 13:28:25 2019] [Out]: Key-bindings binded to 'move_ship'
+[Mon Nov 25 13:28:25 2019] [Err]: Bubbel-ID lijst is gelijk aan lengte nul.
+[Mon Nov 25 13:28:25 2019] [Err]: Bubble-actie lijst is gelijk aan lengte nul.
+[Mon Nov 25 13:28:25 2019] [Err]: Bubbel-snelheid lijst is gelijk aan lengte nul.
+[Mon Nov 25 13:28:25 2019] [Err]: Exception in Tkinter callback
+[Mon Nov 25 13:28:25 2019] [Err]: Traceback (most recent call last):
+[Mon Nov 25 13:28:25 2019] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\tkinter\__init__.py", line 1705, in __call__
+[Mon Nov 25 13:28:25 2019] [Err]:     return self.func(*args)
+[Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 101, in <lambda>
+[Mon Nov 25 13:28:25 2019] [Err]:     font=[self.font, 20 + self.f_size], command=lambda: self.open(None))
+[Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 612, in open
+[Mon Nov 25 13:28:25 2019] [Err]:     self.run(src, build)
+[Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 1413, in start_game
+[Mon Nov 25 13:28:25 2019] [Err]:     set_stat("Bubbles", **Maintance.auto_restore_bubbles(self.saveName))
+[Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\maintance.py", line 45, in auto_restore_bubbles
+[Mon Nov 25 13:28:25 2019] [Err]:     bubbles = cfg.Reader("slots/" + save_name + "/bubbles.data").get_decoded()
+[Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\utils\config.py", line 10, in __init__
+[Mon Nov 25 13:28:25 2019] [Err]:     file = open(config_file, "rb")
+[Mon Nov 25 13:28:25 2019] [Err]: FileNotFoundError: [Errno 2] No such file or directory: 'slots/Test!!!/bubbles.data'
+[Mon Nov 25 13:28:31 2019] [Err]: Traceback (most recent call last):
+[Mon Nov 25 13:28:31 2019] [Err]:   File "G:/Code/QplayBubbles-Releaes/__main__.py", line 111, in <module>
+[Mon Nov 25 13:28:31 2019] [Err]:     Main.Game(launcher_cfg)
+[Mon Nov 25 13:28:31 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 68, in __init__
+[Mon Nov 25 13:28:31 2019] [Err]:     self.slotsMenu = SlotsMenu(self.start_game, self.return_title)
+[Mon Nov 25 13:28:31 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 290, in __init__
+[Mon Nov 25 13:28:31 2019] [Err]:     self.root.update_idletasks()
+[Mon Nov 25 13:28:31 2019] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\tkinter\__init__.py", line 1182, in update_idletasks
+[Mon Nov 25 13:28:31 2019] [Err]:     self.tk.call('update', 'idletasks')
+[Mon Nov 25 13:28:31 2019] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 71, in <lambda>
+[Mon Nov 25 13:28:31 2019] [Err]:     self.call_tk_attr_threadsafe(_f, *a, **kw))
+[Mon Nov 25 13:28:31 2019] [Err]:   File "C:\Users\LAB-medewerker\Anaconda3\lib\site-packages\threadsafe_tkinter\__init__.py", line 78, in call_tk_attr_threadsafe
+[Mon Nov 25 13:28:31 2019] [Err]:     return tk_attr(*a, **kw)
+[Mon Nov 25 13:28:31 2019] [Err]: _tkinter.TclError: can't invoke "update" command: application has been destroyed

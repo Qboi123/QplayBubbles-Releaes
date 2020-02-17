@@ -1,0 +1,21 @@
+[Tue Feb 11 11:22:28 2020] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__main__.py', '1.5.0-pre5', '1_5_0_pre5', '16', '--debug']
+[Tue Feb 11 11:22:28 2020] [Out]: Launcher Path: G:\
+[Tue Feb 11 11:22:29 2020] [Out]: {'version': '1.5.0-pre5', 'versionDir': '1_5_0_pre5', 'build': 16, 'file': 'G:/Code/QplayBubbles-Releaes/__main__.py', 'debug': True}
+[Tue Feb 11 11:22:29 2020] [Out]: ['.git', '.gitignore', '.idea', '.ropeproject', '.travis.yml', 'LICENSE', '__init__.py', '__main__.py', 'bubbles', 'config', 'data', 'lang', 'lib', 'logging.conf', 'logs', 'requirements.txt', 'slots', 'test', 'version.json', 'slots.old', 'test.py', 'TestFile.gpg', 'testfiles.py']
+[Tue Feb 11 11:22:29 2020] [Out]: G:\Code\QplayBubbles-Releaes
+[Tue Feb 11 11:22:29 2020] [Out]: {'bubble': {'chance': 10, 'max-radius': 30, 'min-radius': 21, 'max-speed': 4.8, 'base-speed': 4.8, 'screen-gap': 100}, 'game': {'level-score': 10000, 'time-limit': 90, 'pause': False, 'resolution': '1920x1080', 'ship-radius': 15, 'ship-speed': 10, 'fullscreen': True, 'language': 'en'}, 'font': {'family': 'helvetica', 'size': -9}, 'height': 1, 'width': 1, 'middle-y': 1, 'middle-x': 1}
+[Tue Feb 11 11:22:29 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 11:22:29 2020] [Err]:   File "G:/Code/QplayBubbles-Releaes/__main__.py", line 111, in <module>
+[Tue Feb 11 11:22:29 2020] [Err]:     Main.Game(launcher_cfg)
+[Tue Feb 11 11:22:29 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 63, in __init__
+[Tue Feb 11 11:22:29 2020] [Err]:     self.t_choice = TitleMenu().get()
+[Tue Feb 11 11:22:29 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\title.py", line 20, in __init__
+[Tue Feb 11 11:22:29 2020] [Err]:     self._root.update()
+[Tue Feb 11 11:22:29 2020] [Err]: AttributeError: 'NoneType' object has no attribute 'update'
+[Tue Feb 11 11:22:29 2020] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x000001AE7DBD40D8>
+[Tue Feb 11 11:22:29 2020] [Err]: Traceback (most recent call last):
+[Tue Feb 11 11:22:29 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\title.py", line 91, in __del__
+[Tue Feb 11 11:22:29 2020] [Err]:     self.destroy()
+[Tue Feb 11 11:22:29 2020] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\title.py", line 85, in destroy
+[Tue Feb 11 11:22:29 2020] [Err]:     self.background.destroy()
+[Tue Feb 11 11:22:29 2020] [Err]: AttributeError: 'TitleMenu' object has no attribute 'background'
