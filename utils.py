@@ -1,5 +1,4 @@
 import os
-import os
 import sys
 import tempfile
 from time import time, sleep

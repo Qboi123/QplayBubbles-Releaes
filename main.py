@@ -1,6 +1,8 @@
 from background import Background
+from bubbleSystem import start
 from menus.titleMenu import TitleMenu
 from nzt import NZTFile
+from utils import control
 
 if __name__ == "__main__":
     print("Error: Can't open this file. Please open the game with the launcher.")
@@ -348,7 +350,7 @@ class Game(Canvas):
     def options_close(self):
         self.frame5.destroy()
 
-    def load(self, menu: TitleMenu):
+    def load(self, menu: Optional[TitleMenu]):
         """
         This is the Slots Menu.
 
@@ -358,7 +360,8 @@ class Game(Canvas):
         import os
 
         # Remove menu
-        menu.destroy()
+        if menu:
+            menu.destroy()
 
         # Log
         log.info("Game.load", "Loading...")
@@ -405,7 +408,7 @@ class Game(Canvas):
         self.s_frame.pack(fill=Y)
 
         # Scrollwindow for the slots frame
-        self.sw = ScrolledWindow(self.s_frame, 700, self.root.winfo_height() + 0, expand=True, fill=BOTH)
+        self.sw = ScrolledWindow(self.s_frame, 700, self.root.winfo_height() + 0, expand=True, fill=BOTH, scrollbarbg="#3c3c3c", scrollbarfg="#5a5a5a")
 
         # Configurate the canvas from the scrollwindow
         self.canv = self.sw.canv
@@ -611,7 +614,7 @@ class Game(Canvas):
 
             # Refresh slots-menu
             self.delete_all()
-            self.load()
+            self.load(None)
 
     # noinspection PyTypeChecker
     def remove(self, event):
@@ -742,7 +745,7 @@ class Game(Canvas):
             time2 = time()
             Thread(None, lambda: self._movent()).start()
             sleep(0.01)
-            
+
     def _xbox_input(self):
         time2 = time()
         while not self.returnmain:
@@ -761,7 +764,7 @@ class Game(Canvas):
             self.xControl["RightBumper"] = bool(self.xbox.RightBumper)
             self.xControl["LeftTrigger"] = int((self.xbox.LeftBumper + 1) / 2 * 7)
             self.xControl["RightTrigger"] = int((self.xbox.RightBumper + 1) / 2 * 7)
-            
+
     def xboxDeamon(self):
         time2 = time()
         while not self.returnmain:
@@ -776,7 +779,7 @@ class Game(Canvas):
             time2 = time()
             Thread(None, lambda: self.xMovent()).start()
             sleep(0.01)
-            
+
     def xMovent(self):
         if self.modes["present"]:
             if self.xControl["A"]:
@@ -1343,11 +1346,12 @@ class Game(Canvas):
         # Binding key-events for control
         self.canvas.itemconfig(t1, text="Binding Objects")
         self.canvas.itemconfig(t2, text="Main Binding")
+
         c.bind_all('<Key>',
                    lambda event: control(self.modes, self.config, self.root, self.canvas, self.stats, self.bubbles,
                                          self.back, self.texts, self.commands, self.temp, self.panels, self.fore,
                                          self.ship, self.tp, self.lang, self.return_main, self.icons,
-                                         self.bub, self.font, event, self.c_ammo, self.launcher_cfg))
+                                         self.bub, self.font, event, self.c_ammo, self.launcher_cfg, log, s))
 
         self.canvas.itemconfig(t2, text="Player Motion")
         c.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))

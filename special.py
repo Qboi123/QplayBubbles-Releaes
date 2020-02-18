@@ -1,12 +1,14 @@
 import tkinter as tk
 
-from tkinter import *
-
 
 class CustomScrollbar(tk.Canvas):
     def __init__(self, parent, **kwargs):
         self.command = kwargs.pop("command", None)
-        tk.Canvas.__init__(self, parent, **kwargs)
+        kw = kwargs.copy()
+        if "fg" in kw.keys():
+            del kw["fg"]
+        tk.Canvas.__init__(self, parent, **kw, highlightthickness=0)
+        print(kwargs)
         if "fg" not in kwargs.keys():
             kwargs["fg"] = "darkgray"
 
@@ -77,15 +79,17 @@ class ScrolledWindow(tk.Frame):
 
     """
 
-    def __init__(self, parent, canv_w=400, canv_h=400, expand=False, fill=None, height=None, width=None, *args, **kwargs):
+    def __init__(self, parent, canv_w=400, canv_h=400, expand=False, fill=None, height=None, width=None, *args, scrollcommand=lambda: None, scrollbarbg=None, scrollbarfg="darkgray", **kwargs):
         """Parent = master of scrolled window
         canv_w - width of canvas
         canv_h - height of canvas
 
        """
+        # from .theme import CustomScrollbar
         super().__init__(parent, *args, **kwargs)
 
         self.parent = parent
+        self.scrollCommand = scrollcommand
 
         # creating a scrollbars
 
@@ -99,17 +103,25 @@ class ScrolledWindow(tk.Frame):
         else:
             __height = width
 
-        self.canv = Canvas(self.parent, bg='#FFFFFF', width=canv_w, height=canv_h,
+        self.canv = tk.Canvas(self.parent, bg='#FFFFFF', width=canv_w, height=canv_h,
                            scrollregion=(0, 0, __width, __height), highlightthickness=0)
         # self.hbar = Scrollbar(self.parent, orient=HORIZONTAL)
         # self.hbar.pack(side=BOTTOM, fill=X)
         # self.hbar.config(command=self.canv.xview)
-        self.vbar = Scrollbar(self.parent, orient=VERTICAL)
-        self.vbar.pack(side=RIGHT, fill=Y)
-        self.vbar.config(command=self.canv.yview)
-        self.canv.config(  # xscrollcommand=self.hbar.set,
-                         yscrollcommand=self.vbar.set)
-        self.canv.pack(side=LEFT, fill=fill, expand=expand)
+
+        self.vbar = CustomScrollbar(self.parent, width=10, command=self.canv.yview, bg=scrollbarbg, fg=scrollbarfg)
+        self.canv.configure(yscrollcommand=self.vbar.set)
+
+        self.vbar.pack(side="right", fill="y")
+        #
+        # with open(__file__, "r") as f:
+        #     text.insert("end", f.read())
+        # self.vbar = tix.Scrollbar(self.parent, orient=tk.VERTICAL, background="#3f3f3f", activebackground="#FFD800")
+        # self.vbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # self.vbar.config(command=self.canv.yview)
+        # self.canv.config(  # xscrollcommand=self.hbar.set,
+        #                  yscrollcommand=self.vbar.set)
+        self.canv.pack(side=tk.LEFT, fill=fill, expand=expand)
         # creating a canvas
         # self.canv = tk.Canvas(self.parent, width=canv_w, height=canv_h)
         # self.canv.config(relief='flat',
@@ -119,12 +131,12 @@ class ScrolledWindow(tk.Frame):
         # self.canv.grid(column=0, row=0, sticky='nsew')
         # accociating scrollbar comands to canvas scroling
         # self.hbar.config(command=self.canv.xview)
-        self.vbar.config(command=self.canv.yview)
+        # self.vbar.config(command=self.canv.yview)
 
         # creating a frame to inserto to canvas
-        self.scrollwindow = tk.Frame(self.parent)
+        self.scrollwindow = tk.Frame(self.parent, height=height, width=width)
 
-        self.canv.create_window(0, 0, window=self.scrollwindow, anchor='nw', height=height, width=width)
+        self.scrollwindow2 = self.canv.create_window(0, 0, window=self.scrollwindow, anchor='nw', height=height, width=width)
 
         self.canv.config(  # xscrollcommand=self.hbar.set,
                          yscrollcommand=self.vbar.set,
@@ -146,6 +158,7 @@ class ScrolledWindow(tk.Frame):
 
     def _on_mousewheel(self, event):
         self.canv.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        # self.scrollCommand(int(-1 * (event.delta / 120)), self.scrollwindow.winfo_reqheight(), self.vbar.get(), self.vbar)
 
     def _configure_window(self, event):
         # update the scrollbars to match the size of the inner frame
