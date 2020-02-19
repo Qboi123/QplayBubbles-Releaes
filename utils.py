@@ -1,8 +1,9 @@
 import os
+import platform
 import sys
 import tempfile
 from time import time, sleep
-from typing import Tuple, Callable
+from typing import Tuple, Callable, Any
 
 import pyglet
 from PIL import Image, ImageDraw
@@ -493,3 +494,143 @@ def control(input_modes: dict, config: dict, root: Tk, canvas: Canvas, stats: di
     if event.keysym == "Escape":
         save_system.save()
     root.update()
+
+
+def get_error_with_class_path(e: Exception, obj: Any) -> str:
+    # if hasattr(obj, "__qualname__"):
+    #     if hasattr(obj, "__module__"):
+    #         text = f"{obj.__module__}.{obj.__qualname__}"
+    #     else:
+    #         text = f"{obj.__name__}"
+    # elif hasattr(obj, "__module__"):
+    #     text = f"{obj.__module__}.*"
+    # elif hasattr(obj, "__class__"):
+    #     if hasattr(obj.__class__, "__qualname__"):
+    #         if hasattr(obj.__class__, "__module__"):
+    #             text = f"{obj.__class__.__module__}.{obj.__class__.__qualname__}"
+    #         else:
+    #             text = f"{obj.__class__.__qualname__}"
+    #     elif hasattr(obj.__class__, "__module__"):
+    #         text = f"{obj.__class__.__module__}.*"
+    #     else:
+    #         text = f"<UNKNOWN-CLASS>"
+    # else:
+    #     text = f"<UNKNOWN-FUNCTION>"
+
+    if hasattr(obj, "__qualname__"):
+        text = f"{obj.__qualname__}"
+
+    tb = e.__traceback__
+    while tb:
+        line = f" at line {tb.tb_lineno}"
+        file = f"<{tb.tb_frame.f_code.co_filename}>"
+        tb = tb.tb_next
+
+    return f"({file}.{text}) {e.__class__.__name__}{line}: {str(e)}"
+
+
+def get_adv_error(e: Exception, obj):
+    tb = e.__traceback__
+
+    text = f"{e.__class__.__name__}: {str(e)}"
+
+    while tb:
+        text += f"\n  {tb.tb_frame.f_code.co_filename} ({tb.tb_frame.f_code.co_name}:{tb.tb_frame.f_lineno})"
+        tb = tb.tb_next
+
+    return text
+
+
+def print_adv_error(e: Exception, obj):
+    print("\n"+get_adv_error(e, obj)+"\n", end="", file=sys.stderr)
+
+
+def tkinter_adv_error(e: Exception, obj):
+    import tkinter.messagebox as mb
+
+    # root = Tk()
+    # root.wm_attributes("-alpha", 0)
+    # root.maxsize(1, 1)
+    # root.wm_withdraw()
+
+    # mb.showerror("Python crash", get_adv_error(e, obj))
+    import tkinter as tk
+    import tkinter.ttk as ttk
+    import tkinter.dnd
+    import tkinter.font
+
+    root = tk.Tk()
+    root.title("Python crash")
+    icon = ttk.Label(root, image="::tk::icons::error")
+    icon.pack(side=tk.LEFT, padx=10, pady=10)
+    # text = ttk.Label(root, text=get_adv_error(e, obj), font=tkinter.font.nametofont("TkFixedFont"))
+    # text.pack(side=tk.LEFT, expand=True, fill='both')
+    text = tk.Text(root, height=8, borderwidth=0, font=tkinter.font.nametofont("TkFixedFont"))
+    text.insert(1.0, get_adv_error(e, obj))
+    text.pack(expand=True, fill="both")
+
+    text.configure(state="disabled")
+
+    # if tkinter is 8.5 or above you'll want the selection background
+    # to appear like it does when the widget is activated
+    # comment this out for older versions of Tkinter
+    text.configure(inactiveselectbackground=text.cget("selectbackground"))
+
+    button = ttk.Button(root, text="OK", command=lambda: root.destroy())
+    button.pack(side=tk.BOTTOM)
+    button.focus_set()
+    root.mainloop()
+
+
+def _adv_excepthook(exc_type, exc_value, exc_traceback):
+    tb = exc_traceback
+
+    text = f"{exc_type.__name__}: {str(exc_value)}"
+
+    while tb:
+        text += f"\n  {tb.tb_frame.f_code.co_filename} ({tb.tb_frame.f_code.co_name}:{tb.tb_frame.f_lineno})"
+        tb = tb.tb_next
+
+    return text
+
+
+def adv_excepthook(exc_type, exc_value, exc_traceback):
+    print("\n"+_adv_excepthook(exc_type, exc_value, exc_traceback)+"\n", end="", file=sys.stderr)
+
+
+def tkinter_excepthook(exc_type, exc_value, exc_traceback):
+
+    import tkinter.messagebox as mb
+
+    # root = Tk()
+    # root.wm_attributes("-alpha", 0)
+    # root.maxsize(1, 1)
+    # root.wm_withdraw()
+
+    # mb.showerror("Python crash", get_adv_error(e, obj))
+    import tkinter as tk
+    import tkinter.ttk as ttk
+    import tkinter.dnd
+    import tkinter.font
+
+    root = tk.Tk()
+    root.title("Python crash")
+    icon = ttk.Label(root, image="::tk::icons::error")
+    icon.pack(side=tk.LEFT, padx=10, pady=10)
+    # text = ttk.Label(root, text=get_adv_error(e, obj), font=tkinter.font.nametofont("TkFixedFont"))
+    # text.pack(side=tk.LEFT, expand=True, fill='both')
+    text = tk.Text(root, height=8, borderwidth=0, font=tkinter.font.nametofont("TkFixedFont"), bg=root.cget("bg"))
+    text.insert(1.0, _adv_excepthook(exc_type, exc_value, exc_traceback))
+    text.pack(expand=True, fill="both")
+
+    text.configure(state="disabled")
+
+    # if tkinter is 8.5 or above you'll want the selection background
+    # to appear like it does when the widget is activated
+    # comment this out for older versions of Tkinter
+    text.configure(inactiveselectbackground=text.cget("selectbackground"))
+
+    button = ttk.Button(root, text="OK", command=lambda: root.destroy())
+    button.pack(side=tk.BOTTOM)
+    button.focus_set()
+    root.mainloop()

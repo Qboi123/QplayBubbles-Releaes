@@ -685,7 +685,7 @@ class Game(Canvas):
 
     def add_event(self, event):
         """
-        The event handler for the "Add"-button.
+        The event obj for the "Add"-button.
         :param event:
         :return:
         """

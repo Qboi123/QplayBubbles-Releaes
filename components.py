@@ -73,7 +73,7 @@ class Present:
         :return:
         """
         if index is None:
-            # If variable "i" was not given.
+            # If parameter "index" was not given.
             index = randint(0, 1000)
         if index == 0:
             # Master Bonus, huge pack of diamonds and coins
@@ -740,7 +740,7 @@ class CheatEngine:
 
     def event_handler(self, canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub, font):
         """
-        The "/" key event handler.
+        The "/" key event obj.
         :param font:
         :param log:
         :param log:
