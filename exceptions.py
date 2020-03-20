@@ -123,7 +123,7 @@ def f():
 
 if __name__ == '__main__':
     sys.excepthook = my_excepthook
-    import error
+    from . import error
 
 
 class SyntaxError(ModernError):

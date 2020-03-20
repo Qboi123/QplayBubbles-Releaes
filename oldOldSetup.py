@@ -11,8 +11,8 @@ import threadsafe_tkinter, tkinter, os, json, time, math, sys, random, winsound,
 
 setup(
     cmdclass={'build_ext': build_ext},
-    ext_modules=[Extension("Qplay Bubbles", ["main.py", 'ammo.py', 'bubble.py', 'components.py', 'config.py',
+    ext_modules=[Extension("Qplay Bubbles", ["__main__.py", 'ammo.py', 'bubble.py', 'components.py', 'config.py',
                                              'extras.py', 'info.py', 'state.py', 'teleport.py'], )],
-    include_dirs=["config", "assets", "logs", "slots"],
+    include_dirs=["config", "data", "logs", "slots"],
     requires=['pygame', 'tkinter', 'threadsafe_tkinter', 'tkinter.ttk', 'os', 'json', 'sys', 'random', 'math', 'windound']
 )

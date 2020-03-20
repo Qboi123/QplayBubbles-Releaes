@@ -5,13 +5,13 @@ if __name__ == "__main__":
 
 from time import sleep
 
-from ammo import *
+from .ammo import *
 
-from bubble import Collision, create_bubble, place_bubble
-from components import *
-from extras import Logging, refresh, shuffling
-from special import ScrolledWindow
-from teleport import *
+from .bubble import Collision, create_bubble, place_bubble
+from .components import *
+from .extras import Logging, refresh, shuffling
+from .special import ScrolledWindow
+from .teleport import *
 
 FatalError = Exception
 
@@ -332,10 +332,10 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
         log.debug("bub_move", "storemode=" + str(modes["store"]))
         commands["store"] = Store(canvas, log, config, modes, stats, icons, fore, font, laucher_cfg)
     # if event.char == "/":
-    #     CheatEngine().event_handler(canvas, input_modes, stats, config, temp, log, backgrounds, bubble, event, bub)
-    # if input_modes["cheater"]:
+    #     CheatEngine().event_handler(canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub)
+    # if modes["cheater"]:
     #     CheatEngine().input_event_handler(canvas, log, stats, backgrounds, bubble, event, config, bub, temp,
-    #                                       input_modes)
+    #                                       modes)
 
     if event.keysym == "Escape":
         pass
@@ -351,15 +351,15 @@ class Maintance:
         """
         Saves the game. (For Auto-Save)
         """
-        import config as cfg
+        from . import config as cfg
 
         import os
 
         print(os.curdir)
 
         try:
-            cfg.Writer("slots/" + save_name + "/game.nzt", game_stats.copy())
-            cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+            cfg.Writer("slots/" + save_name + "/game.json", game_stats.copy())
+            cfg.Writer("slots/" + save_name + "/bubble.json", bubble.copy())
         except FileNotFoundError as e:
             print(e.args)
             print(e.filename)
@@ -370,9 +370,9 @@ class Maintance:
         """
         Restoring. (For Auto-Restore)
         """
-        import config as cfg
+        from . import config as cfg
 
-        game_stats = cfg.Reader("slots/" + save_name + "/game.nzt").get_decoded()
+        game_stats = cfg.Reader("slots/" + save_name + "/game.json").get_decoded()
 
         return game_stats
 
@@ -382,18 +382,18 @@ class Maintance:
         Resets the game fully
         """
 
-        import config as cfg
+        from . import config as cfg
 
-        stats = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt").get_decoded()
-        bubble = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt").get_decoded()
+        stats = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json").get_decoded()
+        bubble = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json").get_decoded()
 
-        cfg.Writer("slots/" + save_name + "/game.nzt", stats.copy())
-        cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+        cfg.Writer("slots/" + save_name + "/game.json", stats.copy())
+        cfg.Writer("slots/" + save_name + "/bubble.json", bubble.copy())
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
           modes: Dict[str, bool], canvas: Canvas):
-    bubs = Reader("slots/" + save_name + "/bubble.nzt").get_decoded()
+    bubs = Reader("slots/" + save_name + "/bubble.json").get_decoded()
     if len(bubs["bub-id"]) <= 1:
         r_start(bubble, stats, config, bub, canvas, modes)
         return
@@ -421,8 +421,8 @@ def r_start(bubble: Dict[str, Any], stats: Dict[str, Any], config: Dict[str, Any
     # print(int((config["width"] - 72) / 10))
     for i in range(int((config["width"] - 73) / 10)):
         # print(i)
-        r = randint(int(config["Bubble"]["min-radius"]),
-                    int(config["Bubble"]["max-radius"]))
+        r = randint(int(config["bubble"]["min-radius"]),
+                    int(config["bubble"]["max-radius"]))
         x = randint(-r, config["width"] + r)
         y = randint(72 + r, (config["height"] - r))
         # spd = stats["bubspeed"]
@@ -435,10 +435,10 @@ class Game(Canvas):
     def __init__(self, launcher_cfg: Dict[str, Any], start_time=0.0, already_opened=False):
         super().__init__()
 
-        import config
+        from . import config
         import os
         import yaml
-        import mod_support as mods
+        from . import mod_support as mods
 
         print("started Game")
 
@@ -537,13 +537,13 @@ class Game(Canvas):
         self.back = dict()
         self.fore = dict()
 
-        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.nzt").get_decoded()
+        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.json").get_decoded()
 
-        fd = os.open("lang/" + self.config["Game"]["language"] + ".yaml", os.O_RDONLY | os.O_CREAT)
+        fd = os.open("lang/" + self.config["game"]["language"] + ".yaml", os.O_RDONLY | os.O_CREAT)
         self.lang = yaml.safe_load(os.read(fd, 4096).decode())
         os.close(fd)
 
-        if self.config["Game"]["language"] == "tengwar":
+        if self.config["game"]["language"] == "tengwar":
             self.font = "Tengwar Annatar Regular"
             self.f_size = 0
         else:
@@ -557,7 +557,7 @@ class Game(Canvas):
         self.tp = dict()
 
         # Configuration
-        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.nzt").get_decoded()
+        self.config = config.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/startup.json").get_decoded()
 
         # Bubble / bubble-info
         self.bub = dict()
@@ -571,7 +571,7 @@ class Game(Canvas):
                      "ammo-damage": list(), "retime": start_time}
 
         # Sets fullscreen if not
-        if self.config["Game"]["fullscreen"]:
+        if self.config["game"]["fullscreen"]:
             self.root.wm_attributes("-fullscreen", True)
 
         self.root.update()
@@ -625,7 +625,7 @@ class Game(Canvas):
                 Deleting bubble if the x coord of the bubble is under -100
                 :return:
                 """
-                from bubble import get_coords
+                from .bubble import get_coords
 
                 for index in range(len(self.__bubbles) - 1, -1, -1):
                     x, y, = get_coords(self._canvas, self.__bubbles[index])
@@ -685,7 +685,7 @@ class Game(Canvas):
 
     def add_event(self, event):
         """
-        The event obj for the "Add"-button.
+        The event handler for the "Add"-button.
         :param event:
         :return:
         """
@@ -852,7 +852,7 @@ class Game(Canvas):
 
         # Prepare info variables
         for i in names:
-            mtime = os.path.getmtime("slots/" + i + "/bubble.nzt")
+            mtime = os.path.getmtime("slots/" + i + "/bubble.json")
             a = time.localtime(mtime)
 
             b = list(a)
@@ -869,7 +869,7 @@ class Game(Canvas):
             tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
             infos["dates"].append(tme_var)
 
-            a = Reader("slots/" + i + "/game.nzt").get_decoded()
+            a = Reader("slots/" + i + "/game.json").get_decoded()
             infos["score"].append(a["score"])
             infos["level"].append(a["level"])
 
@@ -954,8 +954,8 @@ class Game(Canvas):
         os.makedirs("slots/" + src, exist_ok=True)
 
         # Copy the template (resetted save-files)
-        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt", "slots/" + src + "/game.nzt")
-        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt", "slots/" + src + "/bubble.nzt")
+        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json", "slots/" + src + "/game.json")
+        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json", "slots/" + src + "/bubble.json")
 
         # Refreshing slots-menu
         self.delete_all()
@@ -982,8 +982,8 @@ class Game(Canvas):
             os.makedirs("slots/" + new, exist_ok=True)
 
             # Copy the template (resetted save-files)
-            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt", "slots/" + new + "/game.nzt")
-            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt", "slots/" + new + "/bubble.nzt")
+            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.json", "slots/" + new + "/game.json")
+            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.json", "slots/" + new + "/bubble.json")
 
             # Refresh slots-menu
             self.delete_all()
@@ -1051,7 +1051,7 @@ class Game(Canvas):
         self.save_name = save_name
 
         # Reload stats with the reader.
-        self.stats = Reader("slots/" + self.save_name + "/game.nzt").get_decoded()
+        self.stats = Reader("slots/" + self.save_name + "/game.json").get_decoded()
 
         # Create canvas.
         self.canvas = Canvas(self.root, height=self.config["height"], width=self.config["width"], highlightthickness=0)
@@ -1087,19 +1087,19 @@ class Game(Canvas):
                     else:
                         a = 1
                     if self.pressed['Up']:
-                        if y > 72 + self.config["Game"]["ship-radius"]:
+                        if y > 72 + self.config["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / (self.move_fps / 2) - a))
                             self.root.update()
                     elif self.pressed['Down']:
-                        if y < self.config["height"] - self.config["Game"]["ship-radius"]:
+                        if y < self.config["height"] - self.config["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / (self.move_fps / 2) + a))
                             self.root.update()
                     elif self.pressed['Left']:
-                        if x > 0 + self.config["Game"]["ship-radius"]:
+                        if x > 0 + self.config["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] / 20 - a), 0)
                             self.root.update()
                     elif self.pressed['Right']:
-                        if x < self.config["width"] - self.config["Game"]["ship-radius"]:
+                        if x < self.config["width"] - self.config["game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], (self.stats["shipspeed"] / 20 + a), 0)
                             self.root.update()
                     self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
@@ -1264,124 +1264,124 @@ class Game(Canvas):
         # Adding the different resolutions to the bubbles.
         for i in range(9, 61):
             self.bub["Normal"][i] = PhotoImage(
-                file="assets/bubbles/Normal/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Normal/" + str(i) + "px.png")
             self.bub["Triple"][i] = PhotoImage(
-                file="assets/bubbles/Triple/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Triple/" + str(i) + "px.png")
             self.bub["Double"][i] = PhotoImage(
-                file="assets/bubbles/Double/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Double/" + str(i) + "px.png")
             self.bub["SpeedDown"][i] = PhotoImage(
-                file="assets/bubbles/SpeedDown/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpeedDown/" + str(i) + "px.png")
             self.bub["SpeedUp"][i] = PhotoImage(
-                file="assets/bubbles/SpeedUp/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpeedUp/" + str(i) + "px.png")
             self.bub["Up"][i] = PhotoImage(
-                file="assets/bubbles/Up/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Up/" + str(i) + "px.png")
             self.bub["Ultimate"][i] = PhotoImage(
-                file="assets/bubbles/Ultimate/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Ultimate/" + str(i) + "px.png")
             self.bub["Kill"][i] = PhotoImage(
-                file="assets/bubbles/Kill/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Kill/" + str(i) + "px.png")
             self.bub["Teleporter"][i] = PhotoImage(
-                file="assets/bubbles/Teleporter/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Teleporter/" + str(i) + "px.png")
             self.bub["SlowMotion"][i] = PhotoImage(
-                file="assets/bubbles/SlowMotion/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SlowMotion/" + str(i) + "px.png")
             self.bub["DoubleState"][i] = PhotoImage(
-                file="assets/bubbles/DoubleState/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/DoubleState/" + str(i) + "px.png")
             self.bub["Protect"][i] = PhotoImage(
-                file="assets/bubbles/Protect/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Protect/" + str(i) + "px.png")
             self.bub["ShotSpdStat"][i] = PhotoImage(
-                file="assets/bubbles/ShotSpdStat/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/ShotSpdStat/" + str(i) + "px.png")
             self.bub["HyperMode"][i] = PhotoImage(
-                file="assets/bubbles/HyperMode/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/HyperMode/" + str(i) + "px.png")
             self.bub["TimeBreak"][i] = PhotoImage(
-                file="assets/bubbles/TimeBreak/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/TimeBreak/" + str(i) + "px.png")
             self.bub["Confusion"][i] = PhotoImage(
-                file="assets/bubbles/Confusion/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Confusion/" + str(i) + "px.png")
             self.bub["Paralis"][i] = PhotoImage(
-                file="assets/bubbles/Paralis/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Paralis/" + str(i) + "px.png")
             self.bub["StoneBub"][i] = PhotoImage(
-                file="assets/bubbles/StoneBub/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/StoneBub/" + str(i) + "px.png")
             self.bub["NoTouch"][i] = PhotoImage(
-                file="assets/bubbles/NoTouch/" + str(i) + "px.png")
+                file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/NoTouch/" + str(i) + "px.png")
 
         # Adding the static-resolution-bubbles.
-        self.bub["Key"][60] = PhotoImage(file="assets/bubbles/Key.png")
+        self.bub["Key"][60] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Key.png")
         self.bub["Diamond"][36] = PhotoImage(
-            file="assets/bubbles/Diamond.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Diamond.png")
         self.bub["Present"][40] = PhotoImage(
-            file="assets/bubbles/Present.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/Present.png")
         # noinspection PyTypeChecker
-        self.bub["Coin"] = PhotoImage(file="assets/CoinBub.png")
+        self.bub["Coin"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/CoinBub.png")
         self.bub["SpecialKey"][48] = PhotoImage(
-            file="assets/bubbles/SpecialMode.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/bubbles/SpecialMode.png")
 
         # Adding ship image.
-        self.ship["image"] = PhotoImage(file="assets/Ship.png")
+        self.ship["image"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Ship.png")
 
         # Reload stats with auto-restore.
         self.stats = Maintance().auto_restore(self.save_name)
 
         # Getting the normal background.
-        self.back["normal"] = PhotoImage(file="assets/BackGround.png")
+        self.back["normal"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/BackGround.png")
 
         # Getting the store-icons.
         self.icons["store-pack"] = list()
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/Key.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Key.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/Teleport.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Teleport.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/Shield.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Shield.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/DiamondBuy.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/DiamondBuy.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/BuyACake.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/BuyACake.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/Pop_3_bubs.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/Pop_3_bubs.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/PlusLife.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/PlusLife.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/SpeedBoost.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/SpeedBoost.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/SpecialMode.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/SpecialMode.png"))
         self.icons["store-pack"].append(
-            PhotoImage(file="assets/Images/StoreItems/DoubleScore.png"))
+            PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/StoreItems/DoubleScore.png"))
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
         self.icons["store-pack"].append(None)
 
         # Unknown
-        self.back["line"] = PhotoImage(file="assets/LineIcon.png")
+        self.back["line"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/LineIcon.png")
 
         # Setting present foreground
         self.fore["present-fg"] = PhotoImage(
-            file="assets/EventBackground.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/EventBackground.png")
 
         # Setting present icons.
-        self.icons["circle"] = PhotoImage(file="assets/Circle.png")
-        self.icons["present"] = PhotoImage(file="assets/Present.png")
+        self.icons["circle"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Circle.png")
+        self.icons["present"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Present.png")
 
         # Setting store foreground
-        self.fore["store-fg"] = PhotoImage(file="assets/FG2.png")
+        self.fore["store-fg"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/FG2.png")
 
         # Setting standard store icons.
         self.icons["store-diamond"] = PhotoImage(
-            file="assets/Diamond.png")
-        self.icons["store-coin"] = PhotoImage(file="assets/Coin.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/Diamond.png")
+        self.icons["store-coin"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Coin.png")
 
         # Setting pause-icon.
-        self.icons["pause-id"] = PhotoImage(file="assets/Pause.png")
+        self.icons["pause-id"] = PhotoImage(file="versions/" + self.launcher_cfg["versionDir"] + "/data/Pause.png")
 
         # Setting slowmotion-icon.
         self.icons["slowmotion"] = PhotoImage(
-            file="assets/SlowMotionIcon.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/SlowMotionIcon.png")
 
         # Setting special background.
         self.back["special"] = PhotoImage(
-            file="assets/Images/Backgrounds/GameBG Special2.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/Backgrounds/GameBG Special2.png")
 
         # Setting normal background.
         self.back["normal"] = PhotoImage(
-            file="assets/Images/Backgrounds/GameBG2.png")
+            file="versions/" + self.launcher_cfg["versionDir"] + "/data/Images/Backgrounds/GameBG2.png")
 
         # Setting background from nothing to normal.
         self.back["id"] = self.canvas.create_image(0, 0, anchor=NW, image=self.back["normal"])
@@ -1550,7 +1550,7 @@ class Game(Canvas):
         # Post Initalize mods
         self.mod_loader.post_initialize(self)
 
-        from base import BaseBarier
+        from .base import BaseBarier
 
         height = self.config["height"]
         width = self.config["width"]

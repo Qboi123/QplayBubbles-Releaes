@@ -1,7 +1,7 @@
 from threading import Thread
 from random import randint
 from time import time
-from extras import play_sound
+from .extras import play_sound
 
 
 class State:
@@ -63,7 +63,7 @@ class State:
             stats["special-level"] = True
             stats["special-level-time"] = time() + 20
             log.info("State", "Special Level State is ON!!!")
-            play_sound("versions/"+self.launcher_cfg["versionDir"]+"/assets/sounds/specialmode.mp3")
+            play_sound("versions/"+self.launcher_cfg["versionDir"]+"/data/sounds/specialmode.mp3")
 
     @staticmethod
     def set_state(canvas, log, stats, action, backgrounds):

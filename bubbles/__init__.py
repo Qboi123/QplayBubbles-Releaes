@@ -4,5 +4,5 @@ from random import randint
 
 class PreInitialize:
     def __init__(self, **kw):
-        import bubble
+        from . import bubble
         for i in

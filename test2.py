@@ -2,7 +2,7 @@
 from extras import dict2class
 import json
 
-with open("config/slotInfo.nzt") as file:
+with open("config/slotInfo.json") as file:
     dict = json.decoder.JSONDecoder().decode(file.read())
 
 obj = dict2class(dict)

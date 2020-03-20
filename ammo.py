@@ -2,7 +2,7 @@ from time import time
 from tkinter import Tk, Canvas
 from typing import *
 
-from extras import get_coords
+from .extras import get_coords
 
 
 def create_shot(canvas: Canvas, ammo, config: Dict[str, Union[str, int, dict]], ship: dict, stats):
@@ -16,8 +16,8 @@ def create_shot(canvas: Canvas, ammo, config: Dict[str, Union[str, int, dict]], 
     """
     if ammo["retime"] < time():
         x, y = get_coords(canvas, ship["id"])
-        ammo["ammo-id"].append(canvas.create_line(10 + x + config["Game"]["ship-radius"] / 2, y,
-                                                  15 + x + config["Game"]["ship-radius"] / 2,
+        ammo["ammo-id"].append(canvas.create_line(10 + x + config["game"]["ship-radius"] / 2, y,
+                                                  15 + x + config["game"]["ship-radius"] / 2,
                                                   y, fill="yellow"))
         ammo["ammo-speed"].append(stats["shotspeed"])
         ammo["ammo-damage"].append(0)

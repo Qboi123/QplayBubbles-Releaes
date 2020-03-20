@@ -1,3 +1,4 @@
+from registry import Registry
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
@@ -107,7 +108,7 @@ class Sprite:
         self.__active = False
 
     def create(self, x, y):
-        from components import StoppableThread
+        from .components import StoppableThread
         if self.id <= 0:
             raise ValueError("The ID of the Sprite is not created with Game.canvas")
         self.__active = True
@@ -189,8 +190,8 @@ class Sprite:
         pass
 
     def _on_collision(self):
-        import extras
-        import bubble
+        from . import extras
+        from . import bubble
 
         from time import sleep
 
@@ -206,7 +207,7 @@ class Sprite:
             config = self._kw["config"]
             if SHIP in self.collision_with:
                 distance = extras.distance(self._kw["canvas"], self._kw["log"], self.id, self._kw["ship"]["id"])
-                if distance < (config["Game"]["ship-radius"] + self.radius):
+                if distance < (config["game"]["ship-radius"] + self.radius):
                     self.on_collide_ship(None)
                     self._hurt_player()
                     sleep(1)
@@ -277,7 +278,7 @@ class Sprite:
 
     def move(self):
         from time import time
-        from components import StoppableThread
+        from .components import StoppableThread
         time2 = time()
         while self.__active:
             # print("\nhas movetag:", self.has_movetag, "| has skin:", self.has_skin); sleep(0.1)
@@ -366,7 +367,7 @@ class Bubble(Sprite):
         pass
 
     def on_collision(self, parent):
-        from bubble import del_bubble
+        from .bubble import del_bubble
         del_bubble(self.index, self._kw["bubbles"], self._kw["canvas"])
 
     def pop(self):
@@ -385,7 +386,7 @@ class StatusBubble(Bubble):
         self.name = None
 
     def on_collfunc(self):
-        from state import State
+        from .state import State
         if self.name is None:
             raise ActionIsNoneWarning("The name on status-bubble '%s' is None" % __name__)
         State.set_state(self._kw["canvas"], self._kw["log"], self._kw["stats"], self._kw["name"], self._kw["back"])
@@ -417,10 +418,10 @@ class Ammo(Sprite):
 
     def on_collide_bubble(self, index):
         from tkinter import TclError
-        from components import StoppableThread
-        from bubble import del_bubble
-        from extras import replace_list, distance
-        from ammo import del_ammo
+        from .components import StoppableThread
+        from .bubble import del_bubble
+        from .extras import replace_list, distance
+        from .ammo import del_ammo
 
         log = self._kw["log"]
         ammo = self._kw["ammo"]
@@ -457,7 +458,7 @@ class Ammo(Sprite):
                     replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
                     if ammo["ammo-damage"][ammo_index] > 4:
                         del_ammo(canvas, ammo_index, ammo)
-                    # Thread(None, PlaySound("versions/"+self.launcher_config["versionDir"]+"/assets/bubpop.wav", 1)).start()
+                    # Thread(None, PlaySound("versions/"+self.launcher_cfg["versionDir"]+"/data/bubpop.wav", 1)).start()
                 elif bubble["bub-hardness"][index_bub] > 1:
                     replace_list(bubble["bub-hardness"], index_bub, bubble["bub-hardness"][index_bub] - 1)
                     replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
@@ -482,3 +483,17 @@ class Ammo(Sprite):
         self._kw["ammo"]["ammo-speed"][self.id] = 5
         self._kw["ammo"]["ammo-damage"][self.id] = 0
         super().create(x, y)
+
+
+class Player(Sprite):
+    def __init__(self):
+        super(Player, self).__init__()
+
+        self.radius
+
+
+class BubbleObject(Sprite):
+    def __init__(self):
+        super(BubbleObject, self).__init__()
+
+        self.collision_with = [Player]

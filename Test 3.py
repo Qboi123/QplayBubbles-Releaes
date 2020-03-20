@@ -47,8 +47,8 @@ if "log" in item.required:
     kwargs["log"] = log
 if "root" in item.required:
     kwargs["root"] = root
-if "input_modes" in item.required:
-    kwargs["input_modes"] = modes
+if "modes" in item.required:
+    kwargs["modes"] = modes
 if "temp" in item.required:
     kwargs["temp"] = modes
 if "commands" in item.required:

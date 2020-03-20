@@ -117,7 +117,7 @@ class Logging:
 
 def load_data_int(file_path, if_none=0.0):
     """
-    Loading assets in int format
+    Loading data in int format
     :param file_path:
     :param if_none:
     :return:
@@ -139,7 +139,7 @@ def load_data_int(file_path, if_none=0.0):
 
 def load_data_str(file_path):
     """
-    Load assets in string-format
+    Load data in string-format
     :param file_path:
     :return:
     """
@@ -151,7 +151,7 @@ def load_data_str(file_path):
 
 def load_data_bool(file_path, if_none=False):
     """
-    Load assets in boolean-format
+    Load data in boolean-format
     :param file_path:
     :param if_none:
     :return:
@@ -173,7 +173,7 @@ def load_data_bool(file_path, if_none=False):
 
 def load_data_bytes(file_path):
     """
-    Load assets in bytes-format
+    Load data in bytes-format
     :param file_path:
     :return:
     """
@@ -280,13 +280,13 @@ def refresh(stats, config, bubble, bub, canvas, backgrounds, texts, modes, panel
     """
     from random import randint
     from threading import Thread
-    from bubble import create_bubble
-    from info import show_info
-    if stats["score"] / config["Game"]["level-score"] > stats["level"]:
+    from .bubble import create_bubble
+    from .info import show_info
+    if stats["score"] / config["game"]["level-score"] > stats["level"]:
         if randint(0, 125) == 0:
             if not bubble["key-active"]:
                 Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, i=-1)).start()
-                config["Bubble"]["max-speed"] += 0.2
+                config["bubble"]["max-speed"] += 0.2
                 bubble["key-active"] = True
     Thread(None, lambda: refresh_state(stats, bubble, canvas, backgrounds, panels)).start()
     Thread(None, lambda: show_info(canvas, texts, stats)).start()
@@ -352,7 +352,7 @@ class LogException(Exception):
 
 
 def pop_bubble(canvas, log, bubble, commands, root, stats, temp, backgrounds, texts, event):
-    from bubble import Collision, del_bubble
+    from .bubble import Collision, del_bubble
     from math import sqrt
     for index_bub in range(len(bubble["bub-id"])-1, -1, -1):
 

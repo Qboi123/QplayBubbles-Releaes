@@ -137,7 +137,7 @@ def ResetPovs(rID):
 
 	
 def UpdateVJD(rID, data):
-	"""Pass assets for all buttons and axes to vJoy Device efficiently"""
+	"""Pass data for all buttons and axes to vJoy Device efficiently"""
 	return _vj.UpdateVJD(rID, pointer(data))
 
 	

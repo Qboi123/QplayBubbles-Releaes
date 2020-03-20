@@ -1,4 +1,4 @@
-from base import Bubble, StatusBubble
+from .base import Bubble, StatusBubble
 
 
 class NormalBubble(Bubble):

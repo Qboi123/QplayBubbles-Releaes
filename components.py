@@ -5,8 +5,8 @@ from time import time
 
 from threadsafe_tkinter import *
 
-from config import Reader
-from state import State
+from .config import Reader
+from .state import State
 
 
 class StoppableThread(threading.Thread):
@@ -73,7 +73,7 @@ class Present:
         :return:
         """
         if index is None:
-            # If parameter "index" was not given.
+            # If variable "i" was not given.
             index = randint(0, 1000)
         if index == 0:
             # Master Bonus, huge pack of diamonds and coins
@@ -119,14 +119,14 @@ class Present:
             stats["diamonds"] += self.Diamonds
             stats["coins"] += self.Money
 
-            # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
         elif 1 <= index < 200:
             # Teleport
             text = "You earned:\n1 Teleport"
             canvas.itemconfig(self.textid, text=text)
             stats["teleports"] += 1
 
-            # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
         elif 200 <= index < 360:
             # Giving a Protection
             # Text for information
@@ -138,7 +138,7 @@ class Present:
             # Globals and status setup
             State.set_state(canvas, log, stats, "Protect", backgrounds=None)
 
-            # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
         else:
             # Nothing gives
             text = "O, oh. There's nothing"
@@ -182,8 +182,8 @@ class SpecialMode:
         else:
             index = randint(0, 1600)
         if loc_x is None and loc_y is None and rad is None and spd is None:
-            loc_x = config["width"] + config["Bubble"]["screen-gap"]
-            rad = randint(int(config["Bubble"]["min-radius"]), int(config["Bubble"]["max-radius"]))
+            loc_x = config["width"] + config["bubble"]["screen-gap"]
+            rad = randint(int(config["bubble"]["min-radius"]), int(config["bubble"]["max-radius"]))
             loc_y = randint(72 + rad, (config["height"] - rad))
         else:
             pass
@@ -258,7 +258,7 @@ class SpecialMode:
         if not bubble["active2"][index]:
             bubble["active2"][index] = True
             bubble["active"] += 1
-        # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, input_modes)).start()
+        # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, modes)).start()
 
 
 class Store:
@@ -313,7 +313,7 @@ class Store:
                                             font=(font, 18))
 
         # Setups items and price.
-        info = Reader("versions/"+launcher_cfg["versionDir"]+"/config/store.nzt").get_decoded()
+        info = Reader("versions/"+launcher_cfg["versionDir"]+"/config/store.json").get_decoded()
 
         i = 0
 
@@ -426,7 +426,7 @@ class Store:
             if self.selected == 4:
                 stats["lives"] += 1
             if self.selected == 5:
-                from extras import pop_bubble
+                from .extras import pop_bubble
                 self.exit(canvas, log, modes, stats, temp, commands)
                 n = 0
                 canvas.bind_all("<ButtonPress-1>", lambda event: pop_bubble(canvas, log, bubble, commands,
@@ -449,7 +449,7 @@ class Store:
                 stats["special-level"] = True
                 stats["special-level-time"] = time() + 40
                 log.info("State", "(CollFunc) Special Level State is ON!!!")
-                # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/specialmode.mp3")
+                # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/specialmode.mp3")
             if self.selected == 9:
                 stats["scorestate"] = 2
                 stats["scorestate-time"] = time() + randint(20, 40)
@@ -581,17 +581,17 @@ class Window:
         self.close_event = close_event
 
         # Creates window.
-        self.title_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/titlebar-mid-focused.png")
-        self.title_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/titlebar-left-focused.png")
-        self.title_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/titlebar-right-focused.png")
+        self.title_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-mid-focused.png")
+        self.title_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-left-focused.png")
+        self.title_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-right-focused.png")
 
-        self.border_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-left-focused.png")
-        self.border_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-right-focused.png")
-        self.border_bottom_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-bottom-mid-focused.png")
-        self.border_bottom_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-bottom-left-focused.png")
-        self.border_bottom_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-bottom-right-focused.png")
-        self.close = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/button-close.png")
-        self.close_press = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/button-close-prelight.png")
+        self.border_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-left-focused.png")
+        self.border_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-right-focused.png")
+        self.border_bottom_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-mid-focused.png")
+        self.border_bottom_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-left-focused.png")
+        self.border_bottom_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-right-focused.png")
+        self.close = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/button-close.png")
+        self.close_press = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/button-close-prelight.png")
 
         self.id.append(canvas.create_rectangle(self.x1 - 6, self.y1 + 14, self.x2 + 6, self.y2 + 6, fill="lightgray",
                                                outline="#272727"))
@@ -740,7 +740,7 @@ class CheatEngine:
 
     def event_handler(self, canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub, font):
         """
-        The "/" key event obj.
+        The "/" key event handler.
         :param font:
         :param log:
         :param log:
@@ -837,7 +837,7 @@ class CheatEngine:
         :rtype: object
         :param params:
         """
-        from bubble import create_bubble
+        from .bubble import create_bubble
         if len(params) == 1:
             if params[0].isnumeric() and "." not in params[0]:
                 a = int(params[0])
@@ -854,7 +854,7 @@ class CheatEngine:
         :rtype: object
         :param params:
         """
-        from bubble import clean_all
+        from .bubble import clean_all
         if len(params) == 0:
             Thread(None, lambda: clean_all(bubble, canvas)).start()
 
@@ -871,7 +871,7 @@ class CheatEngine:
         :rtype: object
         :param params:
         """
-        from bubble import create_bubble
+        from .bubble import create_bubble
         act = ["Double", "Kill", "Triple", "Normal", "SpeedDown", "SpeedUp", "Up", "Ultimate", "Teleporter",
                "SlowMotion", "HyperMode", "Protect", "ShotSpdStat", "TimeBreak", "DoubleState", "Confusion", "Paralis",
                "StoneBub", "NoTouch", "Coin", "Diamond"]
@@ -1032,7 +1032,7 @@ class CheatEngine:
         :param canvas:
         :rtype: object
         """
-        from bubble import clean_all
+        from .bubble import clean_all
         cmd_and_param_list = self.text.split(sep=" ")
         command = cmd_and_param_list[0]
         params = cmd_and_param_list[1:]
