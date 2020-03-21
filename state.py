@@ -19,49 +19,49 @@ class State:
         # log.info("State", "Give the player, status: '" + act + "'.")
         if act == "DoubleState":
             stats["scorestate"] = 2
-            stats["scorestate-time"] = time() + randint(5, 20)
+            stats["scorestate_time"] = time() + randint(5, 20)
         if act == "Protect":
             stats["secure"] = True
-            stats["secure-time"] = time() + randint(10, 15)
+            stats["secure_time"] = time() + randint(10, 15)
         if act == "SlowMotion":
             stats["slowmotion"] = True
-            stats["slowmotion-time"] = time() + randint(15, 23)
+            stats["slowmotion_time"] = time() + randint(15, 23)
         if act == "Confusion":
             stats["confus"] = True
-            stats["confus-time"] = time() + randint(5, 10)
+            stats["confus_time"] = time() + randint(5, 10)
         if act == "TimeBreak":
             stats["timebreak"] = True
-            stats["timebreak-time"] = time() + randint(10, 20)
+            stats["timebreak_time"] = time() + randint(10, 20)
         if act == "SpeedBoost":
             stats["speedboost"] = True
-            stats["speedboost-time"] = time() + randint(10, 20)
-        if act == "Paralis":
-            stats["paralis"] = True
-            stats["paralis-time"] = time() + randint(5, 7)
+            stats["speedboost_time"] = time() + randint(10, 20)
+        if act == "Paralyse":
+            stats["paralyse"] = True
+            stats["paralyse_time"] = time() + randint(5, 7)
         if act == "HyperMode":
             stats["confus"] = False
-            stats["confus-time"] = time()
-            stats["paralis"] = False
-            stats["paralis-time"] = time()
+            stats["confus_time"] = time()
+            stats["paralyse"] = False
+            stats["paralyse_time"] = time()
             stats["timebreak"] = True
             stats["scorestate"] = 10
-            stats["timebreak-time"] = time() + randint(24, 32)
-            stats["scorestate-time"] = time() + randint(24, 32)
+            stats["timebreak_time"] = time() + randint(24, 32)
+            stats["scorestate_time"] = time() + randint(24, 32)
         if act == "ShotSpdStat":
             stats["shotspeed"] = 0.2
-            stats["shotspeed-time"] = time() + randint(13, 15)
+            stats["shotspeed_time"] = time() + randint(13, 15)
         if act == "NoTouch":
             stats["notouch"] = True
-            stats["notouch-time"] = time() + randint(10, 15)
+            stats["notouch_time"] = time() + randint(10, 15)
         if act == "Ultimate":
             stats["scorestate"] = 10
-            stats["scorestate-time"] = time() + 15
+            stats["scorestate_time"] = time() + 15
             stats["slowmotion"] = True
-            stats["slowmotion-time"] = time() + randint(7, 10)
+            stats["slowmotion_time"] = time() + randint(7, 10)
         if act == "SpecialLevel":
             canvas.itemconfig(backgrounds["id"], image=backgrounds["special"])
             stats["special-level"] = True
-            stats["special-level-time"] = time() + 20
+            stats["special-level_time"] = time() + 20
             log.info("State", "Special Level State is ON!!!")
             play_sound("versions/"+self.launcher_cfg["versionDir"]+"/assets/sounds/specialmode.mp3")
 
@@ -83,34 +83,34 @@ class State:
         # Set the status of the player
         if action == "DoubleState":
             stats["scorestate"] = 1
-            stats["scorestate-time"] = time()
+            stats["scorestate_time"] = time()
         if action == "Protect":
             stats["secure"] = False
-            stats["secure-time"] = time()
+            stats["secure_time"] = time()
         if action == "SlowMotion":
             stats["slowmotion"] = False
-            stats["slowmotion-time"] = time()
+            stats["slowmotion_time"] = time()
         if action == "Confusion":
             stats["confusion"] = False
-            stats["confusion-time"] = time()
+            stats["confusion_time"] = time()
         if action == "TimeBreak":
             stats["timebreak"] = False
-            stats["timebreak-time"] = time()
+            stats["timebreak_time"] = time()
         if action == "SpeedBoost":
             stats["speedboost"] = False
-            stats["speedboost-time"] = time()
-        if action == "Paralis":
-            stats["paralis"] = False
-            stats["paralis-time"] = time()
+            stats["speedboost_time"] = time()
+        if action == "Paralyse":
+            stats["paralyse"] = False
+            stats["paralyse_time"] = time()
         if action == "HyperMode":
             stats["timebreak"] = False
-            stats["timebreak-time"] = time()
+            stats["timebreak_time"] = time()
             stats["scorestate"] = 1
-            stats["scorestate-time"] = time()
+            stats["scorestate_time"] = time()
         if action == "ShotSpdStat":
             stats["shotspeed"] = 25
-            stats["shotspeed-time"] = time()
+            stats["shotspeed_time"] = time()
         if action == "SpecialLevel":
             canvas.itemconfig(backgrounds["id"], image=backgrounds["normal"])
             stats["special-level"] = False
-            stats["special-level-time"] = time()
+            stats["special-level_time"] = time()

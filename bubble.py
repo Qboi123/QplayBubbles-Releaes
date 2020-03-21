@@ -53,8 +53,8 @@ def place_bubble(c, bub, x, y, r, act):
         return c.create_image(x, y, image=bub["NoTouch"][r * 2])
     if act == "LevelKey":
         return c.create_image(x, y, image=bub["Key"][60])
-    if act == "Paralis":
-        return c.create_image(x, y, image=bub["Paralis"][r * 2])
+    if act == "Paralyse":
+        return c.create_image(x, y, image=bub["Paralyse"][r * 2])
     if act == "SpecialKey":
         return c.create_image(x, y, image=bub["SpecialKey"][48])
     if act == "Diamond":
@@ -183,8 +183,8 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
         spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 1085 <= i < 1100:
-        ids = [c.create_image(x, y, image=bub["Paralis"][r * 2])]
-        act = "Paralis"
+        ids = [c.create_image(x, y, image=bub["Paralyse"][r * 2])]
+        act = "Paralyse"
         spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 1100 <= i < 1101:
@@ -438,8 +438,8 @@ class Collision:
                 stats["Player"]["ShipStats"]["ship-speed"] -= 5
             if action == "Confusion":
                 State.set_state(canvas, log, stats, "Confusion", backgrounds)
-            if action == "Paralis":
-                State.set_state(canvas, log, stats, "Paralis", backgrounds)
+            if action == "Paralyse":
+                State.set_state(canvas, log, stats, "Paralyse", backgrounds)
             if action == "NoTouch":
                 stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
                 State.set_state(canvas, log, stats, action, backgrounds)
@@ -494,7 +494,7 @@ class Collision:
             canvas.itemconfig(backgrounds["id"], image=backgrounds["special"])
             canvas.itemconfig(panels["game/top"], fill="#3f3f3f")
             stats["Effects"]["special-level"] = True
-            stats["Effects"]["special-level-time"] = time() + 30
+            stats["Effects"]["special-level_time"] = time() + 30
             log.info("State", "(CollFunc) Special Level State is ON!!!")
             # play_sound("versions/"+self.launcher_config["versionDir"]+"/assets/sounds/specialmode.mp3")
         log.debug("CollFunc", "Bubble popped with id: "+str(index)+" | action: "+action)

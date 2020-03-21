@@ -12,7 +12,7 @@ USAGE
 
 import pyvjoy
 
-#Pythonic API, item-at-a-time
+#Pythonic API, item-at-a_time
 
 j = pyvjoy.VJoyDevice(1)
 

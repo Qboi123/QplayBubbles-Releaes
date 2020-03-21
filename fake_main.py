@@ -77,14 +77,14 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
                 commands["present"].exit(canvas)
                 modes["pause"] = False
                 modes["present"] = False
-                stats["scorestate-time"] = temp["scorestate-save"] + time()
-                stats["secure-time"] = temp["secure-save"] + time()
-                stats["timebreak-time"] = temp["timebreak-save"] + time()
-                stats["confusion-time"] = temp["confusion-save"] + time()
-                stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-                stats["paralis-time"] = temp["paralis-save"] + time()
-                stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-                stats["notouch-time"] = temp["notouch-save"] + time()
+                stats["scorestate_time"] = temp["scorestate-save"] + time()
+                stats["secure_time"] = temp["secure-save"] + time()
+                stats["timebreak_time"] = temp["timebreak-save"] + time()
+                stats["confusion_time"] = temp["confusion-save"] + time()
+                stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+                stats["paralyse_time"] = temp["paralyse-save"] + time()
+                stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+                stats["notouch_time"] = temp["notouch-save"] + time()
     if modes["teleport"]:
         x, y = get_coords(canvas, tp["id1"])
         if event.keysym == 'Up':
@@ -114,51 +114,51 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
         if event.keysym == "BackSpace":
             modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
         if event.keysym == "Escape":
             modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
             sleep(1)
         if event.keysym == "Return":
             modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
 
             stats["teleports"] -= 1
             teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
         if event.keysym.lower() == "space":
             modes["pause"] = False
 
-            stats["scorestate-time"] = temp["scorestate-save"] + time()
-            stats["secure-time"] = temp["secure-save"] + time()
-            stats["timebreak-time"] = temp["timebreak-save"] + time()
-            stats["confusion-time"] = temp["confusion-save"] + time()
-            stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-            stats["paralis-time"] = temp["paralis-save"] + time()
-            stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-            stats["notouch-time"] = temp["notouch-save"] + time()
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
 
             stats["teleports"] -= 1
             teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
@@ -231,13 +231,13 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
 
         a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
              "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
-             "Coin", "NoTouch", "Paralis", "Diamond", "StoneBub", "Present", "SpecialKey", "LevelKey")
+             "Coin", "NoTouch", "Paralyse", "Diamond", "StoneBub", "Present", "SpecialKey", "LevelKey")
 
         c = ("bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
              "bubble.up", "bubble.state.ultimate", "bubble.state.double", "bubble.state.protect",
              "bubble.state.slowmotion",
              "bubble.state.timebreak", "bubble.state.confusion", "bubble.state.hypermode", "bubble.teleporter",
-             "bubble.coin", "bubble.state.notouch", "bubble.state.paralis", "bubble.diamond", "bubble.stonebubble",
+             "bubble.coin", "bubble.state.notouch", "bubble.state.paralyse", "bubble.diamond", "bubble.stonebubble",
              "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
 
         canvass = Canvas(temp["frame"], bg=back, highlightthickness=0)
@@ -265,15 +265,15 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
         canvas.itemconfig(texts["pause"], text="")
         root.update()
 
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
     elif event.keysym == "Escape" and modes["pause"] and (not modes["store"]) and (not modes["teleport"]) and \
             (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
         modes["pause"] = False
@@ -292,41 +292,41 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
 
         root.update()
 
-        stats["scorestate-time"] = temp["scorestate-save"] + time()
-        stats["secure-time"] = temp["secure-save"] + time()
-        stats["timebreak-time"] = temp["timebreak-save"] + time()
-        stats["confusion-time"] = temp["confusion-save"] + time()
-        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-        stats["paralis-time"] = temp["paralis-save"] + time()
-        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-        stats["notouch-time"] = temp["notouch-save"] + time()
+        stats["scorestate_time"] = temp["scorestate-save"] + time()
+        stats["secure_time"] = temp["secure-save"] + time()
+        stats["timebreak_time"] = temp["timebreak-save"] + time()
+        stats["confusion_time"] = temp["confusion-save"] + time()
+        stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        stats["paralyse_time"] = temp["paralyse-save"] + time()
+        stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        stats["notouch_time"] = temp["notouch-save"] + time()
     if event.keysym == "t" and stats["teleports"] > 0 and (not modes["teleport"]):
         modes["pause"] = True
 
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
 
         modes["teleport"] = True
 
         tp_mode(canvas, config, stats, modes, tp)
     if event.keysym.lower() == "e" and (not modes["store"]):
         modes["pause"] = True
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
         modes["store"] = True
         log.debug("bub_move", "Creating Store() to variable \"store\"")
         log.debug("bub_move", "storemode=" + str(modes["store"]))
@@ -502,7 +502,7 @@ class Game(Canvas):
         self.temp["timebreak-save"] = 0
         self.temp["confusion-save"] = 0
         self.temp["slowmotion-save"] = 0
-        self.temp["paralis-save"] = 0
+        self.temp["paralyse-save"] = 0
         self.temp["shotspeed-save"] = 0
         self.temp["notouch-save"] = 0
         self.temp["special-level-save"] = 0
@@ -1080,7 +1080,7 @@ class Game(Canvas):
     def _movent(self):
         if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
             if not self.modes["pause"]:
-                if not self.stats["paralis"]:
+                if not self.stats["paralyse"]:
                     x, y = get_coords(self.canvas, self.ship["id"])
                     if self.stats["speedboost"]:
                         a = 6
@@ -1165,7 +1165,7 @@ class Game(Canvas):
     def shot(self, event):
         if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
             if not self.modes["pause"]:
-                if not self.stats["paralis"]:
+                if not self.stats["paralyse"]:
                     if event.keysym == "space":
                         # noinspection PyTypeChecker
                         create_shot(self.canvas, self.ammo, self.config, self.ship, self.stats)
@@ -1253,7 +1253,7 @@ class Game(Canvas):
         self.bub["HyperMode"] = dict()
         self.bub["TimeBreak"] = dict()
         self.bub["Confusion"] = dict()
-        self.bub["Paralis"] = dict()
+        self.bub["Paralyse"] = dict()
         self.bub["StoneBub"] = dict()
         self.bub["NoTouch"] = dict()
         self.bub["Key"] = dict()
@@ -1295,8 +1295,8 @@ class Game(Canvas):
                 file="assets/bubbles/TimeBreak/" + str(i) + "px.png")
             self.bub["Confusion"][i] = PhotoImage(
                 file="assets/bubbles/Confusion/" + str(i) + "px.png")
-            self.bub["Paralis"][i] = PhotoImage(
-                file="assets/bubbles/Paralis/" + str(i) + "px.png")
+            self.bub["Paralyse"][i] = PhotoImage(
+                file="assets/bubbles/Paralyse/" + str(i) + "px.png")
             self.bub["StoneBub"][i] = PhotoImage(
                 file="assets/bubbles/StoneBub/" + str(i) + "px.png")
             self.bub["NoTouch"][i] = PhotoImage(
@@ -1411,7 +1411,7 @@ class Game(Canvas):
         c.create_text(580, 30, text=self.lang["info.state.confusion"], fill="gold", font=[self.font, 15 + self.f_size])
         c.create_text(670, 30, text=self.lang["info.state.timebreak"], fill="gold", font=[self.font, 15 + self.f_size])
         c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold", font=[self.font, 15 + self.f_size])
-        c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(850, 30, text=self.lang["info.state.paralyse"], fill="gold", font=[self.font, 15 + self.f_size])
         c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold", font=[self.font, 15 + self.f_size])
         c.create_text(1030, 30, text=self.lang["info.state.notouch"], fill="gold", font=[self.font, 15 + self.f_size])
         c.create_text(1120, 30, text=self.lang["info.tps"], fill='gold', font=[self.font, 15 + self.f_size])
@@ -1429,7 +1429,7 @@ class Game(Canvas):
         self.texts["confusion"] = c.create_text(580, 50, fill='cyan')
         self.texts["timebreak"] = c.create_text(670, 50, fill='cyan')
         self.texts["speedboost"] = c.create_text(760, 50, fill='cyan')
-        self.texts["paralis"] = c.create_text(850, 50, fill='cyan')
+        self.texts["paralyse"] = c.create_text(850, 50, fill='cyan')
         self.texts["shotspeed"] = c.create_text(940, 50, fill='cyan')
         self.texts["notouch"] = c.create_text(1030, 50, fill='cyan')
         self.texts["shiptp"] = c.create_text(1120, 50, fill='cyan')
@@ -1495,41 +1495,41 @@ class Game(Canvas):
 
         stats = self.stats
 
-        if stats["scorestate-time"] <= time():
+        if stats["scorestate_time"] <= time():
             stats["scorestate"] = 1
-            stats["scorestate-time"] = time()
-        if stats["secure-time"] <= time():
+            stats["scorestate_time"] = time()
+        if stats["secure_time"] <= time():
             stats["secure"] = False
-            stats["secure-time"] = time()
-        if stats["slowmotion-time"] <= time():
+            stats["secure_time"] = time()
+        if stats["slowmotion_time"] <= time():
             stats["slowmotion"] = False
-            stats["slowmotion-time"] = time()
-        if stats["timebreak-time"] <= time():
+            stats["slowmotion_time"] = time()
+        if stats["timebreak_time"] <= time():
             stats["timebreak"] = False
-            stats["timebreak-time"] = time()
-        if stats["confusion-time"] <= time():
+            stats["timebreak_time"] = time()
+        if stats["confusion_time"] <= time():
             stats["confusion"] = False
-            stats["confusion-time"] = time()
-        if stats["speedboost-time"] <= time():
+            stats["confusion_time"] = time()
+        if stats["speedboost_time"] <= time():
             stats["speedboost"] = False
-            stats["speedboost-time"] = time()
-        if stats["paralis-time"] <= time():
-            stats["paralis"] = False
-            stats["paralis-time"] = time()
-        if stats["shotspeed-time"] <= time():
+            stats["speedboost_time"] = time()
+        if stats["paralyse_time"] <= time():
+            stats["paralyse"] = False
+            stats["paralyse_time"] = time()
+        if stats["shotspeed_time"] <= time():
             stats["shotspeed"] = 0.1
-            stats["shotspeed-time"] = time()
-        if stats["special-level-time"] <= time():
+            stats["shotspeed_time"] = time()
+        if stats["special-level_time"] <= time():
             stats["special-level"] = False
-            stats["special-level-time"] = time()
+            stats["special-level_time"] = time()
         else:
             self.canvas.itemconfig(self.back["id"], image=self.back["special"])
             self.canvas.itemconfig(self.panels["game/top"], fill="#3f3f3f")
-        if stats["score"] < 0:
+        if stats["Player"]["score"] < 0:
             log.error("Game.main", "The 'Score' variable under zero.")
-            stats["score"] = 0
-        if stats["score"] > stats["hiscore"]:
-            stats["hiscore"] = stats["score"]
+            stats["Player"]["score"] = 0
+        if stats["Player"]["score"] > stats["Player"]["high-score"]:
+            stats["Player"]["high-score"] = stats["Player"]["score"]
         if stats["confusion"] and not stats["secure"]:
             shuffling(self.bubbles)
 
@@ -1610,7 +1610,7 @@ class Game(Canvas):
                 for barier in bariers:
                     barier.destroy()
                 g1 = c.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
-                g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["score"]), fill='white',
+                g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["Player"]["score"]), fill='white',
                                    font=('Helvetica', 30))
                 g3 = c.create_text(mid_x, mid_y + 90, text='Level: ' + str(self.stats["level"]), fill='white',
                                    font=('Helvetica', 30))

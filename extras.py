@@ -282,7 +282,7 @@ def refresh(stats, config, bubble, bub, canvas, backgrounds, texts, modes, panel
     from threading import Thread
     from bubble import create_bubble
     from info import show_info
-    if stats["score"] / config["Game"]["level-score"] > stats["level"]:
+    if stats["Player"]["score"] / config["Game"]["level-score"] > stats["level"]:
         if randint(0, 125) == 0:
             if not bubble["key-active"]:
                 Thread(None, lambda: create_bubble(stats, config, bub, canvas, bubble, i=-1)).start()
@@ -300,36 +300,36 @@ def refresh_state(stats, bubbles, canvas, backgrounds, panels):
     from time import time, sleep
     if stats["slowmotion"]:
         sleep(0.5)
-    if stats["scorestate-time"] <= time():
+    if stats["scorestate_time"] <= time():
         stats["scorestate"] = 1
-        stats["scorestate-time"] = time()
-    if stats["secure-time"] <= time():
+        stats["scorestate_time"] = time()
+    if stats["secure_time"] <= time():
         stats["secure"] = False
-        stats["secure-time"] = time()
-    if stats["slowmotion-time"] <= time():
+        stats["secure_time"] = time()
+    if stats["slowmotion_time"] <= time():
         stats["slowmotion"] = False
-        stats["slowmotion-time"] = time()
-    if stats["timebreak-time"] <= time():
+        stats["slowmotion_time"] = time()
+    if stats["timebreak_time"] <= time():
         stats["timebreak"] = False
-        stats["timebreak-time"] = time()
-    if stats["confusion-time"] <= time():
+        stats["timebreak_time"] = time()
+    if stats["confusion_time"] <= time():
         stats["confusion"] = False
-        stats["confusion-time"] = time()
-    if stats["speedboost-time"] <= time():
+        stats["confusion_time"] = time()
+    if stats["speedboost_time"] <= time():
         stats["speedboost"] = False
-        stats["speedboost-time"] = time()
-    if stats["paralis-time"] <= time():
-        stats["paralis"] = False
-        stats["paralis-time"] = time()
-    if stats["shotspeed-time"] <= time():
+        stats["speedboost_time"] = time()
+    if stats["paralyse_time"] <= time():
+        stats["paralyse"] = False
+        stats["paralyse_time"] = time()
+    if stats["shotspeed_time"] <= time():
         stats["shotspeed"] = 0.1
-        stats["shotspeed-time"] = time()
-    if stats["notouch-time"] <= time():
+        stats["shotspeed_time"] = time()
+    if stats["notouch_time"] <= time():
         stats["notouch"] = False
-        stats["notouch-time"] = time()
-    if stats["special-level-time"] <= time():
+        stats["notouch_time"] = time()
+    if stats["special-level_time"] <= time():
         stats["special-level"] = False
-        stats["special-level-time"] = time()
+        stats["special-level_time"] = time()
         try:
             canvas.itemconfig(backgrounds["id"], image=backgrounds["normal"])
             canvas.itemconfig(panels["game/top"], fill="darkcyan")
@@ -337,10 +337,10 @@ def refresh_state(stats, bubbles, canvas, backgrounds, panels):
             exit(0)
         except TclError:
             exit(0)
-    if stats["score"] > stats["hiscore"]:
-        stats["hiscore"] = stats["score"]
-    stats["score"] = int(stats["score"])
-    stats["hiscore"] = int(stats["hiscore"])
+    if stats["Player"]["score"] > stats["Player"]["high-score"]:
+        stats["Player"]["high-score"] = stats["Player"]["score"]
+    stats["Player"]["score"] = int(stats["Player"]["score"])
+    stats["Player"]["high-score"] = int(stats["Player"]["high-score"])
     if stats["confusion"] and not stats["secure"]:
         shuffling(bubbles)
 

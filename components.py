@@ -38,15 +38,15 @@ class Present:
         mid_y = config["middle-y"]
 
         # Sets pause save-variables.
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
 
         # Creating ID's for window and information.
         self.lineid = []
@@ -412,14 +412,14 @@ class Store:
             stats["diamonds"] -= self.price[self.selected]
             stats["coins"] -= int(canvas.itemcget(self.coins[self.selected], "text"))
             if self.selected == 0:
-                stats["score"] += 1000
+                stats["Player"]["score"] += 1000
             if self.selected == 1:
                 stats["teleport"] += 1
             if self.selected == 2:
                 stats["confusion"] = False
-                stats["confusion-time"] = time()
-                stats["paralis"] = False
-                stats["paralis-time"] = time()
+                stats["confusion_time"] = time()
+                stats["paralyse"] = False
+                stats["paralyse_time"] = time()
                 State.set_state(canvas, log, stats, "Protect", backgrounds)
             if self.selected == 3:
                 stats["diamonds"] += 1
@@ -447,20 +447,20 @@ class Store:
                 canvas.itemconfig(backgrounds["id"], image=backgrounds["special"])
                 canvas.itemconfig(panels["game/top"], fill="#3f3f3f")
                 stats["special-level"] = True
-                stats["special-level-time"] = time() + 40
+                stats["special-level_time"] = time() + 40
                 log.info("State", "(CollFunc) Special Level State is ON!!!")
                 # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/specialmode.mp3")
             if self.selected == 9:
                 stats["scorestate"] = 2
-                stats["scorestate-time"] = time() + randint(20, 40)
+                stats["scorestate_time"] = time() + randint(20, 40)
             if self.selected == 10:
-                stats["score"] += 10
+                stats["Player"]["score"] += 10
             if self.selected == 11:
-                stats["score"] += 100
+                stats["Player"]["score"] += 100
             if self.selected == 12:
-                stats["score"] += 200
+                stats["Player"]["score"] += 200
             if self.selected == 13:
-                stats["score"] += 500
+                stats["Player"]["score"] += 500
             canvas.itemconfig(self.vDiamonds, text="Diamonds: " + str(stats["diamonds"]))
             modes["window"] = False
         else:
@@ -545,14 +545,14 @@ class Store:
         modes["store"] = False
 
         # Pause variables.
-        stats["scorestate-time"] = temp["scorestate-save"] + time()
-        stats["secure-time"] = temp["secure-save"] + time()
-        stats["timebreak-time"] = temp["timebreak-save"] + time()
-        stats["confusion-time"] = temp["confusion-save"] + time()
-        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-        stats["paralis-time"] = temp["paralis-save"] + time()
-        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-        stats["notouch-time"] = temp["notouch-save"] + time()
+        stats["scorestate_time"] = temp["scorestate-save"] + time()
+        stats["secure_time"] = temp["secure-save"] + time()
+        stats["timebreak_time"] = temp["timebreak-save"] + time()
+        stats["confusion_time"] = temp["confusion-save"] + time()
+        stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        stats["paralyse_time"] = temp["paralyse-save"] + time()
+        stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        stats["notouch_time"] = temp["notouch-save"] + time()
 
         # Log.
         log.info("Store", "Player exited the store.")
@@ -757,15 +757,15 @@ class CheatEngine:
         """
         modes["pause"] = True
         modes["cheater"] = True
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
 
         self.text = ""
         self.text_id = canvas.create_text(10, config["height"] - 100, text="> ", font=(font, 24), anchor=SW)
@@ -783,14 +783,14 @@ class CheatEngine:
         canvas.delete(self.text_id)
         modes["pause"] = False
         modes["cheater"] = False
-        stats["scorestate-time"] = temp["scorestate-save"] + time()
-        stats["secure-time"] = temp["secure-save"] + time()
-        stats["timebreak-time"] = temp["timebreak-save"] + time()
-        stats["confusion-time"] = temp["confusion-save"] + time()
-        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-        stats["paralis-time"] = temp["paralis-save"] + time()
-        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-        stats["notouch-time"] = temp["notouch-save"] + time()
+        stats["scorestate_time"] = temp["scorestate-save"] + time()
+        stats["secure_time"] = temp["secure-save"] + time()
+        stats["timebreak_time"] = temp["timebreak-save"] + time()
+        stats["confusion_time"] = temp["confusion-save"] + time()
+        stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        stats["paralyse_time"] = temp["paralyse-save"] + time()
+        stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        stats["notouch_time"] = temp["notouch-save"] + time()
 
     def input_event_handler(self, canvas, log, stats, backgrounds, bubble, event, config, bub, temp, modes):
         """
@@ -873,7 +873,7 @@ class CheatEngine:
         """
         from bubble import create_bubble
         act = ["Double", "Kill", "Triple", "Normal", "SpeedDown", "SpeedUp", "Up", "Ultimate", "Teleporter",
-               "SlowMotion", "HyperMode", "Protect", "ShotSpdStat", "TimeBreak", "DoubleState", "Confusion", "Paralis",
+               "SlowMotion", "HyperMode", "Protect", "ShotSpdStat", "TimeBreak", "DoubleState", "Confusion", "Paralyse",
                "StoneBub", "NoTouch", "Coin", "Diamond"]
         if 2 >= len(params) >= 1:
             if params[0] in act:
@@ -909,7 +909,7 @@ class CheatEngine:
                     i = 1101
                 elif p == "Confusion":
                     i = 985
-                elif p == "Paralis":
+                elif p == "Paralyse":
                     i = 1085
                 elif p == "Teleporter":
                     i = 1120
@@ -963,7 +963,7 @@ class CheatEngine:
                     i = 1101
                 elif p == "Confusion":
                     i = 985
-                elif p == "Paralis":
+                elif p == "Paralyse":
                     i = 1085
                 elif p == "Teleporter":
                     i = 1120
