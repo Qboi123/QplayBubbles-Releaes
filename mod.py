@@ -1,4 +1,4 @@
-from .components import Store
+from components import Store
 
 
 class StoreItem(Store):

@@ -1,22 +1,25 @@
-import json
+from nzt import NZTFile
 
 
-class Reader(json.JSONDecoder):
+class Reader(object):
     def __init__(self, config_file):
-        super().__init__()
-        file = open(config_file, "r")
-        self.json = file.read()
+        self.configFile = config_file
+
+        file = NZTFile(config_file, "r")
+        file.load()
         file.close()
-        self.config_file = config_file
+        self.data = file.data
 
     def get_decoded(self):
-        return self.decode(self.json)
+        data = self.data
+        return data
 
 
-class Writer(json.JSONEncoder):
+class Writer(object):
     def __init__(self, config_file, obj):
-        super().__init__()
-        self.json = self.encode(obj)
-        file = open(config_file, "w")
-        file.write(self.json)
+        self.data = data = obj
+
+        file = NZTFile(config_file, "w")
+        file.data = data
+        file.save()
         file.close()

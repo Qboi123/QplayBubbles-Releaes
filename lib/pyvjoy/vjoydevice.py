@@ -14,7 +14,7 @@ class VJoyDevice(object):
 		if data:
 			self.data = data
 		else:
-			#TODO maybe - have self.data as a wrapper object containing the Struct
+			#TODO maybe - have self.assets as a wrapper object containing the Struct
 			self.data = self._sdk.CreateDataStructure(self.rID)
 
 		try:
@@ -48,7 +48,7 @@ class VJoyDevice(object):
 
 		
 	def reset_data(self):
-		"""Reset the data Struct to default (does not change vJoy device at all directly)"""
+		"""Reset the assets Struct to default (does not change vJoy device at all directly)"""
 		self.data=self._sdk.CreateDataStructure(self.rID)
 			
 		
@@ -63,7 +63,7 @@ class VJoyDevice(object):
 
 		
 	def update(self):
-		"""Send the stored Joystick data to the device in one go (the 'efficient' method)"""
+		"""Send the stored Joystick assets to the device in one go (the 'efficient' method)"""
 		return self._sdk.UpdateVJD(self.rID, self.data)
 
 		

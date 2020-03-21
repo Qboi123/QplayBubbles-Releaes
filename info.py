@@ -113,15 +113,15 @@ def show_spdboost(canvas: Canvas, texts: Dict[str, int], on_off: str):
     canvas.itemconfig(texts["speedboost"], text=on_off)
 
 
-def show_paralis(canvas: Canvas, texts: Dict[str, int], on_off: str):
+def show_paralyse(canvas: Canvas, texts: Dict[str, int], on_off: str):
     """
-    shows paralis state
+    shows paralyse state
     :param texts:
     :param canvas:
     :param on_off:
     :return:
     """
-    canvas.itemconfig(texts["paralis"], text=on_off)
+    canvas.itemconfig(texts["paralyse"], text=on_off)
 
 
 def show_shotspeed(canvas: Canvas, texts: Dict[str, int], integer: Union[str, int]):
@@ -194,23 +194,23 @@ def view_level(canvas: Canvas, root, texts: Dict[str, int], level: Union[str, in
 def show_info(canvas: Canvas, texts: Dict[str, int], stats):
     """
     Shows all information:
-    Score, Level, status-time etc.
+    Score, Level, status_time etc.
     :return:
     """
     try:
-        show_score(canvas, texts, stats["score"])
+        show_score(canvas, texts, stats["Player"]["score"])
         show_level(canvas, texts, stats["level"])
         show_speed(canvas, texts, stats["shipspeed"])
         show_lives(canvas, texts, stats["lives"])
-        show_score_point(canvas, texts, str(int(stats["scorestate-time"] - time())))
-        show_protection(canvas, texts, str(int(stats["secure-time"] - time())))
-        show_slowmotion(canvas, texts, str(int(stats["slowmotion-time"] - time())))
-        show_confusion(canvas, texts, str(int(stats["confusion-time"] - time())))
-        show_timebreak(canvas, texts, str(int(stats["timebreak-time"] - time())))
-        show_spdboost(canvas, texts, str(int(stats["speedboost-time"] - time())))
-        show_paralis(canvas, texts, str(int(stats["paralis-time"] - time())))
-        show_shotspeed(canvas, texts, str(int(stats["shotspeed-time"] - time())))
-        show_notouch(canvas, texts, str(int(stats["notouch-time"] - time())))
+        show_score_point(canvas, texts, str(int(stats["scorestate_time"] - time())))
+        show_protection(canvas, texts, str(int(stats["secure_time"] - time())))
+        show_slowmotion(canvas, texts, str(int(stats["slowmotion_time"] - time())))
+        show_confusion(canvas, texts, str(int(stats["confusion_time"] - time())))
+        show_timebreak(canvas, texts, str(int(stats["timebreak_time"] - time())))
+        show_spdboost(canvas, texts, str(int(stats["speedboost_time"] - time())))
+        show_paralyse(canvas, texts, str(int(stats["paralyse_time"] - time())))
+        show_shotspeed(canvas, texts, str(int(stats["shotspeed_time"] - time())))
+        show_notouch(canvas, texts, str(int(stats["notouch_time"] - time())))
         show_tps(canvas, texts, stats["teleports"])
         show_diamond(canvas, texts, stats["diamonds"])
         show_coin(canvas, texts, stats["coins"])

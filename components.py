@@ -5,8 +5,8 @@ from time import time
 
 from threadsafe_tkinter import *
 
-from .config import Reader
-from .state import State
+from config import Reader
+from state import State
 
 
 class StoppableThread(threading.Thread):
@@ -38,15 +38,15 @@ class Present:
         mid_y = config["middle-y"]
 
         # Sets pause save-variables.
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
 
         # Creating ID's for window and information.
         self.lineid = []
@@ -73,7 +73,7 @@ class Present:
         :return:
         """
         if index is None:
-            # If variable "i" was not given.
+            # If parameter "index" was not given.
             index = randint(0, 1000)
         if index == 0:
             # Master Bonus, huge pack of diamonds and coins
@@ -119,14 +119,14 @@ class Present:
             stats["diamonds"] += self.Diamonds
             stats["coins"] += self.Money
 
-            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/Tadaa.wav")
         elif 1 <= index < 200:
             # Teleport
             text = "You earned:\n1 Teleport"
             canvas.itemconfig(self.textid, text=text)
             stats["teleports"] += 1
 
-            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/Tadaa.wav")
         elif 200 <= index < 360:
             # Giving a Protection
             # Text for information
@@ -138,7 +138,7 @@ class Present:
             # Globals and status setup
             State.set_state(canvas, log, stats, "Protect", backgrounds=None)
 
-            # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/Tadaa.wav")
+            # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/Tadaa.wav")
         else:
             # Nothing gives
             text = "O, oh. There's nothing"
@@ -182,8 +182,8 @@ class SpecialMode:
         else:
             index = randint(0, 1600)
         if loc_x is None and loc_y is None and rad is None and spd is None:
-            loc_x = config["width"] + config["bubble"]["screen-gap"]
-            rad = randint(int(config["bubble"]["min-radius"]), int(config["bubble"]["max-radius"]))
+            loc_x = config["width"] + config["Bubble"]["screen-gap"]
+            rad = randint(int(config["Bubble"]["min-radius"]), int(config["Bubble"]["max-radius"]))
             loc_y = randint(72 + rad, (config["height"] - rad))
         else:
             pass
@@ -258,7 +258,7 @@ class SpecialMode:
         if not bubble["active2"][index]:
             bubble["active2"][index] = True
             bubble["active"] += 1
-        # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, modes)).start()
+        # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, input_modes)).start()
 
 
 class Store:
@@ -313,7 +313,7 @@ class Store:
                                             font=(font, 18))
 
         # Setups items and price.
-        info = Reader("versions/"+launcher_cfg["versionDir"]+"/config/store.json").get_decoded()
+        info = Reader("versions/"+launcher_cfg["versionDir"]+"/config/store.nzt").get_decoded()
 
         i = 0
 
@@ -412,21 +412,21 @@ class Store:
             stats["diamonds"] -= self.price[self.selected]
             stats["coins"] -= int(canvas.itemcget(self.coins[self.selected], "text"))
             if self.selected == 0:
-                stats["score"] += 1000
+                stats["Player"]["score"] += 1000
             if self.selected == 1:
                 stats["teleport"] += 1
             if self.selected == 2:
                 stats["confusion"] = False
-                stats["confusion-time"] = time()
-                stats["paralis"] = False
-                stats["paralis-time"] = time()
+                stats["confusion_time"] = time()
+                stats["paralyse"] = False
+                stats["paralyse_time"] = time()
                 State.set_state(canvas, log, stats, "Protect", backgrounds)
             if self.selected == 3:
                 stats["diamonds"] += 1
             if self.selected == 4:
                 stats["lives"] += 1
             if self.selected == 5:
-                from .extras import pop_bubble
+                from extras import pop_bubble
                 self.exit(canvas, log, modes, stats, temp, commands)
                 n = 0
                 canvas.bind_all("<ButtonPress-1>", lambda event: pop_bubble(canvas, log, bubble, commands,
@@ -447,20 +447,20 @@ class Store:
                 canvas.itemconfig(backgrounds["id"], image=backgrounds["special"])
                 canvas.itemconfig(panels["game/top"], fill="#3f3f3f")
                 stats["special-level"] = True
-                stats["special-level-time"] = time() + 40
+                stats["special-level_time"] = time() + 40
                 log.info("State", "(CollFunc) Special Level State is ON!!!")
-                # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/specialmode.mp3")
+                # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/specialmode.mp3")
             if self.selected == 9:
                 stats["scorestate"] = 2
-                stats["scorestate-time"] = time() + randint(20, 40)
+                stats["scorestate_time"] = time() + randint(20, 40)
             if self.selected == 10:
-                stats["score"] += 10
+                stats["Player"]["score"] += 10
             if self.selected == 11:
-                stats["score"] += 100
+                stats["Player"]["score"] += 100
             if self.selected == 12:
-                stats["score"] += 200
+                stats["Player"]["score"] += 200
             if self.selected == 13:
-                stats["score"] += 500
+                stats["Player"]["score"] += 500
             canvas.itemconfig(self.vDiamonds, text="Diamonds: " + str(stats["diamonds"]))
             modes["window"] = False
         else:
@@ -545,14 +545,14 @@ class Store:
         modes["store"] = False
 
         # Pause variables.
-        stats["scorestate-time"] = temp["scorestate-save"] + time()
-        stats["secure-time"] = temp["secure-save"] + time()
-        stats["timebreak-time"] = temp["timebreak-save"] + time()
-        stats["confusion-time"] = temp["confusion-save"] + time()
-        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-        stats["paralis-time"] = temp["paralis-save"] + time()
-        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-        stats["notouch-time"] = temp["notouch-save"] + time()
+        stats["scorestate_time"] = temp["scorestate-save"] + time()
+        stats["secure_time"] = temp["secure-save"] + time()
+        stats["timebreak_time"] = temp["timebreak-save"] + time()
+        stats["confusion_time"] = temp["confusion-save"] + time()
+        stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        stats["paralyse_time"] = temp["paralyse-save"] + time()
+        stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        stats["notouch_time"] = temp["notouch-save"] + time()
 
         # Log.
         log.info("Store", "Player exited the store.")
@@ -581,17 +581,17 @@ class Window:
         self.close_event = close_event
 
         # Creates window.
-        self.title_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-mid-focused.png")
-        self.title_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-left-focused.png")
-        self.title_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/titlebar-right-focused.png")
+        self.title_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/titlebar-mid-focused.png")
+        self.title_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/titlebar-left-focused.png")
+        self.title_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/titlebar-right-focused.png")
 
-        self.border_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-left-focused.png")
-        self.border_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-right-focused.png")
-        self.border_bottom_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-mid-focused.png")
-        self.border_bottom_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-left-focused.png")
-        self.border_bottom_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/frame-bottom-right-focused.png")
-        self.close = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/button-close.png")
-        self.close_press = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/data/borders/button-close-prelight.png")
+        self.border_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-left-focused.png")
+        self.border_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-right-focused.png")
+        self.border_bottom_mid = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-bottom-mid-focused.png")
+        self.border_bottom_left = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-bottom-left-focused.png")
+        self.border_bottom_right = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/frame-bottom-right-focused.png")
+        self.close = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/button-close.png")
+        self.close_press = PhotoImage(file="versions/"+launcher_cfg["versionDir"]+"/assets/borders/button-close-prelight.png")
 
         self.id.append(canvas.create_rectangle(self.x1 - 6, self.y1 + 14, self.x2 + 6, self.y2 + 6, fill="lightgray",
                                                outline="#272727"))
@@ -740,7 +740,7 @@ class CheatEngine:
 
     def event_handler(self, canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub, font):
         """
-        The "/" key event handler.
+        The "/" key event obj.
         :param font:
         :param log:
         :param log:
@@ -757,15 +757,15 @@ class CheatEngine:
         """
         modes["pause"] = True
         modes["cheater"] = True
-        temp["scorestate-save"] = stats["scorestate-time"] - time()
-        temp["secure-save"] = stats["secure-time"] - time()
-        temp["timebreak-save"] = stats["timebreak-time"] - time()
-        temp["confusion-save"] = stats["confusion-time"] - time()
-        temp["slowmotion-save"] = stats["slowmotion-time"] - time()
-        temp["paralis-save"] = stats["paralis-time"] - time()
-        temp["shotspeed-save"] = stats["shotspeed-time"] - time()
-        temp["notouch-save"] = stats["notouch-time"] - time()
-        temp["special-level-save"] = stats["special-level-time"] - time()
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
 
         self.text = ""
         self.text_id = canvas.create_text(10, config["height"] - 100, text="> ", font=(font, 24), anchor=SW)
@@ -783,14 +783,14 @@ class CheatEngine:
         canvas.delete(self.text_id)
         modes["pause"] = False
         modes["cheater"] = False
-        stats["scorestate-time"] = temp["scorestate-save"] + time()
-        stats["secure-time"] = temp["secure-save"] + time()
-        stats["timebreak-time"] = temp["timebreak-save"] + time()
-        stats["confusion-time"] = temp["confusion-save"] + time()
-        stats["slowmotion-time"] = temp["slowmotion-save"] + time()
-        stats["paralis-time"] = temp["paralis-save"] + time()
-        stats["shotspeed-time"] = temp["shotspeed-save"] + time()
-        stats["notouch-time"] = temp["notouch-save"] + time()
+        stats["scorestate_time"] = temp["scorestate-save"] + time()
+        stats["secure_time"] = temp["secure-save"] + time()
+        stats["timebreak_time"] = temp["timebreak-save"] + time()
+        stats["confusion_time"] = temp["confusion-save"] + time()
+        stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        stats["paralyse_time"] = temp["paralyse-save"] + time()
+        stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        stats["notouch_time"] = temp["notouch-save"] + time()
 
     def input_event_handler(self, canvas, log, stats, backgrounds, bubble, event, config, bub, temp, modes):
         """
@@ -837,7 +837,7 @@ class CheatEngine:
         :rtype: object
         :param params:
         """
-        from .bubble import create_bubble
+        from bubble import create_bubble
         if len(params) == 1:
             if params[0].isnumeric() and "." not in params[0]:
                 a = int(params[0])
@@ -854,7 +854,7 @@ class CheatEngine:
         :rtype: object
         :param params:
         """
-        from .bubble import clean_all
+        from bubble import clean_all
         if len(params) == 0:
             Thread(None, lambda: clean_all(bubble, canvas)).start()
 
@@ -871,9 +871,9 @@ class CheatEngine:
         :rtype: object
         :param params:
         """
-        from .bubble import create_bubble
+        from bubble import create_bubble
         act = ["Double", "Kill", "Triple", "Normal", "SpeedDown", "SpeedUp", "Up", "Ultimate", "Teleporter",
-               "SlowMotion", "HyperMode", "Protect", "ShotSpdStat", "TimeBreak", "DoubleState", "Confusion", "Paralis",
+               "SlowMotion", "HyperMode", "Protect", "ShotSpdStat", "TimeBreak", "DoubleState", "Confusion", "Paralyse",
                "StoneBub", "NoTouch", "Coin", "Diamond"]
         if 2 >= len(params) >= 1:
             if params[0] in act:
@@ -909,7 +909,7 @@ class CheatEngine:
                     i = 1101
                 elif p == "Confusion":
                     i = 985
-                elif p == "Paralis":
+                elif p == "Paralyse":
                     i = 1085
                 elif p == "Teleporter":
                     i = 1120
@@ -963,7 +963,7 @@ class CheatEngine:
                     i = 1101
                 elif p == "Confusion":
                     i = 985
-                elif p == "Paralis":
+                elif p == "Paralyse":
                     i = 1085
                 elif p == "Teleporter":
                     i = 1120
@@ -1032,7 +1032,7 @@ class CheatEngine:
         :param canvas:
         :rtype: object
         """
-        from .bubble import clean_all
+        from bubble import clean_all
         cmd_and_param_list = self.text.split(sep=" ")
         command = cmd_and_param_list[0]
         params = cmd_and_param_list[1:]

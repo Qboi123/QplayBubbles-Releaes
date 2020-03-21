@@ -1,3 +1,7 @@
 /logs/
 /slots/
 /slots.old/
+.idea
+__pycache__
+lib/__pycache__/
+*.log

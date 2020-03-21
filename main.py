@@ -167,7 +167,7 @@ class Game(Canvas):
         self.temp["timebreak-save"] = 0
         self.temp["confusion-save"] = 0
         self.temp["slowmotion-save"] = 0
-        self.temp["paralis-save"] = 0
+        self.temp["paralyse-save"] = 0
         self.temp["shotspeed-save"] = 0
         self.temp["notouch-save"] = 0
         self.temp["special-level-save"] = 0
@@ -543,11 +543,11 @@ class Game(Canvas):
                                 "Abilities": {"teleports": 0, "level-score": 10000},
                                 "lives": 7, "score": 0, "high-score": 0, "teleports": 0, "level": 1},
                      "BubbleStats": {"bubspeed": 5},
-                     "Effects": {"confusion": False, "confusion-time": 0, "notouch": False, "notouch-time": 0,
-                                 "paralis": False, "paralis-time": 0, "scorestate": 1, "scorestate-time": 0,
-                                 "secure": False, "secure-time": 0, "shotspeed": 0.1, "shotspeed-time": 0,
-                                 "slowmotion": False, "slowmotion-time": 0, "special-level": False, "special-level-time": 0,
-                                 "speedboost": False, "speedboost-time": 0, "timebreak": False, "timebreak-time": 0}}
+                     "Effects": {"confusion": False, "confusion_time": 0, "notouch": False, "notouch_time": 0,
+                                 "paralyse": False, "paralyse_time": 0, "scorestate": 1, "scorestate_time": 0,
+                                 "secure": False, "secure_time": 0, "shotspeed": 0.1, "shotspeed_time": 0,
+                                 "slowmotion": False, "slowmotion_time": 0, "special-level": False, "special-level_time": 0,
+                                 "speedboost": False, "speedboost_time": 0, "timebreak": False, "timebreak_time": 0}}
 
         bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                        "bub-position": [], "bub-index": [], "key-active": False}
@@ -592,7 +592,7 @@ class Game(Canvas):
                                     "lives": 7, "score": 0, "high_score": 0, "teleports": 0, "level": 1},
                          "BubbleStats": {"bubspeed": 5},
                          "Effects": {"confusion": False, "confusion_time": 0, "notouch": False, "notouch_time": 0,
-                                     "paralis": False, "paralis_time": 0, "scorestate": 1, "scorestate_time": 0,
+                                     "paralyse": False, "paralyse_time": 0, "scorestate": 1, "scorestate_time": 0,
                                      "secure": False, "secure_time": 0, "shotspeed": 0.1, "shotspeed_time": 0,
                                      "slowmotion": False, "slowmotion_time": 0, "special_level": False,
                                      "special_level_time": 0,
@@ -787,14 +787,14 @@ class Game(Canvas):
                     self.commands["present"].exit(self.canvas)
                     self.modes["pause"] = False
                     self.modes["present"] = False
-                    self.stats["Effects"]["scorestate-time"] = self.temp["scorestate-save"] + time()
-                    self.stats["Effects"]["secure-time"] = self.temp["secure-save"] + time()
-                    self.stats["Effects"]["timebreak-time"] = self.temp["timebreak-save"] + time()
-                    self.stats["Effects"]["confusion-time"] = self.temp["confusion-save"] + time()
-                    self.stats["Effects"]["slowmotion-time"] = self.temp["slowmotion-save"] + time()
-                    self.stats["Effects"]["paralyse-time"] = self.temp["paralis-save"] + time()
-                    self.stats["Effects"]["shotspeed-time"] = self.temp["shotspeed-save"] + time()
-                    self.stats["Effects"]["notouch-time"] = self.temp["notouch-save"] + time()
+                    self.stats["Effects"]["scorestate_time"] = self.temp["scorestate-save"] + time()
+                    self.stats["Effects"]["secure_time"] = self.temp["secure-save"] + time()
+                    self.stats["Effects"]["timebreak_time"] = self.temp["timebreak-save"] + time()
+                    self.stats["Effects"]["confusion_time"] = self.temp["confusion-save"] + time()
+                    self.stats["Effects"]["slowmotion_time"] = self.temp["slowmotion-save"] + time()
+                    self.stats["Effects"]["paralyse_time"] = self.temp["paralyse-save"] + time()
+                    self.stats["Effects"]["shotspeed_time"] = self.temp["shotspeed-save"] + time()
+                    self.stats["Effects"]["notouch_time"] = self.temp["notouch-save"] + time()
 
         if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
             if not self.modes["pause"]:
@@ -1043,7 +1043,7 @@ class Game(Canvas):
         self.bub["HyperMode"] = dict()
         self.bub["TimeBreak"] = dict()
         self.bub["Confusion"] = dict()
-        self.bub["Paralis"] = dict()
+        self.bub["Paralyse"] = dict()
         self.bub["StoneBub"] = dict()
         self.bub["NoTouch"] = dict()
         self.bub["Key"] = dict()
@@ -1073,7 +1073,7 @@ class Game(Canvas):
             self.bub["HyperMode"][i] = utils.createbubble_image((i, i), None, "black", "black", "white", "black")
             self.bub["TimeBreak"][i] = utils.createbubble_image((i, i), None, "red", "orange", "yellow", "white")
             self.bub["Confusion"][i] = utils.createbubble_image((i, i), None, "black", "purple", "magenta", "white")
-            self.bub["Paralis"][i] = utils.createbubble_image((i, i), None, "#ffff00", "#ffff00", "#ffff7f", "#ffffff")
+            self.bub["Paralyse"][i] = utils.createbubble_image((i, i), None, "#ffff00", "#ffff00", "#ffff7f", "#ffffff")
             self.bub["StoneBub"][i] = utils.createbubble_image((i, i), None, "black", "orange", "yellow")
             self.bub["NoTouch"][i] = utils.createbubble_image((i, i), None, "#7f7f7f", "#7f7f7f", "#7f7f7f", "#373737")
 
@@ -1273,7 +1273,7 @@ class Game(Canvas):
         self.canvas.itemconfig(t2, text="State Time Break")
         c.create_text(760, 30, text=self.lang["info.state.spdboost"], fill="gold", font=[self.font, 15 + self.f_size])
         self.canvas.itemconfig(t2, text="State SpeedBoost")
-        c.create_text(850, 30, text=self.lang["info.state.paralis"], fill="gold", font=[self.font, 15 + self.f_size])
+        c.create_text(850, 30, text=self.lang["info.state.paralyse"], fill="gold", font=[self.font, 15 + self.f_size])
         self.canvas.itemconfig(t2, text="State Paralize")
         c.create_text(940, 30, text=self.lang["info.state.shotspeed"], fill="gold", font=[self.font, 15 + self.f_size])
         self.canvas.itemconfig(t2, text="State Ammo Speed")
@@ -1310,8 +1310,8 @@ class Game(Canvas):
         self.canvas.itemconfig(t2, text="State Time Break")
         self.texts["speedboost"] = c.create_text(760, 50, fill='cyan')
         self.canvas.itemconfig(t2, text="State SpeedBoost")
-        self.texts["paralis"] = c.create_text(850, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Paralis")
+        self.texts["paralyse"] = c.create_text(850, 50, fill='cyan')
+        self.canvas.itemconfig(t2, text="State Paralyse")
         self.texts["shotspeed"] = c.create_text(940, 50, fill='cyan')
         self.canvas.itemconfig(t2, text="State Ammo Speed")
         self.texts["notouch"] = c.create_text(1030, 50, fill='cyan')
@@ -1385,41 +1385,41 @@ class Game(Canvas):
         self.canvas.itemconfig(t1, text="Fixing Saved States")
         self.canvas.itemconfig(t2, text="")
 
-        if stats["Effects"]["scorestate-time"] <= time():
+        if stats["Effects"]["scorestate_time"] <= time():
             stats["Effects"]["scorestate"] = 1
-            stats["Effects"]["scorestate-time"] = time()
-        if stats["Effects"]["secure-time"] <= time():
+            stats["Effects"]["scorestate_time"] = time()
+        if stats["Effects"]["secure_time"] <= time():
             stats["Effects"]["secure"] = False
-            stats["Effects"]["secure-time"] = time()
-        if stats["Effects"]["slowmotion-time"] <= time():
+            stats["Effects"]["secure_time"] = time()
+        if stats["Effects"]["slowmotion_time"] <= time():
             stats["Effects"]["slowmotion"] = False
-            stats["Effects"]["slowmotion-time"] = time()
-        if stats["Effects"]["timebreak-time"] <= time():
+            stats["Effects"]["slowmotion_time"] = time()
+        if stats["Effects"]["timebreak_time"] <= time():
             stats["Effects"]["timebreak"] = False
-            stats["Effects"]["timebreak-time"] = time()
-        if stats["Effects"]["confusion-time"] <= time():
+            stats["Effects"]["timebreak_time"] = time()
+        if stats["Effects"]["confusion_time"] <= time():
             stats["Effects"]["confusion"] = False
-            stats["Effects"]["confusion-time"] = time()
-        if stats["Effects"]["speedboost-time"] <= time():
+            stats["Effects"]["confusion_time"] = time()
+        if stats["Effects"]["speedboost_time"] <= time():
             stats["Effects"]["speedboost"] = False
-            stats["Effects"]["speedboost-time"] = time()
-        if stats["Effects"]["paralyse-time"] <= time():
+            stats["Effects"]["speedboost_time"] = time()
+        if stats["Effects"]["paralyse_time"] <= time():
             stats["Effects"]["paralyse"] = False
-            stats["Effects"]["paralyse-time"] = time()
-        if stats["Effects"]["shotspeed-time"] <= time():
+            stats["Effects"]["paralyse_time"] = time()
+        if stats["Effects"]["shotspeed_time"] <= time():
             stats["Effects"]["shotspeed"] = 0.1
-            stats["Effects"]["shotspeed-time"] = time()
-        if stats["Effects"]["special-level-time"] <= time():
+            stats["Effects"]["shotspeed_time"] = time()
+        if stats["Effects"]["special-level_time"] <= time():
             stats["Effects"]["special-level"] = False
-            stats["Effects"]["special-level-time"] = time()
+            stats["Effects"]["special-level_time"] = time()
         else:
             self.canvas.itemconfig(self.back["id"], image=self.back["special"])
             self.canvas.itemconfig(self.panels["game/top"], fill="#3f3f3f")
-        if stats["score"] < 0:
+        if stats["Player"]["score"] < 0:
             log.error("Game.main", "The 'Score' variable under zero.")
-            stats["score"] = 0
-        if stats["score"] > stats["hiscore"]:
-            stats["hiscore"] = stats["score"]
+            stats["Player"]["score"] = 0
+        if stats["Player"]["score"] > stats["Player"]["high-score"]:
+            stats["Player"]["high-score"] = stats["Player"]["score"]
         if stats["Effects"]["confusion"] and not stats["Effects"]["secure"]:
             shuffling(self.bubbles)
 
@@ -1500,7 +1500,7 @@ class Game(Canvas):
                 # for barier in bariers:
                 #     barier.destroy()
                 g1 = c.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
-                g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["score"]), fill='white',
+                g2 = c.create_text(mid_x, mid_y + 60, text='Score: ' + str(self.stats["Player"]["score"]), fill='white',
                                    font=('Helvetica', 30))
                 g3 = c.create_text(mid_x, mid_y + 90, text='Level: ' + str(self.stats["level"]), fill='white',
                                    font=('Helvetica', 30))

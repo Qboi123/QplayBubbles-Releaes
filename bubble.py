@@ -1,6 +1,6 @@
-from .ammo import *
-from .components import *
-from .info import *
+from ammo import *
+from components import *
+from info import *
 
 
 def place_bubble(c, bub, x, y, r, act):
@@ -53,8 +53,8 @@ def place_bubble(c, bub, x, y, r, act):
         return c.create_image(x, y, image=bub["NoTouch"][r * 2])
     if act == "LevelKey":
         return c.create_image(x, y, image=bub["Key"][60])
-    if act == "Paralis":
-        return c.create_image(x, y, image=bub["Paralis"][r * 2])
+    if act == "Paralyse":
+        return c.create_image(x, y, image=bub["Paralyse"][r * 2])
     if act == "SpecialKey":
         return c.create_image(x, y, image=bub["SpecialKey"][48])
     if act == "Diamond":
@@ -82,11 +82,11 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
     """
     from random import randint
     if x is None:
-        x = config["width"] + config["bubble"]["screen-gap"]
+        x = config["width"] + config["Bubble"]["screen-gap"]
     else:
         x = x
     if r is None:
-        r = randint(int(config["bubble"]["min-radius"]), int(config["bubble"]["max-radius"]))
+        r = randint(int(config["Bubble"]["min-radius"]), int(config["Bubble"]["max-radius"]))
     else:
         r = r
     if y is None:
@@ -97,168 +97,168 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
         i = randint(0, 1600)
     else:
         i = i
-    if stats["level"] <= 100:
-        level_dat = stats["level"]
+    if stats["Player"]["level"] <= 100:
+        level_dat = stats["Player"]["level"]
     else:
         level_dat = 100
     if 0 <= i < 800:
         ids = [c.create_image(x, y, image=bub["Normal"][r * 2])]
         act = "Normal"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 800 <= i < 830:
         ids = [c.create_image(x, y, image=bub["Double"][r * 2])]
         act = "Double"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 830 <= i < 930:
         ids = [c.create_image(x, y, image=bub["Kill"][r * 2])]
         act = "Kill"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 930 <= i < 940:
         ids = [c.create_image(x, y, image=bub["Triple"][r * 2])]
         act = "Triple"
-        spd = randint(int(stats["bubspeed"]) + 2, int(stats["bubspeed"]) + 6)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 2, int(stats["BubbleStats"]["bubspeed"]) + 6)
         hardness = 1
     elif 940 <= i < 950:
         ids = [c.create_image(x, y, image=bub["SpeedUp"][r * 2])]
         act = "SpeedUp"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 3)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 3)
         hardness = 1
     elif 950 <= i < 960:
         ids = [c.create_image(x, y, image=bub["SpeedDown"][r * 2])]
         act = "SpeedDown"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 3)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 3)
         hardness = 1
     elif 960 <= i < 965:
-        if stats["lives"] < 7:
+        if stats["Player"]["lives"] < 7:
             ids = [c.create_image(x, y, image=bub["Up"][r * 2])]
             act = "Up"
-            spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 3)
+            spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 3)
             hardness = 1
         else:
             ids = [c.create_image(x, y, image=bub["Normal"][r * 2])]
             act = "Normal"
-            spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+            spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
             hardness = 1
     elif 973 <= i < 974:
         ids = [c.create_image(x, y, image=bub["Ultimate"][r * 2])]
         act = "Ultimate"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif 974 <= i < 976:
         ids = [c.create_image(x, y, image=bub["DoubleState"][r * 2])]
         act = "DoubleState"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif 979 <= i < 981:
         ids = [c.create_image(x, y, image=bub["Protect"][r * 2])]
         act = "Protect"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif 981 <= i < 984:
         ids = [c.create_image(x, y, image=bub["SlowMotion"][r * 2])]
         act = "SlowMotion"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif 984 <= i < 985:
         ids = [c.create_image(x, y, image=bub["TimeBreak"][r * 2])]
         act = "TimeBreak"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif 1100 <= i < 1101:
         ids = [c.create_image(x, y, image=bub["HyperMode"][r * 2])]
         act = "HyperMode"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 1101 <= i < 1120:
         ids = [c.create_image(x, y, image=bub["ShotSpdStat"][r * 2])]
         act = "ShotSpdStat"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 985 <= i < 1085:
         ids = [c.create_image(x, y, image=bub["Confusion"][r * 2])]
         act = "Confusion"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 1085 <= i < 1100:
-        ids = [c.create_image(x, y, image=bub["Paralis"][r * 2])]
-        act = "Paralis"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        ids = [c.create_image(x, y, image=bub["Paralyse"][r * 2])]
+        act = "Paralyse"
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 1100 <= i < 1101:
         ids = [c.create_image(x, y, image=bub["HyperMode"][r * 2])]
         act = "HyperMode"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
     elif 1101 <= i < 1120:
         ids = [c.create_image(x, y, image=bub["ShotSpdStat"][r * 2])]
         act = "ShotSpdStat"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
-    elif 1120 <= i < 1121 and stats["level"] > 19:
+    elif 1120 <= i < 1121 and stats["Player"]["level"] > 19:
         ids = [c.create_image(x, y, image=bub["Teleporter"][r * 2])]
         act = "Teleporter"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 2)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 1
-    elif 1121 <= i < 1123 and stats["level"] > 4:
+    elif 1121 <= i < 1123 and stats["Player"]["level"] > 4:
         ids = [c.create_image(x, y, image=bub["Diamond"][36])]
         r = 18
         act = "Diamond"
-        spd = randint(int(stats["bubspeed"]) + 2, int(stats["bubspeed"]) + 4)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 2, int(stats["BubbleStats"]["bubspeed"]) + 4)
         hardness = 1
-    elif 1124 <= i < 1130 and stats["level"] > 4:
+    elif 1124 <= i < 1130 and stats["Player"]["level"] > 4:
         ids = [c.create_image(x, y, image=bub["Coin"])]
         r = 20
         act = "Coin"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 2)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 2
-    elif 1130 <= i < 1150 and stats["level"] > 4:
+    elif 1130 <= i < 1150 and stats["Player"]["level"] > 4:
         r = 20
         ids = [c.create_image(x, y, image=bub["NoTouch"][r * 2])]
         act = "NoTouch"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 2)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 1
-    elif 1150 <= i < 1160 and stats["level"] > 4:
+    elif 1150 <= i < 1160 and stats["Player"]["level"] > 4:
         r = 20
         ids = [c.create_image(x, y, image=bub["Present"][40])]
         act = "Present"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 2)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 1
     elif 1160 <= i < 1263 + (197 * level_dat / 100):
         ids = [c.create_image(x, y, image=bub["StoneBub"][r * 2])]
         act = "StoneBub"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 3 + int(level_dat / 2)
         # elif 1360 <= i < ???:
     elif 1460 <= i < 1491:
         ids = [c.create_image(x, y, image=bub["Coin"])]
         r = 20
         act = "Coin"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 2)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 2
     elif 1491 <= i < 1492:
         ids = [c.create_image(x, y, image=bub["SpecialKey"][48])]
         r = 24
         act = "SpecialKey"
-        spd = randint(int(stats["bubspeed"]) + 5, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 5, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif i == -1:
         ids = [c.create_image(x, y, image=bub["Key"][60])]
         r = 26
         act = "LevelKey"
-        spd = randint(int(stats["bubspeed"]) + 4, int(stats["bubspeed"]) + 8)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 4, int(stats["BubbleStats"]["bubspeed"]) + 8)
         hardness = 1
     elif i == -2:
         ids = [c.create_image(x, y, image=bub["Up"][r * 2])]
         act = "Up"
-        spd = randint(int(stats["bubspeed"]), int(stats["bubspeed"]) + 3)
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 3)
         hardness = 1
     else:
         ids = [c.create_image(x, y, image=bub["Normal"][r * 2])]
         act = "Normal"
-        spd = randint(int(stats["bubspeed"]) - 3, int(stats["bubspeed"]))
+        spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
 
     if s is not None:
@@ -278,7 +278,7 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
             bubble["active"] += 1
     except IndexError:
         pass
-    # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, modes)).start()
+    # Thread(None, lambda: movebubble_thread(ids, bubble, spd, act, ids[0], r, c, stats, input_modes)).start()
 
 
 def move_bubbles(bubble, stats, root, canvas):
@@ -368,7 +368,7 @@ class Collision:
         try:
             for j in range(len(bubble["bub-id"][index]) - 1, -1, -1):
                 if not bubble["bub-action"][index] == "Null":
-                    if stats["slowmotion"]:
+                    if stats["Effects"]["slowmotion"]:
                         canvas.move(bubble["bub-id"][index][j], -bubble["bub-speed"][index] / 10, 0)
                     else:
                         canvas.move(bubble["bub-id"][index][j], -bubble["bub-speed"][index], 0)
@@ -422,39 +422,39 @@ class Collision:
         :return:
         """
         if action == "Normal":
-            stats["score"] += bubscore * stats["scorestate"]
+            stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
         if action == "Double":
-            stats["score"] += bubscore * 2 * stats["scorestate"]
+            stats["Player"]["score"] += bubscore * 2 * stats["Effects"]["scorestate"]
         if action == "Triple":
-            stats["score"] += bubscore * 3 * stats["scorestate"]
-        if (not stats["secure"]) and accept_negative:
+            stats["Player"]["score"] += bubscore * 3 * stats["Effects"]["scorestate"]
+        if (not stats["Effects"]["secure"]) and accept_negative:
             if action == "Kill":
-                stats["lives"] -= 1
+                stats["Player"]["lives"] -= 1
             if action == "Min":
-                stats["score"] -= bubscore
+                stats["Player"]["score"] -= bubscore
             if action == "SpeedDown":
-                if stats["shipspeed"] == 5:
+                if stats["Player"]["ShipStats"]["ship-speed"] == 5:
                     return
-                stats["shipspeed"] -= 5
+                stats["Player"]["ShipStats"]["ship-speed"] -= 5
             if action == "Confusion":
                 State.set_state(canvas, log, stats, "Confusion", backgrounds)
-            if action == "Paralis":
-                State.set_state(canvas, log, stats, "Paralis", backgrounds)
+            if action == "Paralyse":
+                State.set_state(canvas, log, stats, "Paralyse", backgrounds)
             if action == "NoTouch":
-                stats["score"] += bubscore * stats["scorestate"]
+                stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
                 State.set_state(canvas, log, stats, action, backgrounds)
         if action == "DoubleState":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "TripleState":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "SpeedUp":
-            if stats["shipspeed"] == 20:
+            if stats["Player"]["ShipStats"]["ship-speed"] == 20:
                 return
-            elif stats["shipspeed"] == 25:
+            elif stats["Player"]["ShipStats"]["ship-speed"] == 25:
                 return
-            stats["shipspeed"] += 5
+            stats["Player"]["ShipStats"]["ship-speed"] += 5
         if action == "Up":
-            stats["lives"] += 1
+            stats["Player"]["lives"] += 1
         if action == "Protect":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "SlowMotion":
@@ -462,41 +462,41 @@ class Collision:
         if action == "TimeBreak":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "Ultimate":
-            if stats["lives"] < 7:
-                stats["lives"] += 1
-            stats["shipspeed"] = 25
+            if stats["Player"]["lives"] < 7:
+                stats["Player"]["lives"] += 1
+            stats["Player"]["ShipStats"]["ship-speed"] = 25
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "HyperMode":
-            stats["lives"] += 2
-            stats["shipspeed"] = 25
-            stats["score"] += bubscore * 30 * stats["scorestate"]
+            stats["Player"]["lives"] += 2
+            stats["Player"]["ShipStats"]["ship-speed"] = 25
+            stats["Player"]["score"] += bubscore * 30 * stats["Effects"]["scorestate"]
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "ShotSpdStat":
-            stats["score"] += bubscore * stats["scorestate"]
+            stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "Diamond":
-            stats["diamonds"] += 1
+            stats["Player"]["Money"]["diamonds"] += 1
         if action == "Coin":
-            stats["coins"] += 1
+            stats["Player"]["Money"]["coins"] += 1
         if action == "Teleporter":
-            stats["teleports"] += 1
+            stats["Player"]["Abilities"]["teleports"] += 1
         if action == "StoneBub":
-            stats["score"] += int((bubscore * bubble["bub-hardness"][index]))
+            stats["Player"]["score"] += int((bubscore * bubble["bub-hardness"][index]))
         if action == "LevelKey":
-            stats["level"] += 1
+            stats["Player"]["level"] += 1
             # clean_level_keys()
             bubble["key-active"] = False
-            view_level(canvas, root, texts, stats["level"])
+            view_level(canvas, root, texts, stats["Player"]["level"])
         if action == "Present":
             commands["present"] = True
-        # play_sound("versions/"+launcher_cfg["versionDir"]+"/data/sounds/bubpop.mp3")
+        # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/bubpop.mp3")
         if action == "SpecialKey":
             canvas.itemconfig(backgrounds["id"], image=backgrounds["special"])
             canvas.itemconfig(panels["game/top"], fill="#3f3f3f")
-            stats["special-level"] = True
-            stats["special-level-time"] = time() + 30
+            stats["Effects"]["special-level"] = True
+            stats["Effects"]["special-level_time"] = time() + 30
             log.info("State", "(CollFunc) Special Level State is ON!!!")
-            # play_sound("versions/"+self.launcher_cfg["versionDir"]+"/data/sounds/specialmode.mp3")
+            # play_sound("versions/"+self.launcher_config["versionDir"]+"/assets/sounds/specialmode.mp3")
         log.debug("CollFunc", "Bubble popped with id: "+str(index)+" | action: "+action)
 
     @staticmethod
@@ -512,7 +512,7 @@ class Collision:
         """
         try:
             x, y = get_coords(canvas, bubble["bub-id"][index][0])
-            if x < -config["bubble"]["screen-gap"]:
+            if x < -config["Bubble"]["screen-gap"]:
                 # Checks if the Level-key is active.
                 # If it's active then sets it the variable
                 # for the key-bubble to off.
@@ -533,7 +533,7 @@ class Collision:
         :param index:
         """
         x, y = get_coords(canvas, ammo["ammo-id"][index])
-        if x > config["width"] + config["bubble"]["screen-gap"]:
+        if x > config["width"] + config["Bubble"]["screen-gap"]:
             del_ammo(canvas, index, ammo)
 
     def check_collision(self, root, commands, bubble, config, stats, ammo, ship, canvas, log, backgrounds, texts,
@@ -542,15 +542,15 @@ class Collision:
         Collision bubble by touching or shooting the bubble
         :rtype: object
         """
-        from .extras import distance, replace_list
+        from extras import distance, replace_list
         from threading import Thread
         for index_bub in range(len(bubble["bub-id"].copy()) - 1, -1, -1):
-            # print(distance(canvas, log, ship["id"], bubble["bub-id"][index_bub][0]) - (config["game"]["ship-radius"] + bubble["bub-radius"][index_bub]))
+            # print(distance(canvas, log, ship["id"], bubble["bub-id"][index_bub][0]) - (config["Game"]["ship-radius"] + bubble["bub-radius"][index_bub]))
             self.bub = index_bub
             try:
                 if distance(canvas, log, ship["id"], bubble["bub-id"][index_bub][0]) < (
-                        config["game"]["ship-radius"] + bubble["bub-radius"][index_bub]):
-                    if not stats["notouch"]:
+                        config["Game"]["ship-radius"] + bubble["bub-radius"][index_bub]):
+                    if not stats["Effects"]["notouch"]:
                         # Sets score / status etc. and deletes bubble
                         if bubble["bub-hardness"][index_bub] == 1:
                             Thread(None, lambda: self.coll_func(index_bub, canvas, commands, root, log, stats,
@@ -561,7 +561,7 @@ class Collision:
                             del_bubble(index_bub, bubble, canvas)
                         elif bubble["bub-hardness"][index_bub] > 1:
                             replace_list(bubble["bub-hardness"], index_bub, bubble["bub-hardness"][index_bub] - 1)
-                if not stats["timebreak"]:
+                if not stats["Effects"]["timebreak"]:
                     self.move_bubble(index_bub, bubble, canvas, stats, root)
                     canvas.update()
                     self.clean_up_bub(canvas, index_bub, bubble, config, log)
@@ -584,11 +584,11 @@ def movebubble_thread(index, bubble, speed, action, id, radius, canvas, stats, m
     while True:
         try:
             # print("ID: "+str(index)+"phase 1")
-            if not stats["timebreak"] and not modes["pause"]:
+            if not stats["Effects"]["timebreak"] and not modes["pause"]:
                 # print("ID: "+str(index)+"phase 2")
                 if not action == "Null":
                     # print("ID: "+str(index)+"phase 3")
-                    if stats["slowmotion"]:
+                    if stats["Effects"]["slowmotion"]:
                         canvas.move(id, -speed / 10, 0)
                         # print("ID: "+str(index)+'phase 4a')
                     else:

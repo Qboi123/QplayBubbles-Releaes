@@ -1,4 +1,4 @@
-from .extras import get_coords
+from extras import get_coords
 
 
 def tp_mode(canvas, config, stats, modes, tp):

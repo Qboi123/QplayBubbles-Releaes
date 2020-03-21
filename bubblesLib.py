@@ -1,4 +1,4 @@
-from .base import Bubble, StatusBubble
+from base import Bubble, StatusBubble
 
 
 class NormalBubble(Bubble):
@@ -8,7 +8,7 @@ class NormalBubble(Bubble):
         self.radius = int()
 
     def on_collision(self, parent):
-        parent.stats["score"] += self.r
+        parent.stats["Player"]["score"] += self.r
 
 
 class InfitraBubble(StatusBubble)
