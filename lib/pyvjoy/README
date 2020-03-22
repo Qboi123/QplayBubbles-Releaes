@@ -25,10 +25,10 @@ j.set_button(15,1)
 #turn button 15 off again
 j.set_button(15,0)
 
-#Set X axis to fully left
+#Set "x" axis to fully left
 j.set_axis(pyvjoy.HID_USAGE_X, 0x1)
 
-#Set X axis to fully right
+#Set "x" axis to fully right
 j.set_axis(pyvjoy.HID_USAGE_X, 0x8000)
 
 #Also implemented:

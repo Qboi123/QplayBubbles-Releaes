@@ -1,3 +1,6 @@
+from tkinter import Canvas, Frame
+
+from globals import CANVAS
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
@@ -39,6 +42,9 @@ class StoreItem:
         self.coins = 0
         self.diamonds = 0
 
+    def __repr__(self):
+        return f"StoreItem<{self.__class__.__name__}>"
+
     def on_buy(self, parent):
         pass
 
@@ -73,8 +79,8 @@ class Sprite:
         self.axis = (HORIZONTAL, VERTICAL)
 
         # Has- variables
-        self.has_skin = TRUE
-        self.has_movetag = TRUE
+        self.has_skin = True
+        self.has_movetag = True
 
         # Type
         self.type = TYPE_NEUTRAL
@@ -87,7 +93,7 @@ class Sprite:
         self.width = int()
 
         # Direction movement
-        self.return_border = TRUE
+        self.return_border = True
         self.direction = LEFT
 
         # x and y, move and speed variables
@@ -309,8 +315,8 @@ class BaseBarier(Sprite):
         self._kw = kw
         super().__init__(**kw)
         self.direction = choice([UP, DOWN])
-        self.has_skin = TRUE
-        self.has_movetag = TRUE
+        self.has_skin = True
+        self.has_movetag = True
         self.axis = [VERTICAL]
         self.type = TYPE_DANGEROUS
         self.form = FORM_RECT
@@ -482,3 +488,14 @@ class Ammo(Sprite):
         self._kw["ammo"]["ammo-speed"][self.id] = 5
         self._kw["ammo"]["ammo-damage"][self.id] = 0
         super().create(x, y)
+
+
+class Player(Sprite):
+    def __init__(self):
+        super().__init__()
+
+    def move(self, x=0, y=0):
+        CANVAS.move(self.id, x, y)
+
+    def move_joy(self, x=0, y=0):
+        CANVAS.move(self.id, x, y)

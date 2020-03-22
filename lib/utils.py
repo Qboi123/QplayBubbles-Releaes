@@ -250,7 +250,7 @@ class ScrolledWindow(tk.Frame):
         self.canv = tk.Canvas(self.parent, bg='#FFFFFF', width=canv_w, height=canv_h,
                            scrollregion=(0, 0, __width, __height), highlightthickness=0)
         # self.hbar = Scrollbar(self.parent, orient=HORIZONTAL)
-        # self.hbar.pack(side=BOTTOM, fill=X)
+        # self.hbar.pack(side=BOTTOM, fill="x")
         # self.hbar.config(command=self.canv.xview)
 
         self.vbar = CustomScrollbar(self.parent, width=5, command=self.canv.yview)
@@ -261,7 +261,7 @@ class ScrolledWindow(tk.Frame):
         # with open(__file__, "r") as f:
         #     text.insert("end", f.read())
         # self.vbar = tix.Scrollbar(self.parent, orient=tk.VERTICAL, background="#3f3f3f", activebackground="#FFD800")
-        # self.vbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # self.vbar.pack(side=tk.RIGHT, fill=tk."y")
         # self.vbar.config(command=self.canv.yview)
         # self.canv.config(  # xscrollcommand=self.hbar.set,
         #                  yscrollcommand=self.vbar.set)
@@ -330,5 +330,5 @@ if __name__ == '__main__':
 
     c.create_rectangle(5, 5, size/2+10, size/2+10, fill="darkcyan")
     c.create_image(size/2+10, size/2+10, image=ddd)
-    c.pack(fill=BOTH, expand=True)
+    c.pack(fill="both", expand=True)
     root.mainloop()

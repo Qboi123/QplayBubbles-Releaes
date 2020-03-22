@@ -190,7 +190,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
 
             temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
                                                 command=lambda: return_main(),
-                                                relief=FLAT, bg="#1f1f1f", fg="#afafaf", font=font)
+                                                relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
             back = "#1f1f1f"
             fore = "yellow"
         else:
@@ -213,7 +213,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
 
             temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
                                                 command=lambda: return_main(),
-                                                relief=FLAT, bg="#005f5f", fg="#7fffff", font=[font])
+                                                relief="flat", bg="#005f5f", fg="#7fffff", font=[font])
 
             back = "#005f5f"
             fore = "#7fffff"
@@ -255,9 +255,9 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
                 x += 100
 
         canvass.config(height=y + 70, width=1000)
-        canvass.pack(fill=Y)
+        canvass.pack(fill="y")
 
-        temp["pause/back-to-menu"].pack(fill=X)
+        temp["pause/back-to-menu"].pack(fill="x")
 
         icons["pause"] = canvas.create_image(config["middle-x"], config["middle-y"] / 2,
                                              image=icons["pause-id"])
@@ -278,7 +278,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
             (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
         modes["pause"] = False
 
-        canvas.itemconfig(icons["pause"], state=HIDDEN)
+        canvas.itemconfig(icons["pause"], state="hidden")
         canvas.itemconfig(texts["pause"], text="")
 
         temp["pause/back-to-menu"].destroy()
@@ -577,19 +577,19 @@ class Game(Canvas):
         self.root.update()
 
         # Config resolution / positions
-        self.config["width"] = self.root.winfo_width()
-        self.config["height"] = self.root.winfo_height()
+        Registry.gameData["WindowWidth"] = self.root.winfo_width()
+        Registry.gameData["WindowHeight"] = self.root.winfo_height()
 
-        self.config["middle-x"] = self.config["width"] / 2
-        self.config["middle-y"] = self.config["height"] / 2
+        Registry.gameData["MiddleX"] = Registry.gameData["WindowWidth"] / 2
+        Registry.gameData["MiddleY"] = Registry.gameData["WindowHeight"] / 2
 
         # Collision class
         self.Coll = Collision()
 
         if not already_opened:
-            self.close = Button(self.root, text="X", fg="white", relief=FLAT, bg="#ff0000",
+            self.close = Button(self.root, text="x", fg="white", relief="flat", bg="#ff0000",
                                 command=lambda: os.kill(os.getpid(), -1))
-            self.close.pack(side=TOP, fill=X)
+            self.close.pack(side=TOP, fill="x")
 
         self.items = list()
 
@@ -603,7 +603,7 @@ class Game(Canvas):
                 # Widgets
                 self._root = root
                 self._canvas = Canvas(root, bg="#00afaf", highlightthickness=0)
-                self._canvas.pack(fill=BOTH, expand=TRUE)
+                self._canvas.pack(fill="both", expand=True)
 
                 # Bubble-sprites config.
                 self.__bubbles = []
@@ -654,18 +654,18 @@ class Game(Canvas):
 
         self.start_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.load(),
                                 text=self.lang["home.start"],
-                                relief=FLAT, font=(self.font, 20 + self.f_size))
-        self.start_btn.place(x=self.config["width"] / 2, y=self.config["height"] / 2 - 40, width=310, anchor=CENTER)
+                                relief="flat", font=(self.font, 20 + self.f_size))
+        self.start_btn.place(x=Registry.gameData["WindowWidth"] / 2, y=Registry.gameData["WindowHeight"] / 2 - 40, width=310, anchor=CENTER)
 
         self.quit_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.root.destroy(),
                                text=self.lang["home.quit"],
-                               relief=FLAT, font=(self.font, 20 + self.f_size))
-        self.quit_btn.place(x=self.config["width"] / 2 + 80, y=self.config["height"] / 2 + 40, width=150, anchor=CENTER)
+                               relief="flat", font=(self.font, 20 + self.f_size))
+        self.quit_btn.place(x=Registry.gameData["WindowWidth"] / 2 + 80, y=Registry.gameData["WindowHeight"] / 2 + 40, width=150, anchor=CENTER)
 
         self.options_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4,
                                   text=self.lang["home.options"],
-                                  relief=FLAT, font=(self.font, 20 + self.f_size))  # , command=lambda: self.options())
-        self.options_btn.place(x=self.config["width"] / 2 - 80, y=self.config["height"] / 2 + 40, width=150,
+                                  relief="flat", font=(self.font, 20 + self.f_size))  # , command=lambda: self.options())
+        self.options_btn.place(x=Registry.gameData["WindowWidth"] / 2 - 80, y=Registry.gameData["WindowHeight"] / 2 + 40, width=150,
                                anchor=CENTER)
 
         # Refresh game.
@@ -716,13 +716,13 @@ class Game(Canvas):
         self.options_btn.destroy()
 
         self.frame5 = Frame(self.root, bg="#5c5c5c")
-        self.frame5.pack(fill=BOTH, expand=TRUE)
+        self.frame5.pack(fill="both", expand=True)
 
         self.frame3 = Frame(self.frame5, height=700, width=1000, bg="#5c5c5c")
         self.frame3.pack()
 
         self.frame4 = Frame(self.frame5, height=20, bg="#5c5c5c")
-        self.frame4.pack(side=BOTTOM, fill=X)
+        self.frame4.pack(side=BOTTOM, fill="x")
 
         self.lang_lbl = Label(self.frame3, text=self.lang["options.language"], bg="#5c5c5c")
         self.lang_lbl.grid(row=0, column=0)
@@ -804,29 +804,29 @@ class Game(Canvas):
         self.frame2 = Frame(bg="#5c5c5c")
 
         # Add-button and -entry (Input)
-        self.add = Button(self.frame2, text=self.lang["slots.add"], relief=FLAT, bg="#7f7f7f", fg="white",
+        self.add = Button(self.frame2, text=self.lang["slots.add"], relief="flat", bg="#7f7f7f", fg="white",
                           command=self.add_save, font=[self.font, 15 + self.f_size])
         self.add.pack(side=RIGHT, padx=2, pady=5)
-        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief=FLAT, font=("helvetica"))
-        self.add_input.pack(side=LEFT, fill=X, expand=TRUE, padx=2, pady=5)
+        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief="flat", font=("helvetica"))
+        self.add_input.pack(side=LEFT, fill="x", expand=True, padx=2, pady=5)
         self.add_input.bind("<Return>", self.add_event)
 
         # Update root GUI.
         self.root.update()
 
         # Packing the config frame for adding a slot.
-        self.frame2.pack(side=BOTTOM, fill=X)
+        self.frame2.pack(side=BOTTOM, fill="x")
 
         # Main frame.
         self.main_f = Frame(self.root, background="#3c3c3c", height=self.root.winfo_height() - 100)
-        self.main_f.pack(fill=BOTH, expand=True)
+        self.main_f.pack(fill="both", expand=True)
 
         # Slots frame.
         self.s_frame = Frame(self.main_f, height=self.main_f.winfo_height() - 100, width=700)
-        self.s_frame.pack(fill=Y)
+        self.s_frame.pack(fill="y")
 
         # Scrollwindow for the slots frame
-        self.sw = ScrolledWindow(self.s_frame, 700, self.root.winfo_height() + 0, expand=True, fill=BOTH)
+        self.sw = ScrolledWindow(self.s_frame, 700, self.root.winfo_height() + 0, expand=True, fill="both")
 
         # Configurate the canvas from the scrollwindow
         self.canv = self.sw.canv
@@ -896,25 +896,25 @@ class Game(Canvas):
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.open"], bg="#afafaf", width=7,
+                Button(self.frames[-1], relief="flat", text=self.lang["slots.open"], bg="#afafaf", width=7,
                        font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(name, event))
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.rename"], bg="#afafaf", width=7,
+                Button(self.frames[-1], relief="flat", text=self.lang["slots.rename"], bg="#afafaf", width=7,
                        font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=600, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.rename)
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.remove"], bg="#afafaf", width=7,
+                Button(self.frames[-1], relief="flat", text=self.lang["slots.remove"], bg="#afafaf", width=7,
                        font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=525, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.remove)
 
             self.buttons.append(
-                Button(self.frames[-1], relief=FLAT, text=self.lang["slots.reset"], bg="#afafaf", width=7,
+                Button(self.frames[-1], relief="flat", text=self.lang["slots.reset"], bg="#afafaf", width=7,
                        font=[self.font, 15 + self.f_size]))
             self.buttons.copy()[-1].place(x=450, y=175, anchor=SE)
             self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.reset_save)
@@ -943,8 +943,8 @@ class Game(Canvas):
         os.removedirs("slots/" + src)
 
         # Disabling the input and the button.
-        self.add_input.config(state=DISABLED)
-        self.add.config(state=DISABLED)
+        self.add_input.config(state="disabled")
+        self.add.config(state="disabled")
 
         # Getting the input text.
         if src in ("aux", "con", ".", ".."):
@@ -970,8 +970,8 @@ class Game(Canvas):
 
         if len(os.listdir("slots/")) <= 4000:
             # Disabling the input and the button.
-            self.add_input.config(state=DISABLED)
-            self.add.config(state=DISABLED)
+            self.add_input.config(state="disabled")
+            self.add.config(state="disabled")
 
             # Getting the input text.
             new = self.add_input.get()
@@ -1054,16 +1054,16 @@ class Game(Canvas):
         self.stats = Reader("slots/" + self.save_name + "/game.nzt").get_decoded()
 
         # Create canvas.
-        self.canvas = Canvas(self.root, height=self.config["height"], width=self.config["width"], highlightthickness=0)
-        self.canvas.pack(expand=TRUE)
+        self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"], width=Registry.gameData["WindowWidth"], highlightthickness=0)
+        self.canvas.pack(expand=True)
 
         # Run the main method (function).
         self.main()
 
     def resize(self, event):
         # Reload config resolution.
-        self.config["height"] = event.height
-        self.config["width"] = event.width
+        Registry.gameData["WindowHeight"] = event.height
+        Registry.gameData["WindowWidth"] = event.width
 
     def return_main(self):
         # Returning to title menu.
@@ -1091,7 +1091,7 @@ class Game(Canvas):
                             self.canvas.move(self.ship["id"], 0, (-self.stats["shipspeed"] / (self.move_fps / 2) - a))
                             self.root.update()
                     elif self.pressed['Down']:
-                        if y < self.config["height"] - self.config["Game"]["ship-radius"]:
+                        if y < Registry.gameData["WindowHeight"] - self.config["Game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], 0, (self.stats["shipspeed"] / (self.move_fps / 2) + a))
                             self.root.update()
                     elif self.pressed['Left']:
@@ -1099,7 +1099,7 @@ class Game(Canvas):
                             self.canvas.move(self.ship["id"], (-self.stats["shipspeed"] / 20 - a), 0)
                             self.root.update()
                     elif self.pressed['Right']:
-                        if x < self.config["width"] - self.config["Game"]["ship-radius"]:
+                        if x < Registry.gameData["WindowWidth"] - self.config["Game"]["ship-radius"]:
                             self.canvas.move(self.ship["id"], (self.stats["shipspeed"] / 20 + a), 0)
                             self.root.update()
                     self.stats["ship-position"] = get_coords(self.canvas, self.ship["id"])
@@ -1179,7 +1179,7 @@ class Game(Canvas):
     def update(self):
         self.canvas.tag_raise(self.ship["id"])
         if not self.stats["timebreak"]:
-            if len(self.bubbles["bub-id"]) < (self.config["width"]) / 10:
+            if len(self.bubbles["bub-id"]) < (Registry.gameData["WindowWidth"]) / 10:
                 if not self.stats["special-level"]:
                     Thread(None,
                            lambda: create_bubble(self.stats, self.config, self.bub, self.canvas,
@@ -1226,15 +1226,15 @@ class Game(Canvas):
         self.canvas.update()
 
         # Reload config resolution.
-        self.config["height"] = self.canvas.winfo_height()
-        self.config["width"] = self.canvas.winfo_width()
+        Registry.gameData["WindowHeight"] = self.canvas.winfo_height()
+        Registry.gameData["WindowWidth"] = self.canvas.winfo_width()
 
         # Copy self.canvas into c.
         c = self.canvas
 
         # Reload middle positions.
-        mid_x = self.config["width"] / 2
-        mid_y = self.config["height"] / 2
+        mid_x = Registry.gameData["WindowWidth"] / 2
+        mid_y = Registry.gameData["WindowHeight"] / 2
 
         # Adding the dictionaries for the bubbles. With different res.
         self.bub["Normal"] = dict()
@@ -1395,11 +1395,11 @@ class Game(Canvas):
 
         # Initializing the panels for the game.
         self.panels["game/top"] = self.canvas.create_rectangle(
-            -1, -1, self.config["width"], 69, fill="darkcyan"
+            -1, -1, Registry.gameData["WindowWidth"], 69, fill="darkcyan"
         )
         # Create seperating lines.
-        self.canvas.create_line(0, 70, self.config["width"], 70, fill="lightblue")
-        self.canvas.create_line(0, 69, self.config["width"], 69, fill="white")
+        self.canvas.create_line(0, 70, Registry.gameData["WindowWidth"], 70, fill="lightblue")
+        self.canvas.create_line(0, 69, Registry.gameData["WindowWidth"], 69, fill="white")
 
         c.create_text(55, 30, text=self.lang["info.score"], fill='orange', font=[self.font, 15 + self.f_size])
         c.create_text(110, 30, text=self.lang["info.level"], fill='orange', font=[self.font, 15 + self.f_size])
@@ -1438,7 +1438,7 @@ class Game(Canvas):
         self.texts["level-view"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50 + self.f_size))
 
         self.texts["pause"] = c.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60 + self.f_size, "bold"))
-        self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state=HIDDEN)
+        self.icons["pause"] = c.create_image(mid_x, mid_y, image=self.icons["pause-id"], state="hidden")
 
         # Threaded Automatic Save (TAS)
         self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
@@ -1552,8 +1552,8 @@ class Game(Canvas):
 
         from base import BaseBarier
 
-        height = self.config["height"]
-        width = self.config["width"]
+        height = Registry.gameData["WindowHeight"]
+        width = Registry.gameData["WindowWidth"]
 
         a = randint(0, width)
         b = randint(0, width)
@@ -1581,12 +1581,12 @@ class Game(Canvas):
             # MAIN GAME LOOP
             while True:
                 # self.stats = self.cfg.auto_restore(self.save_name)
-                t0 = self.canvas.create_rectangle(0, 0, self.config["width"], self.config["height"], fill="#3f3f3f",
+                t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"], fill="#3f3f3f",
                                                   outline="#3f3f3f")
-                t1 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] - 30,
+                t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 30,
                                              text="Creating bubbles...",
                                              font=(self.font, 50 + self.f_size), fill="#afafaf")
-                t2 = self.canvas.create_text(self.config["middle-x"], self.config["middle-y"] + 20,
+                t2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 20,
                                              text="Thread 0 of 0 active",
                                              font=(self.font, 15 + self.f_size), fill="#afafaf")
                 while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:

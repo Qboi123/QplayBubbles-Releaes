@@ -12,7 +12,7 @@ class Logging:
         text = ""
         for item in args:
             text += "["+str(item)+"] "
-        print("["+time.strftime("%d-%m-%Y - %H:%M:%S", time.localtime(time.time()))+"] "+text+"- "+info)
+        print("["+time.strftime("%d-%m-%"y" - %H:%M:%S", time.localtime(time.time()))+"] "+text+"- "+info)
 
     def log(self, info, *args):
         import threading as thread
@@ -131,7 +131,7 @@ class Main(Logging):
             # print(len(self.item_info)-1, len(self.item_info[p]), len(self.item_info[p][x]), len(self.item_info[p][x][y]))
 
             self.frames2.append(tk.Frame(self.frames[-1], bg="#3c3c3c", bd=2, relief=tk.RAISED))
-            self.items.append(tk.Button(self.frames[-1], width=30, relief=tk.FLAT, text="<"+dirs[i]+">", bg="#707070"))
+            self.items.append(tk.Button(self.frames[-1], width=30, relief=tk."flat", text="<"+dirs[i]+">", bg="#707070"))
             self.log("Append Item: "+dirs[i], "Main", "RefreshExplorer")
             self.items.copy()[-1].grid(column=x, row=y)
             self.items.copy()[-1].bind("<ButtonRelease-1>", self.open_dir)
@@ -141,7 +141,7 @@ class Main(Logging):
         self.tabs.add(self.frames.copy()[-1], text=' {} '.format(p))
         self.log("Append tab")
         self.tabs.enable_traversal()
-        self.tabs.pack(side=tk.TOP, expand=tk.TRUE, fill=tk.BOTH)
+        self.tabs.pack(side=tk.TOP, expand=tk.True, fill=tk."both")
         self.root.update()
 
     def read_dir(self):

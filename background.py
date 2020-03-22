@@ -1,5 +1,5 @@
 from random import randint
-from threadsafe_tkinter import BOTH, TRUE, Canvas, Tk
+from threadsafe_tkinter import Canvas, Tk
 
 
 class Background(object):
@@ -12,7 +12,7 @@ class Background(object):
         # Widgets
         self._root = root
         self._canvas = Canvas(root, bg="#00afaf", highlightthickness=0)
-        self._canvas.pack(fill=BOTH, expand=TRUE)
+        self._canvas.pack(fill="both", expand=True)
 
         # Bubble-sprites config.
         self.__bubbles = []

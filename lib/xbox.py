@@ -18,8 +18,8 @@ class XboxController(object):
         self.LeftBumper = 0
         self.RightBumper = 0
         self.A = 0
-        self.X = 0
-        self.Y = 0
+        self."x" = 0
+        self."y" = 0
         self.B = 0
         self.LeftThumb = 0
         self.RightThumb = 0
@@ -39,7 +39,7 @@ class XboxController(object):
         x = self.LeftJoystickX
         y = self.LeftJoystickY
         a = self.A
-        b = self.X # b=1, x=2
+        b = self."x" # b=1, x=2
         rb = self.RightBumper
         return [x, y, a, b, rb]
 
@@ -69,9 +69,9 @@ class XboxController(object):
             elif event.code == 'BTN_SOUTH':
                 self.A = event.state
             elif event.code == 'BTN_NORTH':
-                self.X = event.state
+                self."x" = event.state
             elif event.code == 'BTN_WEST':
-                self.Y = event.state
+                self."y" = event.state
             elif event.code == 'BTN_EAST':
                 self.B = event.state
             elif event.code == 'BTN_THUMBL':

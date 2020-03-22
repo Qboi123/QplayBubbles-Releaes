@@ -6,5 +6,5 @@
 [Thu Oct 17 12:59:49 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 13, in __init__
 [Thu Oct 17 12:59:49 2019] [Err]:     choice = TitleMenu()
 [Thu Oct 17 12:59:49 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 25, in __init__
-[Thu Oct 17 12:59:49 2019] [Err]:     self.startBtn.place(x=self.config["width"] / 2, y=self.config["height"] / 2 - 40, width=310, anchor=CENTER)
+[Thu Oct 17 12:59:49 2019] [Err]:     self.startBtn.place(x=Registry.gameData["WindowWidth"] / 2, y=Registry.gameData["WindowHeight"] / 2 - 40, width=310, anchor=CENTER)
 [Thu Oct 17 12:59:49 2019] [Err]: KeyError: 'width'

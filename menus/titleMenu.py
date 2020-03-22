@@ -1,53 +1,77 @@
-from threadsafe_tkinter import Button, FLAT, CENTER, TclError
+from threadsafe_tkinter import Button, CENTER, TclError
 
 from background import Background
+from registry import Registry
+from scenemanager import Scene
+from utils import Font
 
 
-class TitleMenu(object):
-    def __init__(self, root, font, f_size, config, lang, on_load=lambda: None):
-        self.root = root
-        self.font = font
-        self.f_size = f_size
-        self.config = config
-        self.lang = lang
-        self.load = on_load
+class TitleMenu(Scene):
+    def __init__(self):
+        super(TitleMenu, self).__init__(Registry.get_root())
+
+        self.lang = Registry.gameData["language"]
+        self.config = Registry.gameData["config"]
+        self.btnFont: Font = Registry.gameData["fonts"]["titleButtonFont"]
 
         # Items
         self.items = list()
 
-        # Defining self.background class.
-        self.background = Background(self.root)
+        # Create background
+        self.background = Background(self.frame)
 
-        self.start_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.load(self),
-                                text=self.lang["home.start"],
-                                relief=FLAT, font=(self.font, 20 + self.f_size))
-        self.start_btn.place(x=self.config["width"] / 2, y=self.config["height"] / 2 - 40, width=310, anchor=CENTER)
+        # Create buttons
+        self.start_btn = Button(
+            self.frame, bg="#007f7f", fg="#7fffff", bd=15, command=lambda: self.play_event(), text=self.lang["home.start"],
+            relief="flat", font=self.btnFont.get_tuple())
+        self.quit_btn = Button(
+            self.frame, bg="#007f7f", fg="#7fffff", bd=15, command=lambda: Registry.get_root().destroy(),
+            text=self.lang["home.quit"], relief="flat", font=self.btnFont.get_tuple())
+        self.options_btn = Button(
+            self.frame, bg="#007f7f", fg="#7fffff", bd=15, text=self.lang["home.options"], relief="flat",
+            font=self.btnFont.get_tuple())
 
-        self.quit_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.root.destroy(),
-                               text=self.lang["home.quit"],
-                               relief=FLAT, font=(self.font, 20 + self.f_size))
-        self.quit_btn.place(x=self.config["width"] / 2 + 80, y=self.config["height"] / 2 + 40, width=150, anchor=CENTER)
-
-        self.options_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4,
-                                  text=self.lang["home.options"],
-                                  relief=FLAT, font=(self.font, 20 + self.f_size))  # , command=lambda: self.options())
-        self.options_btn.place(x=self.config["width"] / 2 - 80, y=self.config["height"] / 2 + 40, width=150,
-                               anchor=CENTER)
+        # Place buttons on screen
+        self.start_btn.place(
+            x=Registry.gameData["WindowWidth"] / 2, y=Registry.gameData["WindowHeight"] / 2 - 40, width=310, anchor="center")
+        self.quit_btn.place(
+            x=Registry.gameData["WindowWidth"] / 2 + 80, y=Registry.gameData["WindowHeight"] / 2 + 40, width=150, anchor=CENTER)
+        self.options_btn.place(
+            x=Registry.gameData["WindowWidth"] / 2 - 80, y=Registry.gameData["WindowHeight"] / 2 + 40, width=150, anchor="center")
 
         # Refresh game.
-        self.root.update()
+        self.frame.update()
 
-        # Non-stop refreshing the background.
-        while True:
+        self.loop_active = True
+
+    def mainloop(self):
+        # Titlemenu mainloop
+        self.background._canvas.update()
+        while self.loop_active:
             try:
+                # Update background
                 self.background.create_bubble()
                 self.background.move_bubbles()
                 self.background.cleanup_bubs()
-                self.root.update()
+
+                # Update window
+                self.frame.update()
+                self.frame.update_idletasks()
             except TclError:
                 break
 
-        self.root.mainloop()
+    def show_scene(self, *args, **kwargs):
+        super(TitleMenu, self).show_scene()
+
+        self.loop_active = True
+        self.mainloop()
+
+    def hide_scene(self):
+        super(TitleMenu, self).hide_scene()
+        self.loop_active = False
+
+    def play_event(self):
+        self.scenemanager.change_scene("SaveMenu")
 
     def destroy(self):
         self.options_btn.destroy()

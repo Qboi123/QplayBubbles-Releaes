@@ -37,15 +37,15 @@ class ScrolledWindow(tk.Frame):
         self.canv = Canvas(self.parent, bg='#FFFFFF', width=canv_w-100, height=canv_h-100,
                            scrollregion=(0, 0, canv_w, canv_h), highlightthickness=0)
         # self.hbar = Scrollbar(self.parent, orient=HORIZONTAL)
-        # self.hbar.pack(side=BOTTOM, fill=X)
+        # self.hbar.pack(side=BOTTOM, fill="x")
         # self.hbar.config(command=self.canv.xview)
         self.vbar = Scrollbar(self.parent, orient=VERTICAL)
-        self.vbar.pack(side=RIGHT, fill=Y)
+        self.vbar.pack(side=RIGHT, fill="y")
         self.vbar.config(command=self.canv.yview)
         self.canv.config(width=300, height=300)
         self.canv.config(# xscrollcommand=self.hbar.set,
                          yscrollcommand=self.vbar.set)
-        self.canv.pack(side=LEFT, expand=True, fill=BOTH)
+        self.canv.pack(side=LEFT, expand=True, fill="both")
         # creating a canvas
         # self.canv = tk.Canvas(self.parent, width=canv_w, height=canv_h)
         # self.canv.config(relief='flat',
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     root = tk.Tk()
     root.geometry("716x600")
     main = Frame(background="#3c3c3c")
-    main.pack(expand=True, fill=BOTH)
+    main.pack(expand=True, fill="both")
     s_frame = Frame(main, height=main.winfo_height(), width=700)
     s_frame.pack()
     sw = ScrolledWindow(s_frame, root.winfo_height(), 700, heigh=400, width=400)
@@ -133,7 +133,7 @@ if __name__ == '__main__':
         canvass[-1].create_text(10, 10, text=name, fill="#afafaf", anchor=NW, font=(self.font, 26))
         canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
 
-        open_btn.append(Button(frames[-1], relief=FLAT, text="open", bg="#afafaf"))
+        open_btn.append(Button(frames[-1], relief="flat", text="open", bg="#afafaf"))
         open_btn.copy()[-1].place(x=650, y=150, anchor=SE)
         open_btn.copy()[-1].bind("<ButtonRelease-1>", open)
         frames[-1].grid(row=i)

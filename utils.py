@@ -2,17 +2,19 @@ import os
 import platform
 import sys
 import tempfile
+from random import randint
 from time import time, sleep
-from typing import Tuple, Callable, Any
+from typing import Tuple, Callable, Any, Dict
 
 import pyglet
 from PIL import Image, ImageDraw
-from threadsafe_tkinter import Button, Frame, HIDDEN, Canvas, FLAT, Y, X, Tk
+from threadsafe_tkinter import Button, Frame, Canvas, Tk
 
 from advBuiltins import *
 from bubble import place_bubble
 from components import Store
 from extras import get_coords
+from registry import Registry
 from special import ScrolledWindow
 from teleport import teleport, tp_mode
 
@@ -342,7 +344,7 @@ def control(input_modes: dict, config: dict, root: Tk, canvas: Canvas, stats: di
 
             temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
                                                 command=lambda: return_main(),
-                                                relief=FLAT, bg="#1f1f1f", fg="#afafaf", font=font)
+                                                relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
             back = "#1f1f1f"
             fore = "yellow"
         else:
@@ -365,7 +367,7 @@ def control(input_modes: dict, config: dict, root: Tk, canvas: Canvas, stats: di
 
             temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
                                                 command=lambda: return_main(),
-                                                relief=FLAT, bg="#005f5f", fg="#7fffff", font=[font])
+                                                relief="flat", bg="#005f5f", fg="#7fffff", font=[font])
 
             back = "#005f5f"
             fore = "#7fffff"
@@ -409,9 +411,9 @@ def control(input_modes: dict, config: dict, root: Tk, canvas: Canvas, stats: di
                 x += 100
 
         canvass.config(height=y + 70, width=1000)
-        canvass.pack(fill=Y)
+        canvass.pack(fill="y")
 
-        temp["pause/back-to-menu"].pack(fill=X)
+        temp["pause/back-to-menu"].pack(fill="x")
 
         icons["pause"] = canvas.create_image(config["middle-x"], config["middle-y"] / 2,
                                              image=icons["pause-id"])
@@ -432,7 +434,7 @@ def control(input_modes: dict, config: dict, root: Tk, canvas: Canvas, stats: di
             (not input_modes["window"]) and (not input_modes["present"]) and (not input_modes["cheater"]):
         input_modes["pause"] = False
 
-        canvas.itemconfig(icons["pause"], state=HIDDEN)
+        canvas.itemconfig(icons["pause"], state="hidden")
         canvas.itemconfig(texts["pause"], text="")
 
         temp["pause/back-to-menu"].destroy()
@@ -634,3 +636,124 @@ def tkinter_excepthook(exc_type, exc_value, exc_traceback):
     button.pack(side=tk.BOTTOM)
     button.focus_set()
     root.mainloop()
+
+
+class Background:
+    """
+    Background for the title menu.
+    This is a random animation.
+    """
+
+    def __init__(self, root: Tk):
+        # Widgets
+        self._root = root
+        self._canvas = Canvas(root, bg="#00afaf", highlightthickness=0)
+        self._canvas.pack(fill="both", expand="true")
+
+        # Bubble-sprites config.
+        self.__bubbles = []
+        self.__speed = []
+
+    def create_bubble(self):
+        r = randint(9, 60)
+        x = self._root.winfo_width() + 100
+        y = randint(int(r), int(self._canvas.winfo_height() - r))
+
+        spd = randint(7, 10)
+
+        self.__bubbles.append(self._canvas.create_oval(x - r, y - r, x + r, y + r, outline="white"))
+        self.__speed.append(spd)
+
+    def cleanup_bubs(self):
+        """
+        Cleaning up bubbles.
+        Deleting bubble if the x coord of the bubble is under -100
+        :return:
+        """
+        from .bubble import get_coords
+
+        for index in range(len(self.__bubbles) - 1, -1, -1):
+            x, y, = get_coords(self._canvas, self.__bubbles[index])
+            if x < -100:
+                self._canvas.delete(self.__bubbles[index])
+                del self.__bubbles[index]
+                del self.__speed[index]
+
+    def move_bubbles(self):
+        """
+        Move all bubble to the left with the self.__speed with index of the bubble
+        :return:
+        """
+        for index in range(len(self.__bubbles) - 1, -1, -1):
+            self._canvas.move(self.__bubbles[index], -self.__speed[index], 0)
+
+    def destroy(self):
+        """
+        Destroys this custom widget.
+        :return:
+        """
+        self._canvas.destroy()
+
+
+class Font(object):
+    def __init__(self, fam: str = None, siz: int = None, stl: str = None):
+        self.family = "Helvetica"
+        self.size = 10
+        self.style = ""
+        if fam:
+            self.family = fam
+        if siz:
+            self.size = siz
+        if stl:
+            self.style = stl
+
+    def get_tuple(self):
+        return self.family, self.size, self.style
+
+
+class Maintance:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def auto_save(save_name: str, game_stats: Dict[str, Any], bubble: Dict[str, Any]):
+        """
+        Saves the game. (For Auto-Save)
+        """
+        import config as cfg
+
+        import os
+
+        print(os.curdir)
+
+        try:
+            cfg.Writer("slots/" + save_name + "/game.nzt", game_stats.copy())
+            cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+        except FileNotFoundError as e:
+            print(e.args)
+            print(e.filename)
+            print(e.filename2)
+
+    @staticmethod
+    def auto_restore(save_name: str):
+        """
+        Restoring. (For Auto-Restore)
+        """
+        import config as cfg
+
+        game_stats = cfg.Reader("slots/" + save_name + "/game.nzt").get_decoded()
+
+        return game_stats
+
+    @staticmethod
+    def reset(save_name: str):
+        """
+        Resets the game fully
+        """
+        import config as cfg
+
+        stats = cfg.Reader("versions/" + Registry.gameData["launcherConfig"]["versionDir"] + "/config/reset.nzt").get_decoded()
+        bubble = cfg.Reader("versions/" + Registry.gameData["launcherConfig"]["versionDir"] + "/config/reset-bubble.nzt").get_decoded()
+
+        cfg.Writer("slots/" + save_name + "/game.nzt", stats.copy())
+        cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())

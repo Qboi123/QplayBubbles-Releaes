@@ -1,4 +1,4 @@
-import io
+import gameIO
 import os
 import pathlib
 from typing import Optional, Union, List, Dict, Tuple
@@ -108,7 +108,7 @@ class File(object):
             self.relPath: Optional[str] = None
         self.os = os
 
-        self._fd: Optional[io.IOBase] = None
+        self._fd: Optional[gameIO.IOBase] = None
         self._fileOpen = False
 
         try:

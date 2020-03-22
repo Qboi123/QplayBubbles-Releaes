@@ -2,12 +2,18 @@ from background import Background
 from bubbleSystem import start
 from menus.titleMenu import TitleMenu
 from nzt import NZTFile
+from registry import Registry
 from utils import control
 
+import sys
+
 if __name__ == "__main__":
-    print("Error: Can't open this file. Please open the game with the launcher.")
-    input()
-    exit(1)
+    if "--debug" in sys.argv:
+        pass
+    else:
+        print("Error: Can't open this file. Please open the game with the launcher.")
+        input()
+        exit(1)
 
 import json
 # import neural_net as nn
@@ -21,14 +27,12 @@ from components import *
 from extras import Logging, refresh, shuffling
 from special import ScrolledWindow
 from teleport import *
+from scenemanager import CanvasScene
 
 import sys
 
-launcher_config = {"version": "v1.5.0-pre1",
-                "versionDir": "v1_5_0_pre1",
-                "launcher": None,
-                "args": sys.argv
-                   }
+default_launchercfg = {"version": "v1.5.0-pre1",
+                       "versionDir": "v1_5_0_pre1"}
 
 FatalError = Exception
 
@@ -41,66 +45,331 @@ log.info("<Root>", "Imports loading success")
 log.info("<Root>", "Starting Game")
 
 
-class Maintance:
-    def __init__(self):
-        pass
+def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, temp, panels, fore, ship, tp, lang,
+            return_main, icons, bub, font, event, c_ammo, laucher_cfg):
+    """
+    Ship-motion event
+    :param laucher_cfg:
+    :param c_ammo:
+    :param font:
+    :param bub:
+    :param icons:
+    :param ship:
+    :param tp:
+    :param lang:
+    :param return_main:
+    :param commands:
+    :param fore:
+    :param panels:
+    :param temp:
+    :param modes:
+    :param config:
+    :param root:
+    :param canvas:
+    :param stats:
+    :param bubbles:
+    :param back:
+    :param texts:
+    :param event:
+    """
 
-    @staticmethod
-    def auto_save(save_name: str, game_stats: Dict[str, Any], bubble: Dict[str, Any]):
-        """
-        Saves the game. (For Auto-Save)
-        """
-        import config as cfg
+    if modes["store"] and commands["store"] is not None:
+        if event.keysym == "Up":
+            commands["store"].set_selected(canvas, -1)
+        if event.keysym == "Down":
+            commands["store"].set_selected(canvas, 1)
+        if event.keysym == "Left":
+            commands["store"].set_selected(canvas, int(-((config["height"] - 215) / 140 + 1)))
+        if event.keysym == "Right":
+            commands["store"].set_selected(canvas, int((config["height"] - 215) / 140 + 1))
+        if event.keysym == "space":
+            commands["store"].buy_selected(config, modes, log, root, canvas, stats, bubbles, back,
+                                           texts,
+                                           commands, temp, panels)
+        if event.keysym == "BackSpace":
+            commands["store"].exit(canvas, log, modes, stats, temp, commands)
+            commands["store"] = None
+        if event.keysym == "Escape":
+            sleep(1)
+            commands["store"].exit(canvas, log, modes, stats, temp, commands)
+            commands["store"] = None
+    if modes["present"]:
+        if event.keysym == "space":
+            if False != commands["present"] != True:
+                commands["present"].exit(canvas)
+                modes["pause"] = False
+                modes["present"] = False
+                stats["scorestate_time"] = temp["scorestate-save"] + time()
+                stats["secure_time"] = temp["secure-save"] + time()
+                stats["timebreak_time"] = temp["timebreak-save"] + time()
+                stats["confusion_time"] = temp["confusion-save"] + time()
+                stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+                stats["paralyse_time"] = temp["paralyse-save"] + time()
+                stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+                stats["notouch_time"] = temp["notouch-save"] + time()
+    if modes["teleport"]:
+        x, y = get_coords(canvas, tp["id1"])
+        if event.keysym == 'Up':
+            if y > 72 + 5:
+                canvas.move(tp["id1"], 0, -5)
+                canvas.move(tp["id2"], 0, -5)
+                canvas.move(tp["id3"], 0, -5)
+                canvas.move(tp["id4"], 0, -5)
+        if event.keysym == "Down":
+            if y < config["height"] - 105 - 5:
+                canvas.move(tp["id1"], 0, 5)
+                canvas.move(tp["id2"], 0, 5)
+                canvas.move(tp["id3"], 0, 5)
+                canvas.move(tp["id4"], 0, 5)
+        if event.keysym == "Left":
+            if x > 0 + 5:
+                canvas.move(tp["id1"], -5, 0)
+                canvas.move(tp["id2"], -5, 0)
+                canvas.move(tp["id3"], -5, 0)
+                canvas.move(tp["id4"], -5, 0)
+        if event.keysym == "Right":
+            if x < config["width"] - 5:
+                canvas.move(tp["id1"], 5, 0)
+                canvas.move(tp["id2"], 5, 0)
+                canvas.move(tp["id3"], 5, 0)
+                canvas.move(tp["id4"], 5, 0)
+        if event.keysym == "BackSpace":
+            modes["pause"] = False
 
-        import os
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
+        if event.keysym == "Escape":
+            modes["pause"] = False
 
-        print(os.curdir)
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
+            sleep(1)
+        if event.keysym == "Return":
+            modes["pause"] = False
 
-        try:
-            cfg.Writer("slots/" + save_name + "/game.nzt", game_stats.copy())
-            cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
-        except FileNotFoundError as e:
-            print(e.args)
-            print(e.filename)
-            print(e.filename2)
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
 
-    @staticmethod
-    def auto_restore(save_name: str):
-        """
-        Restoring. (For Auto-Restore)
-        """
-        import config as cfg
+            stats["teleports"] -= 1
+            teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
+        if event.keysym.lower() == "space":
+            modes["pause"] = False
 
-        game_stats = cfg.Reader("slots/" + save_name + "/game.nzt").get_decoded()
+            stats["scorestate_time"] = temp["scorestate-save"] + time()
+            stats["secure_time"] = temp["secure-save"] + time()
+            stats["timebreak_time"] = temp["timebreak-save"] + time()
+            stats["confusion_time"] = temp["confusion-save"] + time()
+            stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+            stats["paralyse_time"] = temp["paralyse-save"] + time()
+            stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+            stats["notouch_time"] = temp["notouch-save"] + time()
 
-        return game_stats
+            stats["teleports"] -= 1
+            teleport(canvas, root, stats, modes, ship, tp, tp["id1"])
+    elif event.keysym.lower() == "space":
+        a = c_ammo()
+        a.create(None, None)
+    if event.keysym == "Escape" and (not modes["pause"]) and (not modes["store"]) and (not modes["teleport"]) and \
+            (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
+        modes["pause"] = True
 
-    @staticmethod
-    def reset(save_name: str):
-        """
-        Resets the game fully
-        """
-        global laucher_config
+        canvas.delete(icons["pause"])
+        if stats["special-level"]:
+            temp['pause/bg'] = canvas.create_rectangle(0, 69,
+                                                       config["width"],
+                                                       config[
+                                                           "height"],
+                                                       fill="#3f3f3f",
+                                                       outline="#3f3f3f")
+            temp['pause/toline'] = canvas.create_line(0, 69, config["width"], 69,
+                                                      fill="#afafaf")
+            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
+            #                                                config["height"] - 102,
+            #                                                fill="#afafaf")
 
-        import config as cfg
+            temp['pause/menu_frame'] = Frame(root, bg="#3f3f3f")
+            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
+                                                      window=temp['pause/menu_frame'], anchor='n',
+                                                      height=20, width=300)
 
-        stats = cfg.Reader("versions/" + launcher_config["versionDir"] + "/config/reset.nzt").get_decoded()
-        bubble = cfg.Reader("versions/" + launcher_config["versionDir"] + "/config/reset-bubble.nzt").get_decoded()
+            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
+                                                command=lambda: return_main(),
+                                                relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
+            back = "#1f1f1f"
+            fore = "yellow"
+        else:
+            temp['pause/bg'] = canvas.create_rectangle(0, 69,
+                                                       config["width"],
+                                                       config[
+                                                           "height"],
+                                                       fill="darkcyan",
+                                                       outline="darkcyan")
+            temp['pause/toline'] = canvas.create_line(0, 69, config["width"], 69,
+                                                      fill="#7fffff")
+            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
+            #                                                config["height"] - 102,
+            #                                                fill="#7fffff")
 
-        cfg.Writer("slots/" + save_name + "/game.nzt", stats.copy())
-        cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+            temp['pause/menu_frame'] = Frame(root, bg="darkcyan")
+            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
+                                                      window=temp['pause/menu_frame'], anchor='n',
+                                                      height=500, width=300)
+
+            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
+                                                command=lambda: return_main(),
+                                                relief="flat", bg="#005f5f", fg="#7fffff", font=[font])
+
+            back = "#005f5f"
+            fore = "#7fffff"
+
+        temp["s_frame"] = Frame(root, bg=back)
+        temp["s_frame"].place(x=config["middle-x"], y=config["middle-y"] / 2 + 250, anchor='n', width=1000)
+
+        temp["sw"] = ScrolledWindow(temp["s_frame"], 1020, 321, height=321, width=1000)
+
+        temp["canv"] = temp["sw"].canv
+        temp["canv"].config(bg=back)
+        temp["sw"].scrollwindow.config(bg=back)
+
+        temp["frame"] = temp["sw"].scrollwindow
+
+        a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
+             "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
+             "Coin", "NoTouch", "Paralyse", "Diamond", "StoneBub", "Present", "SpecialKey", "LevelKey")
+
+        c = ("bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
+             "bubble.up", "bubble.state.ultimate", "bubble.state.double", "bubble.state.protect",
+             "bubble.state.slowmotion",
+             "bubble.state.timebreak", "bubble.state.confusion", "bubble.state.hypermode", "bubble.teleporter",
+             "bubble.coin", "bubble.state.notouch", "bubble.state.paralyse", "bubble.diamond", "bubble.stonebubble",
+             "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
+
+        canvass = Canvas(temp["frame"], bg=back, highlightthickness=0)
+        x = 50
+        y = 50
+        temp["pause/bubble.iconss"] = []
+        for i in range(len(a)):
+            # print(a[i], b[i])
+            place_bubble(canvass, bub, x, y, 25, a[i])
+            canvass.create_text(x, y + 40, text=lang[c[i]], fill=fore, font=[font, 10])
+            if x > 900:
+                x = 50
+                y += 100
+            else:
+                x += 100
+
+        canvass.config(height=y + 70, width=1000)
+        canvass.pack(fill="y")
+
+        temp["pause/back-to-menu"].pack(fill="x")
+
+        icons["pause"] = canvas.create_image(config["middle-x"], config["middle-y"] / 2,
+                                             image=icons["pause-id"])
+
+        canvas.itemconfig(texts["pause"], text="")
+        root.update()
+
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
+    elif event.keysym == "Escape" and modes["pause"] and (not modes["store"]) and (not modes["teleport"]) and \
+            (not modes["window"]) and (not modes["present"]) and (not modes["cheater"]):
+        modes["pause"] = False
+
+        canvas.itemconfig(icons["pause"], state="hidden")
+        canvas.itemconfig(texts["pause"], text="")
+
+        temp["pause/back-to-menu"].destroy()
+        temp['pause/menu_frame'].destroy()
+        temp["s_frame"].destroy()
+
+        canvas.delete(temp['pause/toline'])
+        # canvas.delete(temp['pause/bottom.line'])
+        canvas.delete(temp['pause/menu'])
+        canvas.delete(temp['pause/bg'])
+
+        root.update()
+
+        stats["scorestate_time"] = temp["scorestate-save"] + time()
+        stats["secure_time"] = temp["secure-save"] + time()
+        stats["timebreak_time"] = temp["timebreak-save"] + time()
+        stats["confusion_time"] = temp["confusion-save"] + time()
+        stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        stats["paralyse_time"] = temp["paralyse-save"] + time()
+        stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        stats["notouch_time"] = temp["notouch-save"] + time()
+    if event.keysym == "t" and stats["teleports"] > 0 and (not modes["teleport"]):
+        modes["pause"] = True
+
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
+
+        modes["teleport"] = True
+
+        tp_mode(canvas, config, stats, modes, tp)
+    if event.keysym.lower() == "e" and (not modes["store"]):
+        modes["pause"] = True
+        temp["scorestate-save"] = stats["scorestate_time"] - time()
+        temp["secure-save"] = stats["secure_time"] - time()
+        temp["timebreak-save"] = stats["timebreak_time"] - time()
+        temp["confusion-save"] = stats["confusion_time"] - time()
+        temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        temp["paralyse-save"] = stats["paralyse_time"] - time()
+        temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        temp["notouch-save"] = stats["notouch_time"] - time()
+        temp["special-level-save"] = stats["special-level_time"] - time()
+        modes["store"] = True
+        log.debug("bub_move", "Creating Store() to variable \"store\"")
+        log.debug("bub_move", "storemode=" + str(modes["store"]))
+        commands["store"] = Store(canvas, log, config, modes, stats, icons, fore, font, laucher_cfg)
+    # if event.char == "/":
+    #     CheatEngine().event_handler(canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub)
+    # if modes["cheater"]:
+    #     CheatEngine().input_event_handler(canvas, log, stats, backgrounds, bubble, event, config, bub, temp,
+    #                                       modes)
+
+    if event.keysym == "Escape":
+        s.save()
+    root.update()
 
 
 # noinspection PyUnusedLocal,PyArgumentList,PyCallByClass
-class Game(Canvas):
+class Game(CanvasScene):
     def __init__(self, launcher_cfg: Dict[str, Any], start_time=0.0, already_opened=False):
-        super().__init__()
+        super().__init__(Registry.get_root())
 
-        # Launcher Config
-        self.launcher_cfg = launcher_cfg
-        self.version = self.launcher_cfg["version"]
-        self.versionDir = self.launcher_cfg["versionDir"]
-
+    def exec(self, save_name):
         # Imports
         import config
         import os
@@ -109,13 +378,14 @@ class Game(Canvas):
 
         print("started Game")
 
-        if not os.path.exists("mods/%s" % self.versionDir):
-            os.makedirs("mods/%s" % self.versionDir)
-
-        # Load Mods
-        self.mod_loader = mods.Loader(launcher_cfg)
-
-        print("started mods")
+        # # TODO: make modding compatible
+        # if not os.path.exists("mods/%s" % self.versionDir):
+        #     os.makedirs("mods/%s" % self.versionDir)
+        #
+        # # Load Mods
+        # self.mod_loader = mods.Loader(launcher_cfg)
+        #
+        # print("started mods")
 
         # Define Empty Attributes for use with slots-menu
         self.item_info = None
@@ -126,18 +396,6 @@ class Game(Canvas):
         self.lang_lbl = None
         self.lang_selected = None
         self.lang_btn = None
-        self.save = None
-        self.frame2 = None
-        self.add = None
-        self.add_input = None
-        self.main_f = None
-        self.s_frame = None
-        self.sw = None
-        self.canv = None
-        self.frame = None
-        self.frames = []
-        self.canvass = []
-        self.buttons = []
 
         # Start variables for the game
         self.log = log
@@ -223,6 +481,8 @@ class Game(Canvas):
         self.commands["present"]: Union[bool, Present] = False
         self.commands["special-mode"]: Union[bool, SpecialMode] = False
 
+        Registry.register_keybinding("w", player.move_up)
+
         # Player-prites
         self.ship = dict()
         self.tp = dict()
@@ -248,26 +508,55 @@ class Game(Canvas):
 
         self.root.update()
 
-        # Config resolution / positions
-        Registry.gameData["WindowWidth"] = self.root.winfo_width()
-        Registry.gameData["WindowHeight"] = self.root.winfo_height()
-
-        Registry.gameData["MiddleX"] = Registry.gameData["WindowWidth"] / 2
-        Registry.gameData["MiddleY"] = Registry.gameData["WindowHeight"] / 2
-
         # Collision class
         self.Coll = Collision()
 
-        title_menu = TitleMenu(self.root, self.font, self.f_size, self.config, self.lang, self.load)
+        return
 
         # if not already_opened:
         #     self.close = Button(self.root, text="x", fg="white", relief="flat", bg="#ff0000",
         #                         command=lambda: os.kill(os.getpid(), -1))
         #     self.close.pack(side=TOP, fill="x")
 
+        self.items = list()
+
+        # Defining self.background class.
+        self.background = Background(self.root)
+
+        self.start_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.load(),
+                                text=self.lang["home.start"],
+                                relief="flat", font=(self.font, 20 + self.f_size))
+        self.start_btn.place(x=Registry.gameData["WindowWidth"] / 2, y=Registry.gameData["WindowHeight"] / 2 - 40, width=310, anchor=CENTER)
+
+        self.quit_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4, command=lambda: self.root.destroy(),
+                               text=self.lang["home.quit"],
+                               relief="flat", font=(self.font, 20 + self.f_size))
+        self.quit_btn.place(x=Registry.gameData["WindowWidth"] / 2 + 80, y=Registry.gameData["WindowHeight"] / 2 + 40, width=150, anchor=CENTER)
+
+        self.options_btn = Button(self.root, bg="#007f7f", fg="#7fffff", bd=4,
+                                  text=self.lang["home.options"],
+                                  relief="flat", font=(self.font, 20 + self.f_size))  # , command=lambda: self.options())
+        self.options_btn.place(x=Registry.gameData["WindowWidth"] / 2 - 80, y=Registry.gameData["WindowHeight"] / 2 + 40, width=150,
+                               anchor=CENTER)
+
+        # Refresh game.
+        self.root.update()
+
+        # Non-stop refreshing the background.
+        while True:
+            try:
+                self.background.create_bubble()
+                self.background.move_bubbles()
+                self.background.cleanup_bubs()
+                self.root.update()
+            except TclError:
+                break
+
+        self.root.mainloop()
+
     def add_event(self, event):
         """
-        The event obj for the "Add"-button.
+        The event handler for the "Add"-button.
         :param event:
         :return:
         """
@@ -349,324 +638,6 @@ class Game(Canvas):
 
     def options_close(self):
         self.frame5.destroy()
-
-    def load(self, menu: Optional[TitleMenu]):
-        """
-        This is the Slots Menu.
-
-        Loading slots-menu.
-        :return:
-        """
-        import os
-
-        # Remove menu
-        if menu:
-            menu.destroy()
-
-        # Log
-        log.info("Game.load", "Loading...")
-
-        # Getting list of slots.
-        path = "slots/"
-        try:
-            index = os.listdir(path)
-        except FileNotFoundError:
-            os.makedirs(path, exist_ok=True)
-            index = os.listdir(path)
-        dirs = []
-        for item in index:
-            file_path = path + item
-
-            if os.path.isdir(file_path):
-                dirs.append(item)
-
-        # Frame for adding slots.
-        self.frame2 = Frame(bg="#5c5c5c")
-
-        # Save add button
-        self.add = Button(self.frame2, text=self.lang["slots.add"], relief="flat", bg="#7f7f7f", fg="white",
-                          command=self.add_save, font=[self.font, 15 + self.f_size])
-        self.add.pack(side=RIGHT, padx=2, pady=5)
-
-        # Save add entry (input)
-        self.add_input = Entry(self.frame2, bd=5, fg="#3c3c3c", bg="#7f7f7f", relief="flat", font=("helvetica"))
-        self.add_input.pack(side=LEFT, fill="x", expand=True, padx=2, pady=5)
-        self.add_input.bind("<Return>", self.add_event)
-
-        # Update root GUI.
-        self.root.update()
-
-        # Packing the config frame for adding a slot.
-        self.frame2.pack(side=BOTTOM, fill="x")
-
-        # Main frame.
-        self.main_f = Frame(self.root, background="#3c3c3c", height=self.root.winfo_height() - 100)
-        self.main_f.pack(fill="both", expand=True)
-
-        # Slots frame.
-        self.s_frame = Frame(self.main_f, height=self.main_f.winfo_height() - 100, width=700)
-        self.s_frame.pack(fill="y")
-
-        # Scrollwindow for the slots frame
-        self.sw = ScrolledWindow(self.s_frame, 700, self.root.winfo_height() + 0, expand=True, fill="both", scrollbarbg="#3c3c3c", scrollbarfg="#5a5a5a")
-
-        # Configurate the canvas from the scrollwindow
-        self.canv = self.sw.canv
-        self.canv.config(bg="#2e2e2e")
-
-        # self.frame.
-        self.frame = self.sw.scrollwindow
-        self.frames = []
-
-        # Defining the list of widgets
-        self.canvass = []
-        self.buttons = []
-
-        # Getting the list of directories in the slots-folder.
-        import os
-
-        names = os.listdir("slots/")
-
-        # Information variables for each slot.
-        infos = {"dates": [], "score": [], "level": []}
-
-        import time
-
-        # Prepare info variables
-        for i in names.copy():
-            if not os.path.exists("slots/" + i + "/bubble.nzt"):
-                names.remove(i)
-                continue
-            mtime = os.path.getmtime("slots/" + i + "/bubble.nzt")
-            a = time.localtime(mtime)
-
-            b = list(a)
-
-            if a[4] < 10:
-                b[4] = "0" + str(a[4])
-            else:
-                b[4] = str(a[4])
-            if a[5] < 10:
-                b[5] = "0" + str(a[5])
-            else:
-                b[5] = str(a[5])
-
-            tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
-            infos["dates"].append(tme_var)
-
-            a = Reader("slots/" + i + "/game.nzt").get_decoded()
-            infos["score"].append(a["Player"]["score"])
-            infos["level"].append(a["Player"]["level"])
-
-        self.item_info = names
-
-        # Define the index variable.
-        i = 0
-
-        # Startloop
-        for name in names:
-            self.frames.append(Frame(self.frame, height=200, width=700))
-            self.canvass.append(Canvas(self.frames[-1], height=200, width=700, bg="#7f7f7f", highlightthickness=0))
-            self.canvass[-1].pack()
-
-            self.canvass[-1].create_text(10, 10, text=name, fill="gold", anchor=NW,
-                                         font=("Helvetica", 26, "bold"))
-            self.canvass[-1].create_text(10, 50, text=infos["dates"][i], fill="#afafaf", anchor=NW,
-                                         font=("Helvetica", 16))
-            self.canvass[-1].create_text(240, 50, text="Level: " + str(infos["level"][i]), fill="#afafaf", anchor=NW,
-                                         font=("Helvetica", 16))
-            self.canvass[-1].create_text(370, 50, text="Score: " + str(infos["score"][i]), fill="#afafaf", anchor=NW,
-                                         font=("Helvetica", 16))
-
-            self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
-
-            self.buttons.append(
-                Button(self.frames[-1], relief="flat", text=self.lang["slots.open"], bg="#afafaf", width=7,
-                       font=[self.font, 15 + self.f_size]))
-            self.buttons.copy()[-1].place(x=675, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", lambda event: self.open(event))
-
-            self.buttons.append(
-                Button(self.frames[-1], relief="flat", text=self.lang["slots.rename"], bg="#afafaf", width=7,
-                       font=[self.font, 15 + self.f_size]))
-            self.buttons.copy()[-1].place(x=600, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.rename)
-
-            self.buttons.append(
-                Button(self.frames[-1], relief="flat", text=self.lang["slots.remove"], bg="#afafaf", width=7,
-                       font=[self.font, 15 + self.f_size]))
-            self.buttons.copy()[-1].place(x=525, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.remove)
-
-            self.buttons.append(
-                Button(self.frames[-1], relief="flat", text=self.lang["slots.reset"], bg="#afafaf", width=7,
-                       font=[self.font, 15 + self.f_size]))
-            self.buttons.copy()[-1].place(x=450, y=175, anchor=SE)
-            self.buttons.copy()[-1].bind("<ButtonRelease-1>", self.reset_save)
-
-            self.frames[-1].grid(row=i)
-
-            i += 1
-
-        # Using this so the program doesn't exit automaticly
-        self.root.mainloop()
-
-    def reset_save(self, event):
-        import os
-
-        # Getting row-index.
-        y = event.widget.master.grid_info()["row"]
-
-        # Getting source dir.
-        src = self.item_info[y]
-
-        # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
-
-        # Remove the slot (dir)
-        os.removedirs("slots/" + src)
-
-        # Disabling the input and the button.
-        self.add_input.config(state="disabled")
-        self.add.config(state="disabled")
-
-        # Getting the input text.
-        if src in ("aux", "con", ".", ".."):
-            return
-
-        # Creating dir for the game.
-        os.makedirs("slots/" + src, exist_ok=True)
-
-        game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
-                                "ShipStats": {"ship-speed": 10, "ShipPosition": [960, 540]},
-                                "Abilities": {"teleports": 0, "level-score": 10000},
-                                "lives": 7, "score": 0, "high-score": 0, "teleports": 0, "level": 1},
-                     "BubbleStats": {"bubspeed": 5},
-                     "Effects": {"confusion": False, "confusion_time": 0, "notouch": False, "notouch_time": 0,
-                                 "paralyse": False, "paralyse_time": 0, "scorestate": 1, "scorestate_time": 0,
-                                 "secure": False, "secure_time": 0, "shotspeed": 0.1, "shotspeed_time": 0,
-                                 "slowmotion": False, "slowmotion_time": 0, "special-level": False, "special-level_time": 0,
-                                 "speedboost": False, "speedboost_time": 0, "timebreak": False, "timebreak_time": 0}}
-
-        bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
-                       "bub-position": [], "bub-index": [], "key-active": False}
-
-        game_data_file = NZTFile("slots/" + src + "/game.nzt", "w")
-        game_data_file.data = game_data
-        game_data_file.save()
-        game_data_file.close()
-
-        game_data_file = NZTFile("slots/" + src + "/bubble.nzt", "w")
-        game_data_file.data = bubble_data
-        game_data_file.save()
-        game_data_file.close()
-
-        # Refreshing slots-menu
-        self.delete_all()
-        self.load()
-
-    def add_save(self):
-        """
-        Adding a slot to your game.
-        :return:
-        """
-        import os
-
-        if len(os.listdir("slots/")) <= 4000:
-            # Disabling the input and the button.
-            self.add_input.config(state="disabled")
-            self.add.config(state="disabled")
-
-            # Getting the input text.
-            new = self.add_input.get()
-            if (new in ("aux", "con", "num", "..")) or (len(new) < 3) or (new.lower() in [f.lower() for f in os.listdir("slots/")]):
-                return
-
-            # Creating dir for the game.
-            os.makedirs("slots/" + new, exist_ok=True)
-
-            game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
-                                    "ShipStats": {"ship_speed": 10, "ShipPosition": [960, 540]},
-                                    "Abilities": {"teleports": 0, "level-score": 10000},
-                                    "lives": 7, "score": 0, "high_score": 0, "teleports": 0, "level": 1},
-                         "BubbleStats": {"bubspeed": 5},
-                         "Effects": {"confusion": False, "confusion_time": 0, "notouch": False, "notouch_time": 0,
-                                     "paralyse": False, "paralyse_time": 0, "scorestate": 1, "scorestate_time": 0,
-                                     "secure": False, "secure_time": 0, "shotspeed": 0.1, "shotspeed_time": 0,
-                                     "slowmotion": False, "slowmotion_time": 0, "special_level": False,
-                                     "special_level_time": 0,
-                                     "speedboost": False, "speedboost_time": 0, "timebreak": False,
-                                     "timebreak_time": 0}}
-
-            bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
-                           "bub-position": [], "bub-index": [], "key-active": False}
-
-            game_data_file = NZTFile("slots/" + new + "/game.nzt", "w")
-            game_data_file.data = game_data
-            game_data_file.save()
-            game_data_file.close()
-
-            game_data_file = NZTFile("slots/" + new + "/bubble.nzt", "w")
-            game_data_file.data = bubble_data
-            game_data_file.save()
-            game_data_file.close()
-
-            # Refresh slots-menu
-            self.delete_all()
-            self.load(None)
-
-    # noinspection PyTypeChecker
-    def remove(self, event):
-        import os
-
-        # Getting row-index.
-        y = event.widget.master.grid_info()["row"]
-
-        # Getting source dir.
-        src = self.item_info[y]
-
-        # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
-
-        # Remove the slot (dir)
-        os.removedirs("slots/" + src)
-
-        # Refreshing slots-menu
-        self.delete_all()
-        self.load()
-
-    def rename(self, event):
-        import os
-
-        # Getting row-index.
-        y = event.widget.master.grid_info()["row"]
-
-        # Getting source dir.
-        src = self.item_info[y]
-
-        # Getting new name.
-        new = self.add_input.get()
-
-        # noinspection PyTypeChecker
-        # Rename the dir for the slot.
-        os.rename("slots/" + src, "slots/" + new)
-
-        # Refreshing slots-menu
-        self.delete_all()
-        self.load()
-
-    def open(self, event):
-        # Getting row-index
-        y = event.widget.master.grid_info()["row"]
-
-        # Getting source dir.
-        src = self.item_info[y]
-
-        # Remove slots menu and run the game.
-        self.delete_all()
-        self.run(src)
 
     def delete_all(self):
         # Delete all main frames
@@ -756,8 +727,8 @@ class Game(Canvas):
             self.xControl["RightJoystick"] = b
             self.xControl["A"] = bool(self.xbox.A)
             self.xControl["B"] = bool(self.xbox.B)
-            self.xControl["x"] = bool(self.xbox."x")
-            self.xControl[""y""] = bool(self.xbox."y")
+            self.xControl["X"] = bool(self.xbox.X)
+            self.xControl["Y"] = bool(self.xbox.Y)
             self.xControl["Start"] = bool(self.xbox.Start)
             self.xControl["Back"] = bool(self.xbox.Back)
             self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
@@ -969,6 +940,10 @@ class Game(Canvas):
         self.update()
         Thread(None, lambda: self.t_update(), "UpdateThread")
 
+    def show_scene(self, save_name):
+        super(Game, self).show_scene()
+        self.run(save_name)
+
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
         from threading import Thread
@@ -978,16 +953,14 @@ class Game(Canvas):
         self.xbox = xbox.XboxController()
         print("[Game]:", "Started XboxController")
 
-        self.xControl = dict()
-
         a = [int(self.xbox.LeftJoystickX * 7), int(self.xbox.LeftJoystickY * 7)]
         b = [int(self.xbox.RightJoystickX * 7), int(self.xbox.RightJoystickY * 7)]
         self.xControl["LeftJoystick"] = a
         self.xControl["RightJoystick"] = b
         self.xControl["A"] = bool(self.xbox.A)
         self.xControl["B"] = bool(self.xbox.B)
-        self.xControl["x"] = bool(self.xbox."x")
-        self.xControl[""y""] = bool(self.xbox."y")
+        self.xControl["x"] = bool(self.xbox.X)
+        self.xControl["y"] = bool(self.xbox.Y)
         self.xControl["Start"] = bool(self.xbox.Start)
         self.xControl["Back"] = bool(self.xbox.Back)
         self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
@@ -1006,14 +979,6 @@ class Game(Canvas):
 
         # Pre-Initialize
         self.mod_loader.pre_initialize(self)
-
-        self.canvas.itemconfig(t1, text="Loading...")
-        self.canvas.itemconfig(t2, text="Loading Config")
-        self.canvas.update()
-
-        # Reload config resolution.
-        Registry.gameData["WindowHeight"] = self.canvas.winfo_height()
-        Registry.gameData["WindowWidth"] = self.canvas.winfo_width()
 
         # Copy self.canvas into c.
         c = self.canvas
@@ -1060,12 +1025,14 @@ class Game(Canvas):
             self.bub["Normal"][i] = utils.createbubble_image((i, i), None, "white")
             self.bub["Double"][i] = utils.createbubble_image((i, i), None, "gold")
             self.bub["Triple"][i] = utils.createbubble_image((i, i), None, "blue", "#007fff", "#00ffff", "white")
-            self.bub["SpeedDown"][i] = utils.createbubble_image((i, i), None, "#ffffff", "#a7a7a7", "#7f7f7f", "#373737")
+            self.bub["SpeedDown"][i] = utils.createbubble_image((i, i), None, "#ffffff", "#a7a7a7", "#7f7f7f",
+                                                                "#373737")
             self.bub["SpeedUp"][i] = utils.createbubble_image((i, i), None, "#ffffff", "#7fff7f", "#00ff00", "#007f00")
             self.bub["Up"][i] = utils.createbubble_image((i, i), None, "#00ff00", "#00ff00", "#00000000", "#00ff00")
             self.bub["Ultimate"][i] = utils.createbubble_image((i, i), None, "gold", "gold", "orange", "gold")
-            self.bub["Kill"][i] = utils.createbubble_image((i, i), None, "#7f0000", "#7f007f", "#7f0000",)
-            self.bub["Teleporter"][i] = utils.createbubble_image((i, i), None, "#7f7f7f", "#7f7f7f", "#ff1020", "#373737")
+            self.bub["Kill"][i] = utils.createbubble_image((i, i), None, "#7f0000", "#7f007f", "#7f0000", )
+            self.bub["Teleporter"][i] = utils.createbubble_image((i, i), None, "#7f7f7f", "#7f7f7f", "#ff1020",
+                                                                 "#373737")
             self.bub["SlowMotion"][i] = utils.createbubble_image((i, i), None, "#ffffffff", "#00000000", "#000000ff")
             self.bub["DoubleState"][i] = utils.createbubble_image((i, i), None, "gold", "#00000000", "gold", "gold")
             self.bub["Protect"][i] = utils.createbubble_image((i, i), None, "#00ff00", "#3fff3f", "#7fff7f", "#9fff9f")
@@ -1239,7 +1206,8 @@ class Game(Canvas):
         print(self.ship["id"])
 
         # Moving ship to position
-        c.move(self.ship["id"], self.stats["Player"]["ShipStats"]["ShipPosition"][0], self.stats["Player"]["ShipStats"]["ShipPosition"][1])
+        c.move(self.ship["id"], self.stats["Player"]["ShipStats"]["ShipPosition"][0],
+               self.stats["Player"]["ShipStats"]["ShipPosition"][1])
 
         self.canvas.itemconfig(t1, text="Creating Stats objects")
         self.canvas.itemconfig(t2, text="")
@@ -1384,6 +1352,8 @@ class Game(Canvas):
 
         self.canvas.itemconfig(t1, text="Fixing Saved States")
         self.canvas.itemconfig(t2, text="")
+
+        print(stats)
 
         if stats["Effects"]["scorestate_time"] <= time():
             stats["Effects"]["scorestate"] = 1
@@ -1578,4 +1548,7 @@ class S:
 s = S()
 
 if __name__ == "__main__":
-    print("Error: Can't open this file. Please open this file with the launcher.")
+    if "--debug" in sys.argv:
+        Game(default_launchercfg, time(), False)
+    else:
+        print("Error: Can't open this file. Please open this file with the launcher.")
