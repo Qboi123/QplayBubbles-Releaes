@@ -10,4 +10,4 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - __main__
+  - __main__.py
