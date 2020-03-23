@@ -1,11 +1,8 @@
+import sys
+
 from background import Background
 from bubbleSystem import start
-from menus.titleMenu import TitleMenu
-from nzt import NZTFile
-from registry import Registry
 from utils import control
-
-import sys
 
 if __name__ == "__main__":
     if "--debug" in sys.argv:
@@ -374,7 +371,6 @@ class Game(CanvasScene):
         import config
         import os
         import yaml
-        import mod_support as mods
 
         print("started Game")
 

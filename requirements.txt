@@ -1,2 +1,8 @@
+inputs
+opensimplex
+wx
+PyYAML
+fastutils
+pyglet
 Pillow
 threadsafe-tkinter
