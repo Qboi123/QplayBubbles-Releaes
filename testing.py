@@ -16,7 +16,7 @@ class Main(Tk):
         Registry.register_root(self)
 
         self.geometry("1920x1080")
-        self.after(30000, lambda: os.kill(os.getpid(), 0))
+        # self.after(30000, lambda: os.kill(os.getpid(), 0))
 
         # self.wm_protocol("WM_DELETE_WINDOW", ...)
 

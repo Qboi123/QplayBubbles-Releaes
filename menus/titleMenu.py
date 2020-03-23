@@ -1,3 +1,5 @@
+import sys
+
 from threadsafe_tkinter import Button, CENTER, TclError
 
 from background import Background
@@ -45,8 +47,10 @@ class TitleMenu(Scene):
         self.loop_active = True
 
     def mainloop(self):
+        import time
         # Titlemenu mainloop
         self.background._canvas.update()
+        end_time = time.time() + 10
         while self.loop_active:
             try:
                 # Update background
@@ -57,6 +61,11 @@ class TitleMenu(Scene):
                 # Update window
                 self.frame.update()
                 self.frame.update_idletasks()
+
+                if "--travis" in sys.argv:
+                    if time.time() > end_time:
+                        Registry.get_root().destroy()
+                        break
             except TclError:
                 break
 
