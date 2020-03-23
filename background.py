@@ -1,6 +1,8 @@
 from random import randint
 from threadsafe_tkinter import Canvas, Tk
 
+from registry import Registry
+
 
 class Background(object):
     """
@@ -20,8 +22,8 @@ class Background(object):
 
     def create_bubble(self):
         r = randint(9, 60)
-        x = self._root.winfo_width() + 100
-        y = randint(int(r), int(self._canvas.winfo_height() - r))
+        x = Registry.gameData["WindowWidth"] + 100
+        y = randint(int(r), int(Registry.gameData["WindowHeight"] - r))
 
         spd = randint(7, 10)
 

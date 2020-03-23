@@ -655,6 +655,8 @@ class Game(CanvasScene):
         self.main()
 
     def resize(self, event):
+        if "--travis" in sys.argv:
+            return
         # Reload config resolution.
         Registry.gameData["WindowHeight"] = event.height
         Registry.gameData["WindowWidth"] = event.width

@@ -1,4 +1,5 @@
 import os
+import sys
 from time import time
 from tkinter import PhotoImage
 
@@ -41,6 +42,9 @@ class Load(CanvasScene):
         # Config resolution / positions
         Registry.gameData["WindowWidth"] = Registry.get_root().winfo_screenwidth()
         Registry.gameData["WindowHeight"] = Registry.get_root().winfo_screenheight()
+        if "--travis" in sys.argv:
+            Registry.gameData["WindowWidth"] = 1920
+            Registry.gameData["WindowHeight"] = 1080
         Registry.gameData["MiddleX"] = Registry.gameData["WindowWidth"] / 2
         Registry.gameData["MiddleY"] = Registry.gameData["WindowHeight"] / 2
 
@@ -89,10 +93,6 @@ class Load(CanvasScene):
         self.canvas.itemconfig(t1, text="Loading...")
         self.canvas.itemconfig(t2, text="Loading Config")
         self.canvas.update()
-
-        # Reload config resolution.
-        Registry.gameData["WindowHeight"] = self.canvas.winfo_height()
-        Registry.gameData["WindowWidth"] = self.canvas.winfo_width()
 
         self.canvas.itemconfig(t1, text="Loading Bubbles")
         self.canvas.itemconfig(t2, text="Creating Dicts")
