@@ -1,6 +1,5 @@
 inputs
 opensimplex
-wxpython
 PyYAML
 fastutils
 pyglet
