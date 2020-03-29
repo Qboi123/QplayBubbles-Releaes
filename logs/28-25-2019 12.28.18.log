@@ -51,10 +51,10 @@
 [Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\Main.py", line 1413, in start_game
 [Mon Nov 25 13:28:25 2019] [Err]:     set_stat("Bubbles", **Maintance.auto_restore_bubbles(self.saveName))
 [Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\maintance.py", line 45, in auto_restore_bubbles
-[Mon Nov 25 13:28:25 2019] [Err]:     bubbles = cfg.Reader("slots/" + save_name + "/bubbles.data").get_decoded()
+[Mon Nov 25 13:28:25 2019] [Err]:     bubbles = cfg.Reader("saves/" + save_name + "/bubbles.data").get_decoded()
 [Mon Nov 25 13:28:25 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\utils\config.py", line 10, in __init__
 [Mon Nov 25 13:28:25 2019] [Err]:     file = open(config_file, "rb")
-[Mon Nov 25 13:28:25 2019] [Err]: FileNotFoundError: [Errno 2] No such file or directory: 'slots/Test!!!/bubbles.data'
+[Mon Nov 25 13:28:25 2019] [Err]: FileNotFoundError: [Errno 2] No such file or directory: 'saves/Test!!!/bubbles.data'
 [Mon Nov 25 13:28:31 2019] [Err]: Traceback (most recent call last):
 [Mon Nov 25 13:28:31 2019] [Err]:   File "G:/Code/QplayBubbles-Releaes/__main__.py", line 111, in <module>
 [Mon Nov 25 13:28:31 2019] [Err]:     Main.Game(launcher_cfg)

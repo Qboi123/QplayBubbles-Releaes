@@ -9,7 +9,7 @@ from config import Reader
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
           modes: Dict[str, bool], canvas: Canvas):
-    bubs = Reader("slots/" + save_name + "/bubble.nzt").get_decoded()
+    bubs = Reader("saves/" + save_name + "/bubble.nzt").get_decoded()
     if len(bubs["bub-id"]) <= 1:
         r_start(bubble, stats, config, bub, canvas)
         return

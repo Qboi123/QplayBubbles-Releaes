@@ -1,21 +1,104 @@
-import shlex
+import os
+import re
 import sys
-from tkinter import Tk
-from typing import Optional
+import time
+from ctypes import windll
+from tkinter import Tk, Toplevel
+from tkinter.messagebox import showerror
+from typing import Optional, Callable
 
-from game import Game, default_launchercfg
+from game import default_launchercfg
 from load import Load
 from registry import Registry
 
 
+class NewRoot(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+        self.attributes('-alpha', 0.0)
+        self.bind("<Map>", self.onRootDeiconify)
+        self.bind("<Unmap>", self.onRootIconify)
+
+    # toplevel follows root taskbar events (minimize, restore)
+    def onRootIconify(self, evt):
+        self.child.withdraw()
+
+    def onRootDeiconify(self, evt):
+        self.lower()
+        self.iconify()
+        self.child.deiconify()
+
+    def bind_events(self, toplevel):
+        self.child = toplevel
+
+
+def get_hwnd_dpi(window_handle):
+    # To detect high DPI displays and avoid need to set Windows compatibility flags
+    import os
+    if os.name == "nt":
+        from ctypes import windll, pointer, wintypes
+        windll.shcore.SetProcessDpiAwareness(1)
+        DPI100pc = 96  # DPI 96 is 100% scaling
+        DPI_type = 0  # MDT_EFFECTIVE_DPI = 0, MDT_ANGULAR_DPI = 1, MDT_RAW_DPI = 2
+        winH = wintypes.HWND(window_handle)
+        monitorhandle = windll.user32.MonitorFromWindow(winH, wintypes.DWORD(2))  # MONITOR_DEFAULTTONEAREST = 2
+        X = wintypes.UINT()
+        Y = wintypes.UINT()
+        try:
+            windll.shcore.GetDpiForMonitor(monitorhandle, DPI_type, pointer(X), pointer(Y))
+            return X.value, Y.value, (X.value + Y.value) / (2 * DPI100pc)
+        except Exception:
+            return 96, 96, 1  # Assume standard Windows DPI & scaling
+    else:
+        return None, None, 1  # What to do for other OSs?
+
+
+def tk_geometry_scale(s, cvtfunc):
+    patt = r"(?P<W>\d+)x(?P<H>\d+)\+(?P<X>\d+)\+(?P<Y>\d+)"  # format "WxH+X+Y"
+    R = re.compile(patt).search(s)
+    G = str(cvtfunc(R.group("W"))) + "x"
+    G += str(cvtfunc(R.group("H"))) + "+"
+    G += str(cvtfunc(R.group("X"))) + "+"
+    G += str(cvtfunc(R.group("Y")))
+    return G
+
+
+def make_tk_dpiaware(root: Tk):
+    root.dpiX, root.dpiY, root.dpiScaling = get_hwnd_dpi(root.winfo_id())
+    root.tkScale = lambda v: int(float(v) * root.dpiScaling)
+    root.tkGeometryScale = lambda s: tk_geometry_scale(s, root.tkScale)
+
+
 class Main(Tk):
     def __init__(self):
-        self.pre_run()
-        super(Main, self).__init__()
+        # self.fakeRoot = NewRoot()
+        #
+        # self.pre_run()
+        super(Main, self).__init__()  # self.fakeRoot)
+        # self.fakeRoot.bind_events(self)
+
+        self.dpiX: float
+        self.dpiY: float
+        self.dpiScaling: float
+        self.tkScale: Callable
+        self.tkGeometryScale: Callable
+
+        make_tk_dpiaware(self)
+
+        if self.dpiScaling != 1.0:
+            self.wm_attributes("-alpha", 0.0)
+            self.overrideredirect(1)
+            showerror("Load Failure", f"This game is not compalible with DPI other than 100%:\n"
+                                      f"Currently: {int(self.dpiScaling * 100)}%")
+            os.kill(os.getpid(), 1)
 
         Registry.register_root(self)
+        Registry.gameData["startTime"] = time.time()
 
-        self.wm_attributes("-fullscreen", True)
+        # self.wm_attributes("-topmost", True)
+        self.overrideredirect(1)
+        width = self.tkScale(self.winfo_screenwidth())
+        self.geometry(self.tkGeometryScale(f"{width}x{self.winfo_screenheight()}+0+0"))
         # self.wm_protocol("WM_DELETE_WINDOW", ...)
 
         if "launcherConfig" not in Registry.gameData.keys():

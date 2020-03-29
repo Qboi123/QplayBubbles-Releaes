@@ -1,10 +1,10 @@
 /logs/
-/slots/
+/saves/
 /slots.old/
 .idea
 __pycache__
 lib/__pycache__/
 *.log
-/slots/backup/Some stupid name! LOL/
-/slots/backup/Test!!!/
-/slots/backup/
+/saves/backup/Some stupid name! LOL/
+/saves/backup/Test!!!/
+/saves/backup/

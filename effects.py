@@ -1,6 +1,8 @@
+import string
 from time import time
 from typing import Callable, Union
 import globals as g
+from exceptions import UnlocalizedNameError
 
 
 class BaseEffect(object):
@@ -19,6 +21,14 @@ class BaseEffect(object):
         return AppliedEffect(self, game, time, strength)
 
     def set_unlocalized_name(self, name):
+        for symbol in name:
+            if symbol not in string.ascii_letters+string.digits+"_":
+                raise UnlocalizedNameError(f"Invalid character '{symbol}' for unlocalized name '{name}'")
+        if name[0] not in string.ascii_letters:
+            raise UnlocalizedNameError(f"Invalid start character '{name[0]}' for unlocalized name '{name}'")
+        if name[-1] not in string.ascii_letters+string.digits:
+            raise UnlocalizedNameError(f"Invalid start character '{name[-1]}' for unlocalized name '{name}'")
+
         if self in g.EFFECT2NAME.keys():
             raise ValueError(f"Effect '{self.__class__.__module__}.{self.__class__.__name__}' has already an unlocalized name")
         if self in g.NAME2EFFECT.values():
@@ -33,6 +43,9 @@ class BaseEffect(object):
 
         return self.get_unlocalized_name()
 
+    def __repr__(self):
+        return f"Effect(<{self.get_unlocalized_name()}>)"
+
     def get_unlocalized_name(self):
         if self not in g.EFFECT2NAME.keys():
             raise ValueError(f"Effect '{self.__class__.__module__}.{self.__class__.__name__}' has no unlocalized name")
@@ -45,14 +58,19 @@ class AppliedEffect(object):
         self.baseEffectClass: BaseEffect = base_class
         self.baseEffectId: str = base_class.get_unlocalized_name()
 
-        self.endTime = time() + time_length
-        self.remainingTime = property(self._get_remaining_time, self._set_remaining_time)
+        self._endTime = time() + time_length
+
+    def get_end_time(self):
+        return self._endTime
 
     def get_data(self):
-        return {"id": self.baseEffectId, "time": self._get_remaining_time()}
+        return {"id": self.baseEffectId, "time": self.get_remaining_time()}
 
-    def _get_remaining_time(self):
-        return self.endTime - time()
+    def get_unlocalized_name(self):
+        self.baseEffectClass.get_unlocalized_name()
 
-    def _set_remaining_time(self, time_length: int):
-        self.endTime = time() + time_length
+    def get_remaining_time(self):
+        return self._endTime - time()
+
+    def set_remaining_time(self, time_length: int):
+        self._endTime = time() + time_length

@@ -1,6 +1,11 @@
 from tkinter import Canvas, Frame
+from typing import Optional, Union, Callable, Type, List, Tuple
 
+from events import UpdateEvent, CollisionEvent, KeyPressEvent, KeyReleaseEvent, XInputEvent, MouseEnterEvent, \
+    MouseLeaveEvent, ResizeEvent
 from globals import CANVAS
+from registry import Registry
+from sprite.abilities import Ability
 
 HORIZONTAL = "horizontal"
 VERTICAL = "vertical"
@@ -66,7 +71,7 @@ class Event:
 DirectionWaring = Warning
 
 
-# noinspection PyUnusedLocal
+# noinspection PyUnusedLocal,PyStatementEffect,PyTypeChecker
 class Sprite:
     requires = ("sprites", "config", "canvas", "stats", "log", "ship", "bubbles")
 
@@ -75,12 +80,14 @@ class Sprite:
 
         self._kw = kw
 
+        self.abilities: List[Ability] =[]
+
         # Axis
         self.axis = (HORIZONTAL, VERTICAL)
 
         # Has- variables
-        self.has_skin = True
-        self.has_movetag = True
+        self.hasSkin = True
+        self.hasMovetag = True
 
         # Type
         self.type = TYPE_NEUTRAL
@@ -93,219 +100,85 @@ class Sprite:
         self.width = int()
 
         # Direction movement
-        self.return_border = True
+        self.returnBorder = True
         self.direction = LEFT
 
+        # HP System
+        self.health = 1
+        self.maxHealth = 1
+        self.regenValue = 1
+        self.attackValue = 0
+        self.defenceValue = 1
+        self.regenMultiplier = 0
+        self.attackMultiplier = 1
+        self.defenceMultiplier = 1
+
         # x and y, move and speed variables
-        self.x_move = -3
-        self.x_speed = 3
-        self.y_move = 0
-        self.y_speed = 0
+        self.xMove = -3
+        self.xSpeed = 3
+        self.yMove = 0
+        self.ySpeed = 0
 
-        self.collision_with = (SHIP, ANY_BUBBLE)
+        self.collisionWith = (SHIP, ANY_BUBBLE)
 
-        self.life_cost = 1
+        self.lifeCost = 1
 
         self.id = int()
 
-        self.coords_len = 2
+        self._spriteName: str = None
+
+        self.coordsLen = 2
 
         self.__active = False
 
     def create(self, x, y):
-        from components import StoppableThread
-        if self.id <= 0:
-            raise ValueError("The ID of the Sprite is not created with Game.canvas")
-        self.__active = True
-        # noinspection PyAttributeOutsideInit
-        self.info = {"id": self.id,
-                     "class": self}
-        self._kw["sprites"]["byID"][self.info["id"]] = self.info
-        self.thread3 = StoppableThread(None, lambda: self.move(), __name__ + ".Thread").start()
-
-    def destroy(self):
-        self.__active = False
-        try:
-            self.thread3.stop()
-            self.thread2.stop()
-        except AttributeError:
-            pass
-        del self._kw["sprites"]["byID"][self.info["id"]]
-
-    def _on_move(self):
-
-        # print("Has Movetag and Skin")
-        if HORIZONTAL in self.axis:
-            if self.direction == LEFT:
-                self.x_move = -self.x_speed
-            elif self.direction == RIGHT:
-                self.x_move = self.x_speed
-        if VERTICAL in self.axis:
-            # print("Move Vertical")
-            if self.direction == UP:
-                self.y_move = -self.y_speed
-            elif self.direction == DOWN:
-                self.y_move = self.y_speed
-        if self.return_border:
-            pos = self._kw["canvas"].coords(self.id)
-            # print(len(pos))
-            if self.form == FORM_CIRCLE:
-                h = self.radius
-                w = self.radius
-            elif self.form == FORM_RECT:
-                h = self.height / 4
-                w = self.width / 4
-            else:
-                return
-            if len(pos) == 4:
-                # print("return border check")
-                if VERTICAL in self.axis:
-                    if pos[3] >= self._kw["config"]["height"] - h:
-                        self.direction = UP
-                    if pos[1] <= h + 72:
-                        self.direction = DOWN
-                if HORIZONTAL in self.axis:
-                    if pos[2] >= self._kw["config"]["width"] - w:
-                        self.direction = LEFT
-                    if pos[0] <= w:
-                        self.direction = RIGHT
-            if len(pos) == 2:
-                if VERTICAL in self.axis:
-                    if pos[1] >= self._kw["config"]["height"] - h:
-                        self.direction = UP
-                    if pos[1] <= h + 72:
-                        self.direction = DOWN
-                if HORIZONTAL in self.axis:
-                    if pos[0] >= self._kw["config"]["width"] - w:
-                        self.direction = LEFT
-                    if pos[0] <= w:
-                        self.direction = RIGHT
-        self._kw["canvas"].move(self.id, self.x_move / self.fps / 2, self.y_move / self.fps / 2)
-
-    def _hurt_player(self):
-        self._kw["stats"]["lives"] -= self.life_cost
-
-    def on_collide_bubble(self, index):
         pass
 
-    def on_collide_ship(self, index):
+    def get_sname(self):
+        return self._spriteName
+
+    @staticmethod
+    def _c_create_image(x, y, image, anchor="nw"):
+        return Registry.get_scene("Game").canvas.create_image(x, y, image=image, anchor=anchor)
+
+    def move(self, x, y):
+        Registry.get_scene("Game").canvas.move(self.id, x, y)
+
+    def teleport(self, x, y):
+        Registry.get_scene("Game").canvas.coords(self.id, x, y)
+
+    def get_coords(self):
+        return Registry.get_scene("Game").canvas.coords(self.id)
+
+    def attack(self, other: object):
+        if type(other) != Sprite:
+            raise TypeError("argument 'other' must be a Sprite-object")
+        other: Sprite
+        other.damage(self.attackValue * self.attackMultiplier)
+
+    def damage(self, value: float):
+        self.health -= value / self.defenceValue
+
+    def on_collision(self, evt: CollisionEvent):
         pass
 
-    def on_collide_sprite(self, _class):
+    def on_keypress(self, evt: KeyPressEvent):
         pass
 
-    def _on_collision(self):
-        import extras
-        import bubble
+    def on_keyrelease(self, evt: KeyReleaseEvent):
+        pass
 
-        from time import sleep
+    def on_xboxcontrol(self, evt: XInputEvent):
+        pass
 
-        if self.form == FORM_CIRCLE:
-            h = self.radius
-            w = self.radius
-        elif self.form == FORM_RECT:
-            h = self.height / 2
-            w = self.width / 2
-        else:
-            return
-        if self.form == FORM_CIRCLE:
-            config = self._kw["config"]
-            if SHIP in self.collision_with:
-                distance = extras.distance(self._kw["canvas"], self._kw["log"], self.id, self._kw["ship"]["id"])
-                if distance < (config["Game"]["ship-radius"] + self.radius):
-                    self.on_collide_ship(None)
-                    self._hurt_player()
-                    sleep(1)
-            if ANY_BUBBLE in self.collision_with:
-                for index in range(len(self._kw["bubbles"]["bub-id"]) - 1, -1, -1):
-                    distance = extras.distance(self._kw["canvas"], self._kw["log"], self.id,
-                                               self._kw["bubbles"]["bub-id"][index])
-                    if distance < (self._kw["bubbles"]["bub-radius"][index] + self.radius):
-                        self.on_collide_bubble(index)
-                        bubble.del_bubble(index, self._kw["bubbles"], self._kw["canvas"])
-        elif self.form == FORM_RECT:
-            if SHIP in self.collision_with:
-                pos = self._kw["canvas"].coords(self.id)
-                paddle_pos = self._kw["canvas"].coords(self._kw["ship"]["id"])
+    def on_mouseenter(self, evt: MouseEnterEvent):
+        pass
 
-                # print(pos, paddle_pos)
-                if len(paddle_pos) == 2:
-                    if len(pos) == 2:
-                        if pos[0] + w >= paddle_pos[0] >= pos[0] - w:
-                            if pos[1] + h >= paddle_pos[1] >= pos[1] - h:
-                                self._hurt_player()
-                    if len(pos) == 4:
-                        # print("Domme fase 1")
-                        if pos[2] + w >= paddle_pos[0] >= pos[0] - w:
-                            # print("Domme fase 2")
-                            if pos[3] + h >= paddle_pos[1] >= pos[1] - h:
-                                # print("Domme fase 3")
-                                self._hurt_player()
-                                # print("Domme fase 4")
-                elif len(paddle_pos) == 4:
-                    if len(pos) == 2:
-                        if pos[0] + w >= paddle_pos[0] and pos[0] <= paddle_pos[2] - w:
-                            if pos[1] + h >= paddle_pos[1] and pos[1] <= paddle_pos[3] - h:
-                                self._hurt_player()
-                    if len(pos) == 4:
-                        if pos[2] + w >= paddle_pos[0] and pos[0] <= paddle_pos[2] - w:
-                            if pos[3] + h >= paddle_pos[1] and pos[1] <= paddle_pos[3] - h:
-                                self._hurt_player()
-            if ANY_BUBBLE in self.collision_with:
-                for index in range(len(self._kw["bubbles"]["bub-id"]) - 2, -1, -1):
-                    bub_h = bub_w = self._kw["bubbles"]["bub-radius"][index]
-                    pos = self._kw["canvas"].coords(self.id)
-                    print("[Index, len]: " + str([index, len(self._kw["bubbles"]["bub-id"])]))
-                    paddle_pos = self._kw["canvas"].coords(self._kw["bubbles"]["bub-id"][index])
-                    print(pos, paddle_pos)
-                    if len(paddle_pos) == 2:
-                        if len(pos) == 2:
-                            if pos[0] + w >= paddle_pos[0] - bub_w and pos[0] - w <= paddle_pos[0] + bub_w:
-                                if pos[1] + h >= paddle_pos[1] - bub_h and pos[1] - h <= paddle_pos[1] + bub_h:
-                                    self.on_collide_bubble(index)
-                                    bubble.del_bubble(index, self._kw["bubbles"], self._kw["canvas"])
-                        if len(pos) == 4:
-                            if pos[2] + w >= paddle_pos[0] - bub_w and pos[0] - w <= paddle_pos[0] + bub_w:
-                                if pos[3] + h >= paddle_pos[1] - bub_h and pos[1] - h <= paddle_pos[1] + bub_h:
-                                    self.on_collide_bubble(index)
-                                    bubble.del_bubble(index, self._kw["bubbles"], self._kw["canvas"])
-                    elif len(paddle_pos) == 4:
-                        if len(pos) == 2:
-                            if pos[0] + w >= paddle_pos[0] - bub_w and pos[0] <= paddle_pos[2] + bub_w:
-                                if pos[1] + h >= paddle_pos[1] - bub_h and pos[1] <= paddle_pos[3] + bub_h:
-                                    self.on_collide_bubble(index)
-                                    bubble.del_bubble(index, self._kw["bubbles"], self._kw["canvas"])
-                        if len(pos) == 4:
-                            if pos[2] + w >= paddle_pos[0] - bub_w and pos[0] <= paddle_pos[2] + bub_w:
-                                if pos[3] + h >= paddle_pos[1] - bub_h and pos[1] <= paddle_pos[3] + bub_h:
-                                    self.on_collide_bubble(index)
-                                    bubble.del_bubble(index, self._kw["bubbles"], self._kw["canvas"])
+    def on_mouseleave(self, evt: MouseLeaveEvent):
+        pass
 
-    def move(self):
-        from time import time
-        from components import StoppableThread
-        time2 = time()
-        while self.__active:
-            # print("\nhas movetag:", self.has_movetag, "| has skin:", self.has_skin); sleep(0.1)
-            # print("\naxis:", self.axis); sleep(0.1)
-            # print("\nreturn_border:", self.return_border); sleep(0.1)
-            # print("\ndirection:", self.direction); sleep(0.1)
-            # print("\nhave horizontal axis:", HORIZONTAL in self.axis); sleep(0.1)
-            # print("\nhave vertical axis:", VERTICAL in self.axis); sleep(0.1)
-            # print("\nx-speed:", self.x_speed); sleep(0.1)
-            # print("\ny-speed:", self.y_speed); sleep(0.1)
-            # print("\nx-motion:", self.x_move); sleep(0.1)
-            # print("\ny-motion:", self.y_move); sleep(0.1)
-            # print("\n\n\n")
-            if self.has_movetag and self.has_skin:
-                time1 = time()
-                try:
-                    self.fps = 1 / (time1 - time2)
-                except ZeroDivisionError:
-                    self.fps = 1
-                time2 = time()
-                self.thread2 = StoppableThread(None, lambda: self._on_move(), __name__ + ".Collision").start()
-                self._on_collision()
+    def on_update(self, evt: UpdateEvent):
+        pass
 
 
 # noinspection PyRedundantParentheses
@@ -493,9 +366,69 @@ class Ammo(Sprite):
 class Player(Sprite):
     def __init__(self):
         super().__init__()
+        UpdateEvent.bind(self.on_update)
 
     def move(self, x=0, y=0):
         CANVAS.move(self.id, x, y)
 
     def move_joy(self, x=0, y=0):
         CANVAS.move(self.id, x, y)
+
+    def on_update(self, evt: UpdateEvent):
+        pass
+
+
+class CRectangle(object):
+    def __init__(self, canvas: Canvas, x1, y1, x2, y2, fill="", outline="", anchor="center", tags=tuple()):
+        self._id = canvas.create_rectangle(x1, y1, x2, y2, fill=fill, outline=outline, anchor=anchor)
+        self._canvas = canvas
+
+    def get_id(self):
+        return self._id
+
+    def move(self, x=None, y=None):
+        return self._canvas.move(self._id, x, y)
+
+    def coords(self, x1, y1, x2, y2) -> Optional[Tuple[float, float, float, float]]:
+        return self._canvas.coords(self._id, x1, y1, x2, y2)
+
+    def bind(self, sequence=None, func=None, add=None) -> Union[str, int]:
+        return self._canvas.tag_bind(self._id, sequence, func, add)
+
+    def unbind(self, sequence, funcid=None):
+        return self._canvas.tag_unbind(self._id, sequence, funcid)
+
+    def configure(self, fill=None, outline=None, anchor=None, tags=None):
+        return self._canvas.itemconfigure(self._id, fill=fill, outline=outline, anchor=anchor, tags=tags)
+
+    def cget(self, option) -> Union[str, int, float, bool, list, dict, Callable]:
+        return self._canvas.itemcget(self._id, option)
+
+    def lower(self, *args):
+        return self._canvas.tag_lower(self._id, *args)
+
+    def raise_(self, *args):
+        return self._canvas.tag_raise(self._id, *args)
+
+    config = configure
+
+
+class Panel(CRectangle):
+    def __init__(self, canvas, x, y, width, height, fill="", outline=""):
+        self._width = width
+        self._height = height
+        if width == "extend":
+            width = canvas.winfo_width() - x
+        if height == "expand":
+            height = canvas.winfo_height() - y
+        self.x = x
+        self.y = y
+        super(Panel, self).__init__(canvas, x, y, width, height, fill=fill, outline=outline, anchor="nw")
+
+    def on_resize(self, event: ResizeEvent):
+        # noinspection PyDeepBugsBinOperand
+        if self._width == "extend":
+            width = self._canvas.winfo_width() - self.x
+        if self._height == "expand":
+            height = self._canvas.winfo_height() - self.y
+        self.coords(self.x, self.y, self._width, self._height)

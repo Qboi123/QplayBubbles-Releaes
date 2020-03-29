@@ -2,6 +2,39 @@ import traceback as tb
 import sys
 
 
+class SceneNotFoundError(Exception):
+    __name__ = "SceneNotFoundError"
+
+    def __init__(self, *args: object):
+        self.__class__.__name__ = "SceneNotFoundError"
+        super(SceneNotFoundError, self).__init__(*args)
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+
+class ModeNotFoundError(Exception):
+    __name__ = "ModeNotFoundError"
+
+    def __init__(self, *args: object):
+        self.__class__.__name__ = "ModeNotFoundError"
+        super(ModeNotFoundError, self).__init__(*args)
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+
+class UnlocalizedNameError(Exception):
+    __name__ = "UnlocalizedNameError"
+
+    def __init__(self, *args: object):
+        self.__class__.__name__ = "UnlocalizedNameError"
+        super(UnlocalizedNameError, self).__init__(*args)
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+
 class ModernError(Exception):
     def __init__(self, text: str):
         pass

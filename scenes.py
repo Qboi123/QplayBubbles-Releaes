@@ -1,13 +1,13 @@
 import os
 import random
 import string
-from tkinter import ttk
+from tkinter import ttk, Label, StringVar, Menubutton, Menu
 from typing import Optional
 
+import yaml
 from threadsafe_tkinter import Frame, Canvas, Button
 
 from config import Reader
-from game import log
 from nzt import NZTFile
 from registry import Registry
 from scenemanager import Scene
@@ -46,6 +46,7 @@ ENTRY_SEL_FG_FOC = "white"
 ENTRY_SEL_FG_DIS = "#ffffff"
 
 
+# noinspection PyAttributeOutsideInit
 class SavesMenu(Scene):
     def __init__(self, reload=False):
         root = Registry.get_root()
@@ -75,7 +76,7 @@ class SavesMenu(Scene):
         # log.info("Game.load", "Loading...")
         # 
         # # Getting list of slots.
-        # path = "slots/"
+        # path = "saves/"
         # try:
         #     index = os.listdir(path)
         # except FileNotFoundError:
@@ -134,7 +135,7 @@ class SavesMenu(Scene):
         # # Getting the list of directories in the slots-folder.
         # import os
         # 
-        # names = os.listdir("slots/")
+        # names = os.listdir("saves/")
         # 
         # # Information variables for each slot.
         # infos = {"dates": [], "score": [], "level": []}
@@ -143,10 +144,10 @@ class SavesMenu(Scene):
         # 
         # # Prepare info variables
         # for i in names.copy():
-        #     if not os.path.exists("slots/" + i + "/bubble.nzt"):
+        #     if not os.path.exists("saves/" + i + "/bubble.nzt"):
         #         names.remove(i)
         #         continue
-        #     mtime = os.path.getmtime("slots/" + i + "/bubble.nzt")
+        #     mtime = os.path.getmtime("saves/" + i + "/bubble.nzt")
         #     a = time.localtime(mtime)
         # 
         #     b = list(a)
@@ -163,7 +164,7 @@ class SavesMenu(Scene):
         #     tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
         #     infos["dates"].append(tme_var)
         # 
-        #     a = Reader("slots/" + i + "/game.nzt").get_decoded()
+        #     a = Reader("saves/" + i + "/game.nzt").get_decoded()
         #     infos["score"].append(a["Player"]["score"])
         #     infos["level"].append(a["Player"]["level"])
         # 
@@ -315,17 +316,17 @@ class SavesMenu(Scene):
                                     'sticky': 'nswe',
                                     "border": 0})]
                         })]
-                    }), ('Entry.bd', {
-                     'sticky': 'nswe',
-                     'children': [(
-                         'Entry.padding', {
-                             'sticky': 'nswe',
-                             'children': [(
-                                 'Entry.textarea', {
-                                     'sticky': 'nswe'})]
-                         })],
-                     'border': 0})
-                ]
+                }), ('Entry.bd', {
+                    'sticky': 'nswe',
+                    'children': [(
+                        'Entry.padding', {
+                            'sticky': 'nswe',
+                            'children': [(
+                                'Entry.textarea', {
+                                    'sticky': 'nswe'})]
+                        })],
+                    'border': 0})
+                             ]
             })])
         style.configure('TEntry', relief='flat', bd=0)
 
@@ -409,12 +410,14 @@ class SavesMenu(Scene):
         self.initialize_scene()
 
     def initialize_scene(self):
+        root = Registry.get_root()
+
         # Main frame.
         self.main_f = Frame(self.oFrame, background="#3c3c3c", height=Registry.gameData["WindowHeight"] - 100)
         self.main_f.pack(fill="both", expand=True)
 
         # Slots frame.
-        self.s_frame = Frame(self.main_f, height=self.main_f.winfo_height() - 100, width=700)
+        self.s_frame = Frame(self.main_f, height=self.main_f.winfo_height() - 100, width=root.tkScale(700))
         self.s_frame.pack(fill="y", expand=True)
 
         # Scrollwindow for the slots frame
@@ -445,7 +448,9 @@ class SavesMenu(Scene):
         infofont = Font("Helvetica", 16)
 
         # Get slots
-        names = os.listdir("slots/")
+        if not os.path.exists("saves/"):
+            os.makedirs("saves/")
+        names = os.listdir("saves/")
 
         # Information variables for each slot.
         infos = {"dates": [], "score": [], "level": []}
@@ -454,10 +459,10 @@ class SavesMenu(Scene):
 
         # Prepare info variables
         for i in names.copy():
-            if not os.path.exists("slots/" + i + "/bubble.nzt"):
+            if not os.path.exists("saves/" + i + "/bubble.nzt"):
                 names.remove(i)
                 continue
-            mtime = os.path.getmtime("slots/" + i + "/bubble.nzt")
+            mtime = os.path.getmtime("saves/" + i + "/bubble.nzt")
             a = time.localtime(mtime)
 
             b = list(a)
@@ -475,7 +480,7 @@ class SavesMenu(Scene):
             tme_var = f"{a[2]}/{a[1]}/{a[0]} {a[3]}:{a[4]}:{a[5]}"
             infos["dates"].append(tme_var)
 
-            a = Reader("slots/" + i + "/game.nzt").get_decoded()
+            a = Reader("saves/" + i + "/game.nzt").get_decoded()
             infos["score"].append(a["Player"]["score"])
             infos["level"].append(a["Player"]["level"])
         print(infos)
@@ -495,7 +500,7 @@ class SavesMenu(Scene):
             self._id[self.canvass[-1]] = {}
             self._id[self.canvass[-1]]["Title"] = self.canvass[-1].create_text(10, 10, text=name,
                                                                                fill="#a7a7a7", anchor="nw",
-                                                                               font=("Consolas", 26, "bold"))
+                                                                               font=titlefont.get_tuple())
             self.canvass[-1].create_rectangle(0, 0, 699, 201, outline="#3c3c3c")
             subids = [self.canvass[-1].create_text(10, 50, text=infos["dates"][i], fill="#afafaf", anchor="nw",
                                                    font=infofont.get_tuple()),
@@ -694,7 +699,8 @@ class SavesMenu(Scene):
         self.emptyLabel = ttk.Label(self.buttonFrame, relief="flat", width=8, text="", anchor="w")
         self.emptyLabel.pack(side="left")
         self.cancelBtn = ttk.Button(self.buttonFrame, command=lambda: self.close_options_frame(), text="Cancel")
-        self.resetBtn = ttk.Button(self.buttonFrame, command=lambda: self.add_action(self.nameEntry.get(), self.seedEntry.get()), text="Add")
+        self.resetBtn = ttk.Button(
+            self.buttonFrame, command=lambda: self.add_action(self.nameEntry.get(), self.seedEntry.get()), text="Add")
         self.cancelBtn.pack(side="left", fill="x", expand=True, padx=1, pady=1)  # , height=20)
         self.resetBtn.pack(side="left", fill="x", expand=True, padx=1, pady=1)  # , height=20)
         self.buttonFrame.pack(fill='x', side="bottom", expand=True)
@@ -749,11 +755,12 @@ class SavesMenu(Scene):
         """
         Adding a slot to your game.
 
+        :param seed: Seed (integer) for the new save
         :param new: Name of the new save
         :return:
         """
 
-        max_seed = 2**32
+        max_seed = 2 ** 32
 
         if seed == "":
             seed = random.randint(0, max_seed)
@@ -765,11 +772,11 @@ class SavesMenu(Scene):
         import os
 
         if (new in ("aux", "con", "num", "..")) or (len(new) < 3) or (
-                new.lower() in [f.lower() for f in os.listdir("slots/")]):
+                new.lower() in [f.lower() for f in os.listdir("saves/")]):
             return
 
         # Creating dir for the game.
-        os.makedirs("slots/" + new, exist_ok=True)
+        os.makedirs("saves/" + new, exist_ok=True)
 
         game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
                                 "ShipStats": {"ship_speed": 10, "ShipPosition": [960, 540]},
@@ -790,12 +797,12 @@ class SavesMenu(Scene):
         bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                        "bub-position": [], "bub-index": [], "key-active": False}
 
-        game_data_file = NZTFile("slots/" + new + "/game.nzt", "w")
+        game_data_file = NZTFile("saves/" + new + "/game.nzt", "w")
         game_data_file.data = game_data
         game_data_file.save()
         game_data_file.close()
 
-        game_data_file = NZTFile("slots/" + new + "/bubble.nzt", "w")
+        game_data_file = NZTFile("saves/" + new + "/bubble.nzt", "w")
         game_data_file.data = bubble_data
         game_data_file.save()
         game_data_file.close()
@@ -810,22 +817,22 @@ class SavesMenu(Scene):
         :return:
         """
 
-        max_seed = 2**32
+        max_seed = 2 ** 32
         seed = random.randint(0, max_seed)
 
         # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
+        for i in os.listdir("saves/" + src):
+            os.remove("saves/" + src + "/" + i)
 
         # Remove the save (dir)
-        os.removedirs("slots/" + src)
+        os.removedirs("saves/" + src)
 
         # Getting the input text.
         if src in ("aux", "con", ".", ".."):
             return
 
         # Creating dir for the game.
-        os.makedirs("slots/" + src, exist_ok=True)
+        os.makedirs("saves/" + src, exist_ok=True)
 
         game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
                                 "ShipStats": {"ship-speed": 10, "ShipPosition": [960, 540]},
@@ -845,12 +852,12 @@ class SavesMenu(Scene):
         bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                        "bub-position": [], "bub-index": [], "key-active": False}
 
-        game_data_file = NZTFile("slots/" + src + "/game.nzt", "w")
+        game_data_file = NZTFile("saves/" + src + "/game.nzt", "w")
         game_data_file.data = game_data
         game_data_file.save()
         game_data_file.close()
 
-        game_data_file = NZTFile("slots/" + src + "/bubble.nzt", "w")
+        game_data_file = NZTFile("saves/" + src + "/bubble.nzt", "w")
         game_data_file.data = bubble_data
         game_data_file.save()
         game_data_file.close()
@@ -865,7 +872,7 @@ class SavesMenu(Scene):
         :return:
         """
 
-        self.open(n_)
+        self.open_action(n_)
 
     # noinspection PyTypeChecker
     def remove_action(self, src):
@@ -879,11 +886,11 @@ class SavesMenu(Scene):
         import os
 
         # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
+        for i in os.listdir("saves/" + src):
+            os.remove("saves/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("slots/" + src)
+        os.removedirs("saves/" + src)
 
         self.close_options_frame()
 
@@ -900,7 +907,7 @@ class SavesMenu(Scene):
 
         # noinspection PyTypeChecker
         # Rename the dir for the slot.
-        os.rename("slots/" + src, "slots/" + new)
+        os.rename("saves/" + src, "saves/" + new)
 
         self.close_options_frame()
 
@@ -927,4 +934,60 @@ class SavesMenu(Scene):
         self.scenemanager.change_scene("GameScene", src)
 
     def back_title(self):
+        self.scenemanager.change_scene("TitleScreen")
+
+
+class OptionsMenu(Scene):
+    def __init__(self):
+        super(OptionsMenu, self).__init__(Registry.get_root())
+
+        # Initialize options menu variables
+        self.lang_selected = StringVar(self.frame)
+
+        # Create top frame
+        self.frame3 = Frame(self.frame, height=700, width=1000, bg="#5c5c5c")
+        self.frame3.pack()
+
+        # Create bottom frame
+        self.frame4 = Frame(self.frame, height=20, bg="#5c5c5c")
+        self.frame4.pack(side="bottom", fill="x")
+
+        # Create language option
+        self.lang_lbl = Label(
+            self.frame3, text=Registry.gameData["launguage"]["options.language"], bg="#5c5c5c")
+        self.lang_lbl.grid(row=0, column=0)
+        self.lang_btn = Menubutton(
+            self.frame3, textvariable=Registry.gameData["config"]["selectedLanguage"], bg="#3c3c3c", fg="#9c9c9c")
+        self.lang_btn.grid(row=0, column=1)
+
+        # Create save button
+        self.save = Button(
+            self.frame4, text=Registry.gameData["language"]["options.save"], width=7, command=self.options_save,
+            bg="#3c3c3c", fg="#9c9c9c")
+        self.save.pack(side="right")
+
+        a = os.listdir("lang/")
+        b = []
+        c = []
+        self.lang_btn.menu = Menu(self.lang_btn, tearoff=0)
+        self.lang_btn["menu"] = self.lang_btn.menu
+
+        for i in a:
+            file = open("lang/" + i, "r")
+            b.append(yaml.safe_load(file)["options.name"])
+            c.append(i)
+            file.close()
+
+        d = 0
+        for i in range(len(b)):
+            self.lang_btn.menu.add_checkbutton(label=b[i], command=lambda: self.lang_selected.set(c[i]))
+            d += 1
+
+    def options_save(self):
+        import yaml
+
+        with open("lang/" + self.lang_selected.get(), "r") as file:
+            Registry.gameData["languages"] = yaml.safe_load(file.read())
+            file.close()
+
         self.scenemanager.change_scene("TitleScreen")

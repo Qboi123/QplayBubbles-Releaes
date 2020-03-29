@@ -29,10 +29,10 @@
 [Mon Nov 25 13:17:48 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 110, in <lambda>
 [Mon Nov 25 13:17:48 2019] [Err]:     font=[self.font, 20 + self.f_size], command=lambda: self.reset_save(None))
 [Mon Nov 25 13:17:48 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\slots.py", line 375, in reset_save
-[Mon Nov 25 13:17:48 2019] [Err]:     Writer("/slots/%s/game.data" % src, stats_data, "wb+")
+[Mon Nov 25 13:17:48 2019] [Err]:     Writer("/saves/%s/game.data" % src, stats_data, "wb+")
 [Mon Nov 25 13:17:48 2019] [Err]:   File "G:\Code\QplayBubbles-Releaes\lib\utils\config.py", line 72, in __init__
 [Mon Nov 25 13:17:48 2019] [Err]:     file = open(config_file, flags)
-[Mon Nov 25 13:17:48 2019] [Err]: FileNotFoundError: [Errno 2] No such file or directory: '/slots/Test!!!/game.data'
+[Mon Nov 25 13:17:48 2019] [Err]: FileNotFoundError: [Errno 2] No such file or directory: '/saves/Test!!!/game.data'
 [Mon Nov 25 13:17:50 2019] [Out]: [SelectCanvas]: CLICK!
 [Mon Nov 25 13:17:50 2019] [Out]: event.widget.__dict__: {'widgetName': 'canvas', 'master': <tkinter.Frame object .!frame3.!frame.!frame.!frame>, 'tk': <threadsafe_tkinter.TkWrapper object at 0x0000028EEDE67A88>, '_name': '!canvas', '_w': '.!frame3.!frame.!frame.!frame.!canvas', 'children': {}, '_tclCommands': ['2812921885512<lambda>'], 'build': '16'}
 [Mon Nov 25 13:17:50 2019] [Out]: event.widget.master.grid_info(): {'in': <tkinter.Frame object .!frame3.!frame.!frame>, 'column': 0, 'row': 0, 'columnspan': 1, 'rowspan': 1, 'ipadx': 0, 'ipady': 0, 'padx': 0, 'pady': 0, 'sticky': ''}

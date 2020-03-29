@@ -1,5 +1,4 @@
 import os
-import platform
 import sys
 import tempfile
 from random import randint
@@ -548,8 +547,6 @@ def print_adv_error(e: Exception, obj):
 
 
 def tkinter_adv_error(e: Exception, obj):
-    import tkinter.messagebox as mb
-
     # root = Tk()
     # root.wm_attributes("-alpha", 0)
     # root.maxsize(1, 1)
@@ -558,7 +555,6 @@ def tkinter_adv_error(e: Exception, obj):
     # mb.showerror("Python crash", get_adv_error(e, obj))
     import tkinter as tk
     import tkinter.ttk as ttk
-    import tkinter.dnd
     import tkinter.font
 
     root = tk.Tk()
@@ -602,8 +598,6 @@ def adv_excepthook(exc_type, exc_value, exc_traceback):
 
 def tkinter_excepthook(exc_type, exc_value, exc_traceback):
 
-    import tkinter.messagebox as mb
-
     # root = Tk()
     # root.wm_attributes("-alpha", 0)
     # root.maxsize(1, 1)
@@ -612,7 +606,6 @@ def tkinter_excepthook(exc_type, exc_value, exc_traceback):
     # mb.showerror("Python crash", get_adv_error(e, obj))
     import tkinter as tk
     import tkinter.ttk as ttk
-    import tkinter.dnd
     import tkinter.font
 
     root = tk.Tk()
@@ -716,7 +709,7 @@ class Maintance:
         pass
 
     @staticmethod
-    def auto_save(save_name: str, game_stats: Dict[str, Any], bubble: Dict[str, Any]):
+    def auto_save(save_name: str, game_stats: Dict[str, Any]):
         """
         Saves the game. (For Auto-Save)
         """
@@ -727,8 +720,8 @@ class Maintance:
         print(os.curdir)
 
         try:
-            cfg.Writer("slots/" + save_name + "/game.nzt", game_stats.copy())
-            cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+            cfg.Writer("saves/" + save_name + "/game.nzt", game_stats.copy())
+            # cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
         except FileNotFoundError as e:
             print(e.args)
             print(e.filename)
@@ -741,7 +734,7 @@ class Maintance:
         """
         import config as cfg
 
-        game_stats = cfg.Reader("slots/" + save_name + "/game.nzt").get_decoded()
+        game_stats = cfg.Reader("saves/" + save_name + "/game.nzt").get_decoded()
 
         return game_stats
 
@@ -755,5 +748,5 @@ class Maintance:
         stats = cfg.Reader("versions/" + Registry.gameData["launcherConfig"]["versionDir"] + "/config/reset.nzt").get_decoded()
         bubble = cfg.Reader("versions/" + Registry.gameData["launcherConfig"]["versionDir"] + "/config/reset-bubble.nzt").get_decoded()
 
-        cfg.Writer("slots/" + save_name + "/game.nzt", stats.copy())
-        cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+        cfg.Writer("saves/" + save_name + "/game.nzt", stats.copy())
+        cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())

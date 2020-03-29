@@ -358,8 +358,8 @@ class Maintance:
         print(os.curdir)
 
         try:
-            cfg.Writer("slots/" + save_name + "/game.nzt", game_stats.copy())
-            cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+            cfg.Writer("saves/" + save_name + "/game.nzt", game_stats.copy())
+            cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
         except FileNotFoundError as e:
             print(e.args)
             print(e.filename)
@@ -372,7 +372,7 @@ class Maintance:
         """
         import config as cfg
 
-        game_stats = cfg.Reader("slots/" + save_name + "/game.nzt").get_decoded()
+        game_stats = cfg.Reader("saves/" + save_name + "/game.nzt").get_decoded()
 
         return game_stats
 
@@ -387,13 +387,13 @@ class Maintance:
         stats = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt").get_decoded()
         bubble = cfg.Reader("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt").get_decoded()
 
-        cfg.Writer("slots/" + save_name + "/game.nzt", stats.copy())
-        cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+        cfg.Writer("saves/" + save_name + "/game.nzt", stats.copy())
+        cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
           modes: Dict[str, bool], canvas: Canvas):
-    bubs = Reader("slots/" + save_name + "/bubble.nzt").get_decoded()
+    bubs = Reader("saves/" + save_name + "/bubble.nzt").get_decoded()
     if len(bubs["bub-id"]) <= 1:
         r_start(bubble, stats, config, bub, canvas, modes)
         return
@@ -787,7 +787,7 @@ class Game(Canvas):
         # Removes title-menu items.
 
         # Getting list of slots.
-        path = "slots/"
+        path = "saves/"
         try:
             index = os.listdir(path)
         except FileNotFoundError:
@@ -843,7 +843,7 @@ class Game(Canvas):
         # Getting the list of directories in the slots-folder.
         import os
 
-        names = os.listdir("slots/")
+        names = os.listdir("saves/")
 
         # Information variables for each slot.
         infos = {"dates": [], "score": [], "level": []}
@@ -852,7 +852,7 @@ class Game(Canvas):
 
         # Prepare info variables
         for i in names:
-            mtime = os.path.getmtime("slots/" + i + "/bubble.nzt")
+            mtime = os.path.getmtime("saves/" + i + "/bubble.nzt")
             a = time.localtime(mtime)
 
             b = list(a)
@@ -869,7 +869,7 @@ class Game(Canvas):
             tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
             infos["dates"].append(tme_var)
 
-            a = Reader("slots/" + i + "/game.nzt").get_decoded()
+            a = Reader("saves/" + i + "/game.nzt").get_decoded()
             infos["score"].append(a["score"])
             infos["level"].append(a["level"])
 
@@ -936,11 +936,11 @@ class Game(Canvas):
         src = self.item_info[y]
 
         # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
+        for i in os.listdir("saves/" + src):
+            os.remove("saves/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("slots/" + src)
+        os.removedirs("saves/" + src)
 
         # Disabling the input and the button.
         self.add_input.config(state="disabled")
@@ -951,11 +951,11 @@ class Game(Canvas):
             return
 
         # Creating dir for the game.
-        os.makedirs("slots/" + src, exist_ok=True)
+        os.makedirs("saves/" + src, exist_ok=True)
 
         # Copy the template (resetted save-files)
-        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt", "slots/" + src + "/game.nzt")
-        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt", "slots/" + src + "/bubble.nzt")
+        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt", "saves/" + src + "/game.nzt")
+        self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt", "saves/" + src + "/bubble.nzt")
 
         # Refreshing slots-menu
         self.delete_all()
@@ -968,7 +968,7 @@ class Game(Canvas):
         """
         import os
 
-        if len(os.listdir("slots/")) <= 4000:
+        if len(os.listdir("saves/")) <= 4000:
             # Disabling the input and the button.
             self.add_input.config(state="disabled")
             self.add.config(state="disabled")
@@ -979,11 +979,11 @@ class Game(Canvas):
                 return
 
             # Creating dir for the game.
-            os.makedirs("slots/" + new, exist_ok=True)
+            os.makedirs("saves/" + new, exist_ok=True)
 
             # Copy the template (resetted save-files)
-            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt", "slots/" + new + "/game.nzt")
-            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt", "slots/" + new + "/bubble.nzt")
+            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset.nzt", "saves/" + new + "/game.nzt")
+            self.copy("versions/"+self.launcher_cfg["versionDir"]+"/config/reset-bubble.nzt", "saves/" + new + "/bubble.nzt")
 
             # Refresh slots-menu
             self.delete_all()
@@ -1000,11 +1000,11 @@ class Game(Canvas):
         src = self.item_info[y]
 
         # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
+        for i in os.listdir("saves/" + src):
+            os.remove("saves/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("slots/" + src)
+        os.removedirs("saves/" + src)
 
         # Refreshing slots-menu
         self.delete_all()
@@ -1024,7 +1024,7 @@ class Game(Canvas):
 
         # noinspection PyTypeChecker
         # Rename the dir for the slot.
-        os.rename("slots/" + src, "slots/" + new)
+        os.rename("saves/" + src, "saves/" + new)
 
         # Refreshing slots-menu
         self.delete_all()
@@ -1051,7 +1051,7 @@ class Game(Canvas):
         self.save_name = save_name
 
         # Reload stats with the reader.
-        self.stats = Reader("slots/" + self.save_name + "/game.nzt").get_decoded()
+        self.stats = Reader("saves/" + self.save_name + "/game.nzt").get_decoded()
 
         # Create canvas.
         self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"], width=Registry.gameData["WindowWidth"], highlightthickness=0)

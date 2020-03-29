@@ -57,8 +57,8 @@ class Maintance:
         print(os.curdir)
 
         try:
-            cfg.Writer("slots/" + save_name + "/game.nzt", game_stats.copy())
-            cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+            cfg.Writer("saves/" + save_name + "/game.nzt", game_stats.copy())
+            cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
         except FileNotFoundError as e:
             print(e.args)
             print(e.filename)
@@ -71,7 +71,7 @@ class Maintance:
         """
         import config as cfg
 
-        game_stats = cfg.Reader("slots/" + save_name + "/game.nzt").get_decoded()
+        game_stats = cfg.Reader("saves/" + save_name + "/game.nzt").get_decoded()
 
         return game_stats
 
@@ -87,8 +87,8 @@ class Maintance:
         stats = cfg.Reader("versions/" + launcher_config["versionDir"] + "/config/reset.nzt").get_decoded()
         bubble = cfg.Reader("versions/" + launcher_config["versionDir"] + "/config/reset-bubble.nzt").get_decoded()
 
-        cfg.Writer("slots/" + save_name + "/game.nzt", stats.copy())
-        cfg.Writer("slots/" + save_name + "/bubble.nzt", bubble.copy())
+        cfg.Writer("saves/" + save_name + "/game.nzt", stats.copy())
+        cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
 
 
 # noinspection PyUnusedLocal,PyArgumentList,PyCallByClass
@@ -367,7 +367,7 @@ class Game(Canvas):
         log.info("Game.load", "Loading...")
 
         # Getting list of slots.
-        path = "slots/"
+        path = "saves/"
         try:
             index = os.listdir(path)
         except FileNotFoundError:
@@ -425,7 +425,7 @@ class Game(Canvas):
         # Getting the list of directories in the slots-folder.
         import os
 
-        names = os.listdir("slots/")
+        names = os.listdir("saves/")
 
         # Information variables for each slot.
         infos = {"dates": [], "score": [], "level": []}
@@ -434,10 +434,10 @@ class Game(Canvas):
 
         # Prepare info variables
         for i in names.copy():
-            if not os.path.exists("slots/" + i + "/bubble.nzt"):
+            if not os.path.exists("saves/" + i + "/bubble.nzt"):
                 names.remove(i)
                 continue
-            mtime = os.path.getmtime("slots/" + i + "/bubble.nzt")
+            mtime = os.path.getmtime("saves/" + i + "/bubble.nzt")
             a = time.localtime(mtime)
 
             b = list(a)
@@ -454,7 +454,7 @@ class Game(Canvas):
             tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
             infos["dates"].append(tme_var)
 
-            a = Reader("slots/" + i + "/game.nzt").get_decoded()
+            a = Reader("saves/" + i + "/game.nzt").get_decoded()
             infos["score"].append(a["Player"]["score"])
             infos["level"].append(a["Player"]["level"])
 
@@ -521,11 +521,11 @@ class Game(Canvas):
         src = self.item_info[y]
 
         # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
+        for i in os.listdir("saves/" + src):
+            os.remove("saves/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("slots/" + src)
+        os.removedirs("saves/" + src)
 
         # Disabling the input and the button.
         self.add_input.config(state="disabled")
@@ -536,7 +536,7 @@ class Game(Canvas):
             return
 
         # Creating dir for the game.
-        os.makedirs("slots/" + src, exist_ok=True)
+        os.makedirs("saves/" + src, exist_ok=True)
 
         game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
                                 "ShipStats": {"ship-speed": 10, "ShipPosition": [960, 540]},
@@ -552,12 +552,12 @@ class Game(Canvas):
         bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                        "bub-position": [], "bub-index": [], "key-active": False}
 
-        game_data_file = NZTFile("slots/" + src + "/game.nzt", "w")
+        game_data_file = NZTFile("saves/" + src + "/game.nzt", "w")
         game_data_file.data = game_data
         game_data_file.save()
         game_data_file.close()
 
-        game_data_file = NZTFile("slots/" + src + "/bubble.nzt", "w")
+        game_data_file = NZTFile("saves/" + src + "/bubble.nzt", "w")
         game_data_file.data = bubble_data
         game_data_file.save()
         game_data_file.close()
@@ -573,18 +573,18 @@ class Game(Canvas):
         """
         import os
 
-        if len(os.listdir("slots/")) <= 4000:
+        if len(os.listdir("saves/")) <= 4000:
             # Disabling the input and the button.
             self.add_input.config(state="disabled")
             self.add.config(state="disabled")
 
             # Getting the input text.
             new = self.add_input.get()
-            if (new in ("aux", "con", "num", "..")) or (len(new) < 3) or (new.lower() in [f.lower() for f in os.listdir("slots/")]):
+            if (new in ("aux", "con", "num", "..")) or (len(new) < 3) or (new.lower() in [f.lower() for f in os.listdir("saves/")]):
                 return
 
             # Creating dir for the game.
-            os.makedirs("slots/" + new, exist_ok=True)
+            os.makedirs("saves/" + new, exist_ok=True)
 
             game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
                                     "ShipStats": {"ship_speed": 10, "ShipPosition": [960, 540]},
@@ -602,12 +602,12 @@ class Game(Canvas):
             bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                            "bub-position": [], "bub-index": [], "key-active": False}
 
-            game_data_file = NZTFile("slots/" + new + "/game.nzt", "w")
+            game_data_file = NZTFile("saves/" + new + "/game.nzt", "w")
             game_data_file.data = game_data
             game_data_file.save()
             game_data_file.close()
 
-            game_data_file = NZTFile("slots/" + new + "/bubble.nzt", "w")
+            game_data_file = NZTFile("saves/" + new + "/bubble.nzt", "w")
             game_data_file.data = bubble_data
             game_data_file.save()
             game_data_file.close()
@@ -627,11 +627,11 @@ class Game(Canvas):
         src = self.item_info[y]
 
         # Removing the files inside.
-        for i in os.listdir("slots/" + src):
-            os.remove("slots/" + src + "/" + i)
+        for i in os.listdir("saves/" + src):
+            os.remove("saves/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("slots/" + src)
+        os.removedirs("saves/" + src)
 
         # Refreshing slots-menu
         self.delete_all()
@@ -651,7 +651,7 @@ class Game(Canvas):
 
         # noinspection PyTypeChecker
         # Rename the dir for the slot.
-        os.rename("slots/" + src, "slots/" + new)
+        os.rename("saves/" + src, "saves/" + new)
 
         # Refreshing slots-menu
         self.delete_all()
@@ -678,7 +678,7 @@ class Game(Canvas):
         self.save_name = save_name
 
         # Reload stats with the reader.
-        self.stats = Reader("slots/" + self.save_name + "/game.nzt").get_decoded()
+        self.stats = Reader("saves/" + self.save_name + "/game.nzt").get_decoded()
 
         # Create canvas.
         self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"], width=Registry.gameData["WindowWidth"], highlightthickness=0)
