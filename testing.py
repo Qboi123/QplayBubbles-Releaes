@@ -109,7 +109,7 @@ def make_tk_dpiaware(root: Tk):
 
 class Main(Toplevel):
     def __init__(self):
-        self.fakeRoot = NewRoot()
+        self.fakeRoot = FakeWindow()
 
         self.pre_run()
         super(Main, self).__init__(self.fakeRoot)
