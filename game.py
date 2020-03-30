@@ -767,8 +767,6 @@ class Game(CanvasScene):
             print(self.returnmain)
             sleep(2)
 
-
-
     def update(self):
         # TODO: Make this completely using events like CollisionEvent(...), or UpdateEvent
         self.canvas.tag_raise(self.player.id)

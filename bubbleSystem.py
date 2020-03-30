@@ -9,18 +9,25 @@ from config import Reader
 
 
 class BubbleSystem(object):
-    def __init__(self, bubbles: List[Bubble]):
-        self.bubblePriorities = []
-        self.maxPriority = 0
+    _bubblePriorities: List[Bubble] = []
+    _maxPriority: int = 0
+
+    @classmethod
+    def init(cls, bubbles: List[Bubble]):
+        BubbleSystem._bubblePriorities = []
+        BubbleSystem._maxPriority = 0
 
         for bubble in bubbles:
-            self.bubblePriorities.append((bubble, self.maxPriority))
-            self.maxPriority += bubble.priority
+            BubbleSystem._bubblePriorities.append(
+                (bubble, BubbleSystem._maxPriority, BubbleSystem._maxPriority + bubble.priority))
+            BubbleSystem._maxPriority += bubble.priority
 
-    def random(self, rand: Random):
-        integer = rand.randint(0, self.maxPriority)
-        for priority in self.bubblePriorities:
-            pass
+    @classmethod
+    def random(cls, rand: Random):
+        integer = rand.randint(0, cls._maxPriority)
+        for priority in cls._bubblePriorities:
+            if priority[1] >= integer >= priority[2]:
+                return priority[0]
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,

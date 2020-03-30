@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 
 import bubblesInit
 import config
+from bubbleSystem import BubbleSystem
 from components import Store
 from game import Game
 from gameIO import printerr, printwrn
@@ -104,6 +105,7 @@ class Load(CanvasScene):
         self.canvas.update()
 
         bubbleObjects = bubblesInit.init_bubbles()
+        BubbleSystem.init(bubbleObjects)
 
         self.canvas.itemconfig(t2, text="Loading bubble models")
         self.canvas.update()

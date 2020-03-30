@@ -3,11 +3,13 @@ import sys
 import tempfile
 from random import randint
 from time import time, sleep
-from typing import Tuple, Callable, Any, Dict
+from typing import Tuple, Callable, Any, Dict, overload
 
 import pyglet
 from PIL import Image, ImageDraw
 from tkinter import Button, Frame, Canvas, Tk
+
+from decutils import override
 
 from advBuiltins import *
 from bubble import place_bubble
@@ -702,6 +704,61 @@ class Font(object):
 
     def get_tuple(self):
         return self.family, Registry.get_window("default").tkScale(self.size), self.style
+
+
+class Color(object):
+    @overload
+    def __init__(self, r, g, b):
+        pass
+
+    @overload
+    def __init__(self, hex_):
+        pass
+
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1:
+            self.r = eval(f"0x{args[0][1:3]}")
+            self.g = eval(f"0x{args[0][3:5]}")
+            self.b = eval(f"0x{args[0][5:7]}")
+        elif len(args) == 3:
+            self.r = args[0]
+            self.g = args[1]
+            self.b = args[2]
+        elif len(kwargs.keys()) == 1:
+            hex_ = kwargs.pop("hex_")
+            self.r = eval(f"0x{hex_[1:3]}")
+            self.g = eval(f"0x{hex_[3:5]}")
+            self.b = eval(f"0x{hex_[5:7]}")
+        elif len(kwargs.keys()) == 3:
+            self.r = kwargs.pop("r", None)
+            self.g = kwargs.pop("g", None)
+            self.b = kwargs.pop("b", None)
+            self.r = kwargs.pop("red") if self.r is None else self.r
+            self.g = kwargs.pop("green") if self.g is None else self.g
+            self.b = kwargs.pop("blue") if self.b is None else self.b
+        else:
+            raise NameError("Arguments doesn't match any overload")
+        self.r = self.r % 256
+        self.g = self.g % 256
+        self.b = self.b % 256
+
+    def get_tkcolor(self):
+        r = hex(self.r)[2:]
+        g = hex(self.g)[2:]
+        b = hex(self.b)[2:]
+        if len(r) == 1:
+            r = "0"+r
+        if len(g) == 1:
+            g = "0"+g
+        if len(b) == 1:
+            b = "0"+b
+        if len(r) > 2:
+            raise OverflowError(f"red color is more than 255 (int) or FF (hex)")
+        if len(g) > 2:
+            raise OverflowError(f"green color is more than 255 (int) or FF (hex)")
+        if len(b) > 2:
+            raise OverflowError(f"blue color is more than 255 (int) or FF (hex)")
+        return f"#{r+g+b}"
 
 
 class Maintance:
