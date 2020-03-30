@@ -3,13 +3,11 @@ import sys
 import tempfile
 from random import randint
 from time import time, sleep
+from tkinter import Button, Frame, Canvas, Tk
 from typing import Tuple, Callable, Any, Dict, overload
 
 import pyglet
 from PIL import Image, ImageDraw
-from tkinter import Button, Frame, Canvas, Tk
-
-from decutils import override
 
 from advBuiltins import *
 from bubble import place_bubble
