@@ -95,6 +95,7 @@ class Main(Toplevel):
         width = 1920
         height = 1080
         self.geometry(self.tkGeometryScale(f"{width}x{height}+0+0"))
+        self.after(30000, lambda: os.kill(os.getpid(), 0))
         # self.wm_protocol("WM_DELETE_WINDOW", ...)
 
         if "launcherConfig" not in Registry.gameData.keys():
