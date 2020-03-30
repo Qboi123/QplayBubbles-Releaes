@@ -11,24 +11,63 @@ from load import Load
 from registry import Registry
 
 
-class NewRoot(Tk):
+class FakeWindow(Tk):
     def __init__(self):
-        Tk.__init__(self)
+        """
+        Initialize method of FakeWindow class
+        """
+        super(FakeWindow, self).__init__()
+
+        # Initialize fake-window
         self.attributes('-alpha', 0.0)
         self.bind("<Map>", self.onRootDeiconify)
         self.bind("<Unmap>", self.onRootIconify)
 
+        # Fake-window attributes
+        self.child: Optional[Toplevel] = None
+
     # toplevel follows root taskbar events (minimize, restore)
     def onRootIconify(self, evt):
+        """
+        Iconify event for fake-window
+
+        :param evt:
+        :return:
+        """
+        if self.child is None:
+            return
         self.child.withdraw()
 
     def onRootDeiconify(self, evt):
+        """
+        Deiconify event for fake-window
+
+        :param evt:
+        :return:
+        """
+
+        if self.child is None:
+            return
         self.lower()
         self.iconify()
         self.child.deiconify()
 
+    def ready(self):
+        self.lower()
+        self.iconify()
+
     def bind_events(self, toplevel):
+        """
+        Bind events to the child window
+        Events:
+         :event Destroy: Used for destoring FakeWindow(...) instance when child is destroyed
+
+        :param toplevel:
+        :return:
+        """
+
         self.child = toplevel
+        self.child.bind("<Destroy>", lambda event: (self.destroy() if event.widget == self.child else None))
 
 
 def get_hwnd_dpi(window_handle):
