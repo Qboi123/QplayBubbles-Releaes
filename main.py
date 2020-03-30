@@ -1331,7 +1331,7 @@ class Game(Canvas):
         self.canvas.itemconfig(t2, text="Pauze")
 
         # Threaded Automatic Save (TAS)
-        # self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
+        # self.t_auto_save = StoppableThread(None, lambda: self.on_autosave(), name="AutoSaveThread").start()
 
         kw = {}
 

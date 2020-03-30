@@ -2,10 +2,12 @@ import sys
 
 from background import Background
 from bubbleSystem import start
-from events import SavedataReadedEvent, KeyReleaseEvent, UpdateEvent
+from bubbles import Bubble
+from events import SavedataReadedEvent, KeyReleaseEvent, UpdateEvent, KeyPressEvent, XInputEvent, CollisionEvent
 from modemanager import ModeManager
 from sprites import Player
 from utils import control, Maintance, Font
+from globals import MAX_BUBBLES
 
 if __name__ == "__main__":
     if "--debug" in sys.argv:
@@ -22,7 +24,7 @@ from time import sleep
 
 import config
 from ammo import *
-from base import Ammo, Panel
+from base import Ammo, Panel, Sprite
 from bubble import Collision, create_bubble, place_bubble
 from components import *
 from extras import Logging, refresh, shuffling
@@ -33,7 +35,8 @@ from scenemanager import CanvasScene
 import sys
 
 default_launchercfg = {"version": "v1.5.0-pre1",
-                       "versionDir": "v1_5_0_pre1"}
+                       "versionDir": "v1_5_0_pre1",
+                       "debug": False}
 
 FatalError = Exception
 
@@ -96,6 +99,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
             commands["store"] = None
     if modes["present"]:
         if event.keysym == "space":
+            # noinspection PyDeepBugsBinOperator
             if False != commands["present"] != True:
                 commands["present"].exit(canvas)
                 modes["pause"] = False
@@ -211,7 +215,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
                                                       window=temp['pause/menu_frame'], anchor='n',
                                                       height=20, width=300)
 
-            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
+            temp["pause/back-to-menu"] = Button(temp["qbubbles:pause.menu_frame"], text=lang["pause.back-to-home"],
                                                 command=lambda: return_main(),
                                                 relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
             back = "#1f1f1f"
@@ -234,43 +238,45 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
                                                       window=temp['pause/menu_frame'], anchor='n',
                                                       height=500, width=300)
 
-            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
+            temp["pause/back-to-menu"] = Button(temp["qbubbles:pause.menu_frame"], text=lang["pause.back-to-home"],
                                                 command=lambda: return_main(),
                                                 relief="flat", bg="#005f5f", fg="#7fffff", font=[font])
 
             back = "#005f5f"
             fore = "#7fffff"
 
-        temp["s_frame"] = Frame(root, bg=back)
-        temp["s_frame"].place(x=config["middle-x"], y=config["middle-y"] / 2 + 250, anchor='n', width=1000)
+        temp["qbubbles:pause.s_frame"] = Frame(root, bg=back)
+        temp["qbubbles:pause.s_frame"].place(x=config["middle-x"], y=config["middle-y"] / 2 + 250, anchor='n',
+                                             width=1000)
 
-        temp["sw"] = ScrolledWindow(temp["s_frame"], 1020, 321, height=321, width=1000)
+        temp["qbubbles:pause.sw"] = ScrolledWindow(temp["qbubbles:pause.s_frame"], 1020, 321, height=321, width=1000)
 
-        temp["canv"] = temp["sw"].canv
-        temp["canv"].config(bg=back)
-        temp["sw"].scrollwindow.config(bg=back)
+        temp["qbubbles:pause.canv"] = temp["qbubbles:pause.sw"].canv
+        temp["qbubbles:pause.canv"].config(bg=back)
+        temp["qbubbles:pause.sw"].scrollwindow.config(bg=back)
 
-        temp["frame"] = temp["sw"].scrollwindow
+        temp["qbubbles:pause.frame"] = temp["qbubbles:pause.sw"].scrollwindow
 
         a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
              "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
              "Coin", "NoTouch", "Paralyse", "Diamond", "StoneBub", "Present", "SpecialKey", "LevelKey")
 
-        self.canvas = ("bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
-             "bubble.up", "bubble.state.ultimate", "bubble.state.double", "bubble.state.protect",
-             "bubble.state.slowmotion",
-             "bubble.state.timebreak", "bubble.state.confusion", "bubble.state.hypermode", "bubble.teleporter",
-             "bubble.coin", "bubble.state.notouch", "bubble.state.paralyse", "bubble.diamond", "bubble.stonebubble",
-             "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
+        canvas = (
+            "bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
+            "bubble.up", "bubble.state.ultimate", "bubble.state.double", "bubble.state.protect",
+            "bubble.state.slowmotion",
+            "bubble.state.timebreak", "bubble.state.confusion", "bubble.state.hypermode", "bubble.teleporter",
+            "bubble.coin", "bubble.state.notouch", "bubble.state.paralyse", "bubble.diamond", "bubble.stonebubble",
+            "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
 
-        canvass = Canvas(temp["frame"], bg=back, highlightthickness=0)
+        canvass = Canvas(temp["qbubbles:pause.frame"], bg=back, highlightthickness=0)
         x = 50
         y = 50
         temp["pause/bubble.iconss"] = []
         for i in range(len(a)):
             # print(a[i], b[i])
             place_bubble(canvass, bub, x, y, 25, a[i])
-            canvass.create_text(x, y + 40, text=lang[self.canvas[i]], fill=fore, font=[font, 10])
+            canvass.create_text(x, y + 40, text=lang[canvas[i]], fill=fore, font=[font, 10])
             if x > 900:
                 x = 50
                 y += 100
@@ -306,7 +312,7 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
 
         temp["pause/back-to-menu"].destroy()
         temp['pause/menu_frame'].destroy()
-        temp["s_frame"].destroy()
+        temp["qbubbles:pause.s_frame"].destroy()
 
         canvas.delete(temp['pause/toline'])
         # canvas.delete(temp['pause/bottom.line'])
@@ -353,7 +359,8 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
         modes["store"] = True
         log.debug("bub_move", "Creating Store() to variable \"store\"")
         log.debug("bub_move", "storemode=" + str(modes["store"]))
-        commands["store"] = Store(canvas, log, config, modes, stats, icons, fore, font, laucher_cfg)
+        # # TODO: Change to Store-scene instead of creating a Store instance
+        # commands["store"] = Store(canvas, log, config, modes, stats, icons, fore, font, laucher_cfg)
     # if event.char == "/":
     #     CheatEngine().event_handler(canvas, modes, stats, config, temp, log, backgrounds, bubble, event, bub)
     # if modes["cheater"]:
@@ -368,25 +375,27 @@ def control(modes, config, root, canvas, stats, bubbles, back, texts, commands, 
 # noinspection PyUnusedLocal,PyArgumentList,PyCallByClass,PyAttributeOutsideInit
 class Game(CanvasScene):
     def __init__(self):
-        super().__init__(Registry.get_root())
+        super().__init__(Registry.get_window("default"))
 
         # Start variables for the game
+        self.texts = {}
+        self.pauseIcon: Optional[PhotoImage] = None
         self.modeManager = ModeManager()
         self.log = log
         self.returnmain = False
 
         # Startup
-        self.root: Tk = Registry.get_root()
+        self.root: Tk = Registry.get_window("default")
         self.time1: float = Registry.gameData["startTime"]
         self.maintance: Maintance = Maintance()
-        self.save_name: Optional[str] = None
+        self.saveName: Optional[str] = None
 
         # Stats
         Registry.saveData = dict()
         self.xControl = dict()
 
         # Standard Temporaray variables
-        self.temp = dict()
+        self.temp: Dict[str, Any] = dict()
         self.temp["scorestate-save"] = 0
         self.temp["secure-save"] = 0
         self.temp["timebreak-save"] = 0
@@ -404,13 +413,13 @@ class Game(CanvasScene):
                         "Left": False,
                         "Right": False,
                         }
-        
+
         self._pauseMode = False
-        
+
         self.player: Optional[Player] = None
 
     # noinspection PyAttributeOutsideInit
-    def show_scene(self, save_name, save_data: Dict[str, Union[List, Dict[Any, Any], str, int, bool, float]]):
+    def show_scene(self, save_name):  # , save_data: Dict[str, Union[List, Dict[Any, Any], str, int, bool, float]]):
         super(Game, self).show_scene()
 
         print("started Game")
@@ -427,31 +436,32 @@ class Game(CanvasScene):
         self.player = Player()
 
         # self.tp = TPSprite()  # TODO: Make support for TPSprite(...) object in './sprites.py'. When done, uncomment.
-        
-        # Saved game data event, and regiser save-data
-        Registry.saveData = save_data
-        SavedataReadedEvent(Registry.saveData)
 
         # # TODO: Replace Ammo id-dict with classes loaded in ./load.py using ./ammoTypes.py, ./ammo.py, ./sprites.py
         # # Ammo id-dictionary
         # self.ammo = {"ammo-id": list(), "ammo-radius": 5, "ammo-speed": list(), "ammo-position": list(),
         #              "ammo-damage": list(), "retime": Registry.gameData["startTime"]}
 
-        self.main()
+        self.run(save_name)
+
+        # # Saved game data event, and regiser save-data
+        # Registry.saveData = save_data
+        # SavedataReadedEvent(Registry.saveData)
 
     def options(self):
         pass
 
     def run(self, save_name):
         # Getting save-name and copy this in the self.
-        self.save_name = save_name
+        self.saveName = save_name
 
         # Reload stats with the reader.
-        Registry.saveData = Reader("saves/" + self.save_name + "/game.nzt").get_decoded()
+        Registry.saveData = Reader("saves/" + self.saveName + "/game.nzt").get_decoded()
 
         # Create canvas.
-        self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"], width=Registry.gameData["WindowWidth"], highlightthickness=0)
-        self.canvas.pack(expand=True)
+        # self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"],
+        #                      width=Registry.gameData["WindowWidth"], highlightthickness=0)
+        # self.canvas.pack(expand=True)
 
         # Run the main method (function).
         self.main()
@@ -462,28 +472,18 @@ class Game(CanvasScene):
             return
         return
 
-        # Reload config resolution, if resolution actually changed
-        if event.height != Registry.gameData["WindowHeight"]:
-            if event.width != Registry.gameData["WindowWidth"]:
-                temp_0001 = Registry.get_root()
-                # Config resolution / positions
-                Registry.gameData["WindowWidth"] = temp_0001.tkScale(event.width)
-                Registry.gameData["WindowHeight"] = temp_0001.tkScale(event.height)
-                # Registry.gameData["WindowHeight"] = event.height
-                # Registry.gameData["WindowWidth"] = event.width
-
     def return_main(self):
         """
         Return to title screen
         :return:
         """
         # Returning to title menu.
-        Maintance().auto_save(self.save_name, Registry.saveData)
+        Maintance().auto_save(self.saveName, Registry.saveData)
         self.returnmain = True
         self.scenemanager.change_scene("TitleScreen")
         self.__init__()
-        
-    def on_key_release(self, evt: KeyReleaseEvent):
+
+    def on_keyrelease(self, evt: KeyReleaseEvent):
         """
         TODO: Rename method to on_keyrelease
         Key-release event, called when user stops pressing a key on the keyboard
@@ -499,92 +499,99 @@ class Game(CanvasScene):
                 self.unpause()  # FIXME: Destroy pause-menu
             else:
                 raise ValueError("Pause mode must be True or False")
-            
+
     def pause(self):
         # TODO: Create pause menu here, set game to pause and call PauseEvent(...)
         self._pauseMode = True
 
-        modes["pause"] = True
+        root = Registry.get_window("default")
 
-        canvas.delete(icons["pause"])
-        if stats["special-level"]:
-            temp['pause/bg'] = canvas.create_rectangle(0, 69,
-                                                       config["width"],
-                                                       config[
-                                                           "height"],
-                                                       fill="#3f3f3f",
-                                                       outline="#3f3f3f")
-            temp['pause/toline'] = canvas.create_line(0, 69, config["width"], 69,
-                                                      fill="#afafaf")
-            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
-            #                                                config["height"] - 102,
-            #                                                fill="#afafaf")
+        font = Font("Helvetica", 10)
 
-            temp['pause/menu_frame'] = Frame(root, bg="#3f3f3f")
-            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
-                                                      window=temp['pause/menu_frame'], anchor='n',
-                                                      height=20, width=300)
-
-            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
-                                                command=lambda: return_main(),
-                                                relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
+        if self.pauseIcon is not None:
+            self.canvas.delete(self.pauseIcon)  # Registry.get_icon("pause"))
+        if self.modeManager.currentModeName == "specialLevel":
+            self.temp["qbubbles:pause.bg"] = self.canvas.create_rectangle(
+                0, 69, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"],
+                fill="#3f3f3f", outline="#3f3f3f")
+            self.temp["qbubbles:pause.to_line"] = self.canvas.create_line(
+                0, 69, Registry.gameData["WindowWidth"], 69, fill="#afafaf")
+            self.temp["qbubbles:pause.menu_frame"] = Frame(
+                root, bg="#3f3f3f")
+            self.temp['qbubbles:pause.menu'] = self.canvas.create_window(
+                Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] / 2 + 130,
+                window=self.temp['pause/menu_frame'], anchor='n', height=20, width=300)
+            self.temp["qbubbles:pause.back_to_menu"] = Button(
+                self.temp["qbubbles:pause.menu_frame"], text=Registry.gameData["language"]["pause.back-to-home"],
+                command=lambda: self.return_main(), relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
             back = "#1f1f1f"
             fore = "yellow"
         else:
-            temp['pause/bg'] = canvas.create_rectangle(0, 69,
-                                                       config["width"],
-                                                       config[
-                                                           "height"],
-                                                       fill="darkcyan",
-                                                       outline="darkcyan")
-            temp['pause/toline'] = canvas.create_line(0, 69, config["width"], 69,
-                                                      fill="#7fffff")
-            # temp['pause/bottom.line'] = canvas.create_line(0, config["height"] - 102, config["width"],
+            self.temp["qbubbles:pause.bg"] = self.canvas.create_rectangle(
+                0, 69, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"],
+                fill="darkcyan", outline="darkcyan")
+            self.temp["qbubbles:pause.to_line"] = self.canvas.create_line(
+                0, 69, Registry.gameData["WindowWidth"], 69, fill="#7fffff")
+            # self.temp['pause/bottom.line'] = self.canvas.create_line(0, config["height"] - 102, config["width"],
             #                                                config["height"] - 102,
             #                                                fill="#7fffff")
 
-            temp['pause/menu_frame'] = Frame(root, bg="darkcyan")
-            temp['pause/menu'] = canvas.create_window(config["middle-x"], config["middle-y"] / 2 + 130,
-                                                      window=temp['pause/menu_frame'], anchor='n',
-                                                      height=500, width=300)
+            self.temp["qbubbles:pause.menu_frame"] = Frame(root, bg="darkcyan")
+            self.temp["qbubbles:pause.menu"] = self.canvas.create_window(
+                Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] / 2 + 130,
+                window=self.temp['pause/menu_frame'], anchor='n', height=500, width=300)
 
-            temp["pause/back-to-menu"] = Button(temp["pause/menu_frame"], text=lang["pause.back-to-home"],
-                                                command=lambda: return_main(),
-                                                relief="flat", bg="#005f5f", fg="#7fffff", font=[font])
+            self.temp["qbubbles:pause.back_to_menu"] = Button(
+                self.temp["qbubbles:pause.menu_frame"], text=Registry.gameData["language"]["pause.back-to-home"],
+                command=lambda: self.return_main(), relief="flat", bg="#005f5f", fg="#7fffff", font=[font])
 
             back = "#005f5f"
             fore = "#7fffff"
 
-        temp["s_frame"] = Frame(root, bg=back)
-        temp["s_frame"].place(x=config["middle-x"], y=config["middle-y"] / 2 + 250, anchor='n', width=1000)
+        self.temp["qbubbles:pause.s_frame"] = Frame(root, bg=back)
+        self.temp["qbubbles:pause.s_frame"].place(
+            x=Registry.gameData["MiddleX"], y=Registry.gameData["MiddleY"] / 2 + 250, anchor='n', width=1000)
+        self.temp["qbubbles:pause.sw"] = ScrolledWindow(
+            self.temp["qbubbles:pause.s_frame"], 1020, 321, height=321, width=1000)
 
-        temp["sw"] = ScrolledWindow(temp["s_frame"], 1020, 321, height=321, width=1000)
+        self.temp["qbubbles:pause.canv"] = self.temp["qbubbles:pause.sw"].canv
+        self.temp["qbubbles:pause.canv"].config(bg=back)
+        self.temp["qbubbles:pause.sw"].scrollwindow.config(bg=back)
 
-        temp["canv"] = temp["sw"].canv
-        temp["canv"].config(bg=back)
-        temp["sw"].scrollwindow.config(bg=back)
-
-        temp["frame"] = temp["sw"].scrollwindow
+        self.temp["qbubbles:pause.frame"] = self.temp["qbubbles:pause.sw"].scrollwindow
 
         a = ("Normal", "Double", "Kill", "Triple", "SpeedUp", "SpeedDown", "Up", "Ultimate", "DoubleState",
              "Protect", "SlowMotion", "TimeBreak", "Confusion", "HyperMode", "Teleporter",
              "Coin", "NoTouch", "Paralyse", "Diamond", "StoneBub", "Present", "SpecialKey", "LevelKey")
 
-        self.canvas = ("bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
+        c = ("bubble.normal", "bubble.double", "bubble.kill", "bubble.triple", "bubble.speedup", "bubble.speeddown",
              "bubble.up", "bubble.state.ultimate", "bubble.state.double", "bubble.state.protect",
              "bubble.state.slowmotion",
              "bubble.state.timebreak", "bubble.state.confusion", "bubble.state.hypermode", "bubble.teleporter",
              "bubble.coin", "bubble.state.notouch", "bubble.state.paralyse", "bubble.diamond", "bubble.stonebubble",
              "bubble.present", "bubble.state.specialkey", "bubble.levelkey")
 
-        canvass = Canvas(temp["frame"], bg=back, highlightthickness=0)
+        canvass = Canvas(self.temp["qbubbles:pause.frame"], bg=back, highlightthickness=0)
         x = 50
         y = 50
-        temp["pause/bubble.iconss"] = []
-        for i in range(len(a)):
+        self.temp["qbubbles:pause.bubble.icons"] = []
+        bubbles: List[Bubble] = Registry.get_bubbles()
+        for i in range(len(bubbles)):
             # print(a[i], b[i])
-            place_bubble(canvass, bub, x, y, 25, a[i])
-            canvass.create_text(x, y + 40, text=lang[self.canvas[i]], fill=fore, font=[font, 10])
+            uname = bubbles[i].get_uname()
+            bubble_icon = Registry.get_bubresource(uname, "images")[50]
+            self.temp["qbubbles:pause.bubble.icons"].append(
+                canvass.create_image(
+                    x, y, bubbles[i].get_uname()
+                )
+            )
+            self.temp["qbubbles:pause.bubble.texts"].append(
+                canvass.create_text(
+                    x, y + 40, text=Registry.get_lname("bubble", Registry.get_bubbles(), "name"), fill=fore, font=font
+                )
+            )
+            # place_bubble(canvass, bub, x, y, 25, a[i])
+
             if x > 900:
                 x = 50
                 y += 100
@@ -594,66 +601,44 @@ class Game(CanvasScene):
         canvass.config(height=y + 70, width=1000)
         canvass.pack(fill="y")
 
-        temp["pause/back-to-menu"].pack(fill="x")
+        self.temp["qbubbles:pause.canvass"] = canvass
+        self.temp["qbubbles:pause.back_to_menu"].pack(fill="x")
 
-        icons["pause"] = canvas.create_image(config["middle-x"], config["middle-y"] / 2,
-                                             image=icons["pause-id"])
+        self.temp["qbubbles:pause.icon_id"] = self.canvas.create_image(
+            Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] / 2, image=Registry.get_icon("pauseIcon"))
 
-        canvas.itemconfig(texts["pause"], text="")
+        self.canvas.itemconfig(self.texts["pause"], text="")  # TODO: Remove the use of pause-text
         root.update()
 
         # # TODO: Remove this unused s###
-        # self.temp["scorestate-save"] = stats["scorestate_time"] - time()
-        # self.temp["secure-save"] = stats["secure_time"] - time()
-        # self.temp["timebreak-save"] = stats["timebreak_time"] - time()
-        # self.temp["confusion-save"] = stats["confusion_time"] - time()
-        # self.temp["slowmotion-save"] = stats["slowmotion_time"] - time()
-        # self.temp["paralyse-save"] = stats["paralyse_time"] - time()
-        # self.temp["shotspeed-save"] = stats["shotspeed_time"] - time()
-        # self.temp["notouch-save"] = stats["notouch_time"] - time()
-        # self.temp["special-level-save"] = stats["special-level_time"] - time()
-    
+        # self.self.temp["scorestate-save"] = stats["scorestate_time"] - time()
+        # self.self.temp["secure-save"] = stats["secure_time"] - time()
+        # self.self.temp["timebreak-save"] = stats["timebreak_time"] - time()
+        # self.self.temp["confusion-save"] = stats["confusion_time"] - time()
+        # self.self.temp["slowmotion-save"] = stats["slowmotion_time"] - time()
+        # self.self.temp["paralyse-save"] = stats["paralyse_time"] - time()
+        # self.self.temp["shotspeed-save"] = stats["shotspeed_time"] - time()
+        # self.self.temp["notouch-save"] = stats["notouch_time"] - time()
+        # self.self.temp["special-level-save"] = stats["special-level_time"] - time()
+
     def unpause(self):
         # TODO: Destroy pause menu here, set game to unpause and call UnpauseEvent(...)
         self._pauseMode = False
 
-    def _movent(self):
+    def on_keypress(self, event):
         """
         TODO: Add custom key-events using Registry.get_keybindings("press", ...)
         TODO: Change name to on_keypress
         TODO: Make auto-update events
         :return:
         """
-        if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
-            if not self._pauseMode:
-                if not Registry.saveData["Effects"]["paralyse"]:
-                    x, y = get_coords(self.canvas, self.player.id)
-                    if Registry.saveData["Effects"]["speedboost"]:
-                        a = 6
-                    else:
-                        a = 1
-                    if self.pressed['Up']:
-                        if y > 72 + self.config["Game"]["ship-radius"]:
-                            self.canvas.move(self.player.id, 0, (-Registry.saveData["shipspeed"] / (self.move_fps / 4) - a))
-                            self.root.update()
-                    elif self.pressed['Down']:
-                        if y < Registry.gameData["WindowHeight"] - self.config["Game"]["ship-radius"]:
-                            self.canvas.move(self.player.id, 0, (Registry.saveData["shipspeed"] / (self.move_fps / 4) + a))
-                            self.root.update()
-                    elif self.pressed['Left']:
-                        if x > 0 + self.config["Game"]["ship-radius"]:
-                            self.canvas.move(self.player.id, (-Registry.saveData["shipspeed"] / (self.move_fps / 4) - a), 0)
-                            self.root.update()
-                    elif self.pressed['Right']:
-                        if x < Registry.gameData["WindowWidth"] - self.config["Game"]["ship-radius"]:
-                            self.canvas.move(self.player.id, (Registry.saveData["shipspeed"] / (self.move_fps / 4) + a), 0)
-                            self.root.update()
-                    Registry.saveData["ship-position"] = get_coords(self.canvas, self.player.id)
+
+        KeyPressEvent(self, event)
 
     # noinspection PyAttributeOutsideInit
     def movent_change(self):
         """
-        TODO: Create key-updates + events here
+        TODO: Remove Game.movement_change(...)
         Movement change thread
         :return:
         """
@@ -669,37 +654,42 @@ class Game(CanvasScene):
             except ZeroDivisionError:
                 self.move_fps = 1
             time2 = time()
-            Thread(None, lambda: self._movent()).start()
+            Thread(None, lambda: self.on_keypress()).start()
             sleep(0.01)
 
     def _xbox_input(self):
         """
-        TODO: Use Registry.get_xboxbinding(...)
+        TODO: Use Registry.get_xboxbinding(...) to check if the event is used
+        TODO: Call the XInputEvent(...) here (to update and call event handlers)
         xinput handlers
         :return:
         """
 
-        time2 = time()
-        while not self.returnmain:
-            self.xbox.update()
-            a = [int(self.xbox.LeftJoystickX * 7), int(self.xbox.LeftJoystickY * 7)]
-            b = [int(self.xbox.RightJoystickX * 7), int(self.xbox.RightJoystickY * 7)]
-            self.xControl["LeftJoystick"] = a
-            self.xControl["RightJoystick"] = b
-            self.xControl["A"] = bool(self.xbox.A)
-            self.xControl["B"] = bool(self.xbox.B)
-            self.xControl["X"] = bool(self.xbox.X)
-            self.xControl["Y"] = bool(self.xbox.Y)
-            self.xControl["Start"] = bool(self.xbox.Start)
-            self.xControl["Back"] = bool(self.xbox.Back)
-            self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
-            self.xControl["RightBumper"] = bool(self.xbox.RightBumper)
-            self.xControl["LeftTrigger"] = int((self.xbox.LeftBumper + 1) / 2 * 7)
-            self.xControl["RightTrigger"] = int((self.xbox.RightBumper + 1) / 2 * 7)
+        XInputEvent(self)
+
+        # # TODO: Remove this unused s###
+        # time2 = time()
+        # while not self.returnmain:
+        #     self.xbox.update()
+        #     a = [int(self.xbox.LeftJoystickX * 7), int(self.xbox.LeftJoystickY * 7)]
+        #     b = [int(self.xbox.RightJoystickX * 7), int(self.xbox.RightJoystickY * 7)]
+        #     self.xControl["LeftJoystick"] = a
+        #     self.xControl["RightJoystick"] = b
+        #     self.xControl["A"] = bool(self.xbox.A)
+        #     self.xControl["B"] = bool(self.xbox.B)
+        #     self.xControl["X"] = bool(self.xbox.X)
+        #     self.xControl["Y"] = bool(self.xbox.Y)
+        #     self.xControl["Start"] = bool(self.xbox.Start)
+        #     self.xControl["Back"] = bool(self.xbox.Back)
+        #     self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
+        #     self.xControl["RightBumper"] = bool(self.xbox.RightBumper)
+        #     self.xControl["LeftTrigger"] = int((self.xbox.LeftBumper + 1) / 2 * 7)
+        #     self.xControl["RightTrigger"] = int((self.xbox.RightBumper + 1) / 2 * 7)
 
     def xboxDeamon(self):
         """
         TODO: Use events for xinput (xbox) events
+        TODO: Remove Game.xboxDeamon(...)
         XInput update thread
         :return:
         """
@@ -720,14 +710,16 @@ class Game(CanvasScene):
 
     def xMovent(self):
         """
+        FIXME: Use XInputEvent(...) instead of Game.xMovent(...)
+        TODO: Use XInputEvent(...) in the sprite class, or gui class
 
         Movement for xinput
         :return:
         """
 
-        if self.modes["present"]:
+        if self.modeManager.currentModeName == "present":  # self.modes["present"]:
             if self.xControl["A"]:
-                # noinspection PyDeepBugsBinOperator,PyDeepBugsBinOperator
+                # noinspection PyDeepBugsBinOperator,PyDeepBugsBinOperand
                 if False != self.commands["present"] != True:
                     self.commands["present"].exit(self.canvas)
                     self._pauseMode = False
@@ -741,7 +733,8 @@ class Game(CanvasScene):
                     Registry.saveData["Effects"]["shotspeed_time"] = self.temp["shotspeed-save"] + time()
                     Registry.saveData["Effects"]["notouch_time"] = self.temp["notouch-save"] + time()
 
-        if (not self.modes["teleport"]) and (not self.modes["store"]) and (not self.modes["window"]):
+        if (self.modeManager.currentModeName != "teleport") and (self.modeManager.currentModeName != "store") and (
+                self.modeManager.currentModeName != "window"):
             if not self._pauseMode:
                 if not Registry.saveData["Effects"]["paralyse"]:
                     x, y = get_coords(self.canvas, self.player.id)
@@ -756,139 +749,71 @@ class Game(CanvasScene):
                                      -((Registry.saveData["shipspeed"] / (self.move_fps / 4) + a) * self.xControl[
                                          "LeftJoystick"][1] / 7))
 
-                    # if self.xControl['Up']:
-                    #     if y > 72 + self.config["Game"]["ship-radius"]:
-                    #         self.canvas.move(self.player.id, 0, (-Registry.saveData["shipspeed"] / (self.move_fps / 4) - a))
-                    #         self.root.update()
-                    # elif self.xControl['Down']:
-                    #     if y < Registry.gameData["WindowHeight"] - self.config["Game"]["ship-radius"]:
-                    #         self.canvas.move(self.player.id, 0, (Registry.saveData["shipspeed"] / (self.move_fps / 4) + a))
-                    #         self.root.update()
-                    # elif self.xControl['Left']:
-                    #     if x > 0 + self.config["Game"]["ship-radius"]:
-                    #         self.canvas.move(self.player.id, (-Registry.saveData["shipspeed"] / (self.move_fps / 4) - a), 0)
-                    #         self.root.update()
-                    # elif self.xControl['Right']:
-                    #     if x < Registry.gameData["WindowWidth"] - self.config["Game"]["ship-radius"]:
-                    #         self.canvas.move(self.player.id, (Registry.saveData["shipspeed"] / (self.move_fps / 4) + a), 0)
-                    #         self.root.update()
-                    # Registry.saveData["ship-position"] = get_coords(self.canvas, self.player.id)
-
-    def _press(self, e):
-        # TODO: Remove Game._press(...)
-        if e.keysym == "Up":
-            self.pressed["Up"] = True
-        if e.keysym == "Down":
-            self.pressed["Down"] = True
-        if e.keysym == "Left":
-            self.pressed["Left"] = True
-        if e.keysym == "Right":
-            self.pressed["Right"] = True
-
-    def _release(self, e):
-        # TODO: Remove Game._release(...)
-        if e.keysym == "Up":
-            self.pressed["Up"] = False
-        if e.keysym == "Down":
-            self.pressed["Down"] = False
-        if e.keysym == "Left":
-            self.pressed["Left"] = False
-        if e.keysym == "Right":
-            self.pressed["Right"] = False
-
     def shot(self, event):
-        # TODO: Remove Game.shot(...) and use key_release- or key_press-events
-        if (not self.modeManager.currentMode == "teleport") and (not self.modes["store"]) and (not self.modes["window"]):
+        # TODO: Remove Game.shot(...) and use on_keyrelease- or on_keypress-events
+        # TODO: Use Ammo(...) subclasses for ammo shooting
+        if (not self.modeManager.currentMode == "teleport") and (not self.modes["store"]) and (
+                not self.modes["window"]):
             if not self._pauseMode:
                 if not Registry.saveData["Effects"]["paralyse"]:
                     if event.keysym == "space":
                         # noinspection PyTypeChecker
                         create_shot(self.canvas, self.ammo, self.config, self.ship, Registry.saveData)
 
-    def auto_save(self):
-        # TODO: Use events for Game.auto_save
+    def on_autosave(self):
+        # TODO: Use events for Game.on_autosave like AutoSaveEvent(...)
         while not self.returnmain:
-            Maintance.auto_save(self.save_name, Registry.saveData)
+            Maintance.auto_save(self.saveName, Registry.saveData)
             print(self.returnmain)
             sleep(2)
+
+
 
     def update(self):
         # TODO: Make this completely using events like CollisionEvent(...), or UpdateEvent
         self.canvas.tag_raise(self.player.id)
-        if not Registry.saveData["Effects"]["timebreak"]:
-            if len(self.bubbles["bub-id"]) < self.config["Bubble"]["max-amount"]:
-                if not Registry.saveData["Effects"]["special-level"]:
-                    Thread(None,
-                           lambda: create_bubble(Registry.saveData, self.config, self.bub, self.canvas,
-                                                 self.bubbles),
-                           name="CreateBubbleThread").start()
-                else:
-                    Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
-                                                                     self.bubbles, Registry.saveData,
-                                                                     self.bub),
-                           name="SpecialModeCreateBubbleThread").start()
-        if self.commands["present"] is True:
-            # noinspection PyTypeChecker
-            self.commands["present"] = Present(self.canvas, Registry.saveData, self.temp, self.modes,
-                                               self.config, self.icons, self.fore, self.log, self.font)
-        if self.commands["special-mode"] is True:
-            State.set_state(self.canvas, log, Registry.saveData, "SpecialLevel", self.back)
-            self.commands["special-mode"] = False
-        Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
-                                    Registry.saveData,
-                                    self.ammo,
-                                    self.ship, self.canvas, log, self.back,
-                                    self.texts, self.panels)
-        Thread(None, lambda: refresh(Registry.saveData, self.config, self.bubbles, self.bub, self.canvas,
-                                     self.back, self.texts, self.modes, self.panels),
-               name="RefreshThread").start()
-        for events in self.mod_loader.events.values():
-            for event in events:
-                event.on_update(self)
-
-    def t_update(self):
-        # TODO: Remove Game.t_update(...) it's unused
-        # print(self.mod_loader.events)
-        for events in self.mod_loader.events.values():
-            for event in events:
-                Thread(None, lambda: event.on_t_update(self)).start()
-
-    def r_update(self):
-        # TODO: Remove Game.r_update(...) it's unused
-        self.update()
-        Thread(None, lambda: self.t_update(), "UpdateThread")
-
-    # def show_scene(self, save_name):
-    #     super(Game, self).show_scene()
-    #     self.run(save_name)
+        if len(self.bubbles) < MAX_BUBBLES:
+            if SpecialLevelEffect in self.player.appliedEffectTypes:
+                Thread(None,
+                       lambda: create_bubble(Registry.saveData, self.config, self.bub, self.canvas,
+                                             self.bubbles),
+                       name="CreateBubbleThread").start()
+            else:
+                Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
+                                                                 self.bubbles, Registry.saveData,
+                                                                 self.bub),
+                       name="SpecialModeCreateBubbleThread").start()
+        # if self.commands["present"] is True:
+        #     # noinspection PyTypeChecker
+        #     self.commands["present"] = Present(self.canvas, Registry.saveData, self.temp, self.modes,
+        #                                        self.config, self.icons, self.fore, self.log, self.font)
+        # if self.commands["special-mode"] is True:
+        #     State.set_state(self.canvas, log, Registry.saveData, "SpecialLevel", self.back)
+        #     self.commands["special-mode"] = False
+        # Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
+        #                             Registry.saveData,
+        #                             self.ammo,
+        #                             self.ship, self.canvas, log, self.back,
+        #                             self.texts, self.panels)
+        for object1 in range(len(self.gameObjects)):
+            for object2 in range(object1, len(self.gameObjects)):
+                gameObj1: Sprite = self.gameObjects[object1]
+                gameObj2: Sprite = self.gameObjects[object2]
+                CollisionEvent(self, gameObj1, gameObj2)
+        UpdateEvent(self, 0, self.canvas)
+        # Thread(None, lambda: refresh(Registry.saveData, self.config, self.bubbles, self.bub, self.canvas,
+        #                              self.back, self.texts, self.modes, self.panels),
+        #        name="RefreshThread").start()
 
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
         from threading import Thread
         from lib import xbox
 
-        print("[Game]:", "Starting XboxController")
-        self.xbox = xbox.XboxController()
-        print("[Game]:", "Started XboxController")
-
-        a = [int(self.xbox.LeftJoystickX * 7), int(self.xbox.LeftJoystickY * 7)]
-        b = [int(self.xbox.RightJoystickX * 7), int(self.xbox.RightJoystickY * 7)]
-        self.xControl["LeftJoystick"] = a
-        self.xControl["RightJoystick"] = b
-        self.xControl["A"] = bool(self.xbox.A)
-        self.xControl["B"] = bool(self.xbox.B)
-        self.xControl["x"] = bool(self.xbox.X)
-        self.xControl["y"] = bool(self.xbox.Y)
-        self.xControl["Start"] = bool(self.xbox.Start)
-        self.xControl["Back"] = bool(self.xbox.Back)
-        self.xControl["LeftBumper"] = bool(self.xbox.LeftBumper)
-        self.xControl["RightBumper"] = bool(self.xbox.RightBumper)
-        self.xControl["LeftTrigger"] = int((self.xbox.LeftBumper + 1) / 2 * 7)
-        self.xControl["RightTrigger"] = int((self.xbox.RightBumper + 1) / 2 * 7)
-        
         loadDescFont = Font("Helvetica", 13)
         loadTitleFont = Font("Helvetica", 46, "bold")
-        t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"], fill="#3f3f3f",
+        t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"],
+                                          fill="#3f3f3f",
                                           outline="#3f3f3f")
         t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 30,
                                      text="Loading...",
@@ -901,7 +826,7 @@ class Game(CanvasScene):
         # Setting background from nothing to normal.
         # Registry.get_background("id"] = self.canvas.create_image(0, 0, anchor=NW, image=self.back["normal"])
 
-        # Creating shi
+        # # Creating player id  # TODO: Remove this s###
         # self.player.id = self.canvas.create_image(7.5, 7.5, image=self.ship["image"])
         self.player.create(7.5, 7.5)
         # print(self.player.id)
@@ -912,64 +837,76 @@ class Game(CanvasScene):
 
         self.canvas.itemconfig(t1, text="Creating Stats objects")
         self.canvas.itemconfig(t2, text="")
-        
-        panelTop = Panel(0, 0, width="extend", height=69)
+
+        panelTop = Panel(self.canvas, 0, 0, width="extend", height=69)
         panelTopFont = Font("Helvetica", 12)
 
-        # Initializing the panels for the game.
-        self.panels["game/top"] = self.canvas.create_rectangle(
-            -1, -1, Registry.gameData["WindowWidth"], 69, fill="darkcyan"
-        )
+        # # Initializing the panels for the game.
+        # self.panels["game/top"] = self.canvas.create_rectangle(
+        #     -1, -1, Registry.gameData["WindowWidth"], 69, fill="darkcyan"
+        # )
 
         # Create seperating lines.
         self.canvas.create_line(0, 70, Registry.gameData["WindowWidth"], 70, fill="lightblue")
         self.canvas.create_line(0, 69, Registry.gameData["WindowWidth"], 69, fill="white")
 
-        self.canvas.create_text(55, 30, text=Registry.gameData["language"]["info.score"], fill='orange',
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            55, 30, text=Registry.gameData["language"]["info.score"],
+            fill='orange', font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="Score")
-        self.canvas.create_text(110, 30, text=Registry.gameData["language"]["info.level"], fill='orange',
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            110, 30, text=Registry.gameData["language"]["info.level"],
+            fill='orange', font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="Level")
-        self.canvas.create_text(165, 30, text=Registry.gameData["language"]["info.speed"], fill='orange',
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            165, 30, text=Registry.gameData["language"]["info.speed"],
+            fill='orange', font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="Speed")
-        self.canvas.create_text(220, 30, text=Registry.gameData["language"]["info.lives"], fill='orange',
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            220, 30, text=Registry.gameData["language"]["info.lives"],
+            fill='orange', font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="Lives")
-        self.canvas.create_text(330, 30, text=Registry.gameData["language"]["info.state.score"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            330, 30, text=Registry.gameData["language"]["info.state.score"],
+            fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="Score State")
-        self.canvas.create_text(400, 30, text=Registry.gameData["language"]["info.state.protect"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            400, 30, text=Registry.gameData["language"]["info.state.protect"],
+            fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Protect")
-        self.canvas.create_text(490, 30, text=Registry.gameData["language"]["info.state.slowmotion"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            490, 30, text=Registry.gameData["language"]["info.state.slowmotion"],
+            fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Slow Motion")
-        self.canvas.create_text(580, 30, text=Registry.gameData["language"]["info.state.confusion"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            580, 30, text=Registry.gameData["language"]["info.state.confusion"],
+            fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Confusion")
-        self.canvas.create_text(670, 30, text=Registry.gameData["language"]["info.state.timebreak"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            670, 30, text=Registry.gameData["language"]["info.state.timebreak"],
+            fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Time Break")
-        self.canvas.create_text(760, 30, text=Registry.gameData["language"]["info.state.spdboost"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(
+            760, 30, text=Registry.gameData["language"]["info.state.spdboost"],
+            fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State SpeedBoost")
-        self.canvas.create_text(850, 30, text=Registry.gameData["language"]["info.state.paralyse"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(850, 30, text=Registry.gameData["language"]["info.state.paralyse"],
+                                fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Paralize")
-        self.canvas.create_text(940, 30, text=Registry.gameData["language"]["info.state.shotspeed"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(940, 30, text=Registry.gameData["language"]["info.state.shotspeed"],
+                                fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Ammo Speed")
-        self.canvas.create_text(1030, 30, text=Registry.gameData["language"]["info.state.notouch"], fill="gold",
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(1030, 30, text=Registry.gameData["language"]["info.state.notouch"],
+                                fill="gold", font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="State Ghost Mode")
-        self.canvas.create_text(1120, 30, text=Registry.gameData["language"]["info.tps"], fill='gold',
-            font=panelTopFont.get_tuple())
+        self.canvas.create_text(1120, 30, text=Registry.gameData["language"]["info.tps"],
+                                fill='gold', font=panelTopFont.get_tuple())
         self.canvas.itemconfig(t2, text="Teleports")
-        self.canvas.create_image(1185, 30, image=self.icons["store-diamond"])
+
+        # Coin / Diamond icons
+        self.canvas.create_image(1185, 30, image=Registry.get_icon("StoreDiamond"))
         self.canvas.itemconfig(t2, text="Diamonds")
-        self.canvas.create_image(1185, 50, image=self.icons["store-coin"])
+        self.canvas.create_image(1185, 50, image=Registry.get_icon("StoreCoin"))
         self.canvas.itemconfig(t2, text="Coins")
 
         self.canvas.itemconfig(t1, text="Creating Stats Data")
@@ -1008,63 +945,34 @@ class Game(CanvasScene):
         self.canvas.itemconfig(t2, text="Diamonds")
         self.texts["coin"] = self.canvas.create_text(1210, 50, fill='cyan')
         self.canvas.itemconfig(t2, text="Coins")
-        self.texts["level-view"] = self.canvas.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 50 + self.f_size))
+        self.texts["level-view"] = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
+                                                           fill='Orange',
+                                                           font=Font("Helvetica", 46).get_tuple())
         self.canvas.itemconfig(t2, text="Level View")
 
-        self.texts["pause"] = self.canvas.create_text(mid_x, mid_y, fill='Orange', font=(self.font, 60 + self.f_size, "bold"))
+        self.texts["pause"] = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
+                                                      fill='Orange',
+                                                      font=Font("Helvetica", 56, "bold").get_tuple())
         self.canvas.itemconfig(t2, text="Pauze")
-        self.icons["pause"] = self.canvas.create_image(mid_x, mid_y, image=self.icons["pause-id"], state="hidden")
         self.canvas.itemconfig(t2, text="Pauze")
 
         # Threaded Automatic Save (TAS)
-        # self.t_auto_save = StoppableThread(None, lambda: self.auto_save(), name="AutoSaveThread").start()
-
-        kw = {}
-
-        for i in Ammo.requires:
-            if i in self.__dict__.keys():
-                kw[i] = self.__dict__[i]
-            else:
-                raise ClassRequirementInvalid("Requirement \"%s\" of class Ammo is invalid." % i)
-
-        self.c_ammo = Ammo()
+        # self.t_auto_save = StoppableThread(None, lambda: self.on_autosave(), name="AutoSaveThread").start()
 
         # Binding key-events for control
         self.canvas.itemconfig(t1, text="Binding Objects")
         self.canvas.itemconfig(t2, text="Main Binding")
 
-        self.canvas.bind_all('<Key>',
-                   lambda event: control(self.modes, self.config, self.root, self.canvas, Registry.saveData, self.bubbles,
-                                         self.back, self.texts, self.commands, self.temp, self.panels, self.fore,
-                                         self.ship, self.tp, Registry.gameData["language"], self.return_main, self.icons,
-                                         self.bub, self.font, event, self.c_ammo, self.launcher_cfg, log, s))
+        self.canvas.bind_all("<KeyPress>", lambda event: self.on_keypress(event))
+        self.canvas.bind_all("<KeyRelease>", lambda event: self.on_keyrelease(event))
 
         self.canvas.itemconfig(t2, text="Player Motion")
-        self.canvas.bind_all("<KeyPress-Up>", lambda event: self.up_press(event))
-        self.canvas.bind_all("<KeyPress-Down>", lambda event: self.down_press(event))
-        self.canvas.bind_all("<KeyPress-Left>", lambda event: self.left_press(event))
-        self.canvas.bind_all("<KeyPress-Right>", lambda event: self.right_press(event))
+        self.player.activate_events()
 
-        self.canvas.bind_all("<KeyRelease-Up>", lambda event: self.up_release(event))
-        self.canvas.bind_all("<KeyRelease-Down>", lambda event: self.down_release(event))
-        self.canvas.bind_all("<KeyRelease-Left>", lambda event: self.left_release(event))
-        self.canvas.bind_all("<KeyRelease-Right>", lambda event: self.right_release(event))
-        self.canvas.bind_all("<Key-Z>", lambda event: self.r_update())
-
-        # Binding other key-events.
-        self.canvas.bind_all('Configure', lambda event: self.resize)
+        # # Binding other events.  # TODO: Remove unnecessary binding
+        # self.canvas.bind_all('Configure', lambda event: self.resize)
 
         log.info("Game.main", "Key-bindings binded to 'move_ship'")
-        if len(self.bubbles["bub-id"]) == 0:
-            log.warning("Game.main", "Bubbel-ID lijst is gelijk aan lengte nul.")
-
-        if len(self.bubbles["bub-action"]) == 0:
-            log.warning("Game.main", "Bubble-actie lijst is gelijk aan lengte nul.")
-
-        if len(self.bubbles["bub-speed"]) == 0:
-            log.warning("Game.main", "Bubbel-snelheid lijst is gelijk aan lengte nul.")
-
-        self.ammo["retime"] = time()
 
         stats = Registry.saveData
 
@@ -1097,9 +1005,9 @@ class Game(CanvasScene):
         if stats["Effects"]["shotspeed_time"] <= time():
             stats["Effects"]["shotspeed"] = 0.1
             stats["Effects"]["shotspeed_time"] = time()
-        if stats["Effects"]["special-level_time"] <= time():
-            stats["Effects"]["special-level"] = False
-            stats["Effects"]["special-level_time"] = time()
+        if stats["Effects"]["special_level_time"] <= time():
+            stats["Effects"]["special_level"] = False
+            stats["Effects"]["special_level_time"] = time()
         else:
             self.canvas.itemconfig(Registry.get_background("id"), image=Registry.get_background("special"))
             self.canvas.itemconfig(self.panels["game/top"], fill="#3f3f3f")
@@ -1114,11 +1022,11 @@ class Game(CanvasScene):
         self.bubbles["active2"] = []
         self.bubbles["active"] = 0
 
-        Registry.saveData = self.maintance.auto_restore(self.save_name)
+        Registry.saveData = self.maintance.auto_restore(self.saveName)
 
-        start(self.bubbles, self.save_name, Registry.saveData, self.config, self.bub, self.modes, self.canvas)
+        start(self.bubbles, self.saveName, Registry.saveData, self.config, self.bub, self.modes, self.canvas)
 
-        Maintance.auto_save(self.save_name, Registry.saveData)
+        Maintance.auto_save(self.saveName, Registry.saveData)
 
         global Mainloop
         Mainloop = False
@@ -1186,11 +1094,15 @@ class Game(CanvasScene):
                 self.root.update()
                 # for barier in bariers:
                 #     barier.destroy()
-                g1 = self.canvas.create_text(mid_x, mid_y, text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
-                g2 = self.canvas.create_text(mid_x, mid_y + 60, text='Score: ' + str(Registry.saveData["Player"]["score"]), fill='white',
-                                   font=('Helvetica', 30))
-                g3 = self.canvas.create_text(mid_x, mid_y + 90, text='Level: ' + str(Registry.saveData["level"]), fill='white',
-                                   font=('Helvetica', 30))
+                g1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
+                                             text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
+                g2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 60,
+                                             text='Score: ' + str(Registry.saveData["Player"]["score"]), fill='white',
+                                             font=('Helvetica', 30))
+                g3 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 90,
+                                             text='Level: ' + str(Registry.saveData["level"]),
+                                             fill='white',
+                                             font=('Helvetica', 30))
                 log.info("Game.main", "Game Over!")
                 self.root.update()
                 sleep(4)
@@ -1198,7 +1110,7 @@ class Game(CanvasScene):
                 self.canvas.delete(g2)
                 self.canvas.delete(g3)
                 del g1, g2, g3
-                Maintance().reset(self.save_name)
+                Maintance().reset(self.saveName)
                 self.return_main()
         except TclError as e:
             if self.returnmain:

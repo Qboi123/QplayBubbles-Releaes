@@ -1,4 +1,4 @@
-from threadsafe_tkinter import *
+from tkinter import *
 
 
 # noinspection PyAttributeOutsideInit,PyUnusedLocal

@@ -1,10 +1,26 @@
-from random import randint
+from random import randint, Random
 from tkinter import Canvas
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 from bubble import create_bubble
+from bubbles import Bubble
 from components import SpecialMode
 from config import Reader
+
+
+class BubbleSystem(object):
+    def __init__(self, bubbles: List[Bubble]):
+        self.bubblePriorities = []
+        self.maxPriority = 0
+
+        for bubble in bubbles:
+            self.bubblePriorities.append((bubble, self.maxPriority))
+            self.maxPriority += bubble.priority
+
+    def random(self, rand: Random):
+        integer = rand.randint(0, self.maxPriority)
+        for priority in self.bubblePriorities:
+            
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,

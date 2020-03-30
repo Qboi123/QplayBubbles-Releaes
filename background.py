@@ -1,5 +1,5 @@
 from random import randint
-from threadsafe_tkinter import Canvas, Tk
+from tkinter import Canvas, Tk
 
 from registry import Registry
 

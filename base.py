@@ -3,6 +3,7 @@ from typing import Optional, Union, Callable, Type, List, Tuple
 
 from events import UpdateEvent, CollisionEvent, KeyPressEvent, KeyReleaseEvent, XInputEvent, MouseEnterEvent, \
     MouseLeaveEvent, ResizeEvent
+from exceptions import UnlocalizedNameError
 from globals import CANVAS
 from registry import Registry
 from sprite.abilities import Ability
@@ -132,7 +133,7 @@ class Sprite:
         self.__active = False
 
     def create(self, x, y):
-        pass
+        Registry.get_scene("Game").gameObjects.append(self)
 
     def get_sname(self):
         return self._spriteName
@@ -209,65 +210,7 @@ class BaseBarier(Sprite):
         super().create(x, 72 + y)
 
 
-# noinspection PyMethodOverriding
-class Bubble(Sprite):
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.name = ""
-        self.min = 9
-        self.max = 60
-        self.bubtype = BUB_NOSTATE
-        self.hardness = 1
-        self.images = dict()
-        self.collision_with = []
-        self.life_cost = 0
-        self.form = FORM_CIRCLE
-        self.coords_len = 2
-
-    def pre_initialize(self):
-        pass
-
-    def create(self, x: int, y: int, r: int, s: int, **kw):
-        r = max(min(r, self.min), self.max)
-        self.ids = [self._kw["bubbles"]["canvas"].create_image(x, y, image=self.images[r * 2])]
-        self.speed = s
-        self._kw["bubbles"]["bubbles"]["bub-special"].append(False)
-        self._kw["bubbles"]["bubbles"]["bub-index"].append(self)
-        self._kw["bubbles"]["bubbles"]["bub-position"].append([x, y])
-        self._kw["bubbles"]["bubbles"]["bub-hardness"].append(self.hardness)
-        self._kw["bubbles"]["bubbles"]["bub-action"].append(self.name)
-        self._kw["bubbles"]["bubbles"]["bub-id"].append(self.ids)
-        self._kw["bubbles"]["bubbles"]["bub-radius"].append(r)
-        self._kw["bubbles"]["bubbles"]["bub-speed"].append(s)
-        self.index = self._kw["bubbles"]["bubbles"]["bub-id"].index(self.ids, 0, len(self._kw["bubbles"]["bubbles"]["bub-id"]))
-
-    def on_move(self, parent):
-        pass
-
-    def on_collision(self, parent):
-        from bubble import del_bubble
-        del_bubble(self.index, self._kw["bubbles"], self._kw["canvas"])
-
-    def pop(self):
-        pass
-
-
 ActionIsNoneWarning = Warning
-
-
-class StatusBubble(Bubble): 
-    requires = tuple(list(Bubble.requires) + ["back"])
-
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self._kw = kw
-        self.name = None
-
-    def on_collfunc(self):
-        from state import State
-        if self.name is None:
-            raise ActionIsNoneWarning("The name on status-bubble '%s' is None" % __name__)
-        State.set_state(self._kw["canvas"], self._kw["log"], self._kw["stats"], self._kw["name"], self._kw["back"])
 
 
 class Ammo(Sprite):
@@ -380,7 +323,7 @@ class Player(Sprite):
 
 class CRectangle(object):
     def __init__(self, canvas: Canvas, x1, y1, x2, y2, fill="", outline="", anchor="center", tags=tuple()):
-        self._id = canvas.create_rectangle(x1, y1, x2, y2, fill=fill, outline=outline, anchor=anchor)
+        self._id = canvas.create_rectangle(x1, y1, x2, y2, fill=fill, outline=outline)  # , anchor=anchor)
         self._canvas = canvas
 
     def get_id(self):

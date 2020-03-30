@@ -3,7 +3,7 @@ from random import randint
 from threading import Thread
 from time import time
 
-from threadsafe_tkinter import *
+from tkinter import *
 
 from config import Reader
 from registry import Registry
@@ -272,7 +272,7 @@ class Store(CanvasScene):
     """
     
     def __init__(self):
-        super(Store, self).__init__(Registry.get_root())
+        super(Store, self).__init__(Registry.get_window("default"))
     
     def show_scene(self, log, config, modes, stats, icons, foregrounds, font, launcher_cfg):
         """

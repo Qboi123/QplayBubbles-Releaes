@@ -6,8 +6,8 @@
 [Thu Oct 17 12:59:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 13, in __init__
 [Thu Oct 17 12:59:27 2019] [Err]:     choice = TitleMenu()
 [Thu Oct 17 12:59:27 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 8, in __init__
-[Thu Oct 17 12:59:27 2019] [Err]:     from .utils import get_root
-[Thu Oct 17 12:59:27 2019] [Err]: ImportError: cannot import name 'get_root' from 'lib.utils' (C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py)
+[Thu Oct 17 12:59:27 2019] [Err]:     from .utils import get_window
+[Thu Oct 17 12:59:27 2019] [Err]: ImportError: cannot import name 'get_window' from 'lib.utils' (C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\__init__.py)
 [Thu Oct 17 12:59:28 2019] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x000001CE32C26400>
 [Thu Oct 17 12:59:28 2019] [Err]: Traceback (most recent call last):
 [Thu Oct 17 12:59:28 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 68, in __del__

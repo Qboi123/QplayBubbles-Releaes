@@ -1,4 +1,4 @@
-from threadsafe_tkinter import Canvas
+from tkinter import Canvas
 
 
 class BasePopup:

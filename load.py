@@ -3,6 +3,7 @@ from time import time
 from tkinter import PhotoImage
 
 import yaml
+from PIL import Image, ImageTk
 
 import bubblesInit
 import config
@@ -42,7 +43,7 @@ class Load(CanvasScene):
         Registry.gameData["config"] = config_
         Registry.gameData["language"] = lang_
 
-        temp_0001 = Registry.get_root()
+        temp_0001 = Registry.get_window("default")
         # Config resolution / positions
         Registry.gameData["WindowWidth"] = temp_0001.tkScale(temp_0001.winfo_screenwidth())
         Registry.gameData["WindowHeight"] = temp_0001.tkScale(temp_0001.winfo_screenheight())
@@ -52,7 +53,7 @@ class Load(CanvasScene):
         Registry.gameData["MiddleX"] = Registry.gameData["WindowWidth"] / 2
         Registry.gameData["MiddleY"] = Registry.gameData["WindowHeight"] / 2
 
-        root = Registry.get_root()
+        root = Registry.get_window("default")
         game = Game()
 
         # Register Xbox-Bindings
@@ -83,11 +84,11 @@ class Load(CanvasScene):
 
         t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"], fill="#3f3f3f",
                                           outline="#3f3f3f")
-        t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 30,
-                                     text="Loading...",
+        t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 2,
+                                     text="Loading...", anchor="s",
                                      font=title_font.get_tuple(), fill="#afafaf")
-        t2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 20,
-                                     text="Loading Mods",
+        t2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 2,
+                                     text="Loading Mods", anchor="n",
                                      font=descr_font.get_tuple(), fill="#afafaf")
         self.canvas.update()
 
@@ -123,6 +124,27 @@ class Load(CanvasScene):
                 colors = modelsBubble[uname]["Colors"]
                 images[radius] = utils.createbubble_image((radius, radius), None, *colors)
             Registry.register_bubresource(bubbleObject.get_uname(), "images", images)
+
+        self.canvas.itemconfig(t1, text="Loading Sprites")
+        self.canvas.itemconfig(t2, text="Load sprite models")
+        self.canvas.update()
+
+        modelsSprite = modelLoader.load_models("sprite")
+        self.playerModel = modelsSprite["player"]
+
+        for spriteName, spriteData in modelsSprite.items():
+            if spriteData["Rotation"]:
+                degrees = spriteData['RotationDegrees']
+                self.canvas.itemconfig(t2, text=f"Load images for {spriteName} 0 / {int(360 / degrees)}")
+                self.canvas.update()
+                image = Image.open(f"assets/textures/sprites/{spriteData['Image']['Name']}.png")
+                for degree in range(0, 360, spriteData["RotationDegrees"]):
+                    self.canvas.itemconfig(
+                        t2, text=f"Load images for {spriteName} {int(degree / degrees)} / {int(360 / degrees)}")
+                    self.canvas.update()
+                    image_c = image.copy()
+                    image_c.rotate(degree)
+                    Registry.register_texture("sprite", spriteName, ImageTk.PhotoImage(image_c), rotation=degree)
 
         # # TODO: Remove this and use Registry.get_bubresource(...) as above (with .yml files for bubble-models)
         # self.canvas.itemconfig(t2, text="Creating Dicts")
@@ -313,7 +335,7 @@ class Load(CanvasScene):
         self.canvas.itemconfig(t2, text="Store")
         Registry.register_scene("Store", Store())
         self.canvas.itemconfig(t2, text="Game")
-        Registry.register_scene("Store", Game())
+        Registry.register_scene("Game", Game())
 
         # Registry.register_mode("teleport", TeleportMode())
 

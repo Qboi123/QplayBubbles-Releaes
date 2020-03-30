@@ -5,7 +5,7 @@ from tkinter import ttk, Label, StringVar, Menubutton, Menu
 from typing import Optional
 
 import yaml
-from threadsafe_tkinter import Frame, Canvas, Button
+from tkinter import Frame, Canvas, Button
 
 from config import Reader
 from nzt import NZTFile
@@ -49,7 +49,7 @@ ENTRY_SEL_FG_DIS = "#ffffff"
 # noinspection PyAttributeOutsideInit
 class SavesMenu(Scene):
     def __init__(self, reload=False):
-        root = Registry.get_root()
+        root = Registry.get_window("default")
 
         if not reload:
             super(SavesMenu, self).__init__(root)
@@ -183,11 +183,14 @@ class SavesMenu(Scene):
         #     self.frames[-1].grid(row=i)
         # 
         #     i += 1
+        
+        controlsFont = Font("Helvetica", 10)
+        cFontT = controlsFont.get_tuple()
 
         style = ttk.Style()
         style.theme_settings("default", {
             "TEntry": {
-                "configure": {"font": ("Helvetica", 10), "relief": "flat", "selectborderwidth": 0, "padding": 10},
+                "configure": {"font": cFontT, "relief": "flat", "selectborderwidth": 0, "padding": 10},
                 "map": {
                     "relief": [("active", ENTRY_RELIEF),
                                ("focus", ENTRY_RELIEF),
@@ -215,10 +218,10 @@ class SavesMenu(Scene):
             "TLabel": {
                 "configure": {"background": "#5c5c5c",
                               "foreground": "#7f7f7f",
-                              "font": ("Helvetica", 10)}
+                              "font": cFontT}
             },
             "TButton": {
-                "configure": {"font": ("Helvetica", 10), "relief": BUTTON_RELIEF, "bd": 1},
+                "configure": {"font": cFontT, "relief": BUTTON_RELIEF, "bd": 1},
                 "map": {
                     "background": [("active", BUTTON_BG_FOC),
                                    ("focus", BUTTON_BG),
@@ -232,7 +235,7 @@ class SavesMenu(Scene):
                 }
             },
             "Treeview": {
-                "configure": {"padding": 0, "font": ("Helvetica", 10), "relief": "flat", "border": 0,
+                "configure": {"padding": 0, "font": cFontT, "relief": "flat", "border": 0,
                               "rowheight": 24},
                 "map": {
                     "background": [("active", TREEVIEW_BG),
@@ -298,7 +301,7 @@ class SavesMenu(Scene):
         style.theme_use("default")
         style.configure('TEntry', relief='flat', bd=0, borderwidth=0)
 
-        print(style.layout("TEntry"))
+        # print(style.layout("TEntry"))
 
         #   lets try to change this structure
         style.layout('TEntry', [
@@ -410,7 +413,7 @@ class SavesMenu(Scene):
         self.initialize_scene()
 
     def initialize_scene(self):
-        root = Registry.get_root()
+        root = Registry.get_window("default")
 
         # Main frame.
         self.main_f = Frame(self.oFrame, background="#3c3c3c", height=Registry.gameData["WindowHeight"] - 100)
@@ -483,7 +486,7 @@ class SavesMenu(Scene):
             a = Reader("saves/" + i + "/game.nzt").get_decoded()
             infos["score"].append(a["Player"]["score"])
             infos["level"].append(a["Player"]["level"])
-        print(infos)
+        # print(infos)
 
         self.item_info = names
 
@@ -594,13 +597,13 @@ class SavesMenu(Scene):
         else:
             src = self.names[self.selectedCanvas]
 
-        root = Registry.get_root()
+        root = Registry.get_window("default")
 
         self.oFrame.destroy()
         self.oFrame = Frame(self.frame, bg="#5c5c5c")
         self.titleCanvas = Canvas(self.oFrame, bg="#5c5c5c", highlightthickness=0, width=480, height=48)
         self.titleCanvas.create_text(0, 0, text=f"Are you sure you want to reset the save'{src}'?", fill="cyan",
-                                     anchor="nw", font=("Helvetica", 24))
+                                     anchor="nw", font=Font("Helvetica", 24).get_tuple())
         self.titleCanvas.place(x=int(Registry.gameData["WindowWidth"] / 2) - 240, y=320 - 48, anchor="nw")
         self.optionsFrame = Frame(self.oFrame, bg="#5c5c5c", width=480)
         self.buttonFrame = Frame(self.optionsFrame, bg="#5c5c5c", width=480)
@@ -623,13 +626,13 @@ class SavesMenu(Scene):
         else:
             src = self.names[self.selectedCanvas]
 
-        root = Registry.get_root()
+        root = Registry.get_window("default")
 
         self.oFrame.destroy()
         self.oFrame = Frame(self.frame, bg="#5c5c5c")
         self.titleCanvas = Canvas(self.oFrame, bg="#5c5c5c", highlightthickness=0, width=480, height=48)
         self.titleCanvas.create_text(0, 0, text=f"Are you sure you want to remove the save '{src}'?", fill="cyan",
-                                     anchor="nw", font=("Helvetica", 24))
+                                     anchor="nw", font=Font("Helvetica", 24).get_tuple())
         self.titleCanvas.place(x=int(Registry.gameData["WindowWidth"] / 2) - 240, y=320 - 48, anchor="nw")
         self.optionsFrame = Frame(self.oFrame, bg="#5c5c5c", width=480)
         self.buttonFrame = Frame(self.optionsFrame, bg="#5c5c5c", width=480)
@@ -663,7 +666,7 @@ class SavesMenu(Scene):
         :return:
         """
 
-        root = Registry.get_root()
+        root = Registry.get_window("default")
 
         def update(event):
             if event.char in string.digits:
@@ -675,9 +678,12 @@ class SavesMenu(Scene):
 
         self.oFrame.destroy()
         self.oFrame = Frame(self.frame, bg="#5c5c5c")
-        self.titleCanvas = Canvas(self.oFrame, bg="#5c5c5c", highlightthickness=0, width=480, height=48)
-        self.titleCanvas.create_text(0, 0, text="Add shell", fill="cyan", anchor="nw", font=("Consolas", 24))
-        self.titleCanvas.place(x=int(Registry.gameData["WindowWidth"] / 2) - 240, y=320 - 48, anchor="nw")
+        self.titleCanvas = Canvas(
+            self.oFrame, bg="#5c5c5c", highlightthickness=0, width=480, height=48)
+        self.titleCanvas.create_text(
+            0, 0, text="Add shell", fill="cyan", anchor="nw", font=Font("Helvetica", 24).get_tuple())
+        self.titleCanvas.place(
+            x=int(Registry.gameData["WindowWidth"] / 2) - 240, y=320 - 48, anchor="nw")
         self.optionsFrame = Frame(self.oFrame, bg="#5c5c5c", width=480)
 
         self.nameEntryFrame = Frame(self.optionsFrame, bg="#5c5c5c", width=480)
@@ -709,7 +715,7 @@ class SavesMenu(Scene):
         root.update_idletasks()
         self.optionsFrame.place(x=int(Registry.gameData["WindowWidth"] / 2) - 240 - 69, y=320, anchor="nw", width=480)
 
-        self.textInput = ttk.Entry()
+        # self.textInput = ttk.Entry()
         self.oFrame.pack(fill="both", expand=True)
 
     def rename_save(self):
@@ -718,7 +724,7 @@ class SavesMenu(Scene):
         else:
             src = self.names[self.selectedCanvas]
 
-        root = Registry.get_root()
+        root = Registry.get_window("default")
 
         self.oFrame.destroy()
         self.oFrame = Frame(self.frame, bg="#5c5c5c")
@@ -843,7 +849,7 @@ class SavesMenu(Scene):
                                  "paralyse": False, "paralyse_time": 0, "scorestate": 1, "scorestate_time": 0,
                                  "secure": False, "secure_time": 0, "shotspeed": 0.1, "shotspeed_time": 0,
                                  "slowmotion": False, "slowmotion_time": 0, "special-level": False,
-                                 "special-level_time": 0,
+                                 "special_level_time": 0,
                                  "speedboost": False, "speedboost_time": 0, "timebreak": False, "timebreak_time": 0},
                      "GameInfo": {
                          "seed": seed}
@@ -930,8 +936,10 @@ class SavesMenu(Scene):
         # Removes oFrame.
         self.oFrame.destroy()
 
+        print(Registry._registryScenes.keys())
+
         # Runs the game
-        self.scenemanager.change_scene("GameScene", src)
+        self.scenemanager.change_scene("Game", src)
 
     def back_title(self):
         self.scenemanager.change_scene("TitleScreen")
@@ -939,7 +947,7 @@ class SavesMenu(Scene):
 
 class OptionsMenu(Scene):
     def __init__(self):
-        super(OptionsMenu, self).__init__(Registry.get_root())
+        super(OptionsMenu, self).__init__(Registry.get_window("default"))
 
         # Initialize options menu variables
         self.lang_selected = StringVar(self.frame)

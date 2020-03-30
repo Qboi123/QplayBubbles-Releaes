@@ -2,7 +2,7 @@ from typing import NoReturn
 
 from base import Sprite
 from effects import BaseEffect, AppliedEffect
-from events import KeyPressEvent, KeyReleaseEvent, UpdateEvent, SavedataReadedEvent
+from events import KeyPressEvent, KeyReleaseEvent, UpdateEvent, SavedataReadedEvent, ExperienceEvent
 from registry import Registry
 from sprite.abilities import GhostAbility
 
@@ -11,12 +11,8 @@ class Player(Sprite):
     def __init__(self):
         super(Player, self).__init__()
 
-        KeyPressEvent.bind(self.on_key_press)
-        KeyReleaseEvent.bind(self.on_key_release)
-        UpdateEvent.bind(self.on_update)
-        SavedataReadedEvent.bind(self.on_savedata_readed)
-
         self.appliedEffects = []
+        self.appliedEffectTypes = []
 
         self.score = 0
         self.health = 10
@@ -27,6 +23,22 @@ class Player(Sprite):
 
         self.keysPressed = ""
         self._spriteName = "player"
+
+    def add_effect(self, effect):
+        self.appliedEffects.append(effect)
+        self.appliedEffectTypes.append(type(effect))
+
+    def activate_events(self):
+        KeyPressEvent.bind(self.on_key_press)
+        KeyReleaseEvent.bind(self.on_key_release)
+        UpdateEvent.bind(self.on_update)
+        SavedataReadedEvent.bind(self.on_savedata_readed)
+
+    def deactivate_events(self):
+        KeyPressEvent.unbind(self.on_key_press)
+        KeyReleaseEvent.unbind(self.on_key_release)
+        UpdateEvent.unbind(self.on_update)
+        SavedataReadedEvent.unbind(self.on_savedata_readed)
 
     def add_experience(self, experience):
         ExperienceEvent(self, experience)
@@ -62,7 +74,7 @@ class Player(Sprite):
         self.move(x, y)
 
     def create(self, x, y):
-        self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player"))
+        self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player", rotation=0))
 
     def on_key_press(self, evt: KeyPressEvent):
         if (evt.char.lower() == "w") and ("w" not in self.keysPressed):

@@ -7,7 +7,7 @@
 [Thu Oct 17 13:56:19 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 15, in __init__
 [Thu Oct 17 13:56:19 2019] [Err]:     from .slots import SlotsMenu
 [Thu Oct 17 13:56:19 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\slots.py", line 5, in <module>
-[Thu Oct 17 13:56:19 2019] [Err]:     from .utils.get_set import get_root
+[Thu Oct 17 13:56:19 2019] [Err]:     from .utils.get_set import get_window
 [Thu Oct 17 13:56:19 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\get_set.py", line 2, in <module>
 [Thu Oct 17 13:56:19 2019] [Err]:     import tkinter._default_root as tkd
 [Thu Oct 17 13:56:19 2019] [Err]: ModuleNotFoundError: No module named 'tkinter._default_root'

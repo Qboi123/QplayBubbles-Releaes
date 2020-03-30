@@ -1,5 +1,5 @@
 from tkinter import Tk, PhotoImage, Toplevel
-from typing import Callable, Type, Any, List, Union
+from typing import Callable, Type, Any, List, Union, Dict
 
 from PIL import ImageTk
 
@@ -28,7 +28,7 @@ class Registry(object):
     _registryStoreIcons = {}
     _registryBubResources = {}
     _registryTextures = {}
-    _registryRoot: Tk = None
+    _registryRoot: Dict[str, Union[Tk, Toplevel]] = {}
 
     @classmethod
     def get_scene(cls, name):
@@ -59,8 +59,8 @@ class Registry(object):
         return cls._registryXboxBinds[key]
 
     @classmethod
-    def get_root(cls) -> Tk:
-        return cls._registryRoot
+    def get_window(cls, name: str) -> Union[Tk, Toplevel]:
+        return cls._registryRoot[name]
 
     @classmethod
     def get_id_bubble(cls, bubble) -> List[str]:
@@ -121,19 +121,20 @@ class Registry(object):
         cls._registryXboxBinds[key] = command
 
     @classmethod
-    def register_root(cls, window):
+    def register_window(cls, name, window):
         if not issubclass(type(window), Tk):
-            raise TypeError(
-                f"Root must be a subclass of a Tk-object not "
-                f"{'an' if window.__class__.__name__.startswith(('e', 'a', 'i', 'o', 'u')) else 'a'} "
-                f"{window.__class__.__name__}-object, wich is not subclass of a Tk-object")
+            if not issubclass(type(window), Toplevel):
+                raise TypeError(
+                    f"Window must be a subclass of Tk(...) or Toplevel(...) not "
+                    f"{'an' if window.__class__.__name__.startswith(('e', 'a', 'i', 'o', 'u')) else 'a'} "
+                    f"{window.__class__.__name__}-object, wich is not subclass of it")
 
-        if cls._registryRoot is not None:
-            printerr(f"Root already exists!")
-        cls._registryRoot = window
+        if name in cls._registryRoot.keys():
+            printerr(f"Window with name '{name}' already exists!")
+        cls._registryRoot[name] = window
 
     @classmethod
-    def register_image(cls, name, image: PhotoImage):
+    def register_image(cls, name, image: PhotoImage, **data):
         if type(name) != str:
             raise TypeError(
                 f"Image name must be a str-object not "
@@ -148,7 +149,15 @@ class Registry(object):
 
         if name in cls._registryImages.keys():
             printerr(f"Image with name '{name}' already exists!")
-        cls._registryImages[name] = image
+        cls._registryImages[name] = {}
+        cls._registryImages[name][tuple(data.items())] = image
+
+    @classmethod
+    def get_image(cls, name):
+        if name not in cls._registryImages.keys():
+            raise UnlocalizedNameError(f"image with name '{name}' is non-existent")
+        icon = cls._registryImages[name]
+        return icon
 
     @classmethod
     def register_foreground(cls, name, image: PhotoImage):
@@ -169,6 +178,13 @@ class Registry(object):
         cls._registryForegrounds[name] = image
 
     @classmethod
+    def get_foreground(cls, name):
+        if name not in cls._registryForegrounds.keys():
+            raise UnlocalizedNameError(f"foreground with name '{name}' is non-existent")
+        icon = cls._registryForegrounds[name]
+        return icon
+
+    @classmethod
     def register_background(cls, name, image: PhotoImage):
         if type(name) != str:
             raise TypeError(
@@ -185,6 +201,13 @@ class Registry(object):
         if name in cls._registryXboxBinds:
             printerr(f"Image with name '{name}' already exists!")
         cls._registryBackgrounds[name] = image
+
+    @classmethod
+    def get_background(cls, name):
+        if name not in cls._registryBackgrounds.keys():
+            raise UnlocalizedNameError(f"background with name '{name}' is non-existent")
+        icon = cls._registryBackgrounds[name]
+        return icon
 
     @classmethod
     def register_storeitem(cls, name, icon: PhotoImage, obj: Callable = None):
@@ -227,9 +250,16 @@ class Registry(object):
         cls._registryIcons[name] = image
 
     @classmethod
+    def get_icon(cls, name):
+        if name not in cls._registryIcons.keys():
+            raise NameError(f"icon with name '{name}' is non-existent")
+        icon = cls._registryIcons[name]
+        return icon
+
+    @classmethod
     def get_bubresource(cls, uname, key):
         if uname not in cls._registryBubResources.keys():
-            raise UnlocalizedNameError(f"bubble resource with unmame '{uname}' is non-existent")
+            raise UnlocalizedNameError(f"bubble resource with uname '{uname}' is non-existent")
         bub_reslist = cls._registryBubResources[uname]
         if key not in bub_reslist.keys():
             raise KeyError(f"key '{key}' for bubble resource '{uname}' is non-existent")
@@ -258,12 +288,13 @@ class Registry(object):
             cls._registryBubResources[uname] = {key: value}
 
     @classmethod
-    def get_texture(cls, type_, id_) -> Union[PhotoImage, ImageTk.PhotoImage]:
+    def get_texture(cls, type_, id_, **data) -> Union[PhotoImage, ImageTk.PhotoImage]:
         if type_ not in cls._registryTextures.keys():
             raise KeyError(f"Type '{type_}' is not found in texture registry")
         if id_ not in cls._registryTextures[type_].keys():
             raise KeyError(f"ID '{id_}' with type '{type_}' is not found in texture registry")
-        return cls._registryTextures[type_][id_]
+        print(cls._registryTextures[type_][id_])
+        return cls._registryTextures[type_][id_][tuple(data.items())]
 
     @classmethod
     def get_current_scene(cls):
@@ -280,7 +311,7 @@ class Registry(object):
         cls._registrySceneManager = scenemanager
     
     @classmethod
-    def register_texture(cls, type_, id_, texture):
+    def register_texture(cls, type_, id_, texture, **data):
         if type(type_) != str:
             raise TypeError(
                 f"Texture type must be a str-object not "
@@ -300,8 +331,25 @@ class Registry(object):
 
         if type_ in cls._registryTextures.keys():
             if id_ in cls._registryTextures[type_].keys():
-                printwrn(f"texture with ID '{id_}' and type '{type_}' is overridden, this can be a intended override, "
-                         f"but usually a mistake")
-            cls._registryTextures[type_][id_] = texture
+                if tuple(data.items()) in cls._registryTextures[type_][id_]:
+                    printwrn(f"texture with ID '{id_}' and type '{type_}' is overridden, this can be a intended override, "
+                             f"but usually a mistake")
+                cls._registryTextures[type_][id_][tuple(data.items())] = texture
+            else:
+                # cls._registryTextures[type_][id_] = texture
+                cls._registryTextures[type_][id_] = {}
+                cls._registryTextures[type_][id_][tuple(data.items())] = texture
         else:
-            cls._registryTextures[type_] = {id_: texture}
+            cls._registryTextures[type_] = {id_: {tuple(data.items()): texture}}
+
+    @classmethod
+    def get_bubbles(cls):
+        return tuple(cls._registryBubbles.values())
+
+    @classmethod
+    def get_lname(cls, *args):
+        return cls.gameData["language"][".".join([*args])]
+
+    @classmethod
+    def register_sprite_image(cls, name, image, **data):
+        pass

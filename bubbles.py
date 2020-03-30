@@ -15,6 +15,8 @@ class Bubble(object):
         self.maxRadius: int = 80
         self.minSpeed: int = 5
         self.maxSpeed: int = 10
+        self.hardness: int = 1
+        self.damage: int = 1
         self._uName: Optional[str] = None
 
     def set_uname(self, name) -> NoReturn:

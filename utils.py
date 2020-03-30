@@ -7,7 +7,7 @@ from typing import Tuple, Callable, Any, Dict
 
 import pyglet
 from PIL import Image, ImageDraw
-from threadsafe_tkinter import Button, Frame, Canvas, Tk
+from tkinter import Button, Frame, Canvas, Tk
 
 from advBuiltins import *
 from bubble import place_bubble
@@ -701,7 +701,7 @@ class Font(object):
             self.style = stl
 
     def get_tuple(self):
-        return self.family, self.size, self.style
+        return self.family, Registry.get_window("default").tkScale(self.size), self.style
 
 
 class Maintance:

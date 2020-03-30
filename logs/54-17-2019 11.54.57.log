@@ -7,8 +7,8 @@
 [Thu Oct 17 13:54:58 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 16, in __init__
 [Thu Oct 17 13:54:58 2019] [Err]:     self.t_choice = TitleMenu().get()
 [Thu Oct 17 13:54:58 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\title.py", line 15, in __init__
-[Thu Oct 17 13:54:58 2019] [Err]:     self._root = get_root()
-[Thu Oct 17 13:54:58 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\get_set.py", line 8, in get_root
+[Thu Oct 17 13:54:58 2019] [Err]:     self._root = get_window()
+[Thu Oct 17 13:54:58 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\utils\get_set.py", line 8, in get_window
 [Thu Oct 17 13:54:58 2019] [Err]:     return tk._default_root
 [Thu Oct 17 13:54:58 2019] [Err]: AttributeError: module 'threadsafe_tkinter' has no attribute '_default_root'
 [Thu Oct 17 13:54:58 2019] [Err]: Exception ignored in: <function TitleMenu.__del__ at 0x00000246567BF950>

@@ -1,6 +1,7 @@
+import os
 import sys
 
-from threadsafe_tkinter import Button, CENTER, TclError
+from tkinter import Button, CENTER, TclError
 
 from background import Background
 from registry import Registry
@@ -10,7 +11,7 @@ from utils import Font
 
 class TitleMenu(Scene):
     def __init__(self):
-        super(TitleMenu, self).__init__(Registry.get_root())
+        super(TitleMenu, self).__init__(Registry.get_window("default"))
 
         self.lang = Registry.gameData["language"]
         self.config = Registry.gameData["config"]
@@ -27,7 +28,7 @@ class TitleMenu(Scene):
             self.frame, bg="#007f7f", fg="#7fffff", bd=15, command=lambda: self.play_event(), text=self.lang["home.start"],
             relief="flat", font=self.btnFont.get_tuple())
         self.quit_btn = Button(
-            self.frame, bg="#007f7f", fg="#7fffff", bd=15, command=lambda: Registry.get_root().destroy(),
+            self.frame, bg="#007f7f", fg="#7fffff", bd=15, command=lambda: os.kill(os.getpid(), 0),
             text=self.lang["home.quit"], relief="flat", font=self.btnFont.get_tuple())
         self.options_btn = Button(
             self.frame, bg="#007f7f", fg="#7fffff", bd=15, text=self.lang["home.options"], relief="flat",
@@ -64,7 +65,7 @@ class TitleMenu(Scene):
 
                 if "--travis" in sys.argv:
                     if time.time() > end_time:
-                        Registry.get_root().destroy()
+                        Registry.get_window("default").destroy()
                         break
             except TclError:
                 break

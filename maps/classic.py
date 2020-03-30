@@ -1,0 +1,1 @@
+class ClassicMap(GameMap):
