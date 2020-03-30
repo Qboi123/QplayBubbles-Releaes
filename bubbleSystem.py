@@ -20,7 +20,7 @@ class BubbleSystem(object):
     def random(self, rand: Random):
         integer = rand.randint(0, self.maxPriority)
         for priority in self.bubblePriorities:
-            
+            pass
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
