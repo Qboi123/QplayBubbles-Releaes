@@ -108,6 +108,8 @@ def make_tk_dpiaware(root: Tk):
 
 class Main(Toplevel):
     def __init__(self):
+        os.chdir(os.path.split(__file__)[0])
+
         self.fakeRoot = FakeWindow()
 
         self.pre_run()
