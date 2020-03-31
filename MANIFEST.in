@@ -1,0 +1,3 @@
+recursive-include qbubbles/assets *
+recursive-include qbubbles/config *
+recursive-include qbubbles/lang *

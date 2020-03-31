@@ -1,5 +1,0 @@
-[Tue Feb 11 11:19:24 2020] [Out]: Args: ['G:/Code/QplayBubbles-Releaes/__main__.py']
-[Tue Feb 11 11:19:24 2020] [Err]: Traceback (most recent call last):
-[Tue Feb 11 11:19:24 2020] [Err]:   File "G:/Code/QplayBubbles-Releaes/__main__.py", line 92, in <module>
-[Tue Feb 11 11:19:24 2020] [Err]:     launcher_cfg = {"version": sys.argv[1],
-[Tue Feb 11 11:19:24 2020] [Err]: IndexError: list index out of range

@@ -1,5 +1,0 @@
-[Fri Oct 18 12:04:45 2019] [Out]: Args: ['C:\\Users\\quint\\Documents\\GitHub\\QplayBubbles-Releaes\\__main__.py']
-[Fri Oct 18 12:04:45 2019] [Err]: Traceback (most recent call last):
-[Fri Oct 18 12:04:45 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\__main__.py", line 91, in <module>
-[Fri Oct 18 12:04:45 2019] [Err]:     launcher_cfg = {"version": sys.argv[1],
-[Fri Oct 18 12:04:45 2019] [Err]: IndexError: list index out of range

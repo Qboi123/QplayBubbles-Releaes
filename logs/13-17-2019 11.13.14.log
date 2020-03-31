@@ -1,9 +1,0 @@
-[Thu Oct 17 13:13:14 2019] [Out]: Args: ['C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py', 'v1.5.1-pre5', 'v1_5_1_pre5', '16']
-[Thu Oct 17 13:13:14 2019] [Out]: Launcher Path: C:\Users\quint\Documents
-[Thu Oct 17 13:13:14 2019] [Err]: Traceback (most recent call last):
-[Thu Oct 17 13:13:14 2019] [Err]:   File "C:/Users/quint/Documents/GitHub/QplayBubbles-Releaes/__main__.py", line 104, in <module>
-[Thu Oct 17 13:13:14 2019] [Err]:     from lib import Main
-[Thu Oct 17 13:13:14 2019] [Err]:   File "C:\Users\quint\Documents\GitHub\QplayBubbles-Releaes\lib\Main.py", line 23
-[Thu Oct 17 13:13:14 2019] [Err]:     def pre_initialize(self):
-[Thu Oct 17 13:13:14 2019] [Err]:     ^
-[Thu Oct 17 13:13:14 2019] [Err]: IndentationError: expected an indented block

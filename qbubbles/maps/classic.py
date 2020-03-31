@@ -1,0 +1,2 @@
+class ClassicMap(GameMap):
+    pass
