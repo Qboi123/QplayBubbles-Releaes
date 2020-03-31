@@ -129,7 +129,9 @@ class Load(CanvasScene):
                 mod = Registry.get_module(module_id)["mod"]
                 mod: Type[ModSkeleton]
                 self.canvas.itemconfig(t2, text=mod.name)
-                mod.zipimport = modules[mod.modID]
+                mod.zipimport = None
+                if mod.modID in modules.keys():
+                    mod.zipimport = modules[mod.modID]
                 mods.append(mod())
 
         PreInitializeEvent(self, self.canvas, t1, t2)
