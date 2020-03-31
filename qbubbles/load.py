@@ -166,7 +166,8 @@ class Load(CanvasScene):
 
             images = {}
             uname = bubbleObject.get_uname()
-            modelLoader.generate_bubble_images(bubbleObject.minSize, bubbleObject.maxSize, modelsBubble)
+            modelLoader.generate_bubble_images(bubbleObject.minRadius, bubbleObject.maxRadius,
+                                               modelsBubble[bubbleObject.get_uname()])
             # for radius in range(bubbleObject.minRadius, bubbleObject.maxRadius):
             #     colors = modelsBubble[uname]["Colors"]
             #     images[radius] = utils.createbubble_image((radius, radius), None, *colors)
@@ -376,9 +377,7 @@ class Load(CanvasScene):
 
         InitializeEvent(self, self.canvas, t1, t2)
 
-        for bubble_id in Registry.get_bubbles():
-            bubble_id: str
-            bubble: Bubble = Registry.get_bubble(bubble_id)
+        for bubble in Registry.get_bubbles():
             if Registry.bubresource_exists(bubble.get_uname()):
                 continue
 
