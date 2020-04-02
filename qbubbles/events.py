@@ -298,13 +298,99 @@ class KeyPressEvent(Event):
 class SpriteDamageEvent(Event):
     _handlers = list()
 
-    def __new__(cls, *args, **kwargs):
-        super(SpriteDamageEvent, cls).__new__()
-
     def __init__(self, scene, sprite):
         self.sprite = sprite
 
         super(SpriteDamageEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
+
+class MapInitializeEvent(Event):
+    _handlers = list()
+
+    def __init__(self, scene, t1, t2, save_name):
+        if scene.__class__.__name__ != "Game":
+            raise RuntimeError("Scene must be specific a Game instance")
+        self.canvas = scene.canvas
+        self.t1 = t1
+        self.t2 = t2
+        self.saveName = save_name
+
+        super(MapInitializeEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
+
+class FirstLoadEvent(Event):
+    _handlers = list()
+
+    def __init__(self, scene, t1, t2, save_name):
+        if scene.__class__.__name__ != "Game":
+            raise RuntimeError("Scene must be specific a Game instance")
+        self.canvas = scene.canvas
+        self.t1 = t1
+        self.t2 = t2
+        self.saveName = save_name
+
+        super(FirstLoadEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
+
+class SaveEvent(Event):
+    _handlers = list()
+
+    def __init__(self, scene, save_name):
+        if scene.__class__.__name__ != "Game":
+            raise RuntimeError("Scene must be specific a Game instance")
+        self.canvas = scene.canvas
+        self.saveName = save_name
+
+        super(SaveEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
 
 
 class KeyReleaseEvent(Event):

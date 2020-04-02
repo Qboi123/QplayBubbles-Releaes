@@ -97,8 +97,8 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
         i = randint(0, 1600)
     else:
         i = i
-    if stats["Player"]["level"] <= 100:
-        level_dat = stats["Player"]["level"]
+    if Registry.saveData["Game"]["Player"]["level"] <= 100:
+        level_dat = Registry.saveData["Game"]["Player"]["level"]
     else:
         level_dat = 100
     if 0 <= i < 800:
@@ -132,7 +132,7 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
         spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 3)
         hardness = 1
     elif 960 <= i < 965:
-        if stats["Player"]["lives"] < 7:
+        if Registry.saveData["Game"]["Player"]["lives"] < 7:
             ids = [c.create_image(x, y, image=bub["Up"][r * 2])]
             act = "Up"
             spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 3)
@@ -197,30 +197,30 @@ def create_bubble(stats, config, bub, c, bubble, i=None, x=None, y=None, r=None,
         act = "ShotSpdStat"
         spd = randint(int(stats["BubbleStats"]["bubspeed"]) - 3, int(stats["BubbleStats"]["bubspeed"]))
         hardness = 1
-    elif 1120 <= i < 1121 and stats["Player"]["level"] > 19:
+    elif 1120 <= i < 1121 and Registry.saveData["Game"]["Player"]["level"] > 19:
         ids = [c.create_image(x, y, image=bub["Teleporter"][r * 2])]
         act = "Teleporter"
         spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 1
-    elif 1121 <= i < 1123 and stats["Player"]["level"] > 4:
+    elif 1121 <= i < 1123 and Registry.saveData["Game"]["Player"]["level"] > 4:
         ids = [c.create_image(x, y, image=bub["Diamond"][36])]
         r = 18
         act = "Diamond"
         spd = randint(int(stats["BubbleStats"]["bubspeed"]) + 2, int(stats["BubbleStats"]["bubspeed"]) + 4)
         hardness = 1
-    elif 1124 <= i < 1130 and stats["Player"]["level"] > 4:
+    elif 1124 <= i < 1130 and Registry.saveData["Game"]["Player"]["level"] > 4:
         ids = [c.create_image(x, y, image=bub["Coin"])]
         r = 20
         act = "Coin"
         spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 2
-    elif 1130 <= i < 1150 and stats["Player"]["level"] > 4:
+    elif 1130 <= i < 1150 and Registry.saveData["Game"]["Player"]["level"] > 4:
         r = 20
         ids = [c.create_image(x, y, image=bub["NoTouch"][r * 2])]
         act = "NoTouch"
         spd = randint(int(stats["BubbleStats"]["bubspeed"]), int(stats["BubbleStats"]["bubspeed"]) + 2)
         hardness = 1
-    elif 1150 <= i < 1160 and stats["Player"]["level"] > 4:
+    elif 1150 <= i < 1160 and Registry.saveData["Game"]["Player"]["level"] > 4:
         r = 20
         ids = [c.create_image(x, y, image=bub["Present"][40])]
         act = "Present"
@@ -422,39 +422,39 @@ class Collision:
         :return:
         """
         if action == "Normal":
-            stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
+            Registry.saveData["Game"]["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
         if action == "Double":
-            stats["Player"]["score"] += bubscore * 2 * stats["Effects"]["scorestate"]
+            Registry.saveData["Game"]["Player"]["score"] += bubscore * 2 * stats["Effects"]["scorestate"]
         if action == "Triple":
-            stats["Player"]["score"] += bubscore * 3 * stats["Effects"]["scorestate"]
+            Registry.saveData["Game"]["Player"]["score"] += bubscore * 3 * stats["Effects"]["scorestate"]
         if (not stats["Effects"]["secure"]) and accept_negative:
             if action == "Kill":
-                stats["Player"]["lives"] -= 1
+                Registry.saveData["Game"]["Player"]["lives"] -= 1
             if action == "Min":
-                stats["Player"]["score"] -= bubscore
+                Registry.saveData["Game"]["Player"]["score"] -= bubscore
             if action == "SpeedDown":
-                if stats["Player"]["ShipStats"]["ship-speed"] == 5:
+                if Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] == 5:
                     return
-                stats["Player"]["ShipStats"]["ship-speed"] -= 5
+                Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] -= 5
             if action == "Confusion":
                 State.set_state(canvas, log, stats, "Confusion", backgrounds)
             if action == "Paralyse":
                 State.set_state(canvas, log, stats, "Paralyse", backgrounds)
             if action == "NoTouch":
-                stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
+                Registry.saveData["Game"]["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
                 State.set_state(canvas, log, stats, action, backgrounds)
         if action == "DoubleState":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "TripleState":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "SpeedUp":
-            if stats["Player"]["ShipStats"]["ship-speed"] == 20:
+            if Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] == 20:
                 return
-            elif stats["Player"]["ShipStats"]["ship-speed"] == 25:
+            elif Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] == 25:
                 return
-            stats["Player"]["ShipStats"]["ship-speed"] += 5
+            Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] += 5
         if action == "Up":
-            stats["Player"]["lives"] += 1
+            Registry.saveData["Game"]["Player"]["lives"] += 1
         if action == "Protect":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "SlowMotion":
@@ -462,31 +462,31 @@ class Collision:
         if action == "TimeBreak":
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "Ultimate":
-            if stats["Player"]["lives"] < 7:
-                stats["Player"]["lives"] += 1
-            stats["Player"]["ShipStats"]["ship-speed"] = 25
+            if Registry.saveData["Game"]["Player"]["lives"] < 7:
+                Registry.saveData["Game"]["Player"]["lives"] += 1
+            Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] = 25
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "HyperMode":
-            stats["Player"]["lives"] += 2
-            stats["Player"]["ShipStats"]["ship-speed"] = 25
-            stats["Player"]["score"] += bubscore * 30 * stats["Effects"]["scorestate"]
+            Registry.saveData["Game"]["Player"]["lives"] += 2
+            Registry.saveData["Game"]["Player"]["ShipStats"]["ship-speed"] = 25
+            Registry.saveData["Game"]["Player"]["score"] += bubscore * 30 * stats["Effects"]["scorestate"]
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "ShotSpdStat":
-            stats["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
+            Registry.saveData["Game"]["Player"]["score"] += bubscore * stats["Effects"]["scorestate"]
             State.set_state(canvas, log, stats, action, backgrounds)
         if action == "Diamond":
-            stats["Player"]["Money"]["diamonds"] += 1
+            Registry.saveData["Game"]["Player"]["Money"]["diamonds"] += 1
         if action == "Coin":
-            stats["Player"]["Money"]["coins"] += 1
+            Registry.saveData["Game"]["Player"]["Money"]["coins"] += 1
         if action == "Teleporter":
-            stats["Player"]["Abilities"]["teleports"] += 1
+            Registry.saveData["Game"]["Player"]["Abilities"]["teleports"] += 1
         if action == "StoneBub":
-            stats["Player"]["score"] += int((bubscore * bubble["bub-hardness"][index]))
+            Registry.saveData["Game"]["Player"]["score"] += int((bubscore * bubble["bub-hardness"][index]))
         if action == "LevelKey":
-            stats["Player"]["level"] += 1
+            Registry.saveData["Game"]["Player"]["level"] += 1
             # clean_level_keys()
             bubble["key-active"] = False
-            view_level(canvas, root, texts, stats["Player"]["level"])
+            view_level(canvas, root, texts, Registry.saveData["Game"]["Player"]["level"])
         if action == "Present":
             commands["present"] = True
         # play_sound("versions/"+launcher_config["versionDir"]+"/assets/sounds/bubpop.mp3")

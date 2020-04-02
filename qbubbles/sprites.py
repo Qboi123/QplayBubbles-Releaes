@@ -1,21 +1,28 @@
-import typing
+from typing import Iterable, Optional, Mapping, Sequence, Any, Union, Callable, ValuesView, TypeVar, Type, NoReturn, \
+    List, ItemsView, KeysView, Tuple
+from tkinter import Canvas
 
 from overload import overload
 
 from qbubbles.base import HORIZONTAL, VERTICAL, TYPE_NEUTRAL, FALSE, FORM_CIRCLE, LEFT, TYPE_DANGEROUS, FORM_RECT, UP, \
-    DOWN, SHIP, RED
+    DOWN, SHIP, RED, FORM_LINE
 from qbubbles.effects import BaseEffect, AppliedEffect
 from qbubbles.events import KeyPressEvent, KeyReleaseEvent, UpdateEvent, SavedataReadedEvent, ExperienceEvent, \
     CollisionEvent, XInputEvent, MouseEnterEvent, MouseLeaveEvent, SpriteDamageEvent
 from qbubbles.registry import Registry
-from qbubbles.sprite.abilities import GhostAbility, Ability
+from qbubbles.sprite.abilities import GhostAbility, Ability, InvulnerableAbility
 
-_KT = typing.TypeVar('_KT')
-_VT = typing.TypeVar('_VT')
-_T = typing.TypeVar('_T')
-_S = typing.TypeVar('_S')
+# noinspection PyShadowingBuiltins
+_KT = TypeVar('_KT')
+# noinspection PyShadowingBuiltins
+_VT = TypeVar('_VT')
+# noinspection PyShadowingBuiltins
+_T = TypeVar('_T')
+# noinspection PyShadowingBuiltins
+_S = TypeVar('_S')
 
 
+# noinspection PyShadowingBuiltins
 class SpriteData(object):
     def __init__(self, default):
         if type(default) == dict:
@@ -40,7 +47,7 @@ class SpriteData(object):
     def __delitem__(self, item):
         del self._value[item]
 
-    def __setslice__(self, i, j, sequence: typing.Sequence):
+    def __setslice__(self, i, j, sequence: Sequence):
         if type(self._value) == list:
             self._value: list
             self._value[i:j] = sequence
@@ -62,40 +69,40 @@ class SpriteData(object):
             return self._value.get(k)
 
     @get.add
-    def get(self, k: _KT, default: typing.Union[_VT, _T]=None) -> typing.Union[_VT, _T]:
+    def get(self, k: _KT, default: Union[_VT, _T] = None) -> Union[_VT, _T]:
         if self._type == dict:
             self._value: dict
             return self._value.get(k, default)
 
     @overload
-    def pop(self, k: _KT, default: typing.Union[_VT, _T] = None) -> typing.Union[_VT, _T]:
+    def pop(self, k: _KT, default: Union[_VT, _T] = None) -> Union[_VT, _T]:
         if self._type == dict:
             self._value: dict
             return self._value.pop(k, default)
 
-    def keys(self) -> typing.KeysView:
+    def keys(self) -> KeysView:
         if self._type == dict:
             self._value: dict
             return self._value.keys()
 
-    def values(self) -> typing.ValuesView:
+    def values(self) -> ValuesView:
         if self._type == dict:
             self._value: dict
             return self._value.values()
 
-    def items(self) -> typing.ItemsView:
+    def items(self) -> ItemsView:
         if self._type == dict:
             self._value: dict
             return self._value.items()
 
     @overload
-    def update(self, __m: typing.Mapping[_KT, _VT], **kwargs) -> None:
+    def update(self, __m: Mapping[_KT, _VT], **kwargs) -> None:
         if self._type == dict:
             self._value: dict
             return self._value.update(__m, **kwargs)
 
     @update.add
-    def update(self, __m: typing.Iterable[typing.Tuple[_KT, _VT]], **kwargs) -> None:
+    def update(self, __m: Iterable[Tuple[_KT, _VT]], **kwargs) -> None:
         if self._type == dict:
             self._value: dict
             return self._value.update(__m, **kwargs)
@@ -107,18 +114,18 @@ class SpriteData(object):
             return self._value.update(**kwargs)
 
     @overload
-    def fromkeys(self, seq: typing.Iterable[_T]) -> dict:
+    def fromkeys(self, seq: Iterable[_T]) -> dict:
         if self._type == dict:
             self._value: dict
             return self._value.fromkeys(seq)
 
     @fromkeys.add
-    def fromkeys(self, seq: typing.Iterable[_T], value: _T) -> dict:
+    def fromkeys(self, seq: Iterable[_T], value: _T) -> dict:
         if self._type == dict:
             self._value: dict
             return self._value.fromkeys(seq, value)
 
-    def popitem(self) -> typing.Tuple[_KT, _VT]:
+    def popitem(self) -> Tuple[_KT, _VT]:
         if self._type == dict:
             self._value: dict
             return self._value.popitem()
@@ -129,7 +136,7 @@ class SpriteData(object):
             return self._value.setdefault(k, default)
 
     @pop.add
-    def pop(self, k: typing.Union[_KT, int]) -> typing.Union[_VT, _T]:
+    def pop(self, k: Union[_KT, int]) -> Union[_VT, _T]:
         if self._type == dict:
             self._value: dict
             return self._value.pop(k)
@@ -145,7 +152,7 @@ class SpriteData(object):
             self._value: list
             return self._value.clear()
 
-    def copy(self) -> typing.Union[list, dict]:
+    def copy(self) -> Union[list, dict]:
         if self._type == dict:
             self._value: dict
             return self._value.copy()
@@ -158,7 +165,7 @@ class SpriteData(object):
             self._value: list
             return self._value.remove(o)
 
-    def extend(self, iterable: typing.Iterable[_T]) -> None:
+    def extend(self, iterable: Iterable[_T]) -> None:
         if self._type == list:
             self._value: list
             return self._value.extend(iterable)
@@ -182,9 +189,9 @@ class SpriteData(object):
     def insert(self, index: int, object: _T) -> None:
         if self._type == list:
             self._value: list
-            return self._value.insert(int, object)
+            return self._value.insert(index, object)
 
-    def sort(self, *, key: typing.Callable[[_T], typing.Any] = None, reverse: bool) -> None:
+    def sort(self, *, key: Callable[[_T], Any] = None, reverse: bool) -> None:
         if self._type == list:
             self._value: list
             return self._value.sort(key=key, reverse=reverse)
@@ -205,7 +212,7 @@ class Sprite:
 
         self._kw = kw
 
-        self.abilities: typing.List[Ability] =[]
+        self.abilities: List[Ability] = []
 
         # Axis
         self.axis = (HORIZONTAL, VERTICAL)
@@ -245,7 +252,7 @@ class Sprite:
         self.ySpeed = 0
 
         # self.collisionWith = (SHIP, ANY_BUBBLE)
-        self.collisionWith: typing.Optional[typing.List] = None
+        self.collisionWith: Optional[List] = None
 
         self.lifeCost = 1
 
@@ -258,7 +265,11 @@ class Sprite:
         self.__active = False
         self._spriteData = SpriteData({})
 
-    def get_spritedata(self):
+    def delete(self) -> NoReturn:
+        canvas: Canvas = Registry.get_scene("Game").canvas
+        canvas.delete(self.id)
+
+    def get_spritedata(self) -> SpriteData:
         return self._spriteData
 
     def create(self, x, y):
@@ -358,7 +369,7 @@ class Player(Sprite):
             strength: float = effect["strength"]
             self.start_effect(effect_class, Registry.get_scene("Game"), time_length, strength)
 
-    def start_effect(self, effect_class, scene, time_length, strength) -> typing.NoReturn:
+    def start_effect(self, effect_class, scene, time_length, strength) -> NoReturn:
         self.appliedEffects.append(AppliedEffect(effect_class, scene, time_length, strength))
 
     def move(self, x=0, y=0):
@@ -380,7 +391,8 @@ class Player(Sprite):
         self.move(x, y)
 
     def create(self, x, y):
-        self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player", rotation=0))
+        self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player",
+                                                                                                  rotation=0))
 
     def on_key_press(self, evt: KeyPressEvent):
         if (evt.char.lower() == "w") and ("w" not in self.keysPressed):
@@ -425,6 +437,7 @@ class TeleportCrosshair(Sprite):
             Registry.get_mode("teleport").execute("done", x=self.get_coords()[0], y=self.get_coords()[1])
 
 
+# noinspection PyAttributeOutsideInit
 class Ammo(Sprite):
     requires = tuple(list(Sprite.requires) + ["ship", "ammo"])
 
@@ -442,15 +455,7 @@ class Ammo(Sprite):
         self.height = 1
         self.width = 5
 
-    def destroy(self):
-        try:
-            self.thread4.stop()
-        except AttributeError:
-            pass
-        super().destroy()
-
     def on_collide_bubble(self, index):
-        from tkinter import TclError
         from qbubbles.components import StoppableThread
         from qbubbles.bubble import del_bubble
         from qbubbles.extras import replace_list, distance
@@ -491,6 +496,7 @@ class Ammo(Sprite):
                     replace_list(ammo["ammo-damage"], ammo_index, ammo["ammo-damage"][ammo_index] + 1)
                     if ammo["ammo-damage"][ammo_index] > 4:
                         del_ammo(canvas, ammo_index, ammo)
+                    # # TODO: Replace with something like pygame's mixer'
                     # Thread(None, PlaySound("versions/"+self.launcher_config["versionDir"]+"/assets/bubpop.wav", 1)).start()
                 elif bubble["bub-hardness"][index_bub] > 1:
                     replace_list(bubble["bub-hardness"], index_bub, bubble["bub-hardness"][index_bub] - 1)
@@ -502,16 +508,12 @@ class Ammo(Sprite):
             pass
         except IndexError:
             pass
-        except AttributeError:
-            self.destroy()
-        except TclError:
-            self.destroy()
 
     def create(self, x, y):
-        id = self._kw["ship"]["id"]
-        x, y = self._kw["canvas"].coords(id)
+        id_ = self._kw["ship"]["id"]
+        x, y = self._kw["canvas"].coords(id_)
 
-        self.id = self._kw["canvas"].create_line(x+7, y, x+12, y, fill="gold")
+        self.id = self._kw["canvas"].create_line(x + 7, y, x + 12, y, fill="gold")
         self._kw["ammo"]["ammo-id"][self.id] = self.id
         self._kw["ammo"]["ammo-speed"][self.id] = 5
         self._kw["ammo"]["ammo-damage"][self.id] = 0

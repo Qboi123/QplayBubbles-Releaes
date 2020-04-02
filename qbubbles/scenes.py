@@ -412,13 +412,13 @@ class SavesMenu(Scene):
 
     def show_scene(self, *args, **kwargs):
         super(SavesMenu, self).show_scene(*args, **kwargs)
-        print(0)
+        # # print(0)
         self.initialize_scene()
 
     def initialize_scene(self):
         root = Registry.get_window("default")
 
-        print(1)
+        # # print(1)
 
         # Main frame.
         self.main_f = Frame(self.oFrame, background="#3c3c3c", height=Registry.gameData["WindowHeight"] - 100)
@@ -428,7 +428,7 @@ class SavesMenu(Scene):
         self.s_frame = Frame(self.main_f, height=self.main_f.winfo_height() - 100, width=root.tkScale(700))
         self.s_frame.pack(fill="y", expand=True)
 
-        print(2)
+        # # print(2)
 
         # Scrollwindow for the slots frame
         self.sw = ScrolledWindow(self.s_frame, 700, self.oFrame.winfo_height() + 0, expand=True, fill="both")
@@ -443,7 +443,7 @@ class SavesMenu(Scene):
         self.frame_sw = self.sw.scrollwindow
         self.frames = []
 
-        print(3)
+        # print(3)
 
         # Defining the list of widgets
         self._id = {}
@@ -451,19 +451,19 @@ class SavesMenu(Scene):
         self.canvass = []
         self.buttons = []
 
-        print(4)
+        # print(4)
 
         self.oldSelected: Optional[Canvas] = None
         self.selectedCanvas: Optional[Canvas] = None
         self._hoverCanvasOld: Optional[Canvas] = None
         self._hoverCanvas: Optional[Canvas] = None
 
-        print(5)
+        # print(5)
 
         titlefont = Font("Helvetica", 25, "bold")
         infofont = Font("Helvetica", 16)
 
-        print(6)
+        # print(6)
 
         # Get slots
         if not os.path.exists(f"{Registry.gameData['launcherConfig']['gameDir']}saves/"):
@@ -473,7 +473,7 @@ class SavesMenu(Scene):
         # Information variables for each slot.
         infos = {"dates": [], "score": [], "level": []}
 
-        print(7)
+        # print(7)
 
         import time
 
@@ -501,22 +501,26 @@ class SavesMenu(Scene):
             infos["dates"].append(tme_var)
 
             a = Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/game.nzt").get_decoded()
-            infos["score"].append(a["Player"]["score"])
-            infos["level"].append(a["Player"]["level"])
+            try:
+                infos["score"].append(a["Player"]["score"])
+                infos["level"].append(a["Player"]["level"])
+            except KeyError:
+                infos["score"].append(a["Game"]["Player"]["score"])
+                infos["level"].append(a["Game"]["Player"]["level"])
         # print(infos)
 
-        print(8)
+        # print(8)
 
         self.item_info = names
 
         # Define the index variable.
         i = 0
 
-        print(9)
+        # print(9)
 
         # Startloop
         for name in names:
-            print(i)
+            # print(i)
             self.frames.append(Frame(self.frame_sw, height=200, width=700))
             self.canvass.append(
                 Canvas(self.frames[-1], height=200, width=700, bg="#7f7f7f", highlightthickness=0))
@@ -544,7 +548,7 @@ class SavesMenu(Scene):
 
             i += 1
 
-        print(10)
+        # print(10)
 
         self.oFrame.pack(fill="both", expand=True)
 
@@ -583,8 +587,8 @@ class SavesMenu(Scene):
                 for subid in self._id[self._hoverCanvasOld]["Infos"]:
                     self._hoverCanvasOld.itemconfig(subid, fill="#00a7a7")
         # print(self.selectedCanvas, self._hoverCanvasOld)
-        print(self.selectedCanvas == self._hoverCanvasOld)
-        print(self.selectedCanvas == hover_canvas)
+        # print(self.selectedCanvas == self._hoverCanvasOld)
+        # print(self.selectedCanvas == hover_canvas)
         self._hoverCanvasOld = hover_canvas
 
         if hover_canvas != self.selectedCanvas:
@@ -764,8 +768,8 @@ class SavesMenu(Scene):
                     # for subid in Self2.id_[Self2.hoverCanvasOld]["Infos"]:
                     #     Self2.hoverCanvasOld.itemconfig(subid, fill="#00a7a7")
             # print(Self2.selectedCanvas, Self2.hoverCanvasOld)
-            print(Self2.selectedCanvas == Self2.hoverCanvasOld)
-            print(Self2.selectedCanvas == hover_canvas)
+            # print(Self2.selectedCanvas == Self2.hoverCanvasOld)
+            # print(Self2.selectedCanvas == hover_canvas)
             Self2.hoverCanvasOld = hover_canvas
 
             if hover_canvas != Self2.selectedCanvas:
@@ -952,22 +956,46 @@ class SavesMenu(Scene):
         print(gameMap.get_uname())
 
         if gameMap.get_uname() == "qbubbles:classic_map":
-            game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
-                                    "ShipStats": {"ship_speed": 10, "ShipPosition": [960, 540]},
-                                    "Abilities": {"teleports": 0, "level-score": 10000},
-                                    "lives": 7, "score": 0, "high_score": 0, "teleports": 0, "level": 1,
-                                    "Effects": [],
-                         "BubbleStats": {"bubspeed": 5}},
-                         "GameInfo": {
-                             "seed": seed}
-                         }
+            game_data = {
+                "Player": {
+                    "Money": {
+                        "diamonds": 0,
+                        "coins": 0
+                    },
+                    "ShipStats": {
+                        "ship_speed": 10,
+                        "ShipPosition": [960, 540]
+                    },
+                    "Abilities": {
+                        **dict(((key, value) for key, value in Registry.get_abilities()))
+                    },
+                    "lives": 7,
+                    "score": 0,
+                    "high_score": 0,
+                    "teleports": 0,
+                    "level": 1,
+                    "Effects": []
+                },
+                "BubbleStats": {
+                    "bubspeed": 5
+                },
+                "GameInfo": {
+                    "seed": seed
+                },
+                "GameMap": {
+                    "id": gameMap.get_uname(),
+                    "seed": seed,
+                    "initialized": False,
+                    "Randoms": []
+                }
+            }
 
             spriteinfo_data = {
                 "qbubbles:bubble": {
                     "speedMultiplier": 5
                 },
                 "Sprites": [
-                    sprite.get_uname() for sprite in Registry.get_sprites()
+                    sprite.get_sname() for sprite in Registry.get_sprites()
                 ]
             }
 
@@ -984,6 +1012,11 @@ class SavesMenu(Scene):
             game_data_file.data = game_data
             game_data_file.save()
             game_data_file.close()
+
+            sprite_info_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/spriteinfo.nzt", "w")
+            sprite_info_file.data = spriteinfo_data
+            sprite_info_file.save()
+            sprite_info_file.close()
 
             os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/")
 
@@ -1127,7 +1160,7 @@ class SavesMenu(Scene):
         # Removes oFrame.
         self.oFrame.destroy()
 
-        print(Registry._registryScenes.keys())
+        # print(Registry._registryScenes.keys())
 
         # Runs the game
         self.scenemanager.change_scene("Game", src)

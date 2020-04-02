@@ -10,6 +10,14 @@ class Ability(object):
         KeyPressEvent.bind(self.on_keypress)
         KeyReleaseEvent.bind(self.on_keyrelease)
 
+        self._uname = None
+
+    def set_uname(self, uname):
+        self._uname = uname
+
+    def get_uname(self):
+        return self._uname
+
     def on_keypress(self, event: KeyPressEvent):
         pass
 
@@ -29,6 +37,8 @@ class GhostAbility(Ability):
 
         CollisionEvent.bind(self.on_collision)
 
+        self.set_uname("qbubbles:ghost_ability")
+
     def on_collision(self, event: CollisionEvent):
         if event.eventObject == self._sprite:
             event.collidedObj.skip_collision(self._sprite)
@@ -41,6 +51,8 @@ class TeleportAbility(Ability):
         super(TeleportAbility, self).__init__(sprite)
 
         self.loadedTime: Optional[Time] = None
+
+        self.set_uname("qbubbles:teleport_ability")
 
     def on_keypress(self, evt: KeyPressEvent):
         if evt.keySym.lower() != "shift_l":
@@ -81,6 +93,8 @@ class InvulnerableAbility(Ability):
         super(InvulnerableAbility, self).__init__(sprite)
 
         SpriteDamageEvent.bind(self.on_sprite_damage)
+
+        self.set_uname("qbubbles:invulnerable_ability")
 
     def on_sprite_damage(self, event):
         if event.sprite != self._sprite:

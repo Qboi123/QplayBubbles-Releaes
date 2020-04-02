@@ -443,7 +443,7 @@ class Store(CanvasScene):
             stats["diamonds"] -= self.price[self.selected]
             stats["coins"] -= int(self.canvas.itemcget(self.coins[self.selected], "text"))
             if self.selected == 0:
-                stats["Player"]["score"] += 1000
+                Registry.saveData["Game"]["Player"]["score"] += 1000
             if self.selected == 1:
                 stats["teleport"] += 1
             if self.selected == 2:
@@ -485,13 +485,13 @@ class Store(CanvasScene):
                 stats["scorestate"] = 2
                 stats["scorestate_time"] = time() + randint(20, 40)
             if self.selected == 10:
-                stats["Player"]["score"] += 10
+                Registry.saveData["Game"]["Player"]["score"] += 10
             if self.selected == 11:
-                stats["Player"]["score"] += 100
+                Registry.saveData["Game"]["Player"]["score"] += 100
             if self.selected == 12:
-                stats["Player"]["score"] += 200
+                Registry.saveData["Game"]["Player"]["score"] += 200
             if self.selected == 13:
-                stats["Player"]["score"] += 500
+                Registry.saveData["Game"]["Player"]["score"] += 500
             self.canvas.itemconfig(self.vDiamonds, text="Diamonds: " + str(stats["diamonds"]))
             modes["window"] = False
         else:

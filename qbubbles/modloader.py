@@ -10,7 +10,7 @@ from qbubbles.registry import Registry
 MODS = []
 
 
-def Mod(modid, name, version, qbversion=GAME_VERSION):
+def Addon(*, modid, name, version, qbversion=GAME_VERSION):
     for character in modid:
         if character not in string.ascii_letters:
             raise ValueError(f"Invalid character of modid {repr(modid)}: '{character}' must be a ASCII letter")
@@ -30,7 +30,7 @@ def Mod(modid, name, version, qbversion=GAME_VERSION):
     return decorator
 
 
-class ModSkeleton(object):
+class AddonSkeleton(object):
     modID: str
     name: str
     version: str
@@ -39,32 +39,4 @@ class ModSkeleton(object):
     zipimport: Optional[zipimporter]
 
     def __repr__(self):
-        return f"Mod(<{self.modID}>)"
-
-
-# @Mod(modid="examplemod", name="Example Mod", version="1.0.0")
-# class ExampleMod(ModSkeleton):
-#     def __init__(self):
-#         print("Loaded mod 'ExampleMod'")
-#
-#     # def pre_initialize(self, evt: PreInitializeEvent):
-#     #     pass
-#     #
-#     # def initialize(self, evt: InitializeEvent):
-#     #     pass
-#     #
-#     # def post_initialize(self, evt: PostInitializeEvent):
-#     #     pass
-#
-#
-# @Mod(modid="examplemod", name="Example Mod", version="1.0.0")
-# class ExampleMod2(ModSkeleton):
-#     def __init__(self):
-#         print("Loaded mod 'ExampleMod'")
-
-
-if __name__ == '__main__':
-    print(MODS)
-    for mod in MODS:
-        mod_object = mod["func"]()
-        print(mod_object.modID)
+        return f"Addon(<{self.modID}>)"

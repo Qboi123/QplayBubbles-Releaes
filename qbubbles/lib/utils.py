@@ -175,7 +175,7 @@ def createbubble_image(size, inner_image: Image.Image = None, *colors):
         # imports
         from qbubbles.resources import ModelLoader
 
-        # pre initialize method of Mod
+        # pre initialize method of Addon
         ...  # Here is code
         for bubble in bubbles:
             pre_data = self.zipimport.get_data(f"assets/models/bubble/{bubble.get_uname()}.json")

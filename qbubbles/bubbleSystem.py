@@ -34,9 +34,7 @@ class BubbleSystem(object):
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
           modes: Dict[str, bool], canvas: Canvas):
-    if len(Registry.saveData["Sprites"]["qbubbles:bubble"]["Bubbles"]) != 0:
-        return
-    if len(bubs["bub-id"]) <= 1:
+    if len(Registry.saveData["Sprites"]["qbubbles:bubble"]["Bubbles"]) == 0:
         r_start(bubble, stats, config, bub, canvas)
         return
     print(bubs)

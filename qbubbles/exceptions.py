@@ -2,19 +2,21 @@ import traceback as tb
 import sys
 
 
-class DuplicateModError(Exception):
-    __name__ = "DuplicateModError"
+class DuplicateAddonError(Exception):
+    __name__ = "DuplicateAddonError"
 
-    def __init__(self, modid, name, version, filename, func):
-        self.__class__.__name__ = "DuplicateModError"
-        super(DuplicateModError, self).__init__(f"Duplicate mod found: {modid}, "
+    def __init__(self, addonid, name, version, filename, func):
+        self.__class__.__name__ = "DuplicateAddonError"
+        super(DuplicateAddonError, self).__init__(f"Duplicate addon found: {addonid}, "
                                                 f"version: {version}, "
                                                 f"filename: {filename}")
-        self.args = (modid, name, version, filename, func)
+        self.args = (addonid, name, version, filename, func)
 
     def __str__(self):
-        modid = self.args[0]
-        return f"Duplicate mod found: {modid}, " \
+        addonid = self.args[0]
+        version = self.args[2]
+        filename = self.args[3]
+        return f"Duplicate addon found: {addonid}, " \
                f"version: {version}, " \
                f"filename: {filename}"
 

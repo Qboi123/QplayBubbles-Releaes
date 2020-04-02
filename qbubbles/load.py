@@ -16,7 +16,7 @@ from qbubbles.gameIO import printwrn
 from qbubbles.init.mapsInit import init_gamemaps
 from qbubbles.init.spritesInit import init_sprites
 from qbubbles.menus.titleMenu import TitleMenu
-from qbubbles.modloader import ModSkeleton
+from qbubbles.modloader import AddonSkeleton
 from qbubbles.registry import Registry
 from qbubbles.resources import ModelLoader
 from qbubbles.scenemanager import CanvasScene
@@ -106,16 +106,18 @@ class Load(CanvasScene):
         modules = {}
 
         for file in os.listdir(mods_dir):
-            print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
+            # print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
             if os.path.isfile(f"{mods_dir}/{file}"):
                 if file.endswith(".pyz"):
-                    if file == "qbubbles.pyz":
-                        raise NameError(f"Illegal module name: {file}")
                     a = zipimport.zipimporter(f"{mods_dir}/{file}")  # f"{file}.main", globals(), locals(), [])
-                    print(dir(a))
+                    # print(dir(a))
                     module = a.load_module("python")
+                    if a.find_module("qbubbles") is not None:
+                        raise RuntimeError("Illegal module name: qbubbles")
                     modules[module.MODID] = a
                     # print(a)
+                else:
+                    print(f"Found non-addon module: {file}")
         # sys.path.remove(mods_path)
 
         addon_ids = Registry.get_all_addons()
@@ -126,10 +128,10 @@ class Load(CanvasScene):
 
         addons = []
         for addon_id in list(addon_ids):
-            print(repr(addon_id), type(addon_id))
+            # print(repr(addon_id), type(addon_id))
             if Registry.mod_exists(addon_id):
-                addon = Registry.get_module(addon_id)["mod"]
-                addon: Type[ModSkeleton]
+                addon = Registry.get_module(addon_id)["addon"]
+                addon: Type[AddonSkeleton]
                 self.canvas.itemconfig(t2, text=addon.name)
                 addon.zipimport = None
                 if addon.modID in modules.keys():
@@ -445,8 +447,8 @@ class Load(CanvasScene):
         #
         # # Moving ship to position
         # self.canvas.move(self.ship["id"],
-        #     self.stats["Player"]["ShipStats"]["ShipPosition"][0],
-        #     self.stats["Player"]["ShipStats"]["ShipPosition"][1]
+        #     self.Registry.saveData["Game"]["Player"]["ShipStats"]["ShipPosition"][0],
+        #     self.Registry.saveData["Game"]["Player"]["ShipStats"]["ShipPosition"][1]
         # )
         #
         # self.canvas.itemconfig(t1, text="Creating Stats objects")

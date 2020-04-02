@@ -5,7 +5,7 @@ from typing import Callable, Type, List, Union, Dict
 from PIL import ImageTk
 from overload import overload
 
-from qbubbles.exceptions import UnlocalizedNameError, DuplicateModError
+from qbubbles.exceptions import UnlocalizedNameError, DuplicateAddonError
 from qbubbles.gameIO import printerr, printwrn
 
 
@@ -15,6 +15,7 @@ class Registry(object):
     gameConfig = {}
     gameData = {}
 
+    _registryAbilities = {}
     _registryGameMaps = {}
     _registryEffects = {}
     _registryScenes = {}
@@ -31,9 +32,26 @@ class Registry(object):
     _registryIcons = {}
     _registryStoreIcons = {}
     _registryBubResources = {}
+    _registryDefaultTextures = {}
     _registryTextures = {}
     _registryMods = {}
     _registryRoot: Dict[str, Union[Tk, Toplevel]] = {}
+
+    @classmethod
+    def get_abilities(cls):
+        return [ability for ability in cls._registryAbilities.values()]
+
+    @classmethod
+    def ability_exists(cls, uname):
+        return uname in cls._registryAbilities.keys()
+
+    @classmethod
+    def register_ability(cls, uname, ability):
+        if type(uname) != str:
+            raise TypeError(f"Ability uname must be a str-object not "
+                            f"{'an' if uname.__class__.__name__.startswith(('e', 'a', 'i', 'o', 'u')) else 'a'} "
+                            f"{uname.__class__.__name__}-object")
+        cls._registryAbilities[uname] = ability
 
     @classmethod
     def get_sprites(cls):
@@ -50,7 +68,11 @@ class Registry(object):
                             f"{'an' if sname.__class__.__name__.startswith(('e', 'a', 'i', 'o', 'u')) else 'a'} "
                             f"{sname.__class__.__name__}-object")
         cls._registrySprites[sname] = sprite
-    
+
+    @classmethod
+    def get_gamemap(cls, uname):
+        return cls._registryGameMaps[uname]
+
     @classmethod
     def get_gamemaps(cls):
         return [uname for uname in cls._registryGameMaps.keys()]
@@ -62,7 +84,7 @@ class Registry(object):
     @classmethod
     def gamemap_exists(cls, uname):
         return uname in cls._registryGameMaps.keys()
-    
+
     @classmethod
     def register_gamemap(cls, uname, gamemap):
         if type(uname) != str:
@@ -360,12 +382,41 @@ class Registry(object):
             cls._registryBubResources[uname] = {key: value}
 
     @classmethod
+    def get_dtexture(cls, type_, id_) -> Union[PhotoImage, ImageTk.PhotoImage]:
+        if "qbubbles:default" not in cls._registryDefaultTextures.keys():
+            raise RuntimeError("Missing type 'qbubbles:default'")
+        if type_ not in cls._registryDefaultTextures.keys():
+            raise RuntimeError(f"Missing texture for type '{type_}'")
+        if id_ not in cls._registryDefaultTextures[type_].keys():
+            return cls._registryDefaultTextures[type_][None]
+        return cls._registryDefaultTextures[type_][id_]
+
+    @classmethod
+    def register_default_texture(cls, type_: str, id_: str = None, *, texture):
+        if id_ is None:
+            if type_ not in cls._registryDefaultTextures.keys():
+                cls._registryDefaultTextures[type_] = {}
+            else:
+                printwrn(f"Default texture of type '{type_}' has been overridden")
+            cls._registryDefaultTextures[type_][None] = texture
+        else:
+            if type_ not in cls._registryDefaultTextures.keys():
+                raise RuntimeError(f"There is no default texture registered for type '{type_}'")
+            if id_ in cls._registryDefaultTextures[type_].keys():
+                printwrn(f"Default texture for type '{type_}' with id '{id_}' has been overridden")
+            cls._registryDefaultTextures[type_][id_] = texture
+
+    @classmethod
     def get_texture(cls, type_, id_, **data) -> Union[PhotoImage, ImageTk.PhotoImage]:
         if type_ not in cls._registryTextures.keys():
-            raise KeyError(f"Type '{type_}' is not found in texture registry")
+            printerr(f"Type '{type_}' is not found in texture registry")
+            return cls.get_dtexture(type_, id_)
         if id_ not in cls._registryTextures[type_].keys():
-            raise KeyError(f"ID '{id_}' with type '{type_}' is not found in texture registry")
-        print(cls._registryTextures[type_][id_])
+            printerr(f"ID '{id_}' with type '{type_}' is not found in texture registry")
+            return cls.get_dtexture(type_, id_)
+        if tuple(data.items()) not in cls._registryTextures[type_][id_]:
+            printerr(f"ID '{id_}' with type '{type_}' and data '{dict(data)}' is not found in texture registry")
+            return cls.get_dtexture(type_, id_)
         return cls._registryTextures[type_][id_][tuple(data.items())]
 
     @classmethod
@@ -434,8 +485,8 @@ class Registry(object):
     def register_modobject(cls, modid: str, name: str, version: str, func: object):
         if modid in cls._registryMods.keys():
             path = inspect.getfile(func)
-            raise DuplicateModError(modid, name, version, path, func)
-        cls._registryMods[modid] = dict(name=name, version=version, mod=func)
+            raise DuplicateAddonError(modid, name, version, path, func)
+        cls._registryMods[modid] = dict(name=name, version=version, addon=func)
 
     @classmethod
     def get_all_addons(cls):

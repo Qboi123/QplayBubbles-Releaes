@@ -1,39 +1,25 @@
-import sys
-
-from qbubbles.effects import BaseEffect, AppliedEffect
-
-from qbubbles.bubbleSystem import start
-from qbubbles.bubbles import Bubble
-from qbubbles.events import KeyReleaseEvent, UpdateEvent, KeyPressEvent, XInputEvent, CollisionEvent
-from qbubbles.modemanager import ModeManager
-from qbubbles.sprites import Player
-from qbubbles.utils import Maintance, Font
-from qbubbles.globals import MAX_BUBBLES
-
-if __name__ == "__main__":
-    if "--debug" in sys.argv:
-        pass
-    else:
-        print("Error: Can't open this file. Please open the game with the launcher.")
-        input()
-        exit(1)
-
 import json
-# import neural_net as nn
-
 from time import sleep
 
 from qbubbles.ammo import *
-from qbubbles.base import Panel
 from qbubbles.bubble import create_bubble, place_bubble
+from qbubbles.bubbleSystem import start
+from qbubbles.bubbles import Bubble
 from qbubbles.components import *
-from qbubbles.extras import Logging, shuffling
-from qbubbles.special import ScrolledWindow
-from qbubbles.teleport import *
+from qbubbles.effects import BaseEffect, AppliedEffect
+from qbubbles.events import KeyReleaseEvent, UpdateEvent, KeyPressEvent, XInputEvent, CollisionEvent, \
+    MapInitializeEvent, FirstLoadEvent
+from qbubbles.extras import Logging
+from qbubbles.globals import MAX_BUBBLES
+from qbubbles.gui import CPanel
+from qbubbles.maps import GameMap
+from qbubbles.modemanager import ModeManager
 from qbubbles.scenemanager import CanvasScene
+from qbubbles.special import ScrolledWindow
+from qbubbles.sprites import Player
 from qbubbles.sprites import Sprite
-
-import sys
+from qbubbles.teleport import *
+from qbubbles.utils import Maintance, Font
 
 default_launchercfg = {"version": "v1.5.0-pre1",
                        "versionDir": "v1_5_0_pre1",
@@ -423,7 +409,7 @@ class Game(CanvasScene):
     def show_scene(self, save_name):  # , save_data: Dict[str, Union[List, Dict[Any, Any], str, int, bool, float]]):
         super(Game, self).show_scene()
 
-        print("started Game")
+        print(f"Started Game on saved game with name {save_name}")
 
         # Initialize save-data
         self.saveName = save_name
@@ -456,15 +442,29 @@ class Game(CanvasScene):
         # Getting save-name and copy this in the self.
         self.saveName = save_name
 
-        # Reload stats with the reader.
-        Registry.saveData = Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + self.saveName + "/game.nzt").get_decoded()
+        gameDir = Registry.gameData['launcherConfig']['gameDir']
 
-        # Create canvas.
+        # Reload stats with the reader.
+        Registry.saveData["Game"] = Reader(f"{gameDir}saves/{self.saveName}/game.nzt").get_decoded()
+
+        # Game Maps
+        if Registry.saveData["Game"]["GameMap"]["id"] == "qbubbles:classic_map":
+            Registry.saveData["SpriteInfo"] = Reader(f"{gameDir}saves/{self.saveName}/spriteinfo.nzt").get_decoded()
+            Registry.saveData["Sprites"] = {}
+
+            # Get Sprite data
+            for sprite_id in Registry.saveData["SpriteInfo"]["Sprites"]:
+                path = sprite_id.replace(":", "/")
+                data = Reader(f"{gameDir}saves/{self.saveName}/sprites/{path}.nzt").get_decoded()
+                Registry.saveData["Sprites"][sprite_id] = data
+        # # Create canvas.
         # self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"],
         #                      width=Registry.gameData["WindowWidth"], highlightthickness=0)
         # self.canvas.pack(expand=True)
 
         # Run the main method (function).
+        print(f"Saved data is loaded, game map is '{Registry.saveData['Game']['GameMap']['id']}'")
+
         self.main()
 
     @staticmethod
@@ -831,132 +831,19 @@ class Game(CanvasScene):
                                      font=loadDescFont.get_tuple(), fill="#afafaf")
         self.canvas.update()
 
-        # Setting background from nothing to normal.
-        # Registry.get_background("id"] = self.canvas.create_image(0, 0, anchor=NW, image=self.back["normal"])
+        print("Initialize game environment")
 
-        # # Creating player id  # TODO: Remove this s###
-        # self.player.id = self.canvas.create_image(7.5, 7.5, image=self.ship["image"])
         self.player.create(7.5, 7.5)
-        # print(self.player.id)
 
-        shipPosition = Registry.saveData["Player"]["ShipStats"]["ShipPosition"]
+        shipPosition = Registry.saveData["Game"]["Player"]["ShipStats"]["ShipPosition"]
 
         self.player.teleport(shipPosition[0], shipPosition[1])
 
         self.canvas.itemconfig(t1, text="Creating Stats objects")
         self.canvas.itemconfig(t2, text="")
 
-        panelTop = Panel(self.canvas, 0, 0, width="extend", height=69)
-        panelTopFont = Font("Helvetica", 12)
-
-        # # Initializing the panels for the game.
-        # self.panels["game/top"] = self.canvas.create_rectangle(
-        #     -1, -1, Registry.gameData["WindowWidth"], 69, fill="darkcyan"
-        # )
-
-        # Create seperating lines.
-        self.canvas.create_line(0, 70, Registry.gameData["WindowWidth"], 70, fill="lightblue")
-        self.canvas.create_line(0, 69, Registry.gameData["WindowWidth"], 69, fill="white")
-
-        self.canvas.create_text(
-            55, 30, text=Registry.gameData["language"]["info.score"],
-            fill='orange', font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="Score")
-        self.canvas.create_text(
-            110, 30, text=Registry.gameData["language"]["info.level"],
-            fill='orange', font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="Level")
-        self.canvas.create_text(
-            165, 30, text=Registry.gameData["language"]["info.speed"],
-            fill='orange', font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="Speed")
-        self.canvas.create_text(
-            220, 30, text=Registry.gameData["language"]["info.lives"],
-            fill='orange', font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="Lives")
-        self.canvas.create_text(
-            330, 30, text=Registry.gameData["language"]["info.state.score"],
-            fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="Score State")
-        self.canvas.create_text(
-            400, 30, text=Registry.gameData["language"]["info.state.protect"],
-            fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Protect")
-        self.canvas.create_text(
-            490, 30, text=Registry.gameData["language"]["info.state.slowmotion"],
-            fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Slow Motion")
-        self.canvas.create_text(
-            580, 30, text=Registry.gameData["language"]["info.state.confusion"],
-            fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Confusion")
-        self.canvas.create_text(
-            670, 30, text=Registry.gameData["language"]["info.state.timebreak"],
-            fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Time Break")
-        self.canvas.create_text(
-            760, 30, text=Registry.gameData["language"]["info.state.spdboost"],
-            fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State SpeedBoost")
-        self.canvas.create_text(850, 30, text=Registry.gameData["language"]["info.state.paralyse"],
-                                fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Paralize")
-        self.canvas.create_text(940, 30, text=Registry.gameData["language"]["info.state.shotspeed"],
-                                fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Ammo Speed")
-        self.canvas.create_text(1030, 30, text=Registry.gameData["language"]["info.state.notouch"],
-                                fill="gold", font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="State Ghost Mode")
-        self.canvas.create_text(1120, 30, text=Registry.gameData["language"]["info.tps"],
-                                fill='gold', font=panelTopFont.get_tuple())
-        self.canvas.itemconfig(t2, text="Teleports")
-
-        # Coin / Diamond icons
-        self.canvas.create_image(1185, 30, image=Registry.get_icon("StoreDiamond"))
-        self.canvas.itemconfig(t2, text="Diamonds")
-        self.canvas.create_image(1185, 50, image=Registry.get_icon("StoreCoin"))
-        self.canvas.itemconfig(t2, text="Coins")
-
-        self.canvas.itemconfig(t1, text="Creating Stats Data")
-        self.canvas.itemconfig(t2, text="")
-
-        # Game information values.
-        self.texts["score"] = self.canvas.create_text(55, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="Score")
-        self.texts["level"] = self.canvas.create_text(110, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="Level")
-        self.texts["speed"] = self.canvas.create_text(165, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="Speed")
-        self.texts["lives"] = self.canvas.create_text(220, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="Lives")
-        self.texts["scorestate"] = self.canvas.create_text(330, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Score")
-        self.texts["secure"] = self.canvas.create_text(400, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Protection")
-        self.texts["slowmotion"] = self.canvas.create_text(490, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Slowmotion")
-        self.texts["confusion"] = self.canvas.create_text(580, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Confusion")
-        self.texts["timebreak"] = self.canvas.create_text(670, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Time Break")
-        self.texts["speedboost"] = self.canvas.create_text(760, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State SpeedBoost")
-        self.texts["paralyse"] = self.canvas.create_text(850, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Paralyse")
-        self.texts["shotspeed"] = self.canvas.create_text(940, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Ammo Speed")
-        self.texts["notouch"] = self.canvas.create_text(1030, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="State Ghost Mode")
-        self.texts["shiptp"] = self.canvas.create_text(1120, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="Teleports")
-        self.texts["diamond"] = self.canvas.create_text(1210, 30, fill='cyan')
-        self.canvas.itemconfig(t2, text="Diamonds")
-        self.texts["coin"] = self.canvas.create_text(1210, 50, fill='cyan')
-        self.canvas.itemconfig(t2, text="Coins")
-        self.texts["level-view"] = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
-                                                           fill='Orange',
-                                                           font=Font("Helvetica", 46).get_tuple())
-        self.canvas.itemconfig(t2, text="Level View")
+        self.gameMap: GameMap = Registry.get_gamemap(Registry.saveData["Game"]["GameMap"]["id"])
+        MapInitializeEvent(self, t1, t2, self.saveName)
 
         self.texts["pause"] = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
                                                       fill='Orange',
@@ -984,85 +871,62 @@ class Game(CanvasScene):
 
         stats = Registry.saveData
 
-        self.canvas.itemconfig(t1, text="Fixing Saved States")
+        self.canvas.itemconfig(t1, text="Reapply effects to player")
         self.canvas.itemconfig(t2, text="")
 
-        print(stats)
-
-        # if stats["Effects"]["scorestate_time"] <= time():
-        #     stats["Effects"]["scorestate"] = 1
-        #     stats["Effects"]["scorestate_time"] = time()
-        # if stats["Effects"]["secure_time"] <= time():
-        #     stats["Effects"]["secure"] = False
-        #     stats["Effects"]["secure_time"] = time()
-        # if stats["Effects"]["slowmotion_time"] <= time():
-        #     stats["Effects"]["slowmotion"] = False
-        #     stats["Effects"]["slowmotion_time"] = time()
-        # if stats["Effects"]["timebreak_time"] <= time():
-        #     stats["Effects"]["timebreak"] = False
-        #     stats["Effects"]["timebreak_time"] = time()
-        # if stats["Effects"]["confusion_time"] <= time():
-        #     stats["Effects"]["confusion"] = False
-        #     stats["Effects"]["confusion_time"] = time()
-        # if stats["Effects"]["speedboost_time"] <= time():
-        #     stats["Effects"]["speedboost"] = False
-        #     stats["Effects"]["speedboost_time"] = time()
-        # if stats["Effects"]["paralyse_time"] <= time():
-        #     stats["Effects"]["paralyse"] = False
-        #     stats["Effects"]["paralyse_time"] = time()
-        # if stats["Effects"]["shotspeed_time"] <= time():
-        #     stats["Effects"]["shotspeed"] = 0.1
-        #     stats["Effects"]["shotspeed_time"] = time()
-        for effectdata in stats["Player"]["Effects"]:
+        for effectdata in Registry.saveData["Game"]["Player"]["Effects"]:
             effect: BaseEffect = Registry.get_effect(effectdata["id"])
             appliedEffect: AppliedEffect = AppliedEffect(effect, self, effectdata["time_remaining"], effectdata["strength"])
             self.player.appliedEffects.append(appliedEffect)
             self.player.appliedEffectTypes.append(effect)
-        if stats["Player"]["score"] < 0:
+        if Registry.saveData["Game"]["Player"]["score"] < 0:
             log.error("Game.main", "The 'Score' variable under zero.")
-            stats["Player"]["score"] = 0
-        if stats["Player"]["score"] > stats["Player"]["high_score"]:
-            stats["Player"]["high_score"] = stats["Player"]["score"]
+            Registry.saveData["Game"]["Player"]["score"] = 0
+        if Registry.saveData["Game"]["Player"]["score"] > Registry.saveData["Game"]["Player"]["high_score"]:
+            Registry.saveData["Game"]["Player"]["high_score"] = Registry.saveData["Game"]["Player"]["score"]
         # if stats["Effects"]["confusion"] and not stats["Effects"]["secure"]:
         #     shuffling(self.bubbles)
 
-        stats["Player"]["keyactive"] = True
+        Registry.saveData["Game"]["Player"]["keyactive"] = True
 
-        Registry.saveData = self.maintance.auto_restore(self.saveName)
+        # Registry.saveData = self.maintance.auto_restore(self.saveName)
 
-        start(self.saveName)
+        if not Registry.saveData["Game"]["GameMap"]["initialized"]:
+            FirstLoadEvent(self, t1, t2, self.saveName)
 
-        Maintance.auto_save(self.saveName, Registry.saveData)
+        # Maintance.auto_save(self.saveName, Registry.saveData)
 
-        global Mainloop
-        Mainloop = False
-
-        Registry.saveData = stats
-
+        # # TODO: Remove this unused and crashing code
+        # global Mainloop
+        # Mainloop = False
+        #
+        # Registry.saveData = stats
+        #
         # Post Initalize mods
-
-        self.canvas.itemconfig(t1, text="Post Initialize Mods")
-        self.canvas.itemconfig(t2, text="")
-        self.mod_loader.post_initialize(self)
+        #
+        # self.canvas.itemconfig(t1, text="Post Initialize Mods")
+        # self.canvas.itemconfig(t2, text="")
+        # self.mod_loader.post_initialize(self)
 
         height = Registry.gameData["WindowHeight"]
         width = Registry.gameData["WindowWidth"]
 
-        a = randint(0, width)
-        b = randint(0, width)
-        self.canvas = randint(0, width)
-
-        d = stats["ship-position"][0]
-
-        e = 40
-
-        if a + e < d or d > a - e:
-            a = d - e
-        if b + e < d or d > b - e:
-            b = d - e - 20
-        if self.canvas + e < d or d > self.canvas - e:
-            self.canvas = d - e - 40
-
+        # # TODO: Remove this unused code
+        # a = randint(0, width)
+        # b = randint(0, width)
+        # self.canvas = randint(0, width)
+        #
+        # d = stats["ship-position"][0]
+        #
+        # e = 40
+        #
+        # if a + e < d or d > a - e:
+        #     a = d - e
+        # if b + e < d or d > b - e:
+        #     b = d - e - 20
+        # if self.canvas + e < d or d > self.canvas - e:
+        #     self.canvas = d - e - 40
+        #
         # bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
         # bariers[0].create(a, height / 2 + 72 / 2)
         # bariers[1].create(b, height / 2 + 72 / 2)
@@ -1070,28 +934,30 @@ class Game(CanvasScene):
 
         self.canvas = self.canvas
 
-        print("[XboxController]:", "Starting Daemons")
+        # print("[XboxController]:", "Starting Daemons")
+        #
+        # Thread(None, lambda: self._xbox_input(), daemon=True).start()
+        # Thread(None, lambda: self.xboxDeamon(), daemon=True).start()
+        # Thread(None, lambda: self.movent_change(), "MotionThread").start()
 
-        Thread(None, lambda: self._xbox_input(), daemon=True).start()
-        Thread(None, lambda: self.xboxDeamon(), daemon=True).start()
-        Thread(None, lambda: self.movent_change(), "MotionThread").start()
+        self.canvas.delete(t0)
+        self.canvas.delete(t1)
+        self.canvas.delete(t2)
+
+        self.background = CPanel(self.canvas, 0, 71, "extend", "expand", fill="#00a7a7")
 
         try:
             # MAIN GAME LOOP
             while True:
                 # Registry.saveData = self.cfg.auto_restore(self.save_name)
-                while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
-                    self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
-                        len(self.bubbles["bub-index"]) - 1) + " active...")
-                    self.canvas.update()
-                    self.root.update()
-                    sleep(0.1)
+                # while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
+                #     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
+                #         len(self.bubbles["bub-index"]) - 1) + " active...")
+                #     self.canvas.update()
+                #     self.root.update()
+                #     sleep(0.1)
 
-                self.canvas.delete(t0)
-                self.canvas.delete(t1)
-                self.canvas.delete(t2)
-
-                while Registry.saveData["lives"] > 0:
+                while Registry.saveData["Game"]["Player"]["lives"] > 0:
                     if self._pauseMode:
                         pass
                     UpdateEvent(self, 0, self.canvas)
@@ -1103,7 +969,7 @@ class Game(CanvasScene):
                 g1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
                                              text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
                 g2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 60,
-                                             text='Score: ' + str(Registry.saveData["Player"]["score"]), fill='white',
+                                             text='Score: ' + str(Registry.saveData["Game"]["Player"]["score"]), fill='white',
                                              font=('Helvetica', 30))
                 g3 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 90,
                                              text='Level: ' + str(Registry.saveData["level"]),

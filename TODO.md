@@ -2,8 +2,8 @@
 
 - [ ] Create bubble-objects of all previous bubbles  
 - [ ] Add game-modes and game-difficulty  
-- [ ] Add Mod-support such as mod loading etc.  
-- [ ] Add Mod-store / App-store  
+- [ ] Add Addon-support such as mod loading etc.  
+- [ ] Add Addon-store / App-store  
 - [ ] Add Special events  
 - [ ] Add items  
 - [ ] Add advanced gui's to store and inventory  
