@@ -12,9 +12,11 @@ class Event(object):
         self.frame = scene.frame
         # self.audio = scene.audio
         self.scene = scene
+        self.cancel = False
 
         for handler in self._handlers:
-            handler(self)
+            if handler(self) == "cancel":
+                self.cancel = True
 
     @classmethod
     def bind(cls, func):
@@ -291,6 +293,18 @@ class KeyPressEvent(Event):
         cls._handlers.remove(func)
         # print(f"Unbind: {func.__name__}")
         return func
+
+
+class SpriteDamageEvent(Event):
+    _handlers = list()
+
+    def __new__(cls, *args, **kwargs):
+        super(SpriteDamageEvent, cls).__new__()
+
+    def __init__(self, scene, sprite):
+        self.sprite = sprite
+
+        super(SpriteDamageEvent, self).__init__(scene)
 
 
 class KeyReleaseEvent(Event):

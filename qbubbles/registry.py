@@ -15,6 +15,7 @@ class Registry(object):
     gameConfig = {}
     gameData = {}
 
+    _registryGameMaps = {}
     _registryEffects = {}
     _registryScenes = {}
     _registrySceneManager = None
@@ -33,6 +34,45 @@ class Registry(object):
     _registryTextures = {}
     _registryMods = {}
     _registryRoot: Dict[str, Union[Tk, Toplevel]] = {}
+
+    @classmethod
+    def get_sprites(cls):
+        return [sprite for sprite in cls._registrySprites.values()]
+    
+    @classmethod
+    def sprite_exists(cls, sname):
+        return sname in cls._registrySprites.keys()
+    
+    @classmethod
+    def register_sprite(cls, sname, sprite):
+        if type(sname) != str:
+            raise TypeError(f"Sprite sname must be a str-object not "
+                            f"{'an' if sname.__class__.__name__.startswith(('e', 'a', 'i', 'o', 'u')) else 'a'} "
+                            f"{sname.__class__.__name__}-object")
+        cls._registrySprites[sname] = sprite
+    
+    @classmethod
+    def get_gamemaps(cls):
+        return [uname for uname in cls._registryGameMaps.keys()]
+    
+    @classmethod
+    def get_gamemap_objects(cls):
+        return [gamemap for gamemap in cls._registryGameMaps.values()]
+    
+    @classmethod
+    def gamemap_exists(cls, uname):
+        return uname in cls._registryGameMaps.keys()
+    
+    @classmethod
+    def register_gamemap(cls, uname, gamemap):
+        if type(uname) != str:
+            raise TypeError(f"GameMap uname must be a str-object not "
+                            f"{'an' if uname.__class__.__name__.startswith(('e', 'a', 'i', 'o', 'u')) else 'a'} "
+                            f"{uname.__class__.__name__}-object")
+        # printerr(f"{repr(gamemap)} is not a GameMap Representaion")
+        if not (repr(gamemap).startswith("GameMap<") and repr(gamemap).endswith(">")):
+            raise ValueError(f"Representation is not of a GameMap-object, or is this not a subclass of a GameMap-object?")
+        cls._registryGameMaps[uname] = gamemap
 
     @classmethod
     def get_effect(cls, uname):
@@ -380,7 +420,11 @@ class Registry(object):
 
     @classmethod
     def get_lname(cls, *args):
-        return cls.gameData["language"][".".join([*args])]
+        l_id = ".".join([*args])
+        if l_id in cls.gameData["language"].keys():
+            return cls.gameData["language"][l_id]
+        else:
+            return l_id
 
     @classmethod
     def register_sprite_image(cls, name, image, **data):
@@ -394,8 +438,8 @@ class Registry(object):
         cls._registryMods[modid] = dict(name=name, version=version, mod=func)
 
     @classmethod
-    def get_all_modules(cls):
-        return (modid for modid in cls._registryMods.keys())
+    def get_all_addons(cls):
+        return [modid for modid in cls._registryMods.keys()]
 
     @classmethod
     def mod_exists(cls, modid, version=None):

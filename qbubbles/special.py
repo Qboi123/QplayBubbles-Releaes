@@ -112,7 +112,7 @@ class ScrolledWindow(Frame):
         canv_h - height of canvas
 
        """
-        super().__init__(parent, *args, **kwargs)
+        super().__init__(parent, height=canv_h, width=canv_w, *args, **kwargs)
 
         self.parent = parent
         self.scrollCommand = scrollcommand

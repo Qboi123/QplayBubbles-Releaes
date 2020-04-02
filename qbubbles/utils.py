@@ -804,8 +804,8 @@ class Maintance:
         print(os.curdir)
 
         try:
-            cfg.Writer("saves/" + save_name + "/game.nzt", game_stats.copy())
-            # cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
+            cfg.Writer(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + save_name + "/game.nzt", game_stats.copy())
+            # cfg.Writer(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + save_name + "/bubble.nzt", bubble.copy())
         except FileNotFoundError as e:
             print(e.args)
             print(e.filename)
@@ -818,7 +818,7 @@ class Maintance:
         """
         from qbubbles import config as cfg
 
-        game_stats = cfg.Reader("saves/" + save_name + "/game.nzt").get_decoded()
+        game_stats = cfg.Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + save_name + "/game.nzt").get_decoded()
 
         return game_stats
 
@@ -832,8 +832,8 @@ class Maintance:
         stats = cfg.Reader("versions/" + Registry.gameData["launcherConfig"]["versionDir"] + "/config/reset.nzt").get_decoded()
         bubble = cfg.Reader("versions/" + Registry.gameData["launcherConfig"]["versionDir"] + "/config/reset-bubble.nzt").get_decoded()
 
-        cfg.Writer("saves/" + save_name + "/game.nzt", stats.copy())
-        cfg.Writer("saves/" + save_name + "/bubble.nzt", bubble.copy())
+        cfg.Writer(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + save_name + "/game.nzt", stats.copy())
+        cfg.Writer(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + save_name + "/bubble.nzt", bubble.copy())
 
 
 if __name__ == '__main__':

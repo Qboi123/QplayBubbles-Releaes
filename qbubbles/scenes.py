@@ -7,6 +7,8 @@ from typing import Optional
 import yaml
 from tkinter import Frame, Canvas, Button
 
+from qbubbles.maps import GameMap
+
 from qbubbles.config import Reader
 from qbubbles.nzt import NZTFile
 from qbubbles.registry import Registry
@@ -76,7 +78,7 @@ class SavesMenu(Scene):
         # log.info("Game.load", "Loading...")
         # 
         # # Getting list of slots.
-        # path = "saves/"
+        # path = f"{Registry.gameData['launcherConfig']['gameDir']}saves/"
         # try:
         #     index = os.listdir(path)
         # except FileNotFoundError:
@@ -135,7 +137,7 @@ class SavesMenu(Scene):
         # # Getting the list of directories in the slots-folder.
         # import os
         # 
-        # names = os.listdir("saves/")
+        # names = os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}saves/")
         # 
         # # Information variables for each slot.
         # infos = {"dates": [], "score": [], "level": []}
@@ -144,10 +146,10 @@ class SavesMenu(Scene):
         # 
         # # Prepare info variables
         # for i in names.copy():
-        #     if not os.path.exists("saves/" + i + "/bubble.nzt"):
+        #     if not os.path.exists(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/bubble.nzt"):
         #         names.remove(i)
         #         continue
-        #     mtime = os.path.getmtime("saves/" + i + "/bubble.nzt")
+        #     mtime = os.path.getmtime(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/bubble.nzt")
         #     a = time.localtime(mtime)
         # 
         #     b = list(a)
@@ -164,7 +166,7 @@ class SavesMenu(Scene):
         #     tme_var = "%i/%i/%i %i:%s:%s" % (a[2], a[1], a[0], a[3], b[4], b[5])
         #     infos["dates"].append(tme_var)
         # 
-        #     a = Reader("saves/" + i + "/game.nzt").get_decoded()
+        #     a = Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/game.nzt").get_decoded()
         #     infos["score"].append(a["Player"]["score"])
         #     infos["level"].append(a["Player"]["level"])
         # 
@@ -464,9 +466,9 @@ class SavesMenu(Scene):
         print(6)
 
         # Get slots
-        if not os.path.exists("saves/"):
-            os.makedirs("saves/")
-        names = os.listdir("saves/")
+        if not os.path.exists(f"{Registry.gameData['launcherConfig']['gameDir']}saves/"):
+            os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/")
+        names = os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}saves/")
 
         # Information variables for each slot.
         infos = {"dates": [], "score": [], "level": []}
@@ -477,10 +479,10 @@ class SavesMenu(Scene):
 
         # Prepare info variables
         for i in names.copy():
-            if not os.path.exists("saves/" + i + "/bubble.nzt"):
+            if not os.path.exists(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/bubble.nzt"):
                 names.remove(i)
                 continue
-            mtime = os.path.getmtime("saves/" + i + "/bubble.nzt")
+            mtime = os.path.getmtime(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/bubble.nzt")
             a = time.localtime(mtime)
 
             b = list(a)
@@ -498,7 +500,7 @@ class SavesMenu(Scene):
             tme_var = f"{a[2]}/{a[1]}/{a[0]} {a[3]}:{a[4]}:{a[5]}"
             infos["dates"].append(tme_var)
 
-            a = Reader("saves/" + i + "/game.nzt").get_decoded()
+            a = Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + i + "/game.nzt").get_decoded()
             infos["score"].append(a["Player"]["score"])
             infos["level"].append(a["Player"]["level"])
         # print(infos)
@@ -722,6 +724,142 @@ class SavesMenu(Scene):
         self.seedEntry.bind("<Key>", update)
         self.seedEntryFrame.pack(fill="x", expand=True, padx=1, pady=1)
 
+        self.gameMapsEntryFrame = Frame(self.optionsFrame, bg="#5c5c5c", width=480)
+        # self.gameMapsScrollWindow = ScrolledWindow(self.gameMapsEntryFrame, 400, 200)
+
+        i = 0
+        
+        class Self2:
+            selectedCanvas: Canvas = None
+            hoverCanvasOld: Canvas = None
+            oldSelected: Canvas = None
+            id_ = {}
+
+        def on_canv_leave(hover_canvas):
+            if Self2.hoverCanvasOld is not None:
+                if Self2.selectedCanvas != Self2.hoverCanvasOld:
+                    Self2.hoverCanvasOld.config(bg="#434343")
+                    Self2.hoverCanvasOld.itemconfig(Self2.id_[Self2.hoverCanvasOld]["Title"], fill="#7f7f7f")
+                    # for subid in Self2.id_[Self2.hoverCanvasOld]["Infos"]:
+                    #     Self2.hoverCanvasOld.itemconfig(subid, fill="#7f7f7f")
+                else:
+                    Self2.hoverCanvasOld.config(bg="darkcyan")
+                    Self2.hoverCanvasOld.itemconfig(Self2.id_[hover_canvas]["Title"], fill="#00bfbf")
+                    # for subid in Self2.id_[Self2.hoverCanvasOld]["Infos"]:
+                    #     Self2.hoverCanvasOld.itemconfig(subid, fill="#00a7a7")
+            Self2.hoverCanvasOld = None
+
+        def on_canv_motion(hover_canvas):
+            if Self2.hoverCanvasOld == hover_canvas:
+                return
+            if Self2.hoverCanvasOld is not None:
+                if Self2.selectedCanvas != Self2.hoverCanvasOld:
+                    Self2.hoverCanvasOld.config(bg="#434343")
+                    Self2.hoverCanvasOld.itemconfig(Self2.id_[Self2.hoverCanvasOld]["Title"], fill="#7f7f7f")
+                    # for subid in Self2.id_[Self2.hoverCanvasOld]["Infos"]:
+                    #     Self2.hoverCanvasOld.itemconfig(subid, fill="#939393")
+                else:
+                    Self2.hoverCanvasOld.config(bg="darkcyan")
+                    Self2.hoverCanvasOld.itemconfig(Self2.id_[hover_canvas]["Title"], fill="#007f7f")
+                    # for subid in Self2.id_[Self2.hoverCanvasOld]["Infos"]:
+                    #     Self2.hoverCanvasOld.itemconfig(subid, fill="#00a7a7")
+            # print(Self2.selectedCanvas, Self2.hoverCanvasOld)
+            print(Self2.selectedCanvas == Self2.hoverCanvasOld)
+            print(Self2.selectedCanvas == hover_canvas)
+            Self2.hoverCanvasOld = hover_canvas
+
+            if hover_canvas != Self2.selectedCanvas:
+                hover_canvas.config(bg="#5c5c5c")
+                hover_canvas.itemconfig(Self2.id_[hover_canvas]["Title"], fill="#a7a7a7")
+                # for subid in Self2.id_[hover_canvas]["Infos"]:
+                #     hover_canvas.itemconfig(subid, fill="#dadada")
+            else:
+                hover_canvas.config(bg="#43a7a7")
+                hover_canvas.itemconfig(Self2.id_[hover_canvas]["Title"], fill="#ffffff")
+                # for subid in Self2.id_[hover_canvas]["Infos"]:
+                #     hover_canvas.itemconfig(subid, fill="#00dada")
+            Self2.hoverCanvas = hover_canvas
+
+        def on_canv_lclick(c: Canvas):
+            if Self2.oldSelected is not None:
+                Self2.oldSelected.config(bg="#434343")
+                Self2.oldSelected.itemconfig(Self2.id_[Self2.oldSelected]["Title"], fill="#434343")
+                # for subid in Self2.id_[Self2.oldSelected]["Infos"]:
+                #     Self2.oldSelected.itemconfig(subid, fill="#939393")
+            Self2.oldSelected = c
+
+            c.config(bg="#43a7a7")
+            c.itemconfig(Self2.id_[c]["Title"], fill="#ffffff")
+            # for subid in Self2.id_[c]["Infos"]:
+            #     c.itemconfig(subid, fill="#00dada")
+
+            Self2.selectedCanvas = c
+            
+        vlw = 400
+
+        gameMaps = Registry.get_gamemap_objects()
+        
+        self.gameMapCanv = {}
+
+        self.seedLabel = ttk.Label(self.gameMapsEntryFrame, relief="flat", width=8, text="Seed:", anchor="w")
+        self.seedLabel.pack(side="left")
+
+        # Main frame.
+        Self2.main_f = Frame(self.gameMapsEntryFrame, background="#434343", height=200)
+        Self2.main_f.pack(side="left", fill="x")
+
+        # Slots frame.
+        Self2.s_frame = Frame(Self2.main_f, height=200, width=vlw)
+        Self2.s_frame.pack(fill="x")
+
+        # Scrollwindow for the slots frame
+        Self2.sw = ScrolledWindow(Self2.s_frame, vlw, 200, expand=True, fill="both")
+
+        Self2.sw.vbar.configure(bg="#434343", fg="#7f7f7f")
+
+        # Configurate the canvas from the scrollwindow
+        Self2.canv = Self2.sw.canv
+        Self2.canv.config(bg="#434343")
+
+        # Self2.oFrame.
+        Self2.frame_sw = Self2.sw.scrollwindow
+        Self2.frames = []
+        Self2.canvass = []
+        Self2.index = {}
+        
+        self.self2 = Self2
+
+        # Creates items in the versions menu.
+        for gameMap in gameMaps:
+            gameMap: GameMap
+            Self2.frames.append(Frame(Self2.frame_sw, height=32, width=vlw, bd=0))
+            Self2.canvass.append(Canvas(Self2.frames[-1], height=32, width=vlw, bg="#434343", highlightthickness=0, bd=0))
+            Self2.canvass[-1].pack()
+            Self2.id_[Self2.canvass[-1]] = {}
+            self.gameMapCanv[Self2.canvass[-1]] = gameMap
+            # Self2.._id[Self2..canvass[-1]]["Icon"] = Self2..canvass[-1].create_image(0, 0, image=Self2..iconMinecraft,
+            #                                                                    anchor="nw")
+            Self2.id_[Self2.canvass[-1]]["Title"] = Self2.canvass[-1].create_text(5, 15, text=Registry.get_lname("gamemap", gameMap.get_uname().split(":")[-1], "name"),
+                                                                               fill="#7f7f7f", anchor="w",
+                                                                               font=("helvetica", 11))
+            Self2.canvass[-1].bind(
+                "<ButtonRelease-1>", lambda event, c=Self2.canvass[-1]: on_canv_lclick(c))
+            # Self2.canvass[-1].bind(
+            #     "<Double-Button-1>", lambda event, v=profile.name: Self2.add_action(v))
+            Self2.canvass[-1].bind(
+                "<Motion>", lambda event, c=Self2.canvass[-1]: on_canv_motion(c))
+            Self2.canvass[-1].bind(
+                "<Leave>", lambda event, c=Self2.canvass[-1]: on_canv_leave(c))
+            Self2.index[Self2.canvass[-1]] = i
+            Self2.frames[-1].pack(side="top")
+
+            i += 1
+
+        Self2.s_frame.pack()
+        Self2.s_frame.pack_propagate(1)
+
+        self.gameMapsEntryFrame.pack(fill="x", expand=True, padx=1, pady=1)
+
         self.buttonFrame = Frame(self.optionsFrame, bg="#5c5c5c", width=480)
         self.emptyLabel = ttk.Label(self.buttonFrame, relief="flat", width=8, text="", anchor="w")
         self.emptyLabel.pack(side="left")
@@ -799,13 +937,21 @@ class SavesMenu(Scene):
         import os
 
         if (new in ("aux", "con", "num", "..")) or (len(new) < 3) or (
-                new.lower() in [f.lower() for f in os.listdir("saves/")]):
+                new.lower() in [f.lower() for f in os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}saves/")]):
             return
 
-        # Creating dir for the game.
-        os.makedirs("saves/" + new, exist_ok=True)
+        gameMap = None
 
-        if gameMap.name == "qbubbles:classic":
+        if self.self2.selectedCanvas is None:
+            return
+        gameMap = self.gameMapCanv[self.self2.selectedCanvas]
+
+        # Creating dir for the game.
+        os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + new, exist_ok=True)
+
+        print(gameMap.get_uname())
+
+        if gameMap.get_uname() == "qbubbles:classic_map":
             game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
                                     "ShipStats": {"ship_speed": 10, "ShipPosition": [960, 540]},
                                     "Abilities": {"teleports": 0, "level-score": 10000},
@@ -819,22 +965,41 @@ class SavesMenu(Scene):
             spriteinfo_data = {
                 "qbubbles:bubble": {
                     "speedMultiplier": 5
-                }
+                },
+                "Sprites": [
+                    sprite.get_uname() for sprite in Registry.get_sprites()
+                ]
             }
 
             spriteData = dict()
             for sprite in Registry.get_sprites():
                 spriteData[sprite.get_sname()] = sprite.get_spritedata().default
 
+            Registry.saveData = {"GameData": game_data, "SpriteInfo": spriteinfo_data, "SpriteData": spriteData}
+
             bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                            "bub-position": [], "bub-index": [], "key-active": False}
 
-            game_data_file = NZTFile("saves/" + new + "/game.nzt", "w")
+            game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/game.nzt", "w")
             game_data_file.data = game_data
             game_data_file.save()
             game_data_file.close()
 
-            game_data_file = NZTFile("saves/" + new + "/bubble.nzt", "w")
+            os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/")
+
+            for sprite in spriteData.keys():
+                path = '/'.join(sprite.split(":")[:-1])
+                os.makedirs(
+                    f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/{path}")
+                sprite_data_file = NZTFile(
+                    f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/"
+                    f"{sprite.replace(':', '/')}.nzt",
+                    "w")
+                sprite_data_file.data = spriteData[sprite]
+                sprite_data_file.save()
+                sprite_data_file.close()
+
+            game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/bubble.nzt", "w")
             game_data_file.data = bubble_data
             game_data_file.save()
             game_data_file.close()
@@ -853,18 +1018,18 @@ class SavesMenu(Scene):
         seed = random.randint(0, max_seed)
 
         # Removing the files inside.
-        for i in os.listdir("saves/" + src):
-            os.remove("saves/" + src + "/" + i)
+        for i in os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src):
+            os.remove(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/" + i)
 
         # Remove the save (dir)
-        os.removedirs("saves/" + src)
+        os.removedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src)
 
         # Getting the input text.
         if src in ("aux", "con", ".", ".."):
             return
 
         # Creating dir for the game.
-        os.makedirs("saves/" + src, exist_ok=True)
+        os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src, exist_ok=True)
 
         game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
                                 "ShipStats": {"ship-speed": 10, "ShipPosition": [960, 540]},
@@ -884,12 +1049,12 @@ class SavesMenu(Scene):
         bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
                        "bub-position": [], "bub-index": [], "key-active": False}
 
-        game_data_file = NZTFile("saves/" + src + "/game.nzt", "w")
+        game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/game.nzt", "w")
         game_data_file.data = game_data
         game_data_file.save()
         game_data_file.close()
 
-        game_data_file = NZTFile("saves/" + src + "/bubble.nzt", "w")
+        game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/bubble.nzt", "w")
         game_data_file.data = bubble_data
         game_data_file.save()
         game_data_file.close()
@@ -918,11 +1083,11 @@ class SavesMenu(Scene):
         import os
 
         # Removing the files inside.
-        for i in os.listdir("saves/" + src):
-            os.remove("saves/" + src + "/" + i)
+        for i in os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src):
+            os.remove(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/" + i)
 
         # Remove the slot (dir)
-        os.removedirs("saves/" + src)
+        os.removedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src)
 
         self.close_options_frame()
 
@@ -939,7 +1104,7 @@ class SavesMenu(Scene):
 
         # noinspection PyTypeChecker
         # Rename the dir for the slot.
-        os.rename("saves/" + src, "saves/" + new)
+        os.rename(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src, f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + new)
 
         self.close_options_frame()
 

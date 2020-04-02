@@ -8,7 +8,7 @@ class Loader:
         self.modsByID = dict()
         self.modsByModule = dict()
         version_dir = launcher_cfg["versionDir"]
-        self.__mods = os.listdir("mods/"+launcher_cfg["versionDir"])
+        self.__mods = os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}addons/"+launcher_cfg["versionDir"])
         self.bubbles = dict()
         self.events = dict()
         self.items = dict()

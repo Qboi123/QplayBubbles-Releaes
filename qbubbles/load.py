@@ -1,4 +1,3 @@
-import importlib
 import os
 import sys
 import zipimport
@@ -7,19 +6,17 @@ from typing import Type
 
 import yaml
 from PIL import Image, ImageTk
-from qbubbles.modloader import ModSkeleton
-
-from qbubbles.bubbles import Bubble
-
-from qbubbles.events import PreInitializeEvent, InitializeEvent, PostInitializeEvent
 
 from qbubbles import bubblesInit, config
 from qbubbles.bubbleSystem import BubbleSystem
 from qbubbles.components import Store
+from qbubbles.events import PreInitializeEvent, InitializeEvent, PostInitializeEvent
 from qbubbles.game import Game
 from qbubbles.gameIO import printwrn
-from qbubbles.lib import utils
+from qbubbles.init.mapsInit import init_gamemaps
+from qbubbles.init.spritesInit import init_sprites
 from qbubbles.menus.titleMenu import TitleMenu
+from qbubbles.modloader import ModSkeleton
 from qbubbles.registry import Registry
 from qbubbles.resources import ModelLoader
 from qbubbles.scenemanager import CanvasScene
@@ -99,7 +96,7 @@ class Load(CanvasScene):
 
         from qbubbles.globals import GAME_VERSION
 
-        mods_dir = f"mods/{GAME_VERSION}"
+        mods_dir = f"{Registry.gameData['launcherConfig']['gameDir']}addons/{GAME_VERSION}"
 
         if not os.path.exists(mods_dir):
             os.makedirs(mods_dir)
@@ -109,7 +106,7 @@ class Load(CanvasScene):
         modules = {}
 
         for file in os.listdir(mods_dir):
-            # print(folder, os.path.isdir(f"{mods_dir}/{folder}"))
+            print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
             if os.path.isfile(f"{mods_dir}/{file}"):
                 if file.endswith(".pyz"):
                     if file == "qbubbles.pyz":
@@ -121,18 +118,25 @@ class Load(CanvasScene):
                     # print(a)
         # sys.path.remove(mods_path)
 
-        module_ids = Registry.get_all_modules()
-        mods = []
-        for module_id in module_ids:
-            print(repr(module_id), type(module_id))
-            if Registry.mod_exists(module_id):
-                mod = Registry.get_module(module_id)["mod"]
-                mod: Type[ModSkeleton]
-                self.canvas.itemconfig(t2, text=mod.name)
-                mod.zipimport = None
-                if mod.modID in modules.keys():
-                    mod.zipimport = modules[mod.modID]
-                mods.append(mod())
+        addon_ids = Registry.get_all_addons()
+
+        print(f"Attempting to load the following addons: {', '.join(list(addon_ids).copy())}")
+
+        # print(list(addon_ids))
+
+        addons = []
+        for addon_id in list(addon_ids):
+            print(repr(addon_id), type(addon_id))
+            if Registry.mod_exists(addon_id):
+                addon = Registry.get_module(addon_id)["mod"]
+                addon: Type[ModSkeleton]
+                self.canvas.itemconfig(t2, text=addon.name)
+                addon.zipimport = None
+                if addon.modID in modules.keys():
+                    addon.zipimport = modules[addon.modID]
+                addons.append(addon())
+
+        # print(addons)
 
         PreInitializeEvent(self, self.canvas, t1, t2)
 
@@ -142,6 +146,34 @@ class Load(CanvasScene):
         self.canvas.itemconfig(t1, text="Loading...")
         self.canvas.itemconfig(t2, text="Loading Config")
         self.canvas.update()
+
+        # =----- GAME MAPS -----= #
+        self.canvas.itemconfig(t1, text="Loading Gamemaps")
+        self.canvas.itemconfig(t2, text="Initialize gamemaps")
+        self.canvas.update()
+
+        gameMaps = init_gamemaps()
+        i = 1
+        for gamemap in gameMaps:
+            self.canvas.itemconfig(t2, text=f"Register gamemap {i}/{len(gameMaps)}")
+            self.canvas.update()
+
+            Registry.register_gamemap(gamemap.get_uname(), gamemap)
+            i += 1
+
+        # =----- SPRITES -----= #
+        self.canvas.itemconfig(t1, text="Loading Sprites")
+        self.canvas.itemconfig(t2, text="Initialize sprites")
+        self.canvas.update()
+
+        sprites = init_sprites()
+        i = 1
+        for sprite in sprites:
+            self.canvas.itemconfig(t2, text=f"Register gamemap {i}/{len(gameMaps)}")
+            self.canvas.update()
+
+            Registry.register_sprite(sprite.get_sname(), sprite)
+            i += 1
 
         self.canvas.itemconfig(t1, text="Loading Bubbles")
         self.canvas.itemconfig(t2, text="Initialize bubbles")

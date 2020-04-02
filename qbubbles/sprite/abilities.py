@@ -1,7 +1,7 @@
 from typing import Optional
 
 from qbubbles.advUtils.time import Time, TimeSpan
-from qbubbles.events import KeyPressEvent, KeyReleaseEvent, CollisionEvent
+from qbubbles.events import KeyPressEvent, KeyReleaseEvent, CollisionEvent, SpriteDamageEvent
 
 
 class Ability(object):
@@ -74,3 +74,15 @@ class TeleportAbility(Ability):
             pixels = 128
         elif 60 < timeLength.get_seconds():
             pixels = 256
+
+
+class InvulnerableAbility(Ability):
+    def __init__(self, sprite):
+        super(InvulnerableAbility, self).__init__(sprite)
+
+        SpriteDamageEvent.bind(self.on_sprite_damage)
+
+    def on_sprite_damage(self, event):
+        if event.sprite != self._sprite:
+            return
+        return "cancel"

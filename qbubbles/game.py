@@ -457,7 +457,7 @@ class Game(CanvasScene):
         self.saveName = save_name
 
         # Reload stats with the reader.
-        Registry.saveData = Reader("saves/" + self.saveName + "/game.nzt").get_decoded()
+        Registry.saveData = Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + self.saveName + "/game.nzt").get_decoded()
 
         # Create canvas.
         # self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"],
@@ -1018,27 +1018,19 @@ class Game(CanvasScene):
             appliedEffect: AppliedEffect = AppliedEffect(effect, self, effectdata["time_remaining"], effectdata["strength"])
             self.player.appliedEffects.append(appliedEffect)
             self.player.appliedEffectTypes.append(effect)
-
-        if stats["Effects"]["special_level_time"] <= time():
-            stats["Effects"]["special_level"] = False
-            stats["Effects"]["special_level_time"] = time()
-        else:
-            self.canvas.itemconfig(Registry.get_background("id"), image=Registry.get_background("special"))
-            self.canvas.itemconfig(self.panels["game/top"], fill="#3f3f3f")
         if stats["Player"]["score"] < 0:
             log.error("Game.main", "The 'Score' variable under zero.")
             stats["Player"]["score"] = 0
         if stats["Player"]["score"] > stats["Player"]["high_score"]:
-            stats["Player"]["high-score"] = stats["Player"]["score"]
-        if stats["Effects"]["confusion"] and not stats["Effects"]["secure"]:
-            shuffling(self.bubbles)
+            stats["Player"]["high_score"] = stats["Player"]["score"]
+        # if stats["Effects"]["confusion"] and not stats["Effects"]["secure"]:
+        #     shuffling(self.bubbles)
 
-        self.bubbles["active2"] = []
-        self.bubbles["active"] = 0
+        stats["Player"]["keyactive"] = True
 
         Registry.saveData = self.maintance.auto_restore(self.saveName)
 
-        start(self.bubbles, self.saveName, Registry.saveData, self.config, self.bub, self.modes, self.canvas)
+        start(self.saveName)
 
         Maintance.auto_save(self.saveName, Registry.saveData)
 

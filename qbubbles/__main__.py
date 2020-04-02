@@ -177,7 +177,11 @@ class Main(Toplevel):
                     game_dir = argv[8:]
             if game_dir is None:
                 raise RuntimeError("Argument 'gameDir' is not defined, Q-Bubbles cannot continue")
+            if not game_dir.endswith("/"):
+                game_dir += "/"
             Registry.gameData["launcherConfig"] = {"gameDir": game_dir}
+
+        # os.chdir(game_dir)
 
         Registry.register_scene("LoadScreen", Load(Registry.get_window("default")))
 

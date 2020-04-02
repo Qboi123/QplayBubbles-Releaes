@@ -3,6 +3,9 @@ store: "Store"
 store.diamonds: "Diamonds: "
 store.coins: "Coins: "
 
+# Game maps:
+gamemap.classic_map.name: "Classic Map"
+
 # Home Menu
 home.start: "START"
 home.quit: "QUIT"

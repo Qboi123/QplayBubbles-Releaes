@@ -1,12 +1,199 @@
-from typing import NoReturn, List, Optional
+import typing
+
+from overload import overload
 
 from qbubbles.base import HORIZONTAL, VERTICAL, TYPE_NEUTRAL, FALSE, FORM_CIRCLE, LEFT, TYPE_DANGEROUS, FORM_RECT, UP, \
     DOWN, SHIP, RED
 from qbubbles.effects import BaseEffect, AppliedEffect
 from qbubbles.events import KeyPressEvent, KeyReleaseEvent, UpdateEvent, SavedataReadedEvent, ExperienceEvent, \
-    CollisionEvent, XInputEvent, MouseEnterEvent, MouseLeaveEvent
+    CollisionEvent, XInputEvent, MouseEnterEvent, MouseLeaveEvent, SpriteDamageEvent
 from qbubbles.registry import Registry
 from qbubbles.sprite.abilities import GhostAbility, Ability
+
+_KT = typing.TypeVar('_KT')
+_VT = typing.TypeVar('_VT')
+_T = typing.TypeVar('_T')
+_S = typing.TypeVar('_S')
+
+
+class SpriteData(object):
+    def __init__(self, default):
+        if type(default) == dict:
+            self._type: Type[dict] = dict
+        else:
+            raise TypeError(f"The default value is not a dict or list")
+        self.default = default.copy()
+        self._value = default.copy()
+
+    def __iter__(self):
+        if self._type == list:
+            return self._value
+        else:
+            return []
+
+    def __getitem__(self, item):
+        return self._value[item]
+
+    def __setitem__(self, item, value):
+        self._value[item] = value
+
+    def __delitem__(self, item):
+        del self._value[item]
+
+    def __setslice__(self, i, j, sequence: typing.Sequence):
+        if type(self._value) == list:
+            self._value: list
+            self._value[i:j] = sequence
+
+    def __getslice__(self, i, j):
+        if type(self._value) == list:
+            self._value: list
+            return self._value[i:j]
+
+    def __delslice__(self, i, j):
+        if type(self._value) == list:
+            self._value: list
+            del self._value[i:j]
+
+    @overload
+    def get(self, k: _KT) -> _VT:
+        if self._type == dict:
+            self._value: dict
+            return self._value.get(k)
+
+    @get.add
+    def get(self, k: _KT, default: typing.Union[_VT, _T]=None) -> typing.Union[_VT, _T]:
+        if self._type == dict:
+            self._value: dict
+            return self._value.get(k, default)
+
+    @overload
+    def pop(self, k: _KT, default: typing.Union[_VT, _T] = None) -> typing.Union[_VT, _T]:
+        if self._type == dict:
+            self._value: dict
+            return self._value.pop(k, default)
+
+    def keys(self) -> typing.KeysView:
+        if self._type == dict:
+            self._value: dict
+            return self._value.keys()
+
+    def values(self) -> typing.ValuesView:
+        if self._type == dict:
+            self._value: dict
+            return self._value.values()
+
+    def items(self) -> typing.ItemsView:
+        if self._type == dict:
+            self._value: dict
+            return self._value.items()
+
+    @overload
+    def update(self, __m: typing.Mapping[_KT, _VT], **kwargs) -> None:
+        if self._type == dict:
+            self._value: dict
+            return self._value.update(__m, **kwargs)
+
+    @update.add
+    def update(self, __m: typing.Iterable[typing.Tuple[_KT, _VT]], **kwargs) -> None:
+        if self._type == dict:
+            self._value: dict
+            return self._value.update(__m, **kwargs)
+
+    @update.add
+    def update(self, **kwargs) -> None:
+        if self._type == dict:
+            self._value: dict
+            return self._value.update(**kwargs)
+
+    @overload
+    def fromkeys(self, seq: typing.Iterable[_T]) -> dict:
+        if self._type == dict:
+            self._value: dict
+            return self._value.fromkeys(seq)
+
+    @fromkeys.add
+    def fromkeys(self, seq: typing.Iterable[_T], value: _T) -> dict:
+        if self._type == dict:
+            self._value: dict
+            return self._value.fromkeys(seq, value)
+
+    def popitem(self) -> typing.Tuple[_KT, _VT]:
+        if self._type == dict:
+            self._value: dict
+            return self._value.popitem()
+
+    def setdefault(self, k: _KT, default: _VT) -> int:
+        if self._type == dict:
+            self._value: dict
+            return self._value.setdefault(k, default)
+
+    @pop.add
+    def pop(self, k: typing.Union[_KT, int]) -> typing.Union[_VT, _T]:
+        if self._type == dict:
+            self._value: dict
+            return self._value.pop(k)
+        if self._type == list:
+            self._value: list
+            return self._value.pop(k)
+
+    def clear(self) -> None:
+        if self._type == dict:
+            self._value: dict
+            return self._value.clear()
+        if self._type == list:
+            self._value: list
+            return self._value.clear()
+
+    def copy(self) -> typing.Union[list, dict]:
+        if self._type == dict:
+            self._value: dict
+            return self._value.copy()
+        if self._type == list:
+            self._value: list
+            return self._value.copy()
+
+    def remove(self, o: _T) -> None:
+        if self._type == list:
+            self._value: list
+            return self._value.remove(o)
+
+    def extend(self, iterable: typing.Iterable[_T]) -> None:
+        if self._type == list:
+            self._value: list
+            return self._value.extend(iterable)
+        self._value: list
+
+    def count(self, object: _T) -> int:
+        if self._type == list:
+            self._value: list
+            return self._value.count(object)
+
+    def index(self, object: _T, start: int = None, stop: int = None) -> int:
+        if self._type == list:
+            self._value: list
+            return self._value.index(object, start, stop)
+
+    def reverse(self) -> None:
+        if self._type == list:
+            self._value: list
+            return self._value.reverse()
+
+    def insert(self, index: int, object: _T) -> None:
+        if self._type == list:
+            self._value: list
+            return self._value.insert(int, object)
+
+    def sort(self, *, key: typing.Callable[[_T], typing.Any] = None, reverse: bool) -> None:
+        if self._type == list:
+            self._value: list
+            return self._value.sort(key=key, reverse=reverse)
+
+    # noinspection PyShadowingBuiltins
+    def append(self, object: _T):
+        if self._type == list:
+            self._value: list
+            self._value.append(object)
 
 
 # noinspection PyUnusedLocal,PyStatementEffect,PyTypeChecker
@@ -18,7 +205,7 @@ class Sprite:
 
         self._kw = kw
 
-        self.abilities: List[Ability] =[]
+        self.abilities: typing.List[Ability] =[]
 
         # Axis
         self.axis = (HORIZONTAL, VERTICAL)
@@ -58,7 +245,7 @@ class Sprite:
         self.ySpeed = 0
 
         # self.collisionWith = (SHIP, ANY_BUBBLE)
-        self.collisionWith: Optional[List] = None
+        self.collisionWith: typing.Optional[typing.List] = None
 
         self.lifeCost = 1
 
@@ -69,6 +256,10 @@ class Sprite:
         self.coordsLen = 2
 
         self.__active = False
+        self._spriteData = SpriteData({})
+
+    def get_spritedata(self):
+        return self._spriteData
 
     def create(self, x, y):
         Registry.get_scene("Game").gameObjects.append(self)
@@ -96,7 +287,9 @@ class Sprite:
         other.damage(self.attackValue * self.attackMultiplier)
 
     def damage(self, value: float):
-        self.health -= value / self.defenceValue
+        scene = Registry.get_scene("Game")
+        if not SpriteDamageEvent(scene, self).cancel:
+            self.health -= value / self.defenceValue
 
     def on_collision(self, evt: CollisionEvent):
         pass
@@ -165,7 +358,7 @@ class Player(Sprite):
             strength: float = effect["strength"]
             self.start_effect(effect_class, Registry.get_scene("Game"), time_length, strength)
 
-    def start_effect(self, effect_class, scene, time_length, strength) -> NoReturn:
+    def start_effect(self, effect_class, scene, time_length, strength) -> typing.NoReturn:
         self.appliedEffects.append(AppliedEffect(effect_class, scene, time_length, strength))
 
     def move(self, x=0, y=0):
@@ -211,10 +404,15 @@ class Player(Sprite):
             a.remove("d")
         self.keysPressed = "".join(a)
 
+    def get_ability(self, uname):
+        if uname in self.get_spritedata()["Abilities"].keys():
+            return self.get_spritedata()["Abilities"][uname]
+        return None
 
-class TeleportCrossbar(Sprite):
+
+class TeleportCrosshair(Sprite):
     def __init__(self):
-        super(TeleportCrossbar, self).__init__()
+        super(TeleportCrosshair, self).__init__()
 
         self.abilities.append(GhostAbility(self))
         self.abilities.append(InvulnerableAbility(self))

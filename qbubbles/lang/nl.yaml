@@ -7,6 +7,9 @@ home.start: "START"
 home.quit: "SLUITEN"
 home.options: "OPTIES"
 
+# Game maps:
+gamemap.classic_map.name: "Oude game type"
+
 # Pause Menu
 pause.back-to-home: "Opslaan en terug naar hoodfdmenu"
 

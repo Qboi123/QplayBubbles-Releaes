@@ -2,7 +2,6 @@ from typing import Optional, Callable
 
 from qbubbles.exceptions import ModeNotFoundError
 from qbubbles.registry import Registry
-from qbubbles.sprites import TeleportCrossbar
 
 
 class ModeManager(object):
@@ -46,9 +45,10 @@ class Mode(object):
 
 class TeleportMode(Mode):
     def __init__(self):
-        super("teleport")
+        super(TeleportMode, self).__init__("teleport")
 
         self.scene = Registry.get_scene("Game")
 
     def stop_mode(self, *args, **kwargs):
-        TeleportCrossbar()
+        pass
+        # TeleportCrossbar()
