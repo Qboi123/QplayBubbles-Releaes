@@ -121,7 +121,7 @@ class Load(CanvasScene):
         try:
             for file in os.listdir(mods_dir):
                 # print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
-                # print(file)
+                print(file)
                 if os.path.isfile(f"{mods_dir}/{file}"):
                     if file.endswith(".pyz"):
                         a = zipimport.zipimporter(f"{mods_dir}/{file}")  # f"{file}.main", globals(), locals(), [])

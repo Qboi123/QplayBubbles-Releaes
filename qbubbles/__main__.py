@@ -29,6 +29,9 @@ class FakeWindow(Tk):
         self.bind("<Map>", self.onRootDeiconify)
         self.bind("<Unmap>", self.onRootIconify)
 
+        # self.bind("<FocusOut>", self.onRootIconify)
+        self.bind("<FocusIn>", self.onRootDeiconify)
+
         # Fake-window attributes
         self.child: Optional[Toplevel] = None
 
@@ -74,6 +77,9 @@ class FakeWindow(Tk):
 
         self.child = toplevel
         self.child.bind("<Destroy>", lambda event: (self.destroy() if (event.widget == self.child) or (event.widget == self) else None))
+
+        # self.child.bind("<FocusOut>", lambda event: self.onRootIconify(event) if event.widget == self.child and self.child.focus_get() else None)
+        self.child.bind("<FocusIn>", lambda event: self.onRootDeiconify(event) if event.widget == self.child and not self.child.focus_get() else None)
 
 
 def get_hwnd_dpi(window_handle):
