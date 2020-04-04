@@ -17,6 +17,13 @@ canvas = Canvas(root, highlightthickness=0)
 id_ = canvas.create_image(0, 0, image=tkim, anchor="nw")
 canvas.pack(fill="both", expand=True)
 
+hwnd = win32gui.FindWindow(None, "Your window title") # Getting window handle
+# hwnd = root.winfo_id() getting hwnd with Tkinter windows
+# hwnd = root.GetHandle() getting hwnd with wx windows
+lExStyle = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
+lExStyle |=  win32con.WS_EX_TRANSPARENT | win32con.WS_EX_LAYERED
+win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE , lExStyle )
+
 # cimage = canvas.create_image(0, 0, image=tkim)
 ims = []
 tkims = []

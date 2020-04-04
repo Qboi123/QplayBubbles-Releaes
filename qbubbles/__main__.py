@@ -153,7 +153,7 @@ class Main(Toplevel):
         self.debug = False
         super(Main, self).__init__(self.fakeRoot)
         self.fakeRoot.bind_events(self)
-        self.protocol("WM_DELETE_WINDOW", self.fakeRoot.destroy)
+        # self.protocol("WM_DELETE_WINDOW", self.fakeRoot.destroy)
 
         self.dpiX: float
         self.dpiY: float
