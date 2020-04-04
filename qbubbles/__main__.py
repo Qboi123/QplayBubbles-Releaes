@@ -2,7 +2,7 @@ import os
 import re
 import sys
 import time
-from tkinter import Tk, Toplevel
+from tkinter import Tk, Toplevel, Frame, Label, font
 from typing import Optional, Callable, Union
 
 from qbubbles.game import default_launchercfg
@@ -19,6 +19,13 @@ class FakeWindow(Tk):
 
         # Initialize fake-window
         self.attributes('-alpha', 0.0)
+        frame = Frame(self, bg="#373737")
+        frame.pack(fill="both", expand=True)
+        self.wm_geometry("180x40+0+0")
+        font1 = font.nametofont("TkFixedFont")
+        family = font1.cget("family")
+        print()
+        Label(frame, bg="#373737", fg="#a7a7a7", text="FakeWindow", font=(family, 20)).pack()
         self.bind("<Map>", self.onRootDeiconify)
         self.bind("<Unmap>", self.onRootIconify)
 
@@ -47,9 +54,9 @@ class FakeWindow(Tk):
 
         if self.child is None:
             return
-        self.lower()
-        self.iconify()
+        self.child.wm_attributes("-alpha", 0)
         self.child.deiconify()
+        self.child.wm_attributes("-alpha", 1)
 
     def ready(self):
         self.lower()
@@ -66,7 +73,7 @@ class FakeWindow(Tk):
         """
 
         self.child = toplevel
-        self.child.bind("<Destroy>", lambda event: (self.destroy() if event.widget == self.child else None))
+        self.child.bind("<Destroy>", lambda event: (self.destroy() if (event.widget == self.child) or (event.widget == self) else None))
 
 
 def get_hwnd_dpi(window_handle):
@@ -161,14 +168,17 @@ class Main(Toplevel):
         Registry.register_window("default", self)
         Registry.gameData["startTime"] = time.time()
 
-        # self.wm_attributes("-topmost", True)
-        self.overrideredirect(1)
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
+        self.wm_attributes("-alpha", 0)
         # width = 1920
         # height = 1080
         self.geometry(self.tkGeometryScale(f"{width}x{height}+0+0"))
-        # self.wm_protocol("WM_DELETE_WINDOW", ...)
+        self.wm_protocol("WM_DELETE_WINDOW", lambda: os.kill(os.getpid(), 0))
+        self.update()
+        self.deiconify()
+        self.overrideredirect(1)
+        self.wm_attributes("-alpha", 1)
 
         if "launcherConfig" not in Registry.gameData.keys():
             game_dir: Optional[str] = None

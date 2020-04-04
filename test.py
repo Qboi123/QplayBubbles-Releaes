@@ -1,0 +1,1 @@
+from tkinter import _tkerror

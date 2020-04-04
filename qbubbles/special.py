@@ -59,7 +59,7 @@ class CustomScrollbar(Canvas):
         last = float(last)
         height = self.winfo_height()
         x0 = 2
-        x1 = self.winfo_width() - 2
+        x1 = self.winfo_width() - 1
         y0 = max(int(height * first), 0)
         y1 = min(int(height * last), height)
         self._x0 = x0
@@ -132,7 +132,7 @@ class ScrolledWindow(Frame):
         self.canv = Canvas(self.parent, bg='#FFFFFF', width=canv_w, height=canv_h,
                            scrollregion=(0, 0, __width, __height), highlightthickness=0)
 
-        self.vbar = CustomScrollbar(self.parent, width=10, command=self.canv.yview, bg=scrollbarbg, fg=scrollbarfg, bdcolor=scrollbarbg, bd=1)
+        self.vbar = CustomScrollbar(self.parent, width=10, command=self.canv.yview, bg=scrollbarbg, fg=scrollbarfg, bd=1)
         self.canv.configure(yscrollcommand=self.vbar.set)
 
         self.vbar.pack(side="right", fill="y")

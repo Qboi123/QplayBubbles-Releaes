@@ -1,3 +1,5 @@
+import math
+from math import sqrt
 from typing import Iterable, Optional, Mapping, Sequence, Any, Union, Callable, ValuesView, TypeVar, Type, NoReturn, \
     List, ItemsView, KeysView, Tuple
 from tkinter import Canvas
@@ -262,8 +264,9 @@ class Sprite:
 
         self.coordsLen = 2
 
-        self.__active = False
         self._spriteData = SpriteData({})
+        self._objectData = SpriteData({"Position": (None, None)})
+        self.dead = False
 
     def delete(self) -> NoReturn:
         canvas: Canvas = Registry.get_scene("Game").canvas
@@ -284,23 +287,55 @@ class Sprite:
 
     def move(self, x, y):
         Registry.get_scene("Game").canvas.move(self.id, x, y)
+        self._objectData["Position"] = self.get_coords()
 
     def teleport(self, x, y):
         Registry.get_scene("Game").canvas.coords(self.id, x, y)
+        self._objectData["Position"] = self.get_coords()
 
     def get_coords(self):
         return Registry.get_scene("Game").canvas.coords(self.id)
 
     def attack(self, other: object):
-        if type(other) != Sprite:
+        if not issubclass(type(other), Sprite):
             raise TypeError("argument 'other' must be a Sprite-object")
         other: Sprite
-        other.damage(self.attackValue * self.attackMultiplier)
+        print(f"{self.__class__.__name__} is attacking {other.__class__.__name__}")
+        if other.defenceMultiplier != 0:
+            other.damage(self.attackMultiplier / other.defenceMultiplier)
+        else:
+            other.instant_death()
 
     def damage(self, value: float):
         scene = Registry.get_scene("Game")
         if not SpriteDamageEvent(scene, self).cancel:
             self.health -= value / self.defenceValue
+            if self.health <= 0:
+                self.dead = True
+
+    def distance(self, to):
+        canvas = Registry.get_scene("Game").canvas
+        try:
+            try:
+                x1, y1 = self.get_coords()
+            except ValueError:
+                self.instant_death()
+            try:
+                x2, y2 = to.get_coords()
+            except ValueError:
+                to.instant_death()
+            # print(f"POINT_1: {x1, y1}")
+            # print(f"POINT_2: {x2, y2}")
+            # noinspection PyUnboundLocalVariable
+            return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        except ValueError:
+            return math.inf
+        except UnboundLocalError:
+            return math.inf
+
+    def instant_death(self):
+        self.health = 0
+        self.dead = True
 
     def on_collision(self, evt: CollisionEvent):
         pass
@@ -323,6 +358,9 @@ class Sprite:
     def on_update(self, evt: UpdateEvent):
         pass
 
+    def get_objectdata(self):
+        return dict(self._objectData).copy()
+
 
 class Player(Sprite):
     def __init__(self):
@@ -336,26 +374,82 @@ class Player(Sprite):
         self.maxHealth = 10
         self._exp = 0
 
+        self.radius = 12.5
+
         self.baseSpeed = 0
 
         self.keysPressed = ""
-        self._spriteName = "player"
+        self._spriteName = "qbubbles:player"
+        self._spriteData = SpriteData({"objects": [
+            {
+                "Money": {
+                    "diamonds": 0,
+                    "coins": 0
+                },
+                "Abilities": {
+                    **dict(((key, value) for key, value in Registry.get_abilities()))
+                },
+                "Effects": [],
+                "Position": [10, 10],
+                "speed": 10,
+                "lives": 7,
+                "score": 0,
+                "high_score": 0,
+                "teleports": 0,
+                "level": 1
+            }]})
+        self._objectData = SpriteData(
+            {
+                "Money": {
+                    "diamonds": 0,
+                    "coins": 0
+                },
+                "Abilities": {
+                    **dict(((key, value) for key, value in Registry.get_abilities()))
+                },
+                "Effects": [],
+                "Position": [10, 10],
+                "speed": 10,
+                "lives": 7,
+                "score": 0,
+                "high_score": 0,
+                "teleports": 0,
+                "level": 1
+            }
+        )
+        self.events_activated = False
+
+        self.up = False
+        self.down = False
+        self.right = False
+        self.left = False
 
     def add_effect(self, effect):
         self.appliedEffects.append(effect)
         self.appliedEffectTypes.append(type(effect))
 
     def activate_events(self):
+        if self.events_activated:
+            return
+        self.events_activated = True
         KeyPressEvent.bind(self.on_key_press)
         KeyReleaseEvent.bind(self.on_key_release)
         UpdateEvent.bind(self.on_update)
+        CollisionEvent.bind(self.on_collision)
         SavedataReadedEvent.bind(self.on_savedata_readed)
 
     def deactivate_events(self):
+        if not self.events_activated:
+            return
+        self.events_activated = False
         KeyPressEvent.unbind(self.on_key_press)
         KeyReleaseEvent.unbind(self.on_key_release)
         UpdateEvent.unbind(self.on_update)
+        CollisionEvent.unbind(self.on_collision)
         SavedataReadedEvent.unbind(self.on_savedata_readed)
+
+    def on_collision(self, evt: CollisionEvent):
+        pass
 
     def add_experience(self, experience):
         ExperienceEvent(self, experience)
@@ -379,42 +473,50 @@ class Player(Sprite):
         Registry.get_scene("Game").canvas.move(self.id, x, y)
 
     def on_update(self, evt: UpdateEvent):
-        x, y = 0, 0
-        if "w" in self.keysPressed:
-            y -= self.baseSpeed
-        if "a" in self.keysPressed:
-            x -= self.baseSpeed
-        if "s" in self.keysPressed:
-            y += self.baseSpeed
-        if "d" in self.keysPressed:
-            x += self.baseSpeed
+        x = 0
+        y = 0
+        if self.up:
+            y -= self.baseSpeed * evt.dt
+        if self.left:
+            x -= self.baseSpeed * evt.dt
+        if self.down:
+            y += self.baseSpeed * evt.dt
+        if self.right:
+            x += self.baseSpeed * evt.dt
+        # print(self.up, self.left, self.down, self.right)
+        # print(x, y)
         self.move(x, y)
 
     def create(self, x, y):
         self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player",
                                                                                                   rotation=0))
+        self.baseSpeed = 80
 
     def on_key_press(self, evt: KeyPressEvent):
-        if (evt.char.lower() == "w") and ("w" not in self.keysPressed):
-            self.keysPressed += "w"
-        elif (evt.char.lower() == "a") and ("a" not in self.keysPressed):
-            self.keysPressed += "a"
-        elif (evt.char.lower() == "s") and ("s" not in self.keysPressed):
-            self.keysPressed += "s"
-        elif (evt.char.lower() == "d") and ("d" not in self.keysPressed):
-            self.keysPressed += "d"
+        # print(f"PRESS1: {evt.char}")
+        if (evt.char.lower() == "w") and not self.up:
+            self.up = True
+        elif (evt.char.lower() == "a") and not self.left:
+            self.left = True
+        elif (evt.char.lower() == "s") and not self.down:
+            self.down = True
+        elif (evt.char.lower() == "d") and not self.right:
+            self.right = True
+        # print(self.up, self.left, self.down, self.right)
 
     def on_key_release(self, evt: KeyReleaseEvent):
         a = list(self.keysPressed)
-        if (evt.char.lower() == "w") and ("w" in self.keysPressed):
-            a.remove("w")
-        elif (evt.char.lower() == "a") and ("a" in self.keysPressed):
-            a.remove("a")
-        elif (evt.char.lower() == "s") and ("s" in self.keysPressed):
-            a.remove("s")
-        elif (evt.char.lower() == "d") and ("d" in self.keysPressed):
-            a.remove("d")
-        self.keysPressed = "".join(a)
+        # print(f"RELEASE1: {evt.char}")
+        if (evt.char.lower() == "w") and self.up:
+            self.up = False
+        elif (evt.char.lower() == "a") and self.left:
+            self.left = False
+        elif (evt.char.lower() == "s") and self.down:
+            self.down = False
+        elif (evt.char.lower() == "d") and self.right:
+            self.right = False
+        # self.keysPressed = "".join(a)
+        # print(self.up, self.left, self.down, self.right)
 
     def get_ability(self, uname):
         if uname in self.get_spritedata()["Abilities"].keys():

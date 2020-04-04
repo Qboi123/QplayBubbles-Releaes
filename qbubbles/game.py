@@ -1,17 +1,20 @@
 import json
+import os
+import shutil
 from time import sleep
+
+from PIL import ImageGrab, ImageTk, ImageFilter
+from qbubbles.gui import CImage
 
 from qbubbles.ammo import *
 from qbubbles.bubble import create_bubble, place_bubble
-from qbubbles.bubbleSystem import start
 from qbubbles.bubbles import Bubble
 from qbubbles.components import *
 from qbubbles.effects import BaseEffect, AppliedEffect
 from qbubbles.events import KeyReleaseEvent, UpdateEvent, KeyPressEvent, XInputEvent, CollisionEvent, \
-    MapInitializeEvent, FirstLoadEvent
-from qbubbles.extras import Logging
+    MapInitializeEvent, FirstLoadEvent, CleanUpEvent, LoadCompleteEvent, GameExitEvent
+from qbubbles.extras import Logging, distance
 from qbubbles.globals import MAX_BUBBLES
-from qbubbles.gui import CPanel
 from qbubbles.maps import GameMap
 from qbubbles.modemanager import ModeManager
 from qbubbles.scenemanager import CanvasScene
@@ -403,7 +406,7 @@ class Game(CanvasScene):
 
         self._pauseMode = False
 
-        self.player: Optional[Player] = None
+        # self.gameMap.player: Optional[Player] = None
 
     # noinspection PyAttributeOutsideInit
     def show_scene(self, save_name):  # , save_data: Dict[str, Union[List, Dict[Any, Any], str, int, bool, float]]):
@@ -420,7 +423,7 @@ class Game(CanvasScene):
         self.commands["present"]: Union[bool, Present] = False
         self.commands["special-mode"]: Union[bool, SpecialMode] = False
 
-        self.player = Player()
+        # self.gameMap.player = Player()
 
         # self.tp = TPSprite()  # TODO: Make support for TPSprite(...) object in './sprites.py'. When done, uncomment.
 
@@ -449,14 +452,9 @@ class Game(CanvasScene):
 
         # Game Maps
         if Registry.saveData["Game"]["GameMap"]["id"] == "qbubbles:classic_map":
-            Registry.saveData["SpriteInfo"] = Reader(f"{gameDir}saves/{self.saveName}/spriteinfo.nzt").get_decoded()
-            Registry.saveData["Sprites"] = {}
-
-            # Get Sprite data
-            for sprite_id in Registry.saveData["SpriteInfo"]["Sprites"]:
-                path = sprite_id.replace(":", "/")
-                data = Reader(f"{gameDir}saves/{self.saveName}/sprites/{path}.nzt").get_decoded()
-                Registry.saveData["Sprites"][sprite_id] = data
+            pass
+        gameMap = Registry.get_gamemap(Registry.saveData["Game"]["GameMap"]["id"])
+        gameMap.load_savedata(f"{gameDir}saves/{self.saveName}")
         # # Create canvas.
         # self.canvas = Canvas(self.root, height=Registry.gameData["WindowHeight"],
         #                      width=Registry.gameData["WindowWidth"], highlightthickness=0)
@@ -479,8 +477,13 @@ class Game(CanvasScene):
         :return:
         """
         # Returning to title menu.
-        Maintance().auto_save(self.saveName, Registry.saveData)
-        self.returnmain = True
+        # Maintance().auto_save(self.saveName, Registry.saveData)
+        # self.returnmain = True
+        self.canvas.destroy()
+        self.canvas = Canvas(self.frame, highlightthickness=0)
+        self.canvas.pack(fill="both", expand=True)
+        Registry.saveData = []
+        GameExitEvent(self, self.saveName)
         self.scenemanager.change_scene("TitleScreen")
         self.__init__()
 
@@ -633,6 +636,7 @@ class Game(CanvasScene):
         TODO: Make auto-update events
         :return:
         """
+        print(f"PRESS: {event.char}")
 
         KeyPressEvent(self, event)
 
@@ -643,6 +647,7 @@ class Game(CanvasScene):
         TODO: Make auto-update events
         :return:
         """
+        print(f"RELEASE: {event.char}")
 
         KeyReleaseEvent(self, event)
 
@@ -748,13 +753,13 @@ class Game(CanvasScene):
                 self.modeManager.currentModeName != "window"):
             if not self._pauseMode:
                 if not Registry.saveData["Effects"]["paralyse"]:
-                    x, y = get_coords(self.canvas, self.player.id)
+                    x, y = get_coords(self.canvas, self.gameMap.player.id)
                     if Registry.saveData["Effects"]["speedboost"]:
                         a = 6
                     else:
                         a = 1
 
-                    self.canvas.move(self.player.id,
+                    self.canvas.move(self.gameMap.player.id,
                                      (Registry.saveData["shipspeed"] / (self.move_fps / 4) + a) * self.xControl[
                                          "LeftJoystick"][0] / 7,
                                      -((Registry.saveData["shipspeed"] / (self.move_fps / 4) + a) * self.xControl[
@@ -778,45 +783,25 @@ class Game(CanvasScene):
             print(self.returnmain)
             sleep(2)
 
-    def update(self):
+    def on_update(self, evt: UpdateEvent):
         # TODO: Make this completely using events like CollisionEvent(...), or UpdateEvent
-        self.canvas.tag_raise(self.player.id)
-        if len(self.bubbles) < MAX_BUBBLES:
-            if SpecialLevelEffect in self.player.appliedEffectTypes:
-                Thread(None,
-                       lambda: create_bubble(Registry.saveData, self.config, self.bub, self.canvas,
-                                             self.bubbles),
-                       name="CreateBubbleThread").start()
-            else:
-                Thread(None, lambda: SpecialMode().create_bubble(self.canvas, self.config,
-                                                                 self.bubbles, Registry.saveData,
-                                                                 self.bub),
-                       name="SpecialModeCreateBubbleThread").start()
-        # if self.commands["present"] is True:
-        #     # noinspection PyTypeChecker
-        #     self.commands["present"] = Present(self.canvas, Registry.saveData, self.temp, self.modes,
-        #                                        self.config, self.icons, self.fore, self.log, self.font)
-        # if self.commands["special-mode"] is True:
-        #     State.set_state(self.canvas, log, Registry.saveData, "SpecialLevel", self.back)
-        #     self.commands["special-mode"] = False
-        # Collision().check_collision(self.root, self.commands, self.bubbles, self.config,
-        #                             Registry.saveData,
-        #                             self.ammo,
-        #                             self.ship, self.canvas, log, self.back,
-        #                             self.texts, self.panels)
-        for object1 in range(len(self.gameObjects)):
-            for object2 in range(object1, len(self.gameObjects)):
-                gameObj1: Sprite = self.gameObjects[object1]
-                gameObj2: Sprite = self.gameObjects[object2]
-                CollisionEvent(self, gameObj1, gameObj2)
-        UpdateEvent(self, 0, self.canvas)
-        # Thread(None, lambda: refresh(Registry.saveData, self.config, self.bubbles, self.bub, self.canvas,
-        #                              self.back, self.texts, self.modes, self.panels),
-        #        name="RefreshThread").start()
+        self.canvas.tag_raise(self.gameMap.player.id)
+
+        for object1 in range(len(self.gameMap.get_gameobjects())):
+            for object2 in range(object1, len(self.gameMap.get_gameobjects())):
+                if object1 != object2:
+                    gameObj1: Sprite = self.gameMap.get_gameobjects()[object1]
+                    gameObj2: Sprite = self.gameMap.get_gameobjects()[object2]
+                    if gameObj1 != gameObj2:
+                        # print(f"DISTANCE: {gameObj1.distance(gameObj2)}")
+                        # print(f"DISTANCE CALC: {gameObj1.radius + gameObj2.radius}")
+                        if gameObj1.distance(gameObj2) < (gameObj1.radius + gameObj2.radius):
+                            CollisionEvent(self, gameObj1, gameObj2, self.canvas)
+                            CollisionEvent(self, gameObj2, gameObj1, self.canvas)
+        # UpdateEvent(self, 0, self.canvas)
 
     # noinspection PyTypeChecker,PyShadowingNames
     def main(self):
-        from threading import Thread
 
         loadDescFont = Font("Helvetica", 13)
         loadTitleFont = Font("Helvetica", 46, "bold")
@@ -833,11 +818,11 @@ class Game(CanvasScene):
 
         print("Initialize game environment")
 
-        self.player.create(7.5, 7.5)
+        # self.gameMap.player.create(7.5, 7.5)
 
-        shipPosition = Registry.saveData["Game"]["Player"]["ShipStats"]["ShipPosition"]
+        shipPosition = Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Position"]
 
-        self.player.teleport(shipPosition[0], shipPosition[1])
+        # self.gameMap.player.teleport(shipPosition[0], shipPosition[1])
 
         self.canvas.itemconfig(t1, text="Creating Stats objects")
         self.canvas.itemconfig(t2, text="")
@@ -851,21 +836,16 @@ class Game(CanvasScene):
         self.canvas.itemconfig(t2, text="Pauze")
         self.canvas.itemconfig(t2, text="Pauze")
 
-        # Threaded Automatic Save (TAS)
-        # self.t_auto_save = StoppableThread(None, lambda: self.on_autosave(), name="AutoSaveThread").start()
-
         # Binding key-events for control
         self.canvas.itemconfig(t1, text="Binding Objects")
         self.canvas.itemconfig(t2, text="Main Binding")
 
         self.canvas.bind_all("<KeyPress>", lambda event: self.on_tkkeypress(event))
         self.canvas.bind_all("<KeyRelease>", lambda event: self.on_tkkeyrelease(event))
+        self.canvas.focus_set()
 
         self.canvas.itemconfig(t2, text="Player Motion")
-        self.player.activate_events()
-
-        # # Binding other events.  # TODO: Remove unnecessary binding
-        # self.canvas.bind_all('Configure', lambda event: self.resize)
+        # self.gameMap.player.activate_events()
 
         log.info("Game.main", "Key-bindings binded to 'move_ship'")
 
@@ -874,182 +854,98 @@ class Game(CanvasScene):
         self.canvas.itemconfig(t1, text="Reapply effects to player")
         self.canvas.itemconfig(t2, text="")
 
-        for effectdata in Registry.saveData["Game"]["Player"]["Effects"]:
+        for effectdata in Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Effects"]:
             effect: BaseEffect = Registry.get_effect(effectdata["id"])
             appliedEffect: AppliedEffect = AppliedEffect(effect, self, effectdata["time_remaining"], effectdata["strength"])
-            self.player.appliedEffects.append(appliedEffect)
-            self.player.appliedEffectTypes.append(effect)
-        if Registry.saveData["Game"]["Player"]["score"] < 0:
+            self.gameMap.player.appliedEffects.append(appliedEffect)
+            self.gameMap.player.appliedEffectTypes.append(effect)
+        if Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["score"] < 0:
             log.error("Game.main", "The 'Score' variable under zero.")
-            Registry.saveData["Game"]["Player"]["score"] = 0
-        if Registry.saveData["Game"]["Player"]["score"] > Registry.saveData["Game"]["Player"]["high_score"]:
-            Registry.saveData["Game"]["Player"]["high_score"] = Registry.saveData["Game"]["Player"]["score"]
-        # if stats["Effects"]["confusion"] and not stats["Effects"]["secure"]:
-        #     shuffling(self.bubbles)
+            Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["score"] = 0
+        if Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["score"] > Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["high_score"]:
+            Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["high_score"] = Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["score"]
 
-        Registry.saveData["Game"]["Player"]["keyactive"] = True
+        Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["keyactive"] = True
 
-        # Registry.saveData = self.maintance.auto_restore(self.saveName)
+        print(Registry.saveData["Game"]["GameMap"]["initialized"])
 
-        if not Registry.saveData["Game"]["GameMap"]["initialized"]:
+        if Registry.saveData["Game"]["GameMap"]["initialized"] is False:
             FirstLoadEvent(self, t1, t2, self.saveName)
-
-        # Maintance.auto_save(self.saveName, Registry.saveData)
-
-        # # TODO: Remove this unused and crashing code
-        # global Mainloop
-        # Mainloop = False
-        #
-        # Registry.saveData = stats
-        #
-        # Post Initalize mods
-        #
-        # self.canvas.itemconfig(t1, text="Post Initialize Mods")
-        # self.canvas.itemconfig(t2, text="")
-        # self.mod_loader.post_initialize(self)
 
         height = Registry.gameData["WindowHeight"]
         width = Registry.gameData["WindowWidth"]
 
-        # # TODO: Remove this unused code
-        # a = randint(0, width)
-        # b = randint(0, width)
-        # self.canvas = randint(0, width)
-        #
-        # d = stats["ship-position"][0]
-        #
-        # e = 40
-        #
-        # if a + e < d or d > a - e:
-        #     a = d - e
-        # if b + e < d or d > b - e:
-        #     b = d - e - 20
-        # if self.canvas + e < d or d > self.canvas - e:
-        #     self.canvas = d - e - 40
-        #
-        # bariers = [BaseBarier(self), BaseBarier(self), BaseBarier(self)]
-        # bariers[0].create(a, height / 2 + 72 / 2)
-        # bariers[1].create(b, height / 2 + 72 / 2)
-        # bariers[2].create(self.canvas, height / 2 + 72 / 2)
-
         self.canvas = self.canvas
-
-        # print("[XboxController]:", "Starting Daemons")
-        #
-        # Thread(None, lambda: self._xbox_input(), daemon=True).start()
-        # Thread(None, lambda: self.xboxDeamon(), daemon=True).start()
-        # Thread(None, lambda: self.movent_change(), "MotionThread").start()
 
         self.canvas.delete(t0)
         self.canvas.delete(t1)
         self.canvas.delete(t2)
 
-        self.background = CPanel(self.canvas, 0, 71, "extend", "expand", fill="#00a7a7")
+        UpdateEvent.bind(self.on_update)
+        LoadCompleteEvent(self, self.saveName)
 
-        try:
-            # MAIN GAME LOOP
-            while True:
-                # Registry.saveData = self.cfg.auto_restore(self.save_name)
-                # while self.bubbles["active"] <= len(self.bubbles["bub-index"]) - 1:
-                #     self.canvas.itemconfig(t2, text="Created " + str(self.bubbles["active"]) + " of " + str(
-                #         len(self.bubbles["bub-index"]) - 1) + " active...")
-                #     self.canvas.update()
-                #     self.root.update()
-                #     sleep(0.1)
+        t1 = time()
 
-                while Registry.saveData["Game"]["Player"]["lives"] > 0:
-                    if self._pauseMode:
-                        pass
-                    UpdateEvent(self, 0, self.canvas)
-                    self.root.update()
-                    self.root.update_idletasks()
-                self.root.update()
-                # for barier in bariers:
-                #     barier.destroy()
-                g1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
-                                             text='GAME OVER', fill='Red', font=('Helvetica', 60, "bold"))
-                g2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 60,
-                                             text='Score: ' + str(Registry.saveData["Game"]["Player"]["score"]), fill='white',
-                                             font=('Helvetica', 30))
-                g3 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 90,
-                                             text='Level: ' + str(Registry.saveData["level"]),
-                                             fill='white',
-                                             font=('Helvetica', 30))
-                log.info("Game.main", "Game Over!")
-                self.root.update()
-                sleep(4)
-                self.canvas.delete(g1)
-                self.canvas.delete(g2)
-                self.canvas.delete(g3)
-                del g1, g2, g3
-                Maintance().reset(self.saveName)
-                self.return_main()
-        except TclError as e:
-            if self.returnmain:
-                pass
-            else:
-                if e.args[0] == 'can\'t invoke "update" command: application has been destroyed':
-                    log.info('<root>', "Exit...")
-                    exit(0)
-                elif e.args[0] == 'can\'t invoke "update_idletasks" command: application has been destroyed':
-                    log.info('<root>', "Exit...")
-                    exit(0)
-                elif e.args[0] == 'invalid command name ".!canvas"':
-                    log.info('<root>', "Exit...")
-                    exit(0)
-                elif e.args[0] == 'invalid command name ".!canvas"':
-                    log.info('<root>', "Exit...")
-                    exit(0)
-                else:
-                    print('TclError: ' + e.args[0] + "Line: " + str(e.__traceback__.tb_next.tb_lineno))
-                    exit(1)
-        except AttributeError as e:
-            if self.returnmain:
-                pass
-            else:
-                if e.args[0] == "self.tk_widget is None. Not hooked into a Tk instance.":
-                    exit(0)
-                else:
-                    raise AttributeError(e.args[0])
+        # MAIN GAME LOOP
+        while self.gameMap.player.health > 0:
+            delta_time = time() - t1
+            t1 = time()
+            UpdateEvent(self, delta_time, self.canvas)
+            CleanUpEvent(self)
+            self.root.update()
+            self.root.update_idletasks()
 
+        image = ImageGrab.grab(
+            (0, 0, Registry.get_window("fake").winfo_screenwidth(), Registry.get_window("fake").winfo_screenheight()),
+            True
+        )
+        tkimage = ImageTk.PhotoImage(image)
+        cimage = self.canvas.create_image(0, 0, image=tkimage, anchor="nw")
+        ims = []
+        tkims = []
+        for i in range(1, 21):
+            im = image.copy()
+            ims.append(im.filter(ImageFilter.GaussianBlur(radius=i)))
+            tkims.append(ImageTk.PhotoImage(ims[-1]))
+        for tkimage in tkims:
+            self.canvas.itemconfig(cimage, image=tkimage)
+            # cimage.config(image=tkimage)
+            sleep(0.1)
+            self.root.update()
+            self.root.update_idletasks()
 
-class S:
-    def __init__(self):
-        self.inputs = []
-        self.outputs = [[]]
+        # raise NotImplementedError("Game Over is not implemented")
+        g1 = self.canvas.create_text(
+            Registry.gameData["MiddleX"], Registry.gameData["MiddleY"], text='GAME OVER', fill='Red',
+            font=('Helvetica', 60, "bold"))
+        g2 = self.canvas.create_text(
+            Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 60,
+            text='Score: ' + str(self.gameMap.player.score), fill='white',
+            font=('Helvetica', 30))
+        g3 = self.canvas.create_text(
+            Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 90,
+            text='Level: ' + str(Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["level"]), fill='white', font=('Helvetica', 30))
+        log.info("Game.main", "Game Over!")
+        self.root.update()
+        for i in range(40):
+            self.root.update()
+            self.root.update_idletasks()
+            sleep(0.1)
+        for gameObject in self.gameMap.get_gameobjects().copy():
+            gameObject.delete()
+            self.gameMap.get_gameobjects().remove(gameObject)
 
-    def save(self):
-        with open("input.nzt", "w") as file:
-            json_str = self.inputs
-            json_inputs = json.encoder.JSONEncoder().encode(json_str)
+        self.canvas.delete(g1)
+        self.canvas.delete(g2)
+        self.canvas.delete(g3)
+        del g1, g2, g3
+        # Maintance().reset(self.saveName)
+        gameDir = Registry.gameData["launcherConfig"]["gameDir"]
+        shutil.rmtree(f"{gameDir}saves/{self.saveName}", True)
+        os.makedirs(f"{gameDir}saves/{self.saveName}", exist_ok=True)
+        self.gameMap.create_savedata(f"{gameDir}saves/{self.saveName}", Registry.saveData["Game"]["GameMap"]["seed"])
 
-        with open("output.nzt", "w") as file:
-            json_str = self.outputs
-            json_outputs = json.encoder.JSONEncoder().encode(json_str)
-        #
-        # neural_network = nn.NeuralNetwork()
-        # print("Random synaptic weights: \n%s" % neural_network.synaptic_weights)
-        #
-        # self.training_inputs = np.array(json_inputs)
-        #
-        # self.training_outputs = np.array(json_outputs).T
-        #
-        # neural_network.train(self.training_inputs, self.training_outputs, 100000)
-        #
-        # print("Synaptic weights after training: \n%s" % neural_network.synaptic_weights)
+        self.gameMap = None
+        self.maintance = None
 
-    def update(self, input, output):
-        print()
-        print("> [player_x, player_y, player_r, bubble_x, bubble_y, bubble_r, bubble_bad")
-        print("  %s = %s" % (input, output))
-        self.inputs.append(input)
-        self.outputs[0].append(output)
-
-
-s = S()
-
-if __name__ == "__main__":
-    if "--debug" in sys.argv:
-        Game(default_launchercfg, time(), False)
-    else:
-        print("Error: Can't open this file. Please open this file with the launcher.")
+        self.return_main()

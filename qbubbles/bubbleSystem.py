@@ -9,7 +9,7 @@ from qbubbles.config import Reader
 
 
 class BubbleSystem(object):
-    _bubblePriorities: List[Bubble] = []
+    _bubblePriorities: List[Tuple] = []
     _maxPriority: int = 0
 
     @classmethod
@@ -28,13 +28,14 @@ class BubbleSystem(object):
     def random(cls, rand: Random):
         integer = rand.randint(0, cls._maxPriority)
         for priority in cls._bubblePriorities:
-            if priority[1] >= integer >= priority[2]:
+            # print(priority, integer)
+            if priority[1] <= integer <= priority[2]:
                 return priority[0]
 
 
 def start(bubble: Dict[str, Any], save_name: str, stats: Dict[str, Any], config: Dict[str, Any], bub,
           modes: Dict[str, bool], canvas: Canvas):
-    if len(Registry.saveData["Sprites"]["qbubbles:bubble"]["Bubbles"]) == 0:
+    if len(Registry.saveData["Sprites"]["qbubbles:bubble"]["objects"]) == 0:
         r_start(bubble, stats, config, bub, canvas)
         return
     print(bubs)

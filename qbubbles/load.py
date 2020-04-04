@@ -1,7 +1,11 @@
+import importlib
+import json
 import os
+import string
 import sys
 import zipimport
-from tkinter import PhotoImage
+from tkinter import PhotoImage, Tk
+from traceback import format_tb
 from typing import Type
 
 import yaml
@@ -12,7 +16,7 @@ from qbubbles.bubbleSystem import BubbleSystem
 from qbubbles.components import Store
 from qbubbles.events import PreInitializeEvent, InitializeEvent, PostInitializeEvent
 from qbubbles.game import Game
-from qbubbles.gameIO import printwrn
+from qbubbles.gameIO import printwrn, printerr
 from qbubbles.init.mapsInit import init_gamemaps
 from qbubbles.init.spritesInit import init_sprites
 from qbubbles.menus.titleMenu import TitleMenu
@@ -20,7 +24,7 @@ from qbubbles.modloader import AddonSkeleton
 from qbubbles.registry import Registry
 from qbubbles.resources import ModelLoader
 from qbubbles.scenemanager import CanvasScene
-from qbubbles.scenes import SavesMenu
+from qbubbles.scenes import SavesMenu, ErrorScene, CrashScene, custom_excepthook, report_callback_exception
 from qbubbles.utils import Font
 
 
@@ -50,6 +54,7 @@ class Load(CanvasScene):
 
         # Config resolution / positions
         temp_0001 = Registry.get_window("default")
+        root = temp_0001
         Registry.gameData["WindowWidth"] = temp_0001.tkScale(temp_0001.winfo_screenwidth())
         Registry.gameData["WindowHeight"] = temp_0001.tkScale(temp_0001.winfo_screenheight())
         if "--travis" in sys.argv:
@@ -84,7 +89,14 @@ class Load(CanvasScene):
         title_font = Font("Helvetica", 50, "bold")
         descr_font = Font("Helvetica", 15)
 
-        self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"], fill="#3f3f3f",
+        Registry.register_scene("qbubbles:ErrorScene", ErrorScene())
+        Registry.register_scene("qbubbles:CrashScene", CrashScene())
+
+        sys.excepthook = custom_excepthook
+        root.report_callback_exception = report_callback_exception
+        Registry.get_window("fake").report_callback_exception = report_callback_exception
+
+        t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"], fill="#3f3f3f",
                                      outline="#3f3f3f")
         t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 2,
                                      text="Loading Mods", anchor="s",
@@ -104,20 +116,68 @@ class Load(CanvasScene):
         mods_path = os.path.abspath(f"{mods_dir}").replace("\\", "/")
         # sys.path.insert(0, mods_path)
         modules = {}
+        mainPackageNames = []
 
-        for file in os.listdir(mods_dir):
-            # print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
-            if os.path.isfile(f"{mods_dir}/{file}"):
-                if file.endswith(".pyz"):
-                    a = zipimport.zipimporter(f"{mods_dir}/{file}")  # f"{file}.main", globals(), locals(), [])
-                    # print(dir(a))
-                    module = a.load_module("python")
-                    if a.find_module("qbubbles") is not None:
-                        raise RuntimeError("Illegal module name: qbubbles")
-                    modules[module.MODID] = a
-                    # print(a)
-                else:
-                    print(f"Found non-addon module: {file}")
+        try:
+            for file in os.listdir(mods_dir):
+                # print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
+                # print(file)
+                if os.path.isfile(f"{mods_dir}/{file}"):
+                    if file.endswith(".pyz"):
+                        a = zipimport.zipimporter(f"{mods_dir}/{file}")  # f"{file}.main", globals(), locals(), [])
+                        # print(dir(a))
+                        mainPackage = json.loads(a.get_data("qbubble-addoninfo.json"))["mainPackage"]
+                        if mainPackage in mainPackageNames:
+                            raise RuntimeError(f"Illegal package name '{mainPackage}'. "
+                                               f"Package name is already in use")
+
+                        if '.' in mainPackage:
+                            printerr(f"Illegal package name: '{mainPackage}'. "
+                                     f"Package name contains a dot")
+                            continue
+                        error = False
+                        for char in mainPackage[1:]:
+                            if char not in string.ascii_letters+string.digits:
+                                printerr(f"Illegal package name: '{mainPackage}'. "
+                                         f"Package name contains invalid character '{char}'")
+                                error = True
+                        if error:
+                            continue
+
+                        mainPackageNames.append(mainPackage)
+
+                        module = a.load_module(mainPackage)
+                        # _locals = {firstname: module}
+                        # _globals = {}
+                        # module = eval(f"{mainPackage}", _globals, _locals)
+                        # module = module.qplaysoftware.exampleaddon
+                        if a.find_module("qbubbles") is not None:
+                            raise RuntimeError("Illegal module name: 'qbubbles'")
+                        modules[module.MODID] = a
+                        # print(a)
+                    else:
+                        print(f"Found non-addon module: {file}")
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Addon loading failed",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
+
+            # self.canvas.itemconfig(t0, fill="#ff0000")
+            # self.canvas.itemconfig(t1, text="Addon loading failed!", fill="#ffa7a7")
+            # self.canvas.itemconfig(t2, text=,
+            #                        fill="#ffa7a7")
+            # self.canvas.create_text(Registry.gameData["WindowWidth"]-16, Registry.gameData["WindowHeight"]-16,
+            #                         text="Press any key or mouse button to continue", anchor="se",
+            #                         font=("Helvetica", Registry.get_window("default").tkScale(16), 'bold'), fill="#ffa7a7")
+            # Registry.get_window("default").focus_set()
+            # self.canvas.bind_all("<Key>", lambda evt: os.kill(os.getpid(), 1))
+            # self.canvas.bind_all("<Button>", lambda evt: os.kill(os.getpid(), 1))
+            # Registry.get_window("default").protocol("WM_DELETE_WINDOW", lambda: None)
+            # self.canvas.mainloop()
         # sys.path.remove(mods_path)
 
         addon_ids = Registry.get_all_addons()
@@ -154,82 +214,137 @@ class Load(CanvasScene):
         self.canvas.itemconfig(t2, text="Initialize gamemaps")
         self.canvas.update()
 
-        gameMaps = init_gamemaps()
-        i = 1
-        for gamemap in gameMaps:
-            self.canvas.itemconfig(t2, text=f"Register gamemap {i}/{len(gameMaps)}")
-            self.canvas.update()
+        try:
+            gameMaps = init_gamemaps()
+            i = 1
+            for gamemap in gameMaps:
+                self.canvas.itemconfig(t2, text=f"Register gamemap {i}/{len(gameMaps)}")
+                self.canvas.update()
 
-            Registry.register_gamemap(gamemap.get_uname(), gamemap)
-            i += 1
+                Registry.register_gamemap(gamemap.get_uname(), gamemap)
+                i += 1
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Initialize Game Maps failed",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
         # =----- SPRITES -----= #
         self.canvas.itemconfig(t1, text="Loading Sprites")
         self.canvas.itemconfig(t2, text="Initialize sprites")
         self.canvas.update()
 
-        sprites = init_sprites()
-        i = 1
-        for sprite in sprites:
-            self.canvas.itemconfig(t2, text=f"Register gamemap {i}/{len(gameMaps)}")
-            self.canvas.update()
+        try:
+            sprites = init_sprites()
+            i = 1
+            for sprite in sprites:
+                self.canvas.itemconfig(t2, text=f"Register sprite {i}/{len(gameMaps)}")
+                self.canvas.update()
 
-            Registry.register_sprite(sprite.get_sname(), sprite)
-            i += 1
+                Registry.register_sprite(sprite.get_sname(), sprite)
+                i += 1
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Initialize Sprites failed"
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
         self.canvas.itemconfig(t1, text="Loading Bubbles")
         self.canvas.itemconfig(t2, text="Initialize bubbles")
         self.canvas.update()
 
-        bubbleObjects = bubblesInit.init_bubbles()
-        for bubbleObject in bubbleObjects:
-            self.canvas.itemconfig(t2, text=f"Register bubble {bubbleObject.get_uname()}")
-            Registry.register_bubble(bubbleObject.get_uname(), bubbleObject)
-        BubbleSystem.init()
+        try:
+            bubbleObjects = bubblesInit.init_bubbles()
+            for bubbleObject in bubbleObjects:
+                self.canvas.itemconfig(t2, text=f"Register bubble {bubbleObject.get_uname()}")
+                Registry.register_bubble(bubbleObject.get_uname(), bubbleObject)
+            BubbleSystem.init()
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Initialize Bubbles failed!",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
+
 
         self.canvas.itemconfig(t2, text="Loading bubble models")
         self.canvas.update()
 
-        modelLoader = ModelLoader()
-        modelsBubble = modelLoader.load_models("bubble")
+        try:
+            modelLoader = ModelLoader()
+            modelsBubble = modelLoader.load_models("bubble")
 
-        for bubbleObject in bubbleObjects:
-            self.canvas.itemconfig(t2, text=f"Generating bubble image: {bubbleObject.get_uname()}")
-            self.canvas.update()
-            if bubbleObject.get_uname() not in modelsBubble.keys():
-                printwrn(f"Bubble object with uname '{bubbleObject.get_uname()}' have no bubble model")
-                continue
+            for bubbleObject in bubbleObjects:
+                if bubbleObject.get_uname().count(":") > 1:
+                    printerr(f"Illegal uname: {bubbleObject.get_uname()} has multiple ':' characters")
+                    self.scenemanager.change_scene(
+                        "qbubbles:ErrorScene",
+                        "Loading Bubble Models failed",
+                        f"Illegal uname: {bubbleObject.get_uname()} has multiple ':' characters")
+                uname = bubbleObject.get_uname().split(":")[-1]
+                modid = bubbleObject.get_uname().split(":")[0]
+                self.canvas.itemconfig(t2, text=f"Generating bubble image: qbubbles:{uname}")
+                self.canvas.update()
+                if bubbleObject.get_uname().split(":")[-1] not in modelsBubble.keys():
+                    printwrn(f"Bubble object with uname '{bubbleObject.get_uname().split(':')[-1]}' have no bubble model")
+                    continue
 
-            images = {}
-            uname = bubbleObject.get_uname()
-            modelLoader.generate_bubble_images(bubbleObject.minRadius, bubbleObject.maxRadius,
-                                               modelsBubble[bubbleObject.get_uname()])
-            # for radius in range(bubbleObject.minRadius, bubbleObject.maxRadius):
-            #     colors = modelsBubble[uname]["Colors"]
-            #     images[radius] = utils.createbubble_image((radius, radius), None, *colors)
-            Registry.register_bubresource(bubbleObject.get_uname(), "images", images)
-            Registry.register_bubble(bubbleObject.get_uname(), bubbleObject)
+                images = {}
+                images = modelLoader.generate_bubble_images(bubbleObject.minRadius, bubbleObject.maxRadius,
+                                                            modelsBubble[uname])
+                # for radius in range(bubbleObject.minRadius, bubbleObject.maxRadius):
+                #     colors = modelsBubble[uname]["Colors"]
+                #     images[radius] = utils.createbubble_image((radius, radius), None, *colors)
+                for radius, texture in images.items():
+                    Registry.register_texture("qbubbles:bubble", bubbleObject.get_uname(), texture, radius=radius)
+                Registry.register_bubble(bubbleObject.get_uname(), bubbleObject)
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Loading Bubble Models failed!",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
         self.canvas.itemconfig(t1, text="Loading Sprites")
         self.canvas.itemconfig(t2, text="Load sprite models")
         self.canvas.update()
 
-        modelsSprite = modelLoader.load_models("sprite")
-        self.playerModel = modelsSprite["player"]
+        try:
+            modelsSprite = modelLoader.load_models("sprite")
+            self.playerModel = modelsSprite["player"]
 
-        for spriteName, spriteData in modelsSprite.items():
-            if spriteData["Rotation"]:
-                degrees = spriteData['RotationDegrees']
-                self.canvas.itemconfig(t2, text=f"Load images for {spriteName} 0 / {int(360 / degrees)}")
-                self.canvas.update()
-                image = Image.open(f"assets/textures/sprites/{spriteData['Image']['Name']}.png")
-                for degree in range(0, 360, spriteData["RotationDegrees"]):
-                    self.canvas.itemconfig(
-                        t2, text=f"Load images for {spriteName} {int(degree / degrees)} / {int(360 / degrees)}")
+            for spriteName, spriteData in modelsSprite.items():
+                if spriteData["Rotation"]:
+                    degrees = spriteData['RotationDegrees']
+                    self.canvas.itemconfig(t2, text=f"Load images for {spriteName} 0 / {int(360 / degrees)}")
                     self.canvas.update()
-                    image_c = image.copy()
-                    image_c.rotate(degree)
-                    Registry.register_texture("sprite", spriteName, ImageTk.PhotoImage(image_c), rotation=degree)
+                    image = Image.open(f"assets/textures/sprites/{spriteData['Image']['Name']}.png")
+                    for degree in range(0, 360, spriteData["RotationDegrees"]):
+                        self.canvas.itemconfig(
+                            t2, text=f"Load images for {spriteName} {int(degree / degrees)} / {int(360 / degrees)}")
+                        self.canvas.update()
+                        image_c = image.copy()
+                        image_c.rotate(degree)
+                        Registry.register_texture("sprite", spriteName, ImageTk.PhotoImage(image_c), rotation=degree)
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Loading Sprite Models failed!",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
+
 
         # # TODO: Remove this and use Registry.get_bubresource(...) as above (with .yml files for bubble-models)
         # self.canvas.itemconfig(t2, text="Creating Dicts")
@@ -312,91 +427,127 @@ class Load(CanvasScene):
         self.canvas.itemconfig(t2, text="Loading Icons")
         self.canvas.update()
 
-        # Getting the store-icons.
-        Registry.register_storeitem("Key", PhotoImage(file="assets/Images/StoreItems/Key.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Key")
-        self.canvas.update()
-        Registry.register_storeitem("Teleport", PhotoImage(file="assets/Images/StoreItems/Teleport.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Teleport")
-        self.canvas.update()
-        Registry.register_storeitem("Shield", PhotoImage(file="assets/Images/StoreItems/Shield.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Shield")
-        self.canvas.update()
-        Registry.register_storeitem("Diamond", PhotoImage(file="assets/Images/StoreItems/DiamondBuy.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Diamond")
-        self.canvas.update()
-        Registry.register_storeitem("BuyACake", PhotoImage(file="assets/Images/StoreItems/BuyACake.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Buy A Cake")
-        self.canvas.update()
-        Registry.register_storeitem("Pop3Bubbles", PhotoImage(file="assets/Images/StoreItems/Pop_3_bubs.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Pop 3 Bubbles")
-        self.canvas.update()
-        Registry.register_storeitem("PlusLife", PhotoImage(file="assets/Images/StoreItems/PlusLife.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: PlusLife")
-        self.canvas.update()
-        Registry.register_storeitem("Speedboost", PhotoImage(file="assets/Images/StoreItems/SpeedBoost.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Speedboost")
-        self.canvas.update()
-        Registry.register_storeitem("SpecialMode", PhotoImage(file="assets/Images/StoreItems/SpecialMode.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Special Mode")
-        self.canvas.update()
-        Registry.register_storeitem("DoubleScore", PhotoImage(file="assets/Images/StoreItems/DoubleScore.png"))
-        self.canvas.itemconfig(t2, text="Loading Icons - Double Score")
-        self.canvas.update()
+        try:
+            # Getting the store-icons.
+            Registry.register_storeitem("Key", PhotoImage(file="assets/Images/StoreItems/Key.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Key")
+            self.canvas.update()
+            Registry.register_storeitem("Teleport", PhotoImage(file="assets/Images/StoreItems/Teleport.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Teleport")
+            self.canvas.update()
+            Registry.register_storeitem("Shield", PhotoImage(file="assets/Images/StoreItems/Shield.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Shield")
+            self.canvas.update()
+            Registry.register_storeitem("Diamond", PhotoImage(file="assets/Images/StoreItems/DiamondBuy.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Diamond")
+            self.canvas.update()
+            Registry.register_storeitem("BuyACake", PhotoImage(file="assets/Images/StoreItems/BuyACake.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Buy A Cake")
+            self.canvas.update()
+            Registry.register_storeitem("Pop3Bubbles", PhotoImage(file="assets/Images/StoreItems/Pop_3_bubs.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Pop 3 Bubbles")
+            self.canvas.update()
+            Registry.register_storeitem("PlusLife", PhotoImage(file="assets/Images/StoreItems/PlusLife.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: PlusLife")
+            self.canvas.update()
+            Registry.register_storeitem("Speedboost", PhotoImage(file="assets/Images/StoreItems/SpeedBoost.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Speedboost")
+            self.canvas.update()
+            Registry.register_storeitem("SpecialMode", PhotoImage(file="assets/Images/StoreItems/SpecialMode.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Store Item: Special Mode")
+            self.canvas.update()
+            Registry.register_storeitem("DoubleScore", PhotoImage(file="assets/Images/StoreItems/DoubleScore.png"))
+            self.canvas.itemconfig(t2, text="Loading Icons - Double Score")
+            self.canvas.update()
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Loading Icons Stage 1 failed!",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
-        # Loading backgrounds
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Background - Line")
-        self.canvas.update()
-        Registry.register_background("Line", PhotoImage(file="assets/LineIcon.png"))
+        try:
+            # Loading backgrounds
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Background - Line")
+            self.canvas.update()
+            Registry.register_background("Line", PhotoImage(file="assets/LineIcon.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Background - Normal")
-        self.canvas.update()
-        Registry.register_background("Normal", PhotoImage(file="assets/Images/Backgrounds/GameBG2.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Background - Normal")
+            self.canvas.update()
+            Registry.register_background("Normal", PhotoImage(file="assets/Images/Backgrounds/GameBG2.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Background - Special Mode")
-        self.canvas.update()
-        Registry.register_background("Special", PhotoImage(file="assets/Images/Backgrounds/GameBG Special2.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Background - Special Mode")
+            self.canvas.update()
+            Registry.register_background("Special", PhotoImage(file="assets/Images/Backgrounds/GameBG Special2.png"))
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Loading Background failed",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
-        # Loading foregrounds
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Foreground - For Bubble Gift")
-        self.canvas.update()
-        Registry.register_foreground("BubbleGift", PhotoImage(file="assets/EventBackground.png"))
+        try:
+            # Loading foregrounds
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Foreground - For Bubble Gift")
+            self.canvas.update()
+            Registry.register_foreground("BubbleGift", PhotoImage(file="assets/EventBackground.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Foreground - Store FG")
-        self.canvas.update()
-        Registry.register_foreground("StoreFG", PhotoImage(file="assets/FG2.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Foreground - Store FG")
+            self.canvas.update()
+            Registry.register_foreground("StoreFG", PhotoImage(file="assets/FG2.png"))
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Loading Foregounds failed",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
-        # Loading Icons
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Icons - Present Circle")
-        self.canvas.update()
-        Registry.register_icon("PresentCircle", PhotoImage(file="assets/Circle.png"))
+        try:
+            # Loading Icons
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Icons - Present Circle")
+            self.canvas.update()
+            Registry.register_icon("PresentCircle", PhotoImage(file="assets/Circle.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Icons - Present Chest")
-        self.canvas.update()
-        Registry.register_icon("PresentChest", PhotoImage(file="assets/Present.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Icons - Present Chest")
+            self.canvas.update()
+            Registry.register_icon("PresentChest", PhotoImage(file="assets/Present.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Icons - Store: Diamond & Coin")
-        self.canvas.update()
-        Registry.register_icon("StoreDiamond", PhotoImage(file="assets/Diamond.png"))
-        Registry.register_icon("StoreCoin", PhotoImage(file="assets/Coin.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Icons - Store: Diamond & Coin")
+            self.canvas.update()
+            Registry.register_icon("StoreDiamond", PhotoImage(file="assets/Diamond.png"))
+            Registry.register_icon("StoreCoin", PhotoImage(file="assets/Coin.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Icons - Pause")
-        self.canvas.update()
-        Registry.register_icon("Pause", PhotoImage(file="assets/Pause.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Icons - Pause")
+            self.canvas.update()
+            Registry.register_icon("Pause", PhotoImage(file="assets/Pause.png"))
 
-        self.canvas.itemconfig(t1, text="Loading Other Images")
-        self.canvas.itemconfig(t2, text="Loading Icons - SlowMotion")
-        self.canvas.update()
-        Registry.register_icon("EffectSlowmotion", PhotoImage(file="assets/SlowMotionIcon.png"))
+            self.canvas.itemconfig(t1, text="Loading Other Images")
+            self.canvas.itemconfig(t2, text="Loading Icons - SlowMotion")
+            self.canvas.update()
+            Registry.register_icon("EffectSlowmotion", PhotoImage(file="assets/SlowMotionIcon.png"))
+        except Exception as e:
+            import traceback
+            printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
+            self.scenemanager.change_scene(
+                "qbubbles:ErrorScene",
+                "Loading Icons Stage 2 failed",
+                "".join(list(traceback.format_exception_only(e.__class__, e)))
+            )
 
         # Loading fonts
         Registry.gameData["fonts"] = {}
@@ -447,8 +598,8 @@ class Load(CanvasScene):
         #
         # # Moving ship to position
         # self.canvas.move(self.ship["id"],
-        #     self.Registry.saveData["Game"]["Player"]["ShipStats"]["ShipPosition"][0],
-        #     self.Registry.saveData["Game"]["Player"]["ShipStats"]["ShipPosition"][1]
+        #     self.Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Position"][0],
+        #     self.Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Position"][1]
         # )
         #
         # self.canvas.itemconfig(t1, text="Creating Stats objects")

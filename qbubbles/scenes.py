@@ -1,19 +1,24 @@
 import os
 import random
 import string
-from tkinter import ttk, Label, StringVar, Menubutton, Menu
+import sys
+from tkinter import ttk, Label, StringVar, Menubutton, Menu, font, Text
 from typing import Optional
 
 import yaml
 from tkinter import Frame, Canvas, Button
+
+from qbubbles.gameIO import printerr
+
+from qbubbles.gui import CPanel, CText
 
 from qbubbles.maps import GameMap
 
 from qbubbles.config import Reader
 from qbubbles.nzt import NZTFile
 from qbubbles.registry import Registry
-from qbubbles.scenemanager import Scene
-from qbubbles.special import ScrolledWindow
+from qbubbles.scenemanager import Scene, CanvasScene, SceneManager
+from qbubbles.special import ScrolledWindow, CustomScrollbar
 from qbubbles.utils import Font
 
 TREEVIEW_BG = "#7f7f7f"
@@ -505,8 +510,12 @@ class SavesMenu(Scene):
                 infos["score"].append(a["Player"]["score"])
                 infos["level"].append(a["Player"]["level"])
             except KeyError:
-                infos["score"].append(a["Game"]["Player"]["score"])
-                infos["level"].append(a["Game"]["Player"]["level"])
+                try:
+                    infos["score"].append(a["Game"]["Player"]["score"])
+                    infos["level"].append(a["Game"]["Player"]["level"])
+                except KeyError:
+                    infos["score"].append("ERROR")
+                    infos["level"].append("ERROR")
         # print(infos)
 
         # print(8)
@@ -955,88 +964,7 @@ class SavesMenu(Scene):
 
         print(gameMap.get_uname())
 
-        if gameMap.get_uname() == "qbubbles:classic_map":
-            game_data = {
-                "Player": {
-                    "Money": {
-                        "diamonds": 0,
-                        "coins": 0
-                    },
-                    "ShipStats": {
-                        "ship_speed": 10,
-                        "ShipPosition": [960, 540]
-                    },
-                    "Abilities": {
-                        **dict(((key, value) for key, value in Registry.get_abilities()))
-                    },
-                    "lives": 7,
-                    "score": 0,
-                    "high_score": 0,
-                    "teleports": 0,
-                    "level": 1,
-                    "Effects": []
-                },
-                "BubbleStats": {
-                    "bubspeed": 5
-                },
-                "GameInfo": {
-                    "seed": seed
-                },
-                "GameMap": {
-                    "id": gameMap.get_uname(),
-                    "seed": seed,
-                    "initialized": False,
-                    "Randoms": []
-                }
-            }
-
-            spriteinfo_data = {
-                "qbubbles:bubble": {
-                    "speedMultiplier": 5
-                },
-                "Sprites": [
-                    sprite.get_sname() for sprite in Registry.get_sprites()
-                ]
-            }
-
-            spriteData = dict()
-            for sprite in Registry.get_sprites():
-                spriteData[sprite.get_sname()] = sprite.get_spritedata().default
-
-            Registry.saveData = {"GameData": game_data, "SpriteInfo": spriteinfo_data, "SpriteData": spriteData}
-
-            bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
-                           "bub-position": [], "bub-index": [], "key-active": False}
-
-            game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/game.nzt", "w")
-            game_data_file.data = game_data
-            game_data_file.save()
-            game_data_file.close()
-
-            sprite_info_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/spriteinfo.nzt", "w")
-            sprite_info_file.data = spriteinfo_data
-            sprite_info_file.save()
-            sprite_info_file.close()
-
-            os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/")
-
-            for sprite in spriteData.keys():
-                path = '/'.join(sprite.split(":")[:-1])
-                os.makedirs(
-                    f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/{path}")
-                sprite_data_file = NZTFile(
-                    f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/sprites/"
-                    f"{sprite.replace(':', '/')}.nzt",
-                    "w")
-                sprite_data_file.data = spriteData[sprite]
-                sprite_data_file.save()
-                sprite_data_file.close()
-
-            game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}/bubble.nzt", "w")
-            game_data_file.data = bubble_data
-            game_data_file.save()
-            game_data_file.close()
-
+        gameMap.create_savedata(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{new}", seed)
         self.close_options_frame()
 
     def reset_action(self, src):
@@ -1050,49 +978,20 @@ class SavesMenu(Scene):
         max_seed = 2 ** 32
         seed = random.randint(0, max_seed)
 
-        # Removing the files inside.
-        for i in os.listdir(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src):
-            os.remove(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/" + i)
+        import os
 
-        # Remove the save (dir)
-        os.removedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src)
+        try:
+            _temp_0002 = Reader(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{src}/game.nzt").get_decoded()
+            gameMap = Registry.get_gamemap(_temp_0002["GameMap"]["id"])
+            seed = _temp_0002["GameMap"]["seed"]
 
-        # Getting the input text.
-        if src in ("aux", "con", ".", ".."):
-            return
+            gameMap.create_savedata(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{src}", seed)
+            self.close_options_frame()
+        except KeyError or AttributeError or IndexError or NameError:
+            gameMap = Registry.get_gamemap("qbubbles:classic_map")
 
-        # Creating dir for the game.
-        os.makedirs(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src, exist_ok=True)
-
-        game_data = {"Player": {"Money": {"diamonds": 0, "coins": 0},
-                                "ShipStats": {"ship-speed": 10, "ShipPosition": [960, 540]},
-                                "Abilities": {"teleports": 0, "level-score": 10000},
-                                "lives": 7, "score": 0, "high-score": 0, "teleports": 0, "level": 1},
-                     "BubbleStats": {"bubspeed": 5},
-                     "Effects": {"confusion": False, "confusion_time": 0, "notouch": False, "notouch_time": 0,
-                                 "paralyse": False, "paralyse_time": 0, "scorestate": 1, "scorestate_time": 0,
-                                 "secure": False, "secure_time": 0, "shotspeed": 0.1, "shotspeed_time": 0,
-                                 "slowmotion": False, "slowmotion_time": 0, "special-level": False,
-                                 "special_level_time": 0,
-                                 "speedboost": False, "speedboost_time": 0, "timebreak": False, "timebreak_time": 0},
-                     "GameInfo": {
-                         "seed": seed}
-                     }
-
-        bubble_data = {"bub-id": [], "bub-special": [], "bub-action": [], "bub-radius": [], "bub-speed": [],
-                       "bub-position": [], "bub-index": [], "key-active": False}
-
-        game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/game.nzt", "w")
-        game_data_file.data = game_data
-        game_data_file.save()
-        game_data_file.close()
-
-        game_data_file = NZTFile(f"{Registry.gameData['launcherConfig']['gameDir']}saves/" + src + "/bubble.nzt", "w")
-        game_data_file.data = bubble_data
-        game_data_file.save()
-        game_data_file.close()
-
-        self.close_options_frame()
+            gameMap.create_savedata(f"{Registry.gameData['launcherConfig']['gameDir']}saves/{src}", seed)
+            self.close_options_frame()
 
     def open_direct(self, n_):
         """
@@ -1157,11 +1056,6 @@ class SavesMenu(Scene):
         :return:
         """
 
-        # Removes oFrame.
-        self.oFrame.destroy()
-
-        # print(Registry._registryScenes.keys())
-
         # Runs the game
         self.scenemanager.change_scene("Game", src)
 
@@ -1223,3 +1117,227 @@ class OptionsMenu(Scene):
             file.close()
 
         self.scenemanager.change_scene("TitleScreen")
+
+
+class ErrorScene(CanvasScene):
+    def __init__(self):
+        root = Registry.get_window("default")
+        super(ErrorScene, self).__init__(root)
+
+        mx = Registry.gameData["MiddleX"]
+        my = Registry.gameData["MiddleY"]
+        h = Registry.gameData["WindowHeight"]
+        w = Registry.gameData["WindowWidth"]
+        self.t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"], Registry.gameData["WindowHeight"], fill="#ff0000",
+                                     outline="#ff0000")
+        # self.t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 2,
+        #                              text="Loading Mods", anchor="s",
+        #                              font=("Helvetica", root.tkScale(40)), fill="#ffa7a7")
+        # self.t2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 2,
+        #                              text="", anchor="n",
+        #                              font=("Helvetica", root.tkScale(15)), fill="#ffa7a7")
+        # self.canvas.update()
+
+        # self.t0 = CPanel(self.canvas, 0, 0, width="extend", height="expand", fill="#ff0000", outline="#ff0000")
+        font1 = font.Font(font=("Consolas", 50, "bold"))
+        font2 = font.Font(font=("Consolas", 15))
+        font.Font()
+        self.t1 = CText(
+            self.canvas, mx, my-5, text="", anchor="s", fill="#ffa7a7", font=font1)
+        self.t2 = CText(
+            self.canvas, mx, my+5, text="", anchor="n", fill="#ffa7a7", font=font2)
+        self.t3 = CText(
+            self.canvas, w-15, h-15, text="Press any key or mouse button to continue", anchor="se", fill="#ffa7a7",
+            font=font2)
+
+    def show_scene(self, t1: str, t2: str):
+        super(ErrorScene, self).show_scene(t1, t2)
+        # self.canvas.itemconfig(self.t0, fill="#ff0000")
+        # self.canvas.itemconfig(self.t1, text=t1, fill="#ffa7a7")
+        # self.canvas.itemconfig(self.t2, text=t2, fill="#ffa7a7")
+        # self.canvas.create_text(Registry.gameData["WindowWidth"]-16, Registry.gameData["WindowHeight"]-16,
+        #                         text="Press any key or mouse button to continue", anchor="se",
+        #                         font=("Helvetica", Registry.get_window("default").tkScale(16), 'bold'), fill="#ffa7a7")
+        # Registry.get_window("default").focus_set()
+        # self.canvas.bind_all("<Key>", lambda evt: os.kill(os.getpid(), 1))
+        # self.canvas.bind_all("<Button>", lambda evt: os.kill(os.getpid(), 1))
+        # Registry.get_window("default").protocol("WM_DELETE_WINDOW", lambda: None)
+        # self.canvas.update()
+        # self.canvas.mainloop()
+        self.t1.configure(text=t1)
+        self.t2.configure(text=t2)
+        Registry.get_window("default").focus_set()
+        self.canvas.bind_all("<Key>", lambda evt: os.kill(os.getpid(), 1))
+        self.canvas.bind_all("<Button>", lambda evt: os.kill(os.getpid(), 1))
+        Registry.get_window("default").protocol("WM_DELETE_WINDOW", lambda: None)
+        self.canvas.mainloop()
+
+
+class CrashScene(CanvasScene):
+    def __init__(self):
+        root = Registry.get_window("default")
+        super(CrashScene, self).__init__(root)
+
+        mx = Registry.gameData["MiddleX"]
+        my = Registry.gameData["MiddleY"]
+        h = Registry.gameData["WindowHeight"]
+        w = Registry.gameData["WindowWidth"]
+        self.t0 = self.canvas.create_rectangle(0, 0, Registry.gameData["WindowWidth"],
+                                               Registry.gameData["WindowHeight"], fill="#ff0000",
+                                               outline="#ff0000")
+        # self.t1 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] - 2,
+        #                              text="Loading Mods", anchor="s",
+        #                              font=("Helvetica", root.tkScale(40)), fill="#ffa7a7")
+        # self.t2 = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] + 2,
+        #                              text="", anchor="n",
+        #                              font=("Helvetica", root.tkScale(15)), fill="#ffa7a7")
+        # self.canvas.update()
+
+        # self.t0 = CPanel(self.canvas, 0, 0, width="extend", height="expand", fill="#ff0000", outline="#ff0000")
+        font1 = font.Font(font=("Consolas", root.tkScale(50), "bold"))
+        font2 = font.Font(font=("Consolas", root.tkScale(15)))
+        font3 = font.nametofont("TkFixedFont").configure(size=root.tkScale(10))
+        # font.Font()
+        self.t1 = CText(
+            self.canvas, mx, my - root.tkScale(155), text="", anchor="s", fill="#ffa7a7", font=font1)
+        self.t2 = CText(
+            self.canvas, mx, my - root.tkScale(145), text="", anchor="n", fill="#ffa7a7", font=font2)
+        self.t3 = CText(
+            self.canvas, mx, my - root.tkScale(115), text="", anchor="n", fill="#ffa7a7", font=font2)
+        self.t5 = CText(
+            self.canvas, mx, my - root.tkScale(85), text="Click on the button on the top to go the the webpage (if you don't use mods)", anchor="n", fill="#ffa7a7",
+            font=font2)
+        self.t4 = CText(
+            self.canvas, w - root.tkScale(15), h - root.tkScale(15), text="Press Alt+F4 to quit", anchor="se", fill="#ffa7a7",
+            font=font2)
+        self.frame2 = Frame(self.frame, bg="#a70000", height=root.tkScale(350), width=root.tkScale(1000))
+        self.frame2.place(x=mx, y=my - root.tkScale(30), anchor="n", height=root.tkScale(350), width=root.tkScale(1000))
+        self.t6 = Text(self.frame2, relief="flat", border=0, bd=root.tkScale(5), state="disabled", bg="#a70000", foreground="#ffa7a7",
+                       font=font3, selectforeground="#ffffff", selectbackground="#ff0000")
+        self.t6.pack(side="left", fill="both", expand=True)
+        self.scrollbar = CustomScrollbar(self.frame2, width=root.tkScale(10), command=self.t6.yview, bg="#a70000", fg="#ffa7a7", bd=0)
+        self.scrollbar.pack(side="left", fill="y")
+        self.t6.config(yscrollcommand=self.scrollbar.set)
+        self.t7 = Button(self.frame, text="Open Issue Tracker (Not for Mods!)", bg="#ff7f7f", fg="#ffffff", width=72, font=font2,
+                         command=lambda: os.startfile("https://github.com/Qboi123/QplayBubbles-Releaes/issues"),
+                         relief="flat", border=0)
+        self.t7.place(x=mx, y=my - root.tkScale(250), anchor="s")
+        self.exc = False
+        # self.scrollbar.config(command=self.t4.yview)
+
+    def hide_scene(self):
+        return
+
+    def show_scene(self, crashlog: str):
+        super(CrashScene, self).show_scene()
+        if self.exc is True:
+            return
+        self.exc = True
+        # self.canvas.itemconfig(self.t0, fill="#ff0000")
+        # self.canvas.itemconfig(self.t1, text=t1, fill="#ffa7a7")
+        # self.canvas.itemconfig(self.t2, text=t2, fill="#ffa7a7")
+        # self.canvas.create_text(Registry.gameData["WindowWidth"]-16, Registry.gameData["WindowHeight"]-16,
+        #                         text="Press any key or mouse button to continue", anchor="se",
+        #                         font=("Helvetica", Registry.get_window("default").tkScale(16), 'bold'), fill="#ffa7a7")
+        # Registry.get_window("default").focus_set()
+        # self.canvas.bind_all("<Key>", lambda evt: os.kill(os.getpid(), 1))
+        # self.canvas.bind_all("<Button>", lambda evt: os.kill(os.getpid(), 1))
+        # Registry.get_window("default").protocol("WM_DELETE_WINDOW", lambda: None)
+        # self.canvas.update()
+        # self.canvas.mainloop()
+        self.t1.configure(text="Fatal Error occoured")
+        self.t2.configure(text="If you use mods, report the log below to thier issue tracker.")
+        self.t3.configure(text="If you don't use mods, report the log below on the issue tracker")
+        self.t6.config(state="normal")
+        self.t6.insert('end', crashlog)
+        self.t6.config(state="disabled")
+        Registry.get_window("default").focus_set()
+        Registry.get_window("default").focus_get()
+        # Registry.get_window("default").wm_iconify()
+        # Registry.get_window("default").bind_all("<Control-Q>", lambda evt: os.kill(os.getpid(), 1))
+        # self.canvas.bind_all("<Button>", lambda evt: os.kill(os.getpid(), 1) if evt.widget == self.canvas else None)
+        Registry.get_window("default").protocol("WM_DELETE_WINDOW", lambda: None)
+        Registry.get_window("default").bind_all("<Alt-F4>", lambda evt: os.kill(os.getpid(), 0))
+        self.canvas.bind("<Alt-F4>", lambda evt: os.kill(os.getpid(), 0))
+        self.t6.bind("<Alt-F4>", lambda evt: os.kill(os.getpid(), 0))
+        self.scrollbar.bind("<Alt-F4>", lambda evt: os.kill(os.getpid(), 0))
+        self.canvas.mainloop()
+
+
+def custom_excepthook(exc_type, exc_val, exc_tb):
+    # noinspection PyBroadException
+    try:
+        scenemanager: Optional[SceneManager] = Registry.get_scenemanager()
+        if scenemanager is None:
+            sys.__excepthook__(exc_type, exc_val, exc_tb)
+    except Exception:
+        scenemanager = None
+
+    try:
+        import traceback
+        # crashlog = traceback.walk_tb(exc_tb)
+        # print(list(crashlog))
+        crashlog = traceback.format_exception(exc_type, exc_val, exc_tb)
+        for line in crashlog:
+            for line2 in line.splitlines(False):
+                printerr(line2)
+        # print(''.join(list(crashlog)))
+        if scenemanager is not None:
+            scenemanager.change_scene("qbubbles:CrashScene", "Fatal Error occoured", "See log below for info.", ''.join(list(crashlog))[:-1])
+    except Exception as e:
+        printerr(f"{e.__class__.__name__}: {e.__str__()}")
+        sys.__excepthook__(e.__class__.__name__, e, e.__traceback__)
+
+
+def report_callback_exception(exc, val, tb):
+    """Report callback exception on sys.stderr.
+
+    Applications may want to override this internal function, and
+    should when sys.stderr is None."""
+    import traceback
+    # print("Exception in Tkinter callback", file=sys.stderr)
+
+    exc, val, tb = sys.exc_info()
+    # noinspection PyBroadException
+    try:
+        scenemanager: Optional[SceneManager] = Registry.get_scenemanager()
+        if scenemanager is None:
+            sys.__excepthook__(exc, val, tb)
+    except Exception:
+        scenemanager = None
+
+    try:
+        import traceback
+        # crashlog = traceback.walk_tb(tb)
+        # print(list(crashlog))
+        exception_format = traceback.format_exception(exc, val, tb)
+        if Registry.get_scene("qbubbles:CrashScene").exc:
+            return
+        crashlog = "Exception in Tkinter callback\n"+''.join(list(exception_format))
+        for line in exception_format:
+            for line2 in line.splitlines(False):
+                printerr(line2)
+                # crashlog += line2
+        # print(''.join(list(crashlog)))
+        if scenemanager is not None:
+            scenemanager.change_scene("qbubbles:CrashScene", crashlog[:-1])
+    except Exception as e:
+        printerr(f"{e.__class__.__name__}: {e.__str__()}")
+        sys.__excepthook__(e.__class__.__name__, e, e.__traceback__)
+
+
+def error2():
+    raise Exception("Test Exception")
+
+
+def error():
+    error2()
+
+
+
+if __name__ == '__main__':
+    sys.excepthook = custom_excepthook
+
+    error()
+
+    # raise Exception("Test Exception")

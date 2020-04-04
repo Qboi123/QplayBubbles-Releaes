@@ -117,7 +117,7 @@ class ModelLoader(object):
 
     def generate_bubble_images(self, min_size, max_size, config):
         images = {}
-        for radius in range(min_size, max_size):
+        for radius in range(min_size, max_size+1):
             colors = config["Colors"]
             images[radius] = utils.createbubble_image((radius, radius), None, *colors)
         return images

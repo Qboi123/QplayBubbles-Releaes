@@ -96,6 +96,61 @@ class CImage(object):
     config = configure
 
 
+class CText(object):
+    def __init__(self, canvas: Canvas, x, y, *, text, anchor="center", fill="", tags=tuple(), font=("Helvetica", 10)):
+        self._id = canvas.create_text(x, y, text=text, anchor=anchor, tags=tags, fill=fill, font=font)
+        self._canvas: Canvas = canvas
+        self._text: str = text
+        self._anchor = anchor
+        self._tags = tags
+        self._fill = fill
+        self._font = font
+
+    def get_id(self):
+        return self._id
+
+    def move(self, x=None, y=None):
+        return self._canvas.move(self._id, x, y)
+
+    @overload
+    def coords(self, x1, y1) -> None:
+        self._canvas.coords(self._id, x1, y1)
+
+    @coords.add
+    def coords(self) -> Optional[Tuple[float, float]]:
+        return self._canvas.coords(self._id)
+
+    def bind(self, sequence=None, func=None, add=None) -> Union[str, int]:
+        return self._canvas.tag_bind(self._id, sequence, func, add)
+
+    def unbind(self, sequence, funcid=None):
+        return self._canvas.tag_unbind(self._id, sequence, funcid)
+
+    def configure(self, *, text=None, anchor=None, tags=None, fill=None, font=None):
+        if text is None:
+            text = self._text
+        if anchor is None:
+            anchor = self._anchor
+        if tags is None:
+            tags = self._tags
+        if fill is None:
+            fill = self._fill
+        if font is None:
+            font = self._font
+        return self._canvas.itemconfigure(self._id, text=text, anchor=anchor, tags=tags, fill=fill, font=font)
+
+    def cget(self, option) -> Union[str, int, float, bool, list, dict, Callable]:
+        return self._canvas.itemcget(self._id, option)
+
+    def lower(self, *args):
+        return self._canvas.tag_lower(self._id, *args)
+
+    def raise_(self, *args):
+        return self._canvas.tag_raise(self._id, *args)
+
+    config = configure
+
+
 class CPanel(CRectangle):
     def __init__(self, canvas: Canvas, x, y, width, height, fill="", outline=""):
         self._width = width

@@ -392,6 +392,75 @@ class SaveEvent(Event):
         return func
 
 
+class LoadCompleteEvent(Event):
+    _handlers = list()
+
+    def __init__(self, scene, save_name):
+        if scene.__class__.__name__ != "Game":
+            raise RuntimeError("Scene must be specific a Game instance")
+        self.canvas = scene.canvas
+        self.saveName = save_name
+
+        super(LoadCompleteEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
+
+class GameExitEvent(Event):
+    _handlers = list()
+
+    def __init__(self, scene, save_name):
+        if scene.__class__.__name__ != "Game":
+            raise RuntimeError("Scene must be specific a Game instance")
+        self.canvas = scene.canvas
+        self.saveName = save_name
+
+        super(GameExitEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
+
+class CleanUpEvent(Event):
+    _handlers = list()
+
+    def __init__(self, scene):
+        if scene.__class__.__name__ != "Game":
+            raise RuntimeError("Scene must be specific a Game instance")
+        self.canvas = scene.canvas
+        super(CleanUpEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
 
 class KeyReleaseEvent(Event):
     _handlers = list()
@@ -445,7 +514,15 @@ class CollisionEvent(Event):
         self.collidedObj = collidedobj
         self.canvas: Canvas = canvas
 
-        super(CollisionEvent, self).__init__(scene)
+        super(Event, self).__init__()
+        for handler in self._handlers:
+            if handler.__self__ is not None:
+                if handler.__self__ == eventobj:
+                    if handler(self) == "cancel":
+                        self.cancel = True
+            else:
+                if handler(self) == "cancel":
+                    self.cancel = True
 
     @classmethod
     def bind(cls, func: Callable):

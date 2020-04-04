@@ -3,6 +3,7 @@ import string
 from inspect import isclass, getfile
 from typing import Optional
 from zipimport import zipimporter
+from functools import wraps
 
 from qbubbles.globals import GAME_VERSION
 from qbubbles.registry import Registry
@@ -11,9 +12,12 @@ MODS = []
 
 
 def Addon(*, modid, name, version, qbversion=GAME_VERSION):
-    for character in modid:
-        if character not in string.ascii_letters:
+    if modid[0] not in string.ascii_letters:
+        raise ValueError(f"Invalid character of modid {repr(modid)}: '{modid[0]}' must be a ASCII letter")
+    for character in modid[1:]:
+        if character not in string.ascii_letters+string.digits:
             raise ValueError(f"Invalid character of modid {repr(modid)}: '{character}' must be a ASCII letter")
+    print(modid, name, version, qbversion)
 
     def decorator(func):
         if not isclass(func):

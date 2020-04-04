@@ -383,10 +383,13 @@ class Registry(object):
 
     @classmethod
     def get_dtexture(cls, type_, id_) -> Union[PhotoImage, ImageTk.PhotoImage]:
-        if "qbubbles:default" not in cls._registryDefaultTextures.keys():
-            raise RuntimeError("Missing type 'qbubbles:default'")
+        # if "qbubbles:default" not in cls._registryDefaultTextures.keys():
+        #     raise RuntimeError("Missing type 'qbubbles:default'")
         if type_ not in cls._registryDefaultTextures.keys():
-            raise RuntimeError(f"Missing texture for type '{type_}'")
+            # cls.get_scenemanager().change_scene("qbubbles:ErrorScene",
+            #                                     f"Game Crashed",
+            #                                     f"Missing default texture for type '{type_}'")
+            raise RuntimeError(f"Missing default texture for type '{type_}'")
         if id_ not in cls._registryDefaultTextures[type_].keys():
             return cls._registryDefaultTextures[type_][None]
         return cls._registryDefaultTextures[type_][id_]
@@ -483,6 +486,7 @@ class Registry(object):
 
     @classmethod
     def register_modobject(cls, modid: str, name: str, version: str, func: object):
+        print(modid, name, version, func)
         if modid in cls._registryMods.keys():
             path = inspect.getfile(func)
             raise DuplicateAddonError(modid, name, version, path, func)
