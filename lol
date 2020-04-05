@@ -1,0 +1,1 @@
+org/qplaysoftware/exampleaddon
