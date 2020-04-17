@@ -24,6 +24,17 @@ class DuplicateAddonError(Exception):
         return self.__class__.__name__
 
 
+class ParserError(Exception):
+    __name__ = "ParserError"
+
+    def __init__(self, *args):
+        self.__class__.__name__ = "ParserError"
+        super(ParserError, self).__init__(*args)
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+
 class SceneNotFoundError(Exception):
     __name__ = "SceneNotFoundError"
 

@@ -12,7 +12,7 @@ from qbubbles.bubbles import Bubble
 from qbubbles.components import *
 from qbubbles.effects import BaseEffect, AppliedEffect
 from qbubbles.events import KeyReleaseEvent, UpdateEvent, KeyPressEvent, XInputEvent, CollisionEvent, \
-    MapInitializeEvent, FirstLoadEvent, CleanUpEvent, LoadCompleteEvent, GameExitEvent
+    MapInitializeEvent, FirstLoadEvent, CleanUpEvent, LoadCompleteEvent, GameExitEvent, PauseEvent
 from qbubbles.extras import Logging, distance
 from qbubbles.globals import MAX_BUBBLES
 from qbubbles.maps import GameMap
@@ -451,8 +451,6 @@ class Game(CanvasScene):
         Registry.saveData["Game"] = Reader(f"{gameDir}saves/{self.saveName}/game.nzt").get_decoded()
 
         # Game Maps
-        if Registry.saveData["Game"]["GameMap"]["id"] == "qbubbles:classic_map":
-            pass
         gameMap = Registry.get_gamemap(Registry.saveData["Game"]["GameMap"]["id"])
         gameMap.load_savedata(f"{gameDir}saves/{self.saveName}")
         # # Create canvas.
@@ -482,8 +480,8 @@ class Game(CanvasScene):
         self.canvas.destroy()
         self.canvas = Canvas(self.frame, highlightthickness=0)
         self.canvas.pack(fill="both", expand=True)
-        Registry.saveData = []
         GameExitEvent(self, self.saveName)
+        Registry.saveData = []
         self.scenemanager.change_scene("TitleScreen")
         self.__init__()
 
@@ -524,7 +522,7 @@ class Game(CanvasScene):
                 root, bg="#3f3f3f")
             self.temp['qbubbles:pause.menu'] = self.canvas.create_window(
                 Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] / 2 + 130,
-                window=self.temp['pause/menu_frame'], anchor='n', height=20, width=300)
+                window=self.temp['qbubbles:pause.menu_frame'], anchor='n', height=20, width=300)
             self.temp["qbubbles:pause.back_to_menu"] = Button(
                 self.temp["qbubbles:pause.menu_frame"], text=Registry.gameData["language"]["pause.back-to-home"],
                 command=lambda: self.return_main(), relief="flat", bg="#1f1f1f", fg="#afafaf", font=font)
@@ -543,7 +541,7 @@ class Game(CanvasScene):
             self.temp["qbubbles:pause.menu_frame"] = Frame(root, bg="darkcyan")
             self.temp["qbubbles:pause.menu"] = self.canvas.create_window(
                 Registry.gameData["MiddleX"], Registry.gameData["MiddleY"] / 2 + 130,
-                window=self.temp['pause/menu_frame'], anchor='n', height=500, width=300)
+                window=self.temp['qbubbles:pause.menu_frame'], anchor='n', height=500, width=300)
 
             self.temp["qbubbles:pause.back_to_menu"] = Button(
                 self.temp["qbubbles:pause.menu_frame"], text=Registry.gameData["language"]["pause.back-to-home"],
@@ -614,6 +612,8 @@ class Game(CanvasScene):
         self.canvas.itemconfig(self.texts["pause"], text="")  # TODO: Remove the use of pause-text
         root.update()
 
+        PauseEvent(self, self.canvas, self.temp, pause=True)
+
         # # TODO: Remove this unused s###
         # self.self.temp["scorestate-save"] = stats["scorestate_time"] - time()
         # self.self.temp["secure-save"] = stats["secure_time"] - time()
@@ -629,25 +629,49 @@ class Game(CanvasScene):
         # TODO: Destroy pause menu here, set game to unpause and call UnpauseEvent(...)
         self._pauseMode = False
 
+        # self.canvas.itemconfig(icons["pause"], state="hidden")
+        # canvas.itemconfig(texts["pause"], text="")
+
+        self.temp["qbubbles:pause.back_to_menu"].destroy()
+        self.temp['qbubbles:pause.menu_frame'].destroy()
+        self.temp["qbubbles:pause.s_frame"].destroy()
+
+        self.canvas.delete(self.temp['qbubbles:pause.to_line'])
+        # canvas.delete(temp['pause/bottom.line'])
+        self.canvas.delete(self.temp['qbubbles:pause.menu'])
+        self.canvas.delete(self.temp['qbubbles:pause.bg'])
+
+        self.root.update()
+
+        PauseEvent(self, self.canvas, self.temp, pause=False)
+
+        # # Remove stats restore, it's unused.
+        # stats["scorestate_time"] = temp["scorestate-save"] + time()
+        # stats["secure_time"] = temp["secure-save"] + time()
+        # stats["timebreak_time"] = temp["timebreak-save"] + time()
+        # stats["confusion_time"] = temp["confusion-save"] + time()
+        # stats["slowmotion_time"] = temp["slowmotion-save"] + time()
+        # stats["paralyse_time"] = temp["paralyse-save"] + time()
+        # stats["shotspeed_time"] = temp["shotspeed-save"] + time()
+        # stats["notouch_time"] = temp["notouch-save"] + time()
+
     def on_tkkeypress(self, event):
         """
         TODO: Add custom key-events using Registry.get_keybindings("press", ...)
-        TODO: Change name to on_keypress
         TODO: Make auto-update events
         :return:
         """
-        print(f"PRESS: {event.char}")
+        # print(f"PRESS: {event.char}")
 
         KeyPressEvent(self, event)
 
     def on_tkkeyrelease(self, event):
         """
         TODO: Add custom key-events using Registry.get_keybindings("press", ...)
-        TODO: Change name to on_keypress
         TODO: Make auto-update events
         :return:
         """
-        print(f"RELEASE: {event.char}")
+        # print(f"RELEASE: {event.char}")
 
         KeyReleaseEvent(self, event)
 
@@ -828,6 +852,7 @@ class Game(CanvasScene):
         self.canvas.itemconfig(t2, text="")
 
         self.gameMap: GameMap = Registry.get_gamemap(Registry.saveData["Game"]["GameMap"]["id"])
+        self.gameMap.load()
         MapInitializeEvent(self, t1, t2, self.saveName)
 
         self.texts["pause"] = self.canvas.create_text(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"],
@@ -896,7 +921,7 @@ class Game(CanvasScene):
             self.root.update_idletasks()
 
         image = ImageGrab.grab(
-            (0, 0, Registry.get_window("fake").winfo_screenwidth(), Registry.get_window("fake").winfo_screenheight()),
+            (0, 0, self.root.tkScale(Registry.get_window("fake").winfo_screenwidth()), self.root.tkScale(Registry.get_window("fake").winfo_screenheight())),
             True
         )
         tkimage = ImageTk.PhotoImage(image)
@@ -910,7 +935,7 @@ class Game(CanvasScene):
         for tkimage in tkims:
             self.canvas.itemconfig(cimage, image=tkimage)
             # cimage.config(image=tkimage)
-            sleep(0.1)
+            # sleep(0.1)
             self.root.update()
             self.root.update_idletasks()
 

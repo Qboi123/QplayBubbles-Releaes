@@ -70,7 +70,6 @@ bubble.up: "Extra leven"
 
 # Popups
 popup.levelup: "Level "
-popup.evolve: "Je schip is aan het evolueren!"
 
 # Infos
 info.state.slowmotion: "Slowmotion"

@@ -24,7 +24,8 @@ class GameMap(object):
         self.seedRandom = None
         self.randoms: Dict[str, Tuple[Random, int]] = {}
         self._uname = None
-        
+
+    def load(self):
         MapInitializeEvent.bind(self.on_mapinit)
         FirstLoadEvent.bind(self.on_firstload)
         LoadCompleteEvent.bind(self.on_loadcomplete)
@@ -286,7 +287,10 @@ class ClassicMap(GameMap):
             self.create_bubble(x, y, bub, rad, spd, hlt)
 
         self.player = Player()
-        self.player.create(*Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Position"])
+        if Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Position"]:
+            self.player.create(*Registry.saveData["Sprites"]["qbubbles:player"]["objects"][0]["Position"])
+        else:
+            self.player.create(Registry.gameData["MiddleX"], Registry.gameData["MiddleY"])
         self._gameobjects.append(self.player)
         self.canvas = canvas
 
@@ -330,6 +334,7 @@ class ClassicMap(GameMap):
         # CleanUpEvent.bind(self.on_cleanup)
         GameExitEvent.bind(self.on_gameexit)
         LoadCompleteEvent.unbind(self.on_loadcomplete)
+        print("Load Complete")
 
         self.player.activate_events()
 
@@ -339,6 +344,7 @@ class ClassicMap(GameMap):
         # CleanUpEvent.unbind(self.on_cleanup)
         GameExitEvent.unbind(self.on_gameexit)
 
+        self._bubbles = []
         self.player.deactivate_events()
 
     def on_save(self, evt: SaveEvent):
@@ -372,6 +378,7 @@ class ClassicMap(GameMap):
     def load_savedata(self, path):
         Registry.saveData["SpriteInfo"] = Reader(f"{path}/spriteinfo.nzt").get_decoded()
         Registry.saveData["Sprites"] = {}
+        self.maxBubbles = Registry.saveData["SpriteInfo"]["qbubbles:bubble"]["maxAmount"]
 
         # Get Sprite data
         for sprite_id in Registry.saveData["SpriteInfo"]["Sprites"]:
@@ -424,13 +431,20 @@ class ClassicMap(GameMap):
             }
         }
 
+        def dict_exclude_key(key, d: dict):
+            d2 = d.copy()
+            del d2[key]
+            return d2
+
         spriteinfo_data = {
             "qbubbles:bubble": {
-                "speedMultiplier": 5
+                "speedMultiplier": 5,
+                "maxAmount": 100
             },
             "Sprites": [
                 sprite.get_sname() for sprite in Registry.get_sprites()
-            ]
+            ],
+            "SpriteData": dict(((s.get_sname(), dict_exclude_key("objects", dict(s.get_spritedata()))) for s in Registry.get_sprites()))
         }
 
         spriteData = dict()

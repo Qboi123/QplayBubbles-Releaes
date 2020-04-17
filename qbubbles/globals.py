@@ -8,4 +8,4 @@ CANVAS: _Optional[_Canvas] = None
 
 GAME_VERSION = "v1.5.0-pre5"
 
-MAX_BUBBLES = 100
+MAX_BUBBLES = 200

@@ -268,6 +268,10 @@ class Sprite:
         self._objectData = SpriteData({"Position": (None, None)})
         self.dead = False
 
+    def __repr__(self):
+        a = "<"+(", ".join(f"{repr(key)}={repr(value)}" for key, value in dict(self._objectData).items()))+">"
+        return f"Sprite({repr(self.get_sname())}, data="+a+")"
+
     def delete(self) -> NoReturn:
         canvas: Canvas = Registry.get_scene("Game").canvas
         canvas.delete(self.id)
@@ -300,7 +304,7 @@ class Sprite:
         if not issubclass(type(other), Sprite):
             raise TypeError("argument 'other' must be a Sprite-object")
         other: Sprite
-        print(f"{self.__class__.__name__} is attacking {other.__class__.__name__}")
+        # print(f"{self.__class__.__name__} is attacking {other.__class__.__name__}")
         if other.defenceMultiplier != 0:
             other.damage(self.attackMultiplier / other.defenceMultiplier)
         else:
@@ -316,14 +320,14 @@ class Sprite:
     def distance(self, to):
         canvas = Registry.get_scene("Game").canvas
         try:
-            try:
-                x1, y1 = self.get_coords()
-            except ValueError:
-                self.instant_death()
-            try:
-                x2, y2 = to.get_coords()
-            except ValueError:
-                to.instant_death()
+            # try:
+            x1, y1 = self.get_coords()
+            # except ValueError:
+            #     self.instant_death()
+            # try:
+            x2, y2 = to.get_coords()
+            # except ValueError:
+            #     to.instant_death()
             # print(f"POINT_1: {x1, y1}")
             # print(f"POINT_2: {x2, y2}")
             # noinspection PyUnboundLocalVariable
@@ -366,6 +370,7 @@ class Player(Sprite):
     def __init__(self):
         super(Player, self).__init__()
 
+        self.rotation = 0
         self.appliedEffects = []
         self.appliedEffectTypes = []
 
@@ -375,13 +380,12 @@ class Player(Sprite):
         self._exp = 0
 
         self.radius = 12.5
-
+        self.speed = 0
         self.baseSpeed = 0
 
         self.keysPressed = ""
         self._spriteName = "qbubbles:player"
-        self._spriteData = SpriteData({"objects": [
-            {
+        self._spriteData = SpriteData({"objects": [{
                 "Money": {
                     "diamonds": 0,
                     "coins": 0
@@ -390,7 +394,7 @@ class Player(Sprite):
                     **dict(((key, value) for key, value in Registry.get_abilities()))
                 },
                 "Effects": [],
-                "Position": [10, 10],
+                "Position": [],
                 "speed": 10,
                 "lives": 7,
                 "score": 0,
@@ -430,7 +434,9 @@ class Player(Sprite):
 
     def activate_events(self):
         if self.events_activated:
+            print("Events already activated")
             return
+        print("Activating events...")
         self.events_activated = True
         KeyPressEvent.bind(self.on_key_press)
         KeyReleaseEvent.bind(self.on_key_release)
@@ -440,7 +446,9 @@ class Player(Sprite):
 
     def deactivate_events(self):
         if not self.events_activated:
+            print("Events already deactivated")
             return
+        print("Deactivating events...")
         self.events_activated = False
         KeyPressEvent.unbind(self.on_key_press)
         KeyReleaseEvent.unbind(self.on_key_release)
@@ -449,7 +457,18 @@ class Player(Sprite):
         SavedataReadedEvent.unbind(self.on_savedata_readed)
 
     def on_collision(self, evt: CollisionEvent):
-        pass
+        # print(evt.collidedObj.get_sname())
+        # print(evt.eventObject.get_sname())
+        if evt.collidedObj.get_sname() != "qbubbles:bubble":
+            evt.collidedObj.attack(evt.eventObject)  # evt.collidedObj.attackMultiplier / self.defenceMultiplier)
+            evt.eventObject.attack(evt.collidedObj)
+            if evt.collidedObj.get_sname() == "qbubbles:player":
+                evt.collidedObj.score += int(self.radius * (self.baseSpeed / 8) / 8)
+        elif evt.eventObject.get_sname() != "qbubbles:bubble":
+            evt.collidedObj.attack(evt.eventObject)  # evt.collidedObj.attackMultiplier / self.defenceMultiplier)
+            evt.eventObject.attack(evt.collidedObj)
+            if evt.eventObject.get_sname() == "qbubbles:player":
+                evt.eventObject.score += int(self.radius * (self.baseSpeed / 8) / 8)
 
     def add_experience(self, experience):
         ExperienceEvent(self, experience)
@@ -475,50 +494,135 @@ class Player(Sprite):
     def on_update(self, evt: UpdateEvent):
         x = 0
         y = 0
+        # if self.up:
+        #     y -= self.baseSpeed * evt.dt
+        # if self.left:
+        #     x -= self.baseSpeed * evt.dt
+        # if self.down:
+        #     y += self.baseSpeed * evt.dt
+        # if self.right:
+        #     x += self.baseSpeed * evt.dt
+
+        pixels = 0
+
         if self.up:
-            y -= self.baseSpeed * evt.dt
-        if self.left:
-            x -= self.baseSpeed * evt.dt
+            pixels = self.baseSpeed
         if self.down:
-            y += self.baseSpeed * evt.dt
+            pixels = -self.baseSpeed
+        if self.left:
+            self.rotate(+(evt.dt * 160))
         if self.right:
-            x += self.baseSpeed * evt.dt
+            self.rotate(-(evt.dt * 160))
+
+        import math
+
+        d = -(evt.dt * pixels)  # distance covered this tick.
+        angle_radians = math.radians(self.rotation)
+        dx = -math.cos(angle_radians)
+        dy = math.sin(angle_radians)
+
+        dx, dy = dx * d, dy * d
+
+        x, y = dx, dy
+
         # print(self.up, self.left, self.down, self.right)
         # print(x, y)
         self.move(x, y)
 
     def create(self, x, y):
-        self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player",
-                                                                                                  rotation=0))
+        image = Registry.get_texture("sprite", "player", rotation=0)
+        self.id = self._c_create_image(x, y, image, anchor="center")
+        # self.id = Registry.get_scene("Game").canvas.create_image(x, y, image=Registry.get_texture("sprite", "player",
+        #                                                                                           rotation=0))
         self.baseSpeed = 80
+        self.speed = self.baseSpeed
+
+    def _update_rot_tex(self):
+        """
+        Updates the rotation texture
+
+        :return:
+        """
+        image = Registry.get_texture("sprite", "player", rotation=int(self.rotation - (self.rotation % 1)))
+        c = Registry.get_scene("Game").canvas
+        c.itemconfig(self.id, image=image)
+
+    def rotate(self, r_rot):
+        """
+        Rotates the player
+
+        :param r_rot: Rotation in degrees
+        :return:
+        """
+
+        self.rotation += r_rot
+        self.rotation = self.rotation % 360
+        self._update_rot_tex()
 
     def on_key_press(self, evt: KeyPressEvent):
-        # print(f"PRESS1: {evt.char}")
+        """
+        Key-press event handler
+
+        :param evt:
+        :return:
+        """
+
+        # print(f"PRESS1: {evt.char} | {evt.keySym}")
         if (evt.char.lower() == "w") and not self.up:
+            self.up = True
+        elif (evt.keySym.lower() == "up") and not self.up:
             self.up = True
         elif (evt.char.lower() == "a") and not self.left:
             self.left = True
+        elif (evt.keySym.lower() == "left") and not self.left:
+            self.left = True
         elif (evt.char.lower() == "s") and not self.down:
+            self.down = True
+        elif (evt.keySym.lower() == "down") and not self.down:
             self.down = True
         elif (evt.char.lower() == "d") and not self.right:
             self.right = True
+        elif (evt.keySym.lower() == "right") and not self.right:
+            self.right = True
+        # TODO: Implement teleport ability for player, using key-events
         # print(self.up, self.left, self.down, self.right)
 
     def on_key_release(self, evt: KeyReleaseEvent):
+        """
+        Key-release event handler
+
+        :param evt:
+        :return:
+        """
+
         a = list(self.keysPressed)
         # print(f"RELEASE1: {evt.char}")
         if (evt.char.lower() == "w") and self.up:
             self.up = False
+        elif (evt.keySym.lower() == "up") and self.up:
+            self.up = False
         elif (evt.char.lower() == "a") and self.left:
+            self.left = False
+        elif (evt.keySym.lower() == "left") and self.left:
             self.left = False
         elif (evt.char.lower() == "s") and self.down:
             self.down = False
+        elif (evt.keySym.lower() == "down") and self.down:
+            self.down = False
         elif (evt.char.lower() == "d") and self.right:
             self.right = False
-        # self.keysPressed = "".join(a)
-        # print(self.up, self.left, self.down, self.right)
+        elif (evt.keySym.lower() == "right") and self.right:
+            self.right = False
+        # TODO: Implement teleport ability for player, using key-events
 
     def get_ability(self, uname):
+        """
+        Get ability instance from uname
+
+        :param uname:
+        :return:
+        """
+
         if uname in self.get_spritedata()["Abilities"].keys():
             return self.get_spritedata()["Abilities"][uname]
         return None
@@ -526,6 +630,11 @@ class Player(Sprite):
 
 class TeleportCrosshair(Sprite):
     def __init__(self):
+        """
+        Deprecated, will use ability and key-events instead.
+        TODO: Remove this, and use ability and key-events instead.
+        """
+
         super(TeleportCrosshair, self).__init__()
 
         self.abilities.append(GhostAbility(self))
@@ -544,6 +653,12 @@ class Ammo(Sprite):
     requires = tuple(list(Sprite.requires) + ["ship", "ammo"])
 
     def __init__(self, **kw):
+        """
+        WORK IN PROGRESS
+        TODO: Use Ammo(Sprite) class for shooting, and improve performance of the Ammo Sprite.
+
+        :param kw:
+        """
         super().__init__(**kw)
         self._kw = kw
         self.form = FORM_LINE
@@ -558,6 +673,13 @@ class Ammo(Sprite):
         self.width = 5
 
     def on_collide_bubble(self, index):
+        """
+        FIXME: Rename method to allow compatibility with base sprite
+
+        :param index:
+        :return:
+        """
+
         from qbubbles.components import StoppableThread
         from qbubbles.bubble import del_bubble
         from qbubbles.extras import replace_list, distance
@@ -625,6 +747,11 @@ class Ammo(Sprite):
 # noinspection PyRedundantParentheses
 class BaseBarier(Sprite):
     def __init__(self, **kw):
+        """
+        WORK IN PROGRESS
+
+        :param kw:
+        """
         from random import randint, choice
         self._kw = kw
         super().__init__(**kw)
@@ -645,6 +772,14 @@ class BaseBarier(Sprite):
         self.collision_with = [SHIP]
 
     def create(self, x, y):
+        """
+        TODO: Use Images instead (Pillow / Tkinter.PhotoImage).
+
+        :param x:
+        :param y:
+        :return:
+        """
+
         self.id = self._kw["canvas"].create_rectangle(x, y + 72, x + 10, y + 222, fill=RED, outline=RED)
         # print(self.parent.canvas.coords(self.id))
         super().create(x, 72 + y)

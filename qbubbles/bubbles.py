@@ -66,18 +66,7 @@ class BubbleObject(Sprite):
                                            "Position": (None, None)})
 
     def on_collision(self, evt: CollisionEvent):
-        # print(evt.collidedObj.get_sname())
-        # print(evt.eventObject.get_sname())
-        if evt.collidedObj.get_sname() != "qbubbles:bubble":
-            evt.collidedObj.attack(evt.eventObject)  # evt.collidedObj.attackMultiplier / self.defenceMultiplier)
-            evt.eventObject.attack(evt.collidedObj)
-            if evt.collidedObj.get_sname() == "qbubbles:player":
-                evt.collidedObj.score += int(self.radius * (self.baseSpeed / 8) / 8)
-        elif evt.eventObject.get_sname() != "qbubbles:bubble":
-            evt.collidedObj.attack(evt.eventObject)  # evt.collidedObj.attackMultiplier / self.defenceMultiplier)
-            evt.eventObject.attack(evt.collidedObj)
-            if evt.eventObject.get_sname() == "qbubbles:player":
-                evt.eventObject.score += int(self.radius * (self.baseSpeed / 8) / 8)
+        pass
 
     def create(self, x, y, radius=5, speed=5, health=5):
         if self.baseClass is None:
@@ -101,8 +90,15 @@ class BubbleObject(Sprite):
         CleanUpEvent.bind(self.on_cleanup)
         CollisionEvent.bind(self.on_collision)
 
+        print(f"Created Bubble\n Bubble Object Representation: {repr(self)}")
+
     def on_update(self, evt: UpdateEvent):
-        self.move(-self.baseSpeed * evt.dt, 0)
+        # game_map = Registry.get_scene("Game").gameMap
+        spd_mpy = evt.scene.gameMap.player.score / 10000
+        spd_mpy /= 2
+        if spd_mpy < 0.5:
+            spd_mpy = 0.5
+        self.move(-self.baseSpeed * evt.dt * spd_mpy, 0)
 
     def save(self):
         return dict(self._spriteData)

@@ -24,7 +24,7 @@ class FakeWindow(Tk):
         self.wm_geometry("180x40+0+0")
         font1 = font.nametofont("TkFixedFont")
         family = font1.cget("family")
-        print()
+        # print()
         Label(frame, bg="#373737", fg="#a7a7a7", text="FakeWindow", font=(family, 20)).pack()
         self.bind("<Map>", self.onRootDeiconify)
         self.bind("<Unmap>", self.onRootIconify)
@@ -145,12 +145,12 @@ class Main(Toplevel):
         """
         Main-class constructor for Q-Bubbles
         """
-        os.chdir(os.path.split(__file__)[0])
+        os.chdir(os.path.split(__file__)[0])  # ...\qbubbles
 
         self.fakeRoot = FakeWindow()
 
-        self.pre_run()
         self.debug = False
+        self.pre_run()
         super(Main, self).__init__(self.fakeRoot)
         self.fakeRoot.bind_events(self)
         # self.protocol("WM_DELETE_WINDOW", self.fakeRoot.destroy)
@@ -163,13 +163,6 @@ class Main(Toplevel):
 
         make_tk_dpiaware(self)
 
-        # if 0:  # self.dpiScaling != 1.0:
-        #     self.wm_attributes("-alpha", 0.0)
-        #     self.overrideredirect(1)
-        #     showerror("Load Failure", f"This game is not compalible with DPI other than 100%:\n"
-        #                               f"Currently: {int(self.dpiScaling * 100)}%")
-        #     os.kill(os.getpid(), 1)
-
         Registry.register_window("fake", self.fakeRoot)
         Registry.register_window("default", self)
         Registry.gameData["startTime"] = time.time()
@@ -177,8 +170,6 @@ class Main(Toplevel):
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
         self.wm_attributes("-alpha", 0)
-        # width = 1920
-        # height = 1080
         self.geometry(self.tkGeometryScale(f"{width}x{height}+0+0"))
         self.wm_protocol("WM_DELETE_WINDOW", lambda: os.kill(os.getpid(), 0))
         self.update()

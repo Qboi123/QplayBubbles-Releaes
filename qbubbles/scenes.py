@@ -1273,6 +1273,9 @@ def custom_excepthook(exc_type, exc_val, exc_tb):
     except Exception:
         scenemanager = None
 
+    if exc_type == KeyboardInterrupt:
+        os.kill(os.getpid(), 0)
+
     try:
         import traceback
         # crashlog = traceback.walk_tb(exc_tb)
@@ -1305,6 +1308,9 @@ def report_callback_exception(exc, val, tb):
             sys.__excepthook__(exc, val, tb)
     except Exception:
         scenemanager = None
+
+    if exc == KeyboardInterrupt:
+        os.kill(os.getpid(), 0)
 
     try:
         import traceback

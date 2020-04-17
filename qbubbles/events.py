@@ -537,6 +537,40 @@ class CollisionEvent(Event):
         return func
 
 
+class PauseEvent(Event):
+    """
+    For pausing / unpausing the game.
+    """
+    _handlers = list()
+
+    def __init__(self, scene, canvas, temp, pause: bool):
+        """
+        For pausing / unpausing the game.
+
+        :param scene:
+        :param canvas:
+        :param temp:
+        :param pause:
+        """
+
+        self.canvas: Canvas = canvas
+        self.pause = pause
+
+        super(PauseEvent, self).__init__(scene)
+
+    @classmethod
+    def bind(cls, func: Callable):
+        cls._handlers.append(func)
+        # print(func)
+        return func
+
+    @classmethod
+    def unbind(cls, func: Callable):
+        cls._handlers.remove(func)
+        # print(f"Unbind: {func.__name__}")
+        return func
+
+
 class XInputEvent(UpdatableEvent):
     _handlers = list()
     xboxController = XboxController()

@@ -17,7 +17,7 @@ def Addon(*, modid, name, version, qbversion=GAME_VERSION):
     for character in modid[1:]:
         if character not in string.ascii_letters+string.digits:
             raise ValueError(f"Invalid character of modid {repr(modid)}: '{character}' must be a ASCII letter")
-    print(modid, name, version, qbversion)
+    # print(modid, name, version, qbversion)
 
     def decorator(func):
         if not isclass(func):

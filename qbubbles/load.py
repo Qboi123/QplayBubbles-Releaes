@@ -53,17 +53,17 @@ class Load(CanvasScene):
         Registry.gameData["language"] = lang_
 
         # Config resolution / positions
-        temp_0001 = Registry.get_window("default")
-        root = temp_0001
-        Registry.gameData["WindowWidth"] = temp_0001.tkScale(temp_0001.winfo_screenwidth())
-        Registry.gameData["WindowHeight"] = temp_0001.tkScale(temp_0001.winfo_screenheight())
+        root = Registry.get_window("default")
+        # root = root
+        Registry.gameData["WindowWidth"] = root.tkScale(root.winfo_screenwidth())
+        Registry.gameData["WindowHeight"] = root.tkScale(root.winfo_screenheight())
         if "--travis" in sys.argv:
             Registry.gameData["WindowWidth"] = 1920
             Registry.gameData["WindowHeight"] = 1080
         Registry.gameData["MiddleX"] = Registry.gameData["WindowWidth"] / 2
         Registry.gameData["MiddleY"] = Registry.gameData["WindowHeight"] / 2
 
-        # Register Xbox-Bindings
+        # # Register Xbox-Bindings
         # Registry.register_xboxbinding("A", game.close_present)
         # print("[Game]:", "Starting XboxController")
         # self.xbox = xbox.XboxController()
@@ -113,7 +113,7 @@ class Load(CanvasScene):
         if not os.path.exists(mods_dir):
             os.makedirs(mods_dir)
 
-        mods_path = os.path.abspath(f"{mods_dir}").replace("\\", "/")
+        # mods_path = os.path.abspath(f"{mods_dir}").replace("\\", "/")
         # sys.path.insert(0, mods_path)
         modules = {}
         mainPackageNames = []
@@ -121,12 +121,16 @@ class Load(CanvasScene):
         try:
             for file in os.listdir(mods_dir):
                 # print(file, os.path.isfile(f"{mods_dir}/{file}"), f"{mods_dir}/{file}")
-                print(file)
+                # print(file)
                 if os.path.isfile(f"{mods_dir}/{file}"):
                     if file.endswith(".pyz"):
                         a = zipimport.zipimporter(f"{mods_dir}/{file}")  # f"{file}.main", globals(), locals(), [])
                         # print(dir(a))
-                        mainPackage = json.loads(a.get_data("qbubble-addoninfo.json"))["mainPackage"]
+                        try:
+                            mainPackage = json.loads(a.get_data("qbubble-addoninfo.json"))["mainPackage"]
+                        except OSError:
+                            print(f"Found non-addon file: {file}")
+                            continue
                         if mainPackage in mainPackageNames:
                             raise RuntimeError(f"Illegal package name '{mainPackage}'. "
                                                f"Package name is already in use")
@@ -153,10 +157,12 @@ class Load(CanvasScene):
                         # module = module.qplaysoftware.exampleaddon
                         if a.find_module("qbubbles") is not None:
                             raise RuntimeError("Illegal module name: 'qbubbles'")
-                        modules[module.MODID] = a
+                        modules[module.ADDONID] = a
                         # print(a)
                     else:
-                        print(f"Found non-addon module: {file}")
+                        if file.endswith(".disabled"):
+                            continue
+                        print(f"Found non-addon file: {file}")
         except Exception as e:
             import traceback
             printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
@@ -204,10 +210,6 @@ class Load(CanvasScene):
 
         # # Pre-Initialize
         # self.mod_loader.pre_initialize(self)
-
-        self.canvas.itemconfig(t1, text="Loading...")
-        self.canvas.itemconfig(t2, text="Loading Config")
-        self.canvas.update()
 
         # =----- GAME MAPS -----= #
         self.canvas.itemconfig(t1, text="Loading Gamemaps")
@@ -333,9 +335,10 @@ class Load(CanvasScene):
                         self.canvas.itemconfig(
                             t2, text=f"Load images for {spriteName} {int(degree / degrees)} / {int(360 / degrees)}")
                         self.canvas.update()
-                        image_c = image.copy()
-                        image_c.rotate(degree)
+                        image_c: Image.Image = image.copy()
+                        image_c = image_c.rotate(degree, resample=Image.BICUBIC)
                         Registry.register_texture("sprite", spriteName, ImageTk.PhotoImage(image_c), rotation=degree)
+                    # print(Registry._registryTextures)
         except Exception as e:
             import traceback
             printerr("".join(list(traceback.format_exception_only(e.__class__, e))))
